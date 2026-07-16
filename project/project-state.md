@@ -22,129 +22,182 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Bootstrap del repositorio |
-| Estado general | En progreso |
-| Último incremento completado | Arquitectura del repositorio |
+| Fase actual | Bootstrap completado |
+| Estado general | Preparado para iniciar la Unidad 00 |
+| Último incremento completado | `playbooks/units/00-environment.md` |
 | Unidad activa | Ninguna |
-| Unidades completadas | Ninguna |
+| Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
 | Plataforma local desplegada | No |
 | Contenido formativo generado | No |
-| Siguiente incremento permitido | `project/roadmap.md` |
+| Framework de generación | Completo y aprobado |
+| Siguiente incremento permitido | Generación de la Unidad 00 — `00-environment` |
 
 ---
 
 # Fase actual
 
-El proyecto se encuentra en la fase **Bootstrap**.
+El proyecto ha completado formalmente la fase **Bootstrap**.
 
-El objetivo de esta fase es construir el framework mínimo necesario para generar posteriormente las unidades formativas de manera incremental y coherente.
+El framework del repositorio ha sido:
 
-Durante esta fase:
+- generado;
+- revisado;
+- aprobado;
+- incorporado al repositorio.
 
-- no se genera contenido para alumnos;
-- no se crean laboratorios;
-- no se instala MicroK8s;
-- no se despliegan workloads;
-- no se crean recursos en AKS ni EKS;
-- no se ejecuta todavía ningún playbook de unidad.
+A partir de este estado se permite comenzar la generación de la **Unidad 00 — Preparación del entorno**.
 
-La Unidad 0 no debe comenzar hasta completar y revisar todos los artefactos definidos para el bootstrap.
+Durante la siguiente fase se permitirá:
 
----
+- crear documentación en `tutorial/00-environment/`;
+- crear artefactos ejecutables en `platform/environment/`;
+- validar Windows 11, WSL2 y Ubuntu LTS;
+- instalar y configurar MicroK8s;
+- instalar y validar Helm y Terraform;
+- generar notas del instructor;
+- generar el resumen de continuidad;
+- actualizar nuevamente este documento con resultados reales.
 
-# Artefactos existentes
+Todavía no se permite:
 
-## Raíz del repositorio
-
-### `README.md`
-
-Estado: **completado**
-
-Responsabilidad:
-
-- presentar el propósito del repositorio;
-- describir su estructura;
-- documentar los principios generales;
-- explicar el mecanismo de generación;
-- declarar el orden del bootstrap.
-
-## Directorio `project/`
-
-### `project/architecture.md`
-
-Estado: **completado**
-
-Responsabilidad:
-
-- definir la arquitectura lógica;
-- establecer responsabilidades por directorio;
-- documentar el flujo de generación;
-- definir restricciones;
-- registrar las decisiones arquitectónicas iniciales.
-
-### `project/project-state.md`
-
-Estado: **archivo actual**
-
-Responsabilidad:
-
-- consolidar el estado real del proyecto;
-- identificar el último incremento completado;
-- declarar el siguiente incremento permitido;
-- evitar que sesiones posteriores infieran estado no implementado.
+- generar contenido de la Unidad 01;
+- desplegar la aplicación evolutiva;
+- crear workloads funcionales del curso;
+- crear charts Helm;
+- crear módulos Terraform;
+- instalar Tekton;
+- instalar Argo CD;
+- desplegar el stack de observabilidad;
+- introducir KEDA;
+- crear recursos en AKS o EKS.
 
 ---
 
-# Artefactos pendientes del bootstrap
+# Estado del bootstrap
 
-Los siguientes archivos todavía no existen o no han sido completados:
+## Resultado
 
-1. `project/roadmap.md`
-2. `playbooks/master.md`
-3. `playbooks/unit-template.md`
-4. `playbooks/summary-template.md`
-5. `playbooks/project-state-template.md`
-6. `playbooks/units/00-environment.md`
+```text
+Completado y aprobado
+```
 
-El orden de creación es obligatorio salvo que se documente previamente un cambio de arquitectura.
+## Fecha de cierre
+
+```text
+2026-07-17
+```
+
+## Criterios de cierre
+
+| Criterio | Estado |
+|---|---|
+| Estructura conceptual del repositorio definida | Cumplido |
+| Arquitectura documentada | Cumplido |
+| Estado inicial consolidado | Cumplido |
+| Roadmap completo definido | Cumplido |
+| Playbook maestro disponible | Cumplido |
+| Plantilla de unidades disponible | Cumplido |
+| Plantilla de summaries disponible | Cumplido |
+| Plantilla de project-state disponible | Cumplido |
+| Playbook de la Unidad 00 disponible | Cumplido |
+| Mecanismo de continuidad entre sesiones definido | Cumplido |
+| Contenido revisado y aprobado | Cumplido |
+| Repositorio utilizable sin historial de conversación | Cumplido |
 
 ---
 
-# Estructura prevista y estado
+# Artefactos de gobierno
+
+| Artefacto | Estado | Última modificación relevante | Responsabilidad |
+|---|---|---|---|
+| `README.md` | Completo y aprobado | Bootstrap-01 | Punto de entrada y visión general |
+| `project/architecture.md` | Completo y aprobado | Bootstrap-02 | Arquitectura y decisiones estructurales |
+| `project/project-state.md` | Actualizado con este incremento | Bootstrap-10 | Estado consolidado |
+| `project/roadmap.md` | Completo y aprobado | Bootstrap-04 | Evolución prevista del itinerario |
+| `playbooks/master.md` | Completo y aprobado | Bootstrap-05 | Reglas globales de generación |
+| `playbooks/unit-template.md` | Completo y aprobado | Bootstrap-06 | Plantilla de playbooks específicos |
+| `playbooks/summary-template.md` | Completo y aprobado | Bootstrap-07 | Contrato de continuidad |
+| `playbooks/project-state-template.md` | Completo y aprobado | Bootstrap-08 | Reglas de mantenimiento del estado |
+| `playbooks/units/00-environment.md` | Completo y aprobado | Bootstrap-09 | Gobierno de la Unidad 00 |
+
+---
+
+# Estructura actual del repositorio
 
 ```text
 .
-├── README.md                              # completado
-├── assets/                               # previsto, sin contenido
-├── labs/                                 # previsto, sin contenido
+├── README.md
+├── assets/
+├── labs/
 ├── platform/
-│   └── environment/                      # previsto, sin contenido
+│   └── environment/
 ├── playbooks/
-│   ├── master.md                         # pendiente
-│   ├── project-state-template.md         # pendiente
-│   ├── summary-template.md               # pendiente
-│   ├── unit-template.md                  # pendiente
+│   ├── master.md
+│   ├── project-state-template.md
+│   ├── summary-template.md
+│   ├── unit-template.md
 │   └── units/
-│       └── 00-environment.md             # pendiente
+│       └── 00-environment.md
 ├── project/
-│   ├── architecture.md                   # completado
-│   ├── project-state.md                  # completado con este incremento
-│   └── roadmap.md                        # pendiente
-└── tutorial/                             # previsto, sin contenido
+│   ├── architecture.md
+│   ├── project-state.md
+│   └── roadmap.md
+└── tutorial/
 ```
 
-Los directorios vacíos pueden requerir archivos `.gitkeep` si se desea conservarlos en Git antes de que contengan artefactos reales. Esta decisión todavía no se ha formalizado.
+## Estado de directorios
+
+| Directorio | Estado | Contenido actual |
+|---|---|---|
+| `assets/` | Previsto | Sin artefactos formativos |
+| `labs/` | Previsto | Sin laboratorios |
+| `platform/environment/` | Preparado para la Unidad 00 | Sin scripts todavía |
+| `playbooks/` | Operativo | Framework completo |
+| `project/` | Operativo | Arquitectura, estado y roadmap |
+| `tutorial/` | Preparado para la Unidad 00 | Sin contenido formativo |
+
+Git no conserva directorios vacíos. La existencia física de estos directorios dependerá de que contengan archivos como `.gitkeep` o artefactos reales.
 
 ---
 
 # Estado de las unidades
 
-| Unidad | Estado | Tutorial | Laboratorio | Instructor notes | Summary |
+| Unidad | Estado | Tutorial | Laboratorio o plataforma | Instructor notes | Summary |
 |---|---|---|---|---|---|
-| 00 — Environment | No iniciada | No | No | No | No |
+| 00 — Preparación del entorno | Preparada para iniciar | No | No | No | No |
+| 01 — Fundamentos operativos y primera aplicación | Prevista | No | No | No | No |
+| 02–25 | Previstas en roadmap | No | No | No | No |
 
-No existen otras unidades formalmente definidas hasta completar `project/roadmap.md`.
+## Unidad 00 — Preparación del entorno
+
+| Campo | Estado |
+|---|---|
+| Estado | Preparada para iniciar |
+| Fecha de inicio | No iniciada |
+| Fecha de cierre | No aplica |
+| Playbook | `playbooks/units/00-environment.md` |
+| Tutorial | Pendiente |
+| Artefactos ejecutables | Pendientes |
+| Instructor notes | Pendientes |
+| Summary | Pendiente |
+
+### Precondiciones documentales
+
+Todas las precondiciones documentales están cumplidas.
+
+### Precondiciones técnicas
+
+Todavía deben validarse durante la unidad:
+
+- Windows 11;
+- virtualización;
+- WSL2;
+- Ubuntu LTS;
+- acceso administrativo;
+- conectividad;
+- espacio en disco;
+- Git.
 
 ---
 
@@ -152,43 +205,78 @@ No existen otras unidades formalmente definidas hasta completar `project/roadmap
 
 ## Host
 
-| Componente | Estado |
-|---|---|
-| Windows 11 | Requisito previsto, no validado por el repositorio |
-| WSL2 | Requisito previsto, no validado por el repositorio |
-| Ubuntu LTS | Requisito previsto, no validado por el repositorio |
+| Componente | Estado | Versión o detalle | Evidencia |
+|---|---|---|---|
+| Windows 11 | Requisito previsto, no validado | Pendiente | Debe validarse en la Unidad 00 |
+| Virtualización | No validada | Pendiente | Debe validarse en la Unidad 00 |
+| WSL2 | No validado por el proyecto | Pendiente | `wsl --status` |
+| Ubuntu LTS | No validado por el proyecto | Pendiente | `wsl --list --verbose` y `/etc/os-release` |
 
 ## Plataforma Kubernetes
 
-| Componente | Estado |
-|---|---|
-| MicroK8s | No instalado ni configurado por este proyecto |
-| Clúster local | No disponible |
-| Addons | No definidos |
-| Namespaces del curso | No definidos |
-| Workloads | No desplegados |
+| Componente | Estado | Versión | Evidencia |
+|---|---|---|---|
+| MicroK8s | No instalado ni validado por el proyecto | Pendiente | Unidad 00 |
+| Kubernetes | No disponible en el estado consolidado | Pendiente | Unidad 00 |
+| Clúster local | No disponible | No aplica | Unidad 00 |
+| Addons | No definidos ni habilitados | No aplica | Unidad 00 |
 
-## Herramientas
+## Namespaces
 
-| Herramienta | Estado |
-|---|---|
-| Helm | Prevista, no instalada por el proyecto |
-| Terraform | Prevista, no instalada por el proyecto |
-| Argo CD | Prevista, no incorporada |
-| Tekton | Prevista, no incorporada |
-| Prometheus | Previsto, no incorporado |
-| Grafana | Previsto, no incorporado |
-| Loki | Previsto, no incorporado |
-| Tempo | Previsto, no incorporado |
-| OpenTelemetry | Previsto, no incorporado |
-| OpenMetrics | Previsto, no incorporado |
-| KEDA | Previsto, no incorporado |
+No existen namespaces funcionales del curso.
 
-La presencia de estas herramientas en el equipo del autor no debe asumirse hasta que la Unidad 0 las valide o las instale explícitamente.
+## Workloads
+
+No existen workloads funcionales del curso.
+
+## Endpoints
+
+No existen endpoints de aplicación.
 
 ---
 
-# Estado de plataformas gestionadas
+# Herramientas y versiones
+
+| Herramienta | Estado | Versión activa | Método de comprobación | Incorporación prevista |
+|---|---|---|---|---|
+| Git | No validado por el proyecto | Pendiente | `git --version` | Unidad 00 |
+| Helm | No validado por el proyecto | Pendiente | `helm version` | Unidad 00 |
+| Terraform | No validado por el proyecto | Pendiente | `terraform version` | Unidad 00 |
+| Argo CD | No incorporado | No aplica | No aplica | Unidad 09 |
+| Tekton | No incorporado | No aplica | No aplica | Unidad 08 |
+| Prometheus | No incorporado | No aplica | No aplica | Unidad 11 |
+| Grafana | No incorporado | No aplica | No aplica | Unidad 12 |
+| Loki | No incorporado | No aplica | No aplica | Unidad 13 |
+| Tempo | No incorporado | No aplica | No aplica | Unidad 14 |
+| OpenTelemetry | No incorporado | No aplica | No aplica | Unidad 14 |
+| KEDA | No incorporado | No aplica | No aplica | Unidad 18 |
+
+No debe asumirse que una herramienta está disponible por estar instalada manualmente en el equipo. Su disponibilidad deberá comprobarse y registrarse.
+
+---
+
+# Estado de la aplicación evolutiva
+
+La aplicación evolutiva todavía no ha sido definida.
+
+Antes de la Unidad 01 deberá seleccionarse una solución que permita incorporar progresivamente:
+
+- configuración;
+- secretos;
+- networking;
+- persistencia;
+- métricas;
+- logs;
+- trazas;
+- escalado;
+- seguridad;
+- despliegue en AKS y EKS.
+
+No debe crearse ninguna aplicación durante la Unidad 00.
+
+---
+
+# Plataformas gestionadas
 
 | Plataforma | Estado |
 |---|---|
@@ -197,144 +285,193 @@ La presencia de estas herramientas en el equipo del autor no debe asumirse hasta
 
 No existen actualmente:
 
-- suscripciones o cuentas documentadas;
-- módulos Terraform;
-- clústeres;
+- módulos Terraform cloud;
+- clústeres gestionados;
+- redes cloud;
+- registros de imágenes;
 - configuraciones de identidad;
-- redes;
-- pipelines de despliegue;
-- procedimientos de validación.
+- pipelines de despliegue cloud;
+- procedimientos de teardown.
 
 ---
 
 # Decisiones arquitectónicas activas
 
-Las siguientes decisiones registradas en `project/architecture.md` están vigentes:
+| Decisión | Estado | Documento fuente | Impacto actual |
+|---|---|---|---|
+| ADR-001 — MicroK8s como plataforma local inicial | Activa | `project/architecture.md` | Gobierna la Unidad 00 |
+| ADR-002 — Unidad 0 fuera de `labs/` | Activa | `project/architecture.md` | Artefactos en `platform/environment/` |
+| ADR-003 — Resumen por unidad | Activa | `project/architecture.md` | Obligatorio al cerrar Unidad 00 |
+| ADR-004 — Estado consolidado central | Activa | `project/architecture.md` | Este archivo es fuente de estado |
+| ADR-005 — Playbooks versionados | Activa | `project/architecture.md` | Framework aprobado |
 
-| Decisión | Estado |
-|---|---|
-| ADR-001 — MicroK8s como plataforma local inicial | Activa |
-| ADR-002 — Unidad 0 fuera de `labs/` | Activa |
-| ADR-003 — Resumen por unidad | Activa |
-| ADR-004 — Estado consolidado central | Activa |
-| ADR-005 — Playbooks versionados | Activa |
+## Decisiones específicas de la Unidad 00
 
-No existen decisiones revocadas ni sustituidas.
+| Decisión | Estado | Documento fuente |
+|---|---|---|
+| D-00-01 — MicroK8s como distribución local | Activa | `playbooks/units/00-environment.md` |
+| D-00-02 — Scripts separados por contexto | Activa | `playbooks/units/00-environment.md` |
+| D-00-03 — Validación antes de instalación | Activa | `playbooks/units/00-environment.md` |
+| D-00-04 — Addons mínimos | Activa, pendiente de concreción | `playbooks/units/00-environment.md` |
+| D-00-05 — Terraform solo se instala y valida | Activa | `playbooks/units/00-environment.md` |
+| D-00-06 — Helm se instala sin crear charts | Activa | `playbooks/units/00-environment.md` |
 
 ---
 
 # Restricciones activas
 
-Durante el bootstrap se aplican las siguientes restricciones:
+Durante la generación de la Unidad 00:
 
-- no generar contenido formativo;
-- no crear laboratorios;
-- no ejecutar la Unidad 0;
-- no asumir herramientas instaladas;
-- no definir unidades fuera del roadmap antes de crear `project/roadmap.md`;
-- no introducir aplicaciones de ejemplo;
-- no crear artefactos que contradigan `project/architecture.md`;
-- no avanzar fuera del orden acordado;
-- mantener cada incremento apto para un commit Git independiente.
+- no generar la aplicación evolutiva;
+- no crear contenido de la Unidad 01;
+- no crear workloads funcionales;
+- no crear charts Helm;
+- no crear módulos Terraform;
+- no instalar Tekton;
+- no instalar Argo CD;
+- no desplegar observabilidad;
+- no introducir KEDA;
+- no crear recursos AKS o EKS;
+- no asumir versiones sin validarlas;
+- no afirmar que el entorno fue ejecutado si solo se revisó estáticamente;
+- no almacenar credenciales ni configuración corporativa sensible;
+- no utilizar Minikube, kind o Docker Desktop Kubernetes como plataforma paralela.
 
 ---
 
 # Riesgos y cuestiones abiertas
 
-## R-001 — Directorios vacíos en Git
+## Riesgos
 
-Git no conserva directorios vacíos.
+| ID | Riesgo | Probabilidad | Impacto | Mitigación | Estado |
+|---|---|---|---|---|---|
+| R-001 | Git no conserva directorios vacíos | Alta | Bajo | Crear artefactos reales o `.gitkeep` | Abierto |
+| R-002 | Diferencias entre versiones de WSL | Media | Alto | Detectar versión y documentar variantes | Abierto |
+| R-003 | Virtualización no disponible | Baja | Alto | Validación temprana | Abierto |
+| R-004 | Proxy o restricciones corporativas | Media | Alto | Parametrizar sin versionar credenciales | Abierto |
+| R-005 | Entorno parcialmente configurado | Alta | Medio | Validar antes de instalar | Abierto |
+| R-006 | Addons de MicroK8s no portables | Media | Medio | Aislar y documentar | Abierto |
+| R-007 | Operaciones destructivas del entorno | Baja | Alto | Confirmación explícita y separación | Abierto |
+| R-008 | Recursos insuficientes en el host | Media | Medio | Definir y validar requisitos mínimos | Abierto |
 
-Pendiente decidir si se crearán archivos `.gitkeep` durante el bootstrap o si los directorios se crearán cuando aparezca su primer artefacto real.
+## Cuestiones abiertas
 
-## R-002 — Alcance exacto del roadmap
-
-La lista completa y la granularidad de las unidades aún no están formalizadas.
-
-Debe resolverse en `project/roadmap.md`.
-
-## R-003 — Aplicación evolutiva del curso
-
-Todavía no se ha definido la aplicación o sistema funcional que evolucionará durante el itinerario.
-
-Su selección deberá realizarse antes de la primera unidad que necesite workloads, manteniendo el principio de laboratorio único.
-
-## R-004 — Versiones de herramientas
-
-No se han fijado versiones de:
-
-- Ubuntu;
-- MicroK8s;
-- Kubernetes;
-- Helm;
-- Terraform;
-- herramientas adicionales.
-
-Las versiones deberán definirse cuando sean necesarias y registrarse en el estado del proyecto.
-
-## R-005 — Estrategia de validación automatizada
-
-Todavía no se han definido mecanismos de linting, pruebas, validación de Markdown, manifiestos, Helm o Terraform.
-
-El framework deberá permitir incorporarlos posteriormente.
+| ID | Cuestión | Bloqueante | Resolución prevista | Estado |
+|---|---|---|---|---|
+| Q-001 | Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | Sí para cerrar la Unidad 00 | Durante la Unidad 00 | Abierta |
+| Q-002 | Addons mínimos exactos | Sí para aprobar scripts | Diseño técnico de la Unidad 00 | Abierta |
+| Q-003 | Alias o instalación independiente de `kubectl` | No | Unidad 00 | Abierta |
+| Q-004 | Requisitos mínimos de CPU, memoria y disco | Sí para publicar tutorial | Unidad 00 | Abierta |
+| Q-005 | Uso de systemd en WSL2 objetivo | No | Validación de Unidad 00 | Abierta |
+| Q-006 | Necesidad de soporte para proxy corporativo | No | Cuando el entorno lo requiera | Abierta |
+| Q-007 | Estrategia definitiva para directorios vacíos | No | Al crear los primeros artefactos | Abierta |
+| Q-008 | Aplicación evolutiva del curso | No para Unidad 00; sí para Unidad 01 | Antes de generar Unidad 01 | Abierta |
 
 ---
 
 # Deuda técnica
 
-No existe deuda técnica de implementación porque todavía no se han generado componentes ejecutables.
+| ID | Descripción | Prioridad | Origen | Resolución prevista | Estado |
+|---|---|---|---|---|---|
+| TD-001 | Definir estrategia de validación automatizada del repositorio | Media | Bootstrap | Evolución del framework | Abierta |
+| TD-002 | Definir aplicación evolutiva | Alta antes de Unidad 01 | Roadmap | Antes de Unidad 01 | Abierta |
+| TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Durante Unidad 00 | Abierta |
+| TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Primeros artefactos | Abierta |
 
-Existe deuda de definición pendiente asociada a:
+---
 
-- roadmap;
-- reglas maestras de generación;
-- plantillas;
-- playbook de la Unidad 0;
-- estrategia de directorios vacíos;
-- estrategia de validación automatizada.
+# Validaciones globales disponibles
+
+Actualmente solo pueden validarse documentalmente:
+
+| Validación | Método | Resultado esperado |
+|---|---|---|
+| Existencia de documentos del bootstrap | Revisión del repositorio | Nueve documentos presentes |
+| Coherencia de rutas | Revisión estática | Rutas alineadas |
+| Orden del bootstrap | Comparación con README y estado | Completado |
+| Existencia del playbook de Unidad 00 | Revisión del repositorio | Archivo presente |
+| Ausencia de contenido formativo prematuro | Revisión del repositorio | Sin tutoriales ni laboratorios |
+
+No existen todavía validaciones funcionales del entorno.
 
 ---
 
 # Historial de incrementos
 
-| Orden | Incremento | Estado |
-|---|---|---|
-| 1 | `README.md` | Completado |
-| 2 | `project/architecture.md` | Completado |
-| 3 | `project/project-state.md` | Completado con este cambio |
-| 4 | `project/roadmap.md` | Pendiente |
-| 5 | `playbooks/master.md` | Pendiente |
-| 6 | `playbooks/unit-template.md` | Pendiente |
-| 7 | `playbooks/summary-template.md` | Pendiente |
-| 8 | `playbooks/project-state-template.md` | Pendiente |
-| 9 | `playbooks/units/00-environment.md` | Pendiente |
+| Orden | Incremento | Estado | Resultado |
+|---|---|---|---|
+| 1 | `README.md` | Completado | Marco general del repositorio |
+| 2 | `project/architecture.md` | Completado | Arquitectura y decisiones iniciales |
+| 3 | `project/project-state.md` | Completado | Estado inicial del bootstrap |
+| 4 | `project/roadmap.md` | Completado | Itinerario y dependencias |
+| 5 | `playbooks/master.md` | Completado | Reglas globales |
+| 6 | `playbooks/unit-template.md` | Completado | Plantilla de unidades |
+| 7 | `playbooks/summary-template.md` | Completado | Contrato de continuidad |
+| 8 | `playbooks/project-state-template.md` | Completado | Gobierno del estado |
+| 9 | `playbooks/units/00-environment.md` | Completado | Playbook de Unidad 00 |
+| 10 | Revisión y cierre del bootstrap | Completado | Contenido aprobado y framework operativo |
+| 11 | Actualización de `project/project-state.md` | Completado con este cambio | Bootstrap declarado formalmente completo |
 
 ---
 
 # Siguiente incremento permitido
 
-El siguiente archivo que debe generarse es:
+El siguiente incremento principal es:
 
 ```text
-project/roadmap.md
+Generar la Unidad 00 — Preparación del entorno
 ```
 
-Su finalidad será definir la secuencia completa del itinerario, sus dependencias y la incorporación progresiva de capacidades.
+## Fuentes obligatorias
 
-No debe iniciarse `playbooks/master.md` ni contenido de la Unidad 0 antes de completar y revisar el roadmap.
+La sesión deberá leer:
+
+```text
+playbooks/master.md
+project/architecture.md
+project/project-state.md
+project/roadmap.md
+playbooks/units/00-environment.md
+playbooks/unit-template.md
+playbooks/summary-template.md
+playbooks/project-state-template.md
+```
+
+No existe summary de una unidad anterior.
+
+## Trabajo permitido
+
+- generar `tutorial/00-environment/README.md`;
+- generar `tutorial/00-environment/instructor-notes.md`;
+- generar artefactos en `platform/environment/`;
+- definir versiones objetivo justificadas;
+- definir addons mínimos;
+- crear scripts idempotentes;
+- crear validaciones estáticas y funcionales;
+- documentar validaciones manuales;
+- preparar `tutorial/00-environment/summary.md`;
+- actualizar nuevamente `project/project-state.md`.
+
+## Trabajo todavía prohibido
+
+- iniciar la Unidad 01;
+- crear la aplicación evolutiva;
+- desplegar workloads funcionales;
+- crear charts Helm;
+- crear módulos Terraform;
+- incorporar CI/CD, GitOps, observabilidad, seguridad avanzada o cloud.
 
 ---
 
 # Regla de actualización
 
-Este documento deberá actualizarse:
+Este documento deberá actualizarse durante la Unidad 00:
 
-- al cerrar cada incremento del bootstrap;
-- al completar cada unidad;
-- cuando cambie la arquitectura desplegada;
-- cuando se incorpore o retire una tecnología;
-- cuando cambien dependencias relevantes;
-- cuando se identifique deuda técnica;
-- cuando se modifique el siguiente incremento permitido.
+1. al iniciar formalmente la unidad;
+2. después de definir versiones y addons;
+3. después de generar los artefactos;
+4. después de recibir resultados reales de validación;
+5. al cerrar la unidad;
+6. antes de permitir la generación del playbook o contenido de la Unidad 01.
 
-Las actualizaciones deberán describir únicamente hechos representados por archivos o artefactos verificables en el repositorio.
+Las actualizaciones deberán reflejar únicamente hechos verificables en el repositorio o resultados de ejecución proporcionados por el usuario.
