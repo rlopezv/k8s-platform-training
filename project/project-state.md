@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 00 — Preparación del entorno |
-| Estado general | Unidad 00 en progreso; bloque WSL/Ubuntu documentado y Ubuntu 24.04.4 LTS validada en WSL2 con avisos no bloqueantes |
-| Último incremento completado | Guia WSL/Ubuntu y continuidad VS Code WSL documentadas |
+| Estado general | Unidad 00 en progreso; scripts MicroK8s/kubectl generados y pendientes de ejecución funcional |
+| Último incremento completado | Scripts y documentación MicroK8s/kubectl generados |
 | Unidad activa | 00 — Preparación del entorno |
 | Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
 | Plataforma local desplegada | No |
 | Contenido formativo generado | Parcial |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Preparar bloque MicroK8s y kubectl de la Unidad 00 |
+| Siguiente incremento permitido | Ejecutar y registrar validación real de MicroK8s y kubectl |
 
 ---
 
@@ -147,7 +147,10 @@ Cerrado
 │       ├── linux/
 │       │   └── check-prerequisites.sh
 │       ├── microk8s/
-│       │   └── .gitkeep
+│       │   ├── configure.sh
+│       │   ├── install.sh
+│       │   ├── reset.sh
+│       │   └── validate.sh
 │       ├── tools/
 │       │   └── .gitkeep
 │       ├── validation/
@@ -172,6 +175,7 @@ Cerrado
 └── tutorial/
     ├── .gitkeep
     └── 00-environment/
+        ├── instructor-notes.md
         ├── README.md
         └── summary.md
 ```
@@ -183,7 +187,7 @@ Cerrado
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Previsto y materializado | Solo `.gitkeep`; sin laboratorios |
 | `platform/` | Previsto y materializado | Solo `.gitkeep` y `environment/` |
-| `platform/environment/` | En progreso para la Unidad 00 | `README.md`, `.gitkeep`, validaciones iniciales, preparacion de Ubuntu WSL y rutas reservadas `microk8s/` y `tools/` |
+| `platform/environment/` | En progreso para la Unidad 00 | `README.md`, validaciones iniciales, preparacion Ubuntu WSL, scripts MicroK8s/kubectl y ruta reservada `tools/` |
 | `playbooks/` | Operativo | Framework completo |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
 | `tutorial/` | En uso por la Unidad 00 | `00-environment/` y `.gitkeep` |
@@ -196,7 +200,7 @@ Git no conserva directorios vacíos. Las rutas base previstas se mantienen actua
 
 | Unidad | Estado | Tutorial | Laboratorio o plataforma | Instructor notes | Summary |
 |---|---|---|---|---|---|
-| 00 — Preparación del entorno | En progreso | Parcial | Parcial | No | Parcial |
+| 00 — Preparación del entorno | En progreso | Parcial | Parcial | Sí | Parcial |
 | 01 — Fundamentos operativos y primera aplicación | Prevista | No | No | No | No |
 | 02–25 | Previstas en roadmap | No | No | No | No |
 
@@ -208,9 +212,9 @@ Git no conserva directorios vacíos. Las rutas base previstas se mantienen actua
 | Fecha de inicio | 2026-07-17 |
 | Fecha de cierre | No aplica |
 | Playbook | `playbooks/units/00-environment.md` |
-| Tutorial | `tutorial/00-environment/README.md` parcial; bloque WSL/Ubuntu documentado |
-| Artefactos ejecutables | Scripts iniciales de validación y preparacion de Ubuntu WSL presentes; instalación pendiente |
-| Instructor notes | Pendientes |
+| Tutorial | `tutorial/00-environment/README.md` parcial; bloques WSL/Ubuntu y MicroK8s/kubectl documentados |
+| Artefactos ejecutables | Scripts iniciales, preparacion Ubuntu WSL y scripts MicroK8s/kubectl presentes; ejecución funcional pendiente |
+| Instructor notes | `tutorial/00-environment/instructor-notes.md` creado |
 | Summary | `tutorial/00-environment/summary.md` parcial |
 
 ### Precondiciones documentales
@@ -247,10 +251,10 @@ WSL2 y Ubuntu 24.04.4 LTS ya cuentan con validaciones iniciales, pero permanecen
 
 | Componente | Estado | Versión | Evidencia |
 |---|---|---|---|
-| MicroK8s | No instalado ni validado por el proyecto | Baseline objetivo: canal `1.35/stable` | Unidad 00 |
+| MicroK8s | Scripts de instalación/configuración/validación generados; no instalado ni validado por resultados reales | Baseline objetivo: canal `1.35/stable` | `platform/environment/microk8s/install.sh` |
 | Kubernetes | No disponible en el estado consolidado | Baseline objetivo: 1.35.x | Unidad 00 |
 | Clúster local | No disponible | No aplica | Unidad 00 |
-| Addons | No definidos ni habilitados | No aplica | Unidad 00 |
+| Addons | Baseline documentada; no habilitados por resultados reales | `dns` | `platform/environment/microk8s/configure.sh` |
 
 ## Namespaces
 
@@ -271,7 +275,7 @@ No existen endpoints de aplicación.
 | Herramienta | Estado | Versión activa | Método de comprobación | Incorporación prevista |
 |---|---|---|---|---|
 | Git | Validado en Ubuntu WSL | `/usr/bin/git` | `platform/environment/linux/check-prerequisites.sh` | Unidad 00 |
-| kubectl | No instalado | Baseline objetivo: 1.35.x compatible | `kubectl version --client` | Unidad 00 |
+| kubectl | Script de instalación generado; no instalado ni validado por resultados reales | Baseline objetivo: 1.35.x compatible | `kubectl version --client` | Unidad 00 |
 | Helm | No instalado | Baseline objetivo: 3.21.x | `helm version` | Unidad 00 |
 | Terraform | No instalado | Baseline objetivo: 1.15.x | `terraform version` | Unidad 00 |
 | Argo CD | No incorporado | No aplica | No aplica | Unidad 09 |
@@ -434,11 +438,16 @@ Validaciones registradas actualmente:
 | Instalacion Ubuntu WSL | `platform/environment/windows/prepare-ubuntu-wsl.ps1 -Install` | Ejecutada por el usuario; `Ubuntu-24.04` instalada correctamente |
 | Validacion Linux inicial | `platform/environment/linux/check-prerequisites.sh` | Ejecutada por el usuario; 0 fallos y 4 avisos esperados por herramientas pendientes |
 | Validacion integrada Linux | `platform/environment/validation/validate-environment.sh` | Ejecutada por el usuario; completada sin fallos bloqueantes |
-| Validacion integrada Linux actual | `bash platform/environment/validation/validate-environment.sh` | Ejecutada en esta sesion; 0 fallos, 6 avisos: `systemd` estado `unknown`, `kubectl`/MicroK8s/Helm/Terraform ausentes y DNS de `snapcraft.io` no resuelto |
+| Validacion integrada Linux actual | `bash platform/environment/validation/validate-environment.sh` | Ejecutada en esta sesion; bloque Ubuntu con 0 fallos y 6 avisos; bloque MicroK8s falla por `microk8s` y `kubectl` ausentes |
 | Guia WSL/Ubuntu | `tutorial/00-environment/README.md` | Documenta validacion Windows/WSL2, instalacion Ubuntu 24.04, validacion Ubuntu, avisos esperados, troubleshooting y continuidad VS Code WSL |
 | Referencia tecnica de entorno | `platform/environment/README.md` | Documenta contexto de ejecucion, efectos, repeticion, recuperacion y pendientes de scripts |
 | Sintaxis Bash de validaciones iniciales | Ejecucion de scripts | Scripts ejecutados correctamente desde Ubuntu 24.04.4 LTS |
 | Sintaxis PowerShell de validación Windows | Ejecución de script | Script PowerShell ajustado para tratar comprobaciones no concluyentes como avisos |
+| Scripts MicroK8s/kubectl | `platform/environment/microk8s/*.sh` | Creados con instalacion, configuracion, validacion y reset protegido |
+| Sintaxis Bash MicroK8s/kubectl | `bash -n platform/environment/microk8s/*.sh` | Ejecutada en esta sesion; codigo de salida 0 |
+| ShellCheck | `shellcheck` | No disponible en este entorno |
+| Reset MicroK8s dry run | `bash platform/environment/microk8s/reset.sh` | Ejecutada en esta sesion; no ejecuta reset sin `--confirm-reset` |
+| Validacion integrada con bloque MicroK8s | `bash platform/environment/validation/validate-environment.sh` | Ejecutada en esta sesion; falla porque MicroK8s y `kubectl` no estan instalados todavia |
 
 No existen todavía validaciones funcionales registradas para MicroK8s, Kubernetes, Helm ni Terraform.
 
@@ -469,6 +478,7 @@ No existen todavía validaciones funcionales registradas para MicroK8s, Kubernet
 | 19 | Instalacion de Ubuntu WSL | Completado con este cambio | El usuario ejecuto la instalacion de `Ubuntu-24.04`, creo el usuario Linux `ramon` y obtuvo primer arranque correcto |
 | 20 | Validacion Linux inicial | Completado | Ubuntu 24.04.4 LTS validada en WSL2; systemd, snap, Git, conectividad DNS y espacio libre correctos |
 | 21 | Guia WSL/Ubuntu y continuidad VS Code WSL | Completado con este cambio | Tutorial y referencia tecnica actualizados; validacion integrada actual sin fallos bloqueantes pero con aviso DNS; siguiente bloque preparado para MicroK8s y `kubectl` |
+| 22 | Scripts y documentacion MicroK8s/kubectl | Completado con este cambio | Scripts idempotentes generados; instructor notes creadas; validaciones funcionales pendientes de ejecucion real |
 
 ---
 
@@ -477,7 +487,7 @@ No existen todavía validaciones funcionales registradas para MicroK8s, Kubernet
 El siguiente incremento principal es:
 
 ```text
-Preparar bloque MicroK8s y kubectl de la Unidad 00
+Ejecutar y registrar validacion real de MicroK8s y kubectl
 ```
 
 ## Fuentes obligatorias
@@ -500,20 +510,16 @@ No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leers
 
 ## Trabajo permitido
 
-- crear scripts utiles e idempotentes para instalar y validar MicroK8s dentro de Ubuntu WSL2;
-- documentar la instalacion de MicroK8s y la habilitacion del addon minimo `dns`;
-- configurar o documentar kubeconfig para usar `kubectl` como cliente principal;
+- ejecutar `platform/environment/microk8s/install.sh` en Ubuntu WSL2;
+- ejecutar `platform/environment/microk8s/configure.sh`;
+- ejecutar `platform/environment/microk8s/validate.sh`;
 - validar `microk8s status --wait-ready`, `microk8s version`, `kubectl version --client` y `kubectl get nodes` cuando el usuario ejecute los pasos;
 - revisar conectividad DNS/proxy/VPN si `snapcraft.io` sigue sin resolver;
 - mantener Helm y Terraform como pasos posteriores de la Unidad 00 hasta cerrar MicroK8s/kubectl;
 - registrar resultados reales en `tutorial/00-environment/summary.md`;
 - actualizar `project/project-state.md` con evidencias reales;
-- generar `tutorial/00-environment/instructor-notes.md`;
 - mantener `dns` como addon mínimo inicial salvo evidencia contraria;
-- crear scripts idempotentes;
-- crear validaciones estáticas y funcionales;
 - documentar validaciones manuales;
-- preparar `tutorial/00-environment/summary.md`;
 - actualizar nuevamente `project/project-state.md`.
 
 ## Trabajo todavía prohibido

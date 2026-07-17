@@ -1,0 +1,73 @@
+# Instructor Notes - Unidad 00
+
+## Intencion pedagogica
+
+Esta unidad debe convertir un equipo Windows con WSL2 en una estacion de trabajo Kubernetes local verificable.
+
+El foco no es memorizar comandos de MicroK8s, sino aprender a separar:
+
+- precondiciones del host;
+- estado de Ubuntu sobre WSL2;
+- instalacion de la distribucion Kubernetes;
+- acceso estandar mediante `kubectl`;
+- diagnostico cuando una capa inferior falla.
+
+## Puntos de enfasis
+
+- `kubectl` es el cliente operativo principal del curso.
+- `microk8s kubectl` solo debe usarse como fallback para diagnostico.
+- MicroK8s se instala dentro de Ubuntu WSL2, no desde PowerShell.
+- El addon inicial permitido es solo `dns`.
+- Helm y Terraform se instalan despues, sin charts ni modulos en esta fase.
+- La aplicacion evolutiva no se define ni se despliega durante la Unidad 00.
+
+## Demostracion recomendada
+
+1. Ejecutar la validacion Ubuntu/WSL y revisar avisos.
+2. Mostrar que DNS hacia `snapcraft.io` es precondicion para instalar desde `snap`.
+3. Ejecutar o revisar `platform/environment/microk8s/install.sh`.
+4. Ejecutar o revisar `platform/environment/microk8s/configure.sh`.
+5. Explicar por que puede requerirse cerrar y reabrir Ubuntu tras modificar el grupo `microk8s`.
+6. Validar con `kubectl get nodes`, no con `microk8s kubectl`, salvo diagnostico.
+7. Mostrar que `reset.sh` no ejecuta nada destructivo sin `--confirm-reset`.
+
+## Errores frecuentes
+
+| Error | Sintoma | Accion recomendada |
+|---|---|---|
+| WSL1 en lugar de WSL2 | MicroK8s no arranca correctamente | Validar con `wsl --list --verbose` y convertir la distribucion |
+| DNS o proxy bloqueado | `snapcraft.io` no resuelve o `snap install` falla | Revisar VPN, DNS corporativo o proxy sin versionar credenciales |
+| `systemd` no operativo | Servicios o snap fallan | Validar `systemctl is-system-running` y configuracion WSL |
+| Usuario fuera del grupo `microk8s` | Permisos al ejecutar `microk8s` | Reabrir sesion Ubuntu tras `usermod -a -G microk8s` |
+| kubeconfig ausente o incorrecto | `kubectl get nodes` falla | Regenerar con `configure.sh` y revisar `~/.kube/config` |
+| DNS addon no habilitado | Resolucion interna de Kubernetes falla | Ejecutar `configure.sh` y validar addon `dns` |
+
+## Criterios para aceptar el laboratorio
+
+Aceptar el entorno solo cuando el alumno pueda aportar evidencias de:
+
+- Ubuntu LTS ejecutandose sobre WSL2;
+- `snap` disponible;
+- MicroK8s instalado desde el canal objetivo o una version compatible registrada;
+- addon `dns` habilitado;
+- `kubectl version --client` correcto;
+- `kubectl get nodes` con el nodo en `Ready`;
+- validacion integrada sin fallos bloqueantes.
+
+Si el entorno no puede instalar MicroK8s por DNS, proxy o VPN, registrar el bloqueo. No sustituir MicroK8s por Minikube, kind ni Docker Desktop Kubernetes.
+
+## Preguntas de comprobacion
+
+- Que capa esta fallando si `snapcraft.io` no resuelve?
+- Por que `kubectl` es preferible a `microk8s kubectl` para el flujo principal?
+- Que implica anadir el usuario al grupo `microk8s`?
+- Que addon se habilita en esta unidad y cuales quedan diferidos?
+- Que diferencia hay entre resetear MicroK8s y eliminar la distribucion WSL?
+
+## Riesgos tecnicos
+
+- Cambios de red corporativa pueden hacer que una validacion DNS pase en una sesion y falle en otra.
+- El estado `degraded` o `unknown` de `systemd` en WSL puede requerir diagnostico adicional antes de instalar.
+- `snap install` puede necesitar privilegios y conectividad estable.
+- Un reset de MicroK8s elimina recursos locales del cluster, aunque esta unidad todavia no debe contener workloads funcionales.
+- Versiones ya instaladas manualmente deben registrarse como observadas, no asumirse como validadas por el repositorio.

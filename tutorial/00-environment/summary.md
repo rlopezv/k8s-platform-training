@@ -11,9 +11,9 @@
 
 ## Resumen ejecutivo
 
-La Unidad 00 se ha iniciado y ya dispone de un bloque documentado para validar Windows, WSL2 y Ubuntu 24.04 LTS. Ubuntu 24.04.4 LTS sobre WSL2 fue validada como base Linux inicial, con `snap`, Git, herramientas basicas y espacio libre correctos.
+La Unidad 00 se ha iniciado y ya dispone de bloques documentados para validar Windows, WSL2, Ubuntu 24.04 LTS, MicroK8s y `kubectl`. Ubuntu 24.04.4 LTS sobre WSL2 fue validada como base Linux inicial, con `snap`, Git, herramientas basicas y espacio libre correctos.
 
-Todavia no existe plataforma Kubernetes local validada. MicroK8s, `kubectl`, Helm y Terraform siguen pendientes y deben abordarse en bloques posteriores de la misma unidad.
+Todavia no existe plataforma Kubernetes local validada por ejecucion del usuario. Los scripts de MicroK8s y `kubectl` estan generados, pero su instalacion y validacion funcional quedan pendientes hasta ejecutar los comandos en el entorno real. Helm y Terraform siguen pendientes para bloques posteriores de la misma unidad.
 
 ## Cambios introducidos
 
@@ -25,10 +25,14 @@ Todavia no existe plataforma Kubernetes local validada. MicroK8s, `kubectl`, Hel
 | Preparacion Ubuntu WSL | `platform/environment/windows/prepare-ubuntu-wsl.ps1` | Creado |
 | Validacion Linux inicial | `platform/environment/linux/check-prerequisites.sh` | Creado |
 | Validacion integrada Linux | `platform/environment/validation/validate-environment.sh` | Creado |
-| Estructura reservada MicroK8s | `platform/environment/microk8s/` | Preparada sin scripts vacios |
+| Instalacion MicroK8s/kubectl | `platform/environment/microk8s/install.sh` | Creado |
+| Configuracion MicroK8s/kubectl | `platform/environment/microk8s/configure.sh` | Creado |
+| Validacion MicroK8s/kubectl | `platform/environment/microk8s/validate.sh` | Creado |
+| Reset MicroK8s protegido | `platform/environment/microk8s/reset.sh` | Creado |
 | Estructura reservada herramientas | `platform/environment/tools/` | Preparada sin scripts vacios |
+| Notas del instructor | `tutorial/00-environment/instructor-notes.md` | Creado |
 | Playbook de la unidad | `playbooks/units/00-environment.md` | Actualizado con decision `kubectl` |
-| Estado del proyecto | `project/project-state.md` | Actualizado con el bloque WSL/Ubuntu y el siguiente incremento permitido |
+| Estado del proyecto | `project/project-state.md` | Actualizado con scripts MicroK8s/kubectl generados y validaciones funcionales pendientes |
 
 ## Decisiones registradas
 
@@ -95,8 +99,15 @@ Resultados ejecutados en la sesion actual desde Ubuntu WSL:
 | `systemd` | `systemctl` disponible; estado `unknown` en esta ejecucion |
 | DNS | `snapcraft.io` no resolvio en esta ejecucion |
 | Espacio libre HOME | 952 GB |
+| `bash -n platform/environment/microk8s/install.sh` | Correcto |
+| `bash -n platform/environment/microk8s/configure.sh` | Correcto |
+| `bash -n platform/environment/microk8s/validate.sh` | Correcto |
+| `bash -n platform/environment/microk8s/reset.sh` | Correcto |
+| `shellcheck` | No disponible en este entorno |
+| `bash platform/environment/validation/validate-environment.sh` | Falla en bloque MicroK8s porque `microk8s` y `kubectl` no estan instalados |
+| `bash platform/environment/microk8s/reset.sh` | Dry run correcto; no ejecuta reset sin `--confirm-reset` |
 
-La diferencia de DNS debe revisarse antes de instalar MicroK8s con `snap`.
+La diferencia de DNS debe revisarse antes de instalar MicroK8s con `snap`. La validacion integrada falla hasta que el usuario ejecute instalacion/configuracion de MicroK8s y `kubectl`.
 
 Validaciones pendientes:
 
@@ -107,21 +118,25 @@ microk8s status --wait-ready
 microk8s version
 kubectl version --client
 kubectl get nodes
+bash platform/environment/microk8s/install.sh
+bash platform/environment/microk8s/configure.sh
+bash platform/environment/microk8s/validate.sh
 helm version
 terraform version
 ```
 
 ## Limitaciones conocidas
 
-- Los scripts Linux creados son solo de diagnostico y no instalan componentes.
+- Los scripts Linux iniciales son de diagnostico y no instalan componentes.
 - El script Windows `prepare-ubuntu-wsl.ps1` puede ejecutar la instalacion de Ubuntu solo con `-Install`.
-- No existe `tutorial/00-environment/instructor-notes.md`.
+- `platform/environment/microk8s/install.sh` instala MicroK8s y `kubectl` solo cuando el usuario lo ejecuta.
+- `platform/environment/microk8s/reset.sh` no ejecuta reset sin `--confirm-reset`.
 - Ubuntu 24.04.4 LTS esta instalada y validada como base WSL2 de la Unidad 00.
-- `kubectl`, MicroK8s, Helm y Terraform aun no estan instalados o configurados.
+- `kubectl`, MicroK8s, Helm y Terraform aun no estan instalados o configurados por resultados reales aportados.
 - No se han validado versiones reales de Windows, MicroK8s, Kubernetes, `kubectl`, Helm ni Terraform.
 - No se ha instalado ni configurado la plataforma Kubernetes local desde este repositorio.
 - La validacion actual no resolvio `snapcraft.io`; revisar DNS/proxy/VPN antes de instalar MicroK8s.
 
 ## Siguiente incremento recomendado
 
-Preparar el bloque MicroK8s y `kubectl` de la Unidad 00: scripts idempotentes, documentacion de instalacion, habilitacion del addon minimo `dns`, generacion/configuracion de kubeconfig y validaciones con `kubectl`.
+Ejecutar en el entorno real los scripts de MicroK8s y `kubectl`, aportar resultados, y actualizar el estado con versiones observadas antes de continuar con Helm y Terraform.

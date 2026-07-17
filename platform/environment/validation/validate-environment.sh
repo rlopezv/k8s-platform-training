@@ -34,6 +34,13 @@ echo
 
 run_step "Ubuntu/WSL prerequisites" "$environment_dir/linux/check-prerequisites.sh"
 
+if [ -x "$environment_dir/microk8s/validate.sh" ]; then
+  run_step "MicroK8s and kubectl" "$environment_dir/microk8s/validate.sh"
+else
+  echo "[WARN] $environment_dir/microk8s/validate.sh is not executable or does not exist"
+  echo
+fi
+
 if [ "$failures" -gt 0 ]; then
   echo "Integrated validation completed with $failures failure(s)."
   exit 1

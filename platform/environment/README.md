@@ -36,6 +36,10 @@ Los comandos `microk8s` se limitaran a:
 platform/environment/
 ├── README.md
 ├── microk8s/
+│   ├── configure.sh
+│   ├── install.sh
+│   ├── reset.sh
+│   └── validate.sh
 ├── tools/
 ├── windows/
 │   ├── check-prerequisites.ps1
@@ -46,7 +50,7 @@ platform/environment/
     └── validate-environment.sh
 ```
 
-Los scripts de instalacion de MicroK8s y herramientas se anadiran en incrementos posteriores con comportamiento util e idempotente. No deben crearse scripts vacios.
+Los scripts de herramientas se anadiran en incrementos posteriores con comportamiento util e idempotente. No deben crearse scripts vacios.
 
 ## Separacion por contexto
 
@@ -186,6 +190,67 @@ Comportamiento al repetir:
 - no inicia ni detiene servicios;
 - los avisos de `kubectl`, MicroK8s, Helm y Terraform son esperados antes de su instalacion.
 
+### MicroK8s y kubectl
+
+Ejecutar desde Ubuntu, en la raiz del repositorio.
+
+Instalar MicroK8s y `kubectl`:
+
+```bash
+bash platform/environment/microk8s/install.sh
+```
+
+Efectos:
+
+- instala MicroK8s mediante `snap` con canal `1.35/stable` si no existe;
+- instala `kubectl` mediante `snap` con canal `1.35/stable` si no existe;
+- no instala Helm ni Terraform;
+- bloquea la instalacion si `snapcraft.io` no resuelve.
+
+Variables admitidas:
+
+```bash
+MICROK8S_CHANNEL=1.35/stable
+KUBECTL_CHANNEL=1.35/stable
+```
+
+Configurar permisos, addon `dns` y kubeconfig:
+
+```bash
+bash platform/environment/microk8s/configure.sh
+```
+
+Efectos:
+
+- anade el usuario actual al grupo `microk8s` si procede;
+- habilita unicamente el addon `dns`;
+- escribe `~/.kube/config` desde la configuracion de MicroK8s;
+- puede requerir cerrar y reabrir la sesion Ubuntu para aplicar grupos.
+
+Validar MicroK8s y `kubectl`:
+
+```bash
+bash platform/environment/microk8s/validate.sh
+```
+
+El script es de solo lectura y comprueba:
+
+- `microk8s status --wait-ready`;
+- `microk8s version`;
+- addon `dns`;
+- `kubectl version --client`;
+- `kubectl get nodes`;
+- `kubectl get namespaces`.
+
+Reset controlado:
+
+```bash
+bash platform/environment/microk8s/reset.sh
+bash platform/environment/microk8s/reset.sh --confirm-reset
+```
+
+Sin `--confirm-reset`, el script solo muestra el impacto. Con confirmacion, ejecuta `microk8s reset`. No elimina Ubuntu, WSL ni Windows.
+
 ### Validacion integrada Linux
 
 Ejecutar desde Ubuntu, en la raiz del repositorio:
@@ -194,13 +259,14 @@ Ejecutar desde Ubuntu, en la raiz del repositorio:
 bash platform/environment/validation/validate-environment.sh
 ```
 
-Por ahora ejecuta las validaciones Linux disponibles. No instala MicroK8s, Helm, Terraform ni `kubectl`.
+Ejecuta las validaciones Linux disponibles y la validacion MicroK8s/kubectl cuando el script existe. No instala MicroK8s, Helm, Terraform ni `kubectl`.
 
 Comportamiento al repetir:
 
 - seguro de ejecutar varias veces;
 - falla si alguna validacion integrada devuelve fallos bloqueantes;
-- actualmente depende solo de `platform/environment/linux/check-prerequisites.sh`.
+- falla si MicroK8s o `kubectl` no estan instalados despues de crear el bloque MicroK8s;
+- debe usarse como validacion global despues de ejecutar `install.sh` y `configure.sh`.
 
 ## Validaciones ejecutadas en el entorno actual
 
@@ -217,17 +283,17 @@ Resultados aportados por el usuario para la Unidad 00:
 | `snap` | Disponible (`2.73+ubuntu24.04`) |
 | DNS | Validado previamente; ultima ejecucion no resolvio `snapcraft.io` |
 | Espacio libre en `$HOME` | 952-954 GB observados |
+| Scripts MicroK8s | Creados; pendientes de ejecucion funcional por el usuario |
 
 ## Pendiente para el siguiente bloque
 
-Los siguientes directorios estan reservados para artefactos reales de la Unidad 00:
+El directorio siguiente queda reservado para artefactos reales de la Unidad 00:
 
 ```text
-platform/environment/microk8s/
 platform/environment/tools/
 ```
 
-El siguiente incremento debera incorporar scripts utiles para MicroK8s y `kubectl`, con validaciones reales y comportamiento idempotente.
+El siguiente incremento debera incorporar scripts utiles para Helm y Terraform, sin crear charts ni modulos.
 
 Antes de instalar MicroK8s, revisar cualquier aviso activo de DNS o `systemd` en:
 
