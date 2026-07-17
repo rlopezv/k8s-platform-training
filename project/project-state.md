@@ -230,14 +230,14 @@ Todavía deben validarse durante la unidad:
 | Windows 11 | Requisito previsto, no validado | Pendiente | Debe validarse en la Unidad 00 |
 | Virtualización | No validada | Pendiente | Debe validarse en la Unidad 00 |
 | WSL2 | No validado por el proyecto | Pendiente | `wsl --status` |
-| Ubuntu LTS | No validado por el proyecto | Pendiente | `wsl --list --verbose` y `/etc/os-release` |
+| Ubuntu LTS | No validado por el proyecto | Baseline objetivo: 24.04 LTS; 22.04 LTS aceptable si ya existe | `wsl --list --verbose` y `/etc/os-release` |
 
 ## Plataforma Kubernetes
 
 | Componente | Estado | Versión | Evidencia |
 |---|---|---|---|
-| MicroK8s | No instalado ni validado por el proyecto | Pendiente | Unidad 00 |
-| Kubernetes | No disponible en el estado consolidado | Pendiente | Unidad 00 |
+| MicroK8s | No instalado ni validado por el proyecto | Baseline objetivo: canal `1.35/stable` | Unidad 00 |
+| Kubernetes | No disponible en el estado consolidado | Baseline objetivo: 1.35.x | Unidad 00 |
 | Clúster local | No disponible | No aplica | Unidad 00 |
 | Addons | No definidos ni habilitados | No aplica | Unidad 00 |
 
@@ -260,9 +260,9 @@ No existen endpoints de aplicación.
 | Herramienta | Estado | Versión activa | Método de comprobación | Incorporación prevista |
 |---|---|---|---|---|
 | Git | No validado por el proyecto | Pendiente | `git --version` | Unidad 00 |
-| kubectl | No validado por el proyecto | Pendiente | `kubectl version --client` | Unidad 00 |
-| Helm | No validado por el proyecto | Pendiente | `helm version` | Unidad 00 |
-| Terraform | No validado por el proyecto | Pendiente | `terraform version` | Unidad 00 |
+| kubectl | No validado por el proyecto | Baseline objetivo: 1.35.x compatible | `kubectl version --client` | Unidad 00 |
+| Helm | No validado por el proyecto | Baseline objetivo: 3.21.x | `helm version` | Unidad 00 |
+| Terraform | No validado por el proyecto | Baseline objetivo: 1.15.x | `terraform version` | Unidad 00 |
 | Argo CD | No incorporado | No aplica | No aplica | Unidad 09 |
 | Tekton | No incorporado | No aplica | No aplica | Unidad 08 |
 | Prometheus | No incorporado | No aplica | No aplica | Unidad 11 |
@@ -340,6 +340,7 @@ No existen actualmente:
 | D-00-05 — Terraform solo se instala y valida | Activa | `playbooks/units/00-environment.md` |
 | D-00-06 — Helm se instala sin crear charts | Activa | `playbooks/units/00-environment.md` |
 | D-00-07 — `kubectl` como cliente operativo principal | Activa | `playbooks/units/00-environment.md` |
+| D-00-08 — Política inicial de versiones | Activa | `playbooks/units/00-environment.md` |
 
 ---
 
@@ -383,7 +384,7 @@ Durante la generación de la Unidad 00:
 
 | ID | Cuestión | Bloqueante | Resolución prevista | Estado |
 |---|---|---|---|---|
-| Q-001 | Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | Sí para cerrar la Unidad 00 | Durante la Unidad 00 | Abierta |
+| Q-001 | Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | Sí para cerrar la Unidad 00 | Política inicial definida; falta registrar versiones observadas | Parcial |
 | Q-002 | Addons mínimos exactos | No para el primer diseño; sí para cierre de scripts | Baseline inicial `dns`; reabrir si la validación lo exige | Parcial |
 | Q-003 | Alias o instalación independiente de `kubectl` | No | Resuelto: `kubectl` será cliente principal; `microk8s kubectl` queda como fallback | Cerrada |
 | Q-004 | Requisitos mínimos de CPU, memoria y disco | Sí para publicar tutorial | Unidad 00 | Abierta |
@@ -400,7 +401,7 @@ Durante la generación de la Unidad 00:
 |---|---|---|---|---|---|
 | TD-001 | Definir estrategia de validación automatizada del repositorio | Media | Bootstrap | Evolución del framework | Abierta |
 | TD-002 | Definir aplicación evolutiva | Alta antes de Unidad 01 | Roadmap | Antes de Unidad 01 | Abierta |
-| TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Durante Unidad 00 | Abierta |
+| TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida; validar versiones reales durante scripts | En progreso |
 | TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
 
 ---
@@ -440,6 +441,7 @@ No existen todavía validaciones funcionales del entorno.
 | 12 | Cierre y sincronización del Framework V1 | Completado con este cambio | Inventario, árbol, ADR y estado sincronizados; Framework V1 congelado |
 | 13 | Corrección de inconsistencias del framework | Completado con este cambio | Handoff alineado, estado documental sincronizado y rutas base materializadas con `.gitkeep` |
 | 14 | Inicio de diseño de la Unidad 00 | Completado con este cambio | Unidad 00 iniciada; `kubectl` definido como cliente principal; diseño inicial creado |
+| 15 | Política inicial de versiones de Unidad 00 | Completado con este cambio | Baseline definida para Ubuntu, MicroK8s, Kubernetes, kubectl, Helm y Terraform |
 
 ---
 

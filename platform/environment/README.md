@@ -64,12 +64,26 @@ dns
 
 Otros addons se incorporaran en unidades posteriores o en correcciones justificadas de esta unidad.
 
+## Versiones objetivo
+
+| Producto | Baseline inicial |
+|---|---|
+| Ubuntu | 24.04 LTS |
+| MicroK8s | `1.35/stable` |
+| Kubernetes | 1.35.x |
+| kubectl | 1.35.x compatible |
+| Helm | 3.21.x |
+| Terraform | 1.15.x |
+
+Los scripts deben validar versiones reales y no registrar como instalado ningun componente que no haya sido comprobado.
+
 ## Validacion esperada
 
 La validacion final debera comprobar, como minimo:
 
 ```bash
 microk8s status --wait-ready
+microk8s version
 kubectl version --client
 kubectl get nodes
 kubectl get namespaces

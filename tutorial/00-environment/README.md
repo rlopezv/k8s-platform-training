@@ -36,6 +36,21 @@ MicroK8s no instala ni prepara WSL2 por si mismo. Para instalar MicroK8s ya debe
 | Addon inicial `dns` | Aprobada para el primer diseno | Otros addons quedan diferidos hasta que una unidad los necesite |
 | Sin workloads funcionales | Aprobada | La aplicacion evolutiva no se crea en la Unidad 00 |
 
+## Politica inicial de versiones
+
+| Producto | Baseline inicial | Criterio |
+|---|---|---|
+| Windows | Windows 11 soportado | Validar version y build; no fijar build exacta |
+| WSL | WSL2 actualizado | Validar con `wsl --status` |
+| Ubuntu | 24.04 LTS | Baseline principal; aceptar 22.04 LTS si ya existe y pasa validaciones |
+| MicroK8s | `1.35/stable` | Canal snap fijo |
+| Kubernetes | 1.35.x | Derivado de MicroK8s |
+| kubectl | 1.35.x compatible | Alineado con el API server |
+| Helm | 3.21.x | Baseline inicial; reevaluar Helm 4 antes de la Unidad 06 |
+| Terraform | 1.15.x | Rama estable; evitar prereleases |
+
+Las versiones exactas observadas se registraran despues de ejecutar validaciones reales en el entorno.
+
 ## Flujo previsto
 
 1. Validar Windows 11 y virtualizacion desde PowerShell.
@@ -65,6 +80,8 @@ cat /etc/os-release
 kubectl version --client
 kubectl get nodes
 microk8s status --wait-ready
+microk8s version
+kubectl version
 helm version
 terraform version
 ```

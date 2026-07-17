@@ -32,6 +32,7 @@ La decision principal registrada es usar `kubectl` como cliente operativo princi
 | `microk8s kubectl` como fallback | Aprobada | Solo diagnostico o uso temporal antes de configurar `kubectl` |
 | MicroK8s dentro de Ubuntu sobre WSL2 | Aprobada | Los scripts MicroK8s no instalan WSL ni Ubuntu |
 | Addon inicial `dns` | Aprobada para el primer diseno | Otros addons quedan diferidos |
+| Politica inicial de versiones | Aprobada | Ubuntu 24.04 LTS, MicroK8s 1.35/stable, kubectl 1.35.x, Helm 3.21.x y Terraform 1.15.x |
 
 ## Validaciones
 
@@ -44,6 +45,7 @@ wsl --status
 wsl --list --verbose
 cat /etc/os-release
 microk8s status --wait-ready
+microk8s version
 kubectl version --client
 kubectl get nodes
 helm version

@@ -475,6 +475,46 @@ MicroK8s seguirá siendo la distribución Kubernetes local inicial, pero sus com
 - Usar `microk8s kubectl` como flujo principal: descartado por menor portabilidad pedagógica.
 - Crear solo un alias `kubectl='microk8s kubectl'`: permitido como medida temporal de diagnóstico, pero no como contrato principal del curso.
 
+## D-00-08 — Política inicial de versiones
+
+### Decisión
+
+Adoptar la siguiente baseline inicial para la Unidad 00:
+
+| Componente | Baseline inicial | Política |
+|---|---|---|
+| Windows | Windows 11 soportado | Validar versión y build; no fijar build exacta |
+| WSL | WSL2 actualizado | Validar con `wsl --status` y actualizar con `wsl --update` cuando proceda |
+| Ubuntu | Ubuntu 24.04 LTS | Baseline principal; aceptar 22.04 LTS si ya existe y pasa validaciones |
+| MicroK8s | Canal `1.35/stable` | Fijar canal snap; registrar versión exacta observada |
+| Kubernetes | 1.35.x | Derivado de MicroK8s |
+| kubectl | 1.35.x compatible | Debe respetar la política de skew de Kubernetes |
+| Helm | 3.21.x | Baseline inicial por adopción y estabilidad; reevaluar Helm 4 antes de la Unidad 06 |
+| Terraform | 1.15.x | Usar la última versión estable de la rama 1.15; evitar prereleases 1.16 |
+
+### Motivo
+
+- Ubuntu 24.04 LTS ofrece una base estable y vigente para WSL2.
+- MicroK8s `1.35/stable` evita depender de `latest/stable` y mejora la reproducibilidad.
+- `kubectl` debe mantenerse alineado con el control plane de Kubernetes.
+- Helm v3 sigue siendo ampliamente utilizado en entornos empresariales y reduce ruido para la Unidad 00, donde solo se instala y valida.
+- Helm v4 es la línea estable actual, por lo que la decisión debe reevaluarse antes de crear charts en la Unidad 06.
+- Terraform 1.15.x evita prereleases y mantiene una línea reciente estable.
+
+### Consecuencias
+
+- Los scripts deberán parametrizar versiones o canales cuando sea razonable.
+- Las versiones observadas deberán registrarse en `project/project-state.md` y `tutorial/00-environment/summary.md`.
+- No se considerará completada la Unidad 00 hasta registrar versiones reales ejecutadas en el entorno.
+- La decisión sobre Helm deberá reabrirse antes de generar contenido de empaquetado con Helm.
+
+### Alternativas descartadas
+
+- Ubuntu 26.04 LTS como baseline: diferido hasta comprobar madurez con WSL2 y MicroK8s.
+- `latest/stable` para MicroK8s: descartado por menor reproducibilidad.
+- Helm v4 como baseline de Unidad 00: diferido para no introducir cambios de major version antes de necesitarlos.
+- Terraform prerelease 1.16: descartado por no ser apropiado para un laboratorio reproducible.
+
 ---
 
 # Estructura de entregables
@@ -1134,7 +1174,7 @@ El siguiente incremento permitido deberá ser la revisión o creación del playb
 
 | Cuestión | Bloqueante | Momento de resolución |
 |---|---|---|
-| Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | Sí para cerrar la unidad, no para generar el primer borrador | Durante la generación y validación de la Unidad 00 |
+| Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | Parcialmente resuelta por política inicial | Registrar versiones observadas durante validación real |
 | Addons mínimos exactos | Resuelta para el primer incremento: `dns` | Reabrir solo si una validación técnica lo exige |
 | Política de alias o instalación de `kubectl` independiente | Resuelta: `kubectl` como cliente principal | Reabrir solo si la instalación real lo exige |
 | Uso de systemd en la versión objetivo de WSL2 | No | Durante validación del entorno |
@@ -1179,7 +1219,7 @@ El siguiente incremento permitido deberá ser la revisión o creación del playb
 
 ## Motivo de la última revisión
 
-Definición de `kubectl` como cliente operativo principal, concreción del addon inicial `dns` y aclaración de que MicroK8s se instala dentro de Ubuntu sobre WSL2.
+Definición de `kubectl` como cliente operativo principal, concreción del addon inicial `dns`, aclaración de que MicroK8s se instala dentro de Ubuntu sobre WSL2 y definición de la política inicial de versiones.
 
 ## Documentos afectados por cambios futuros
 
