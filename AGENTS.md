@@ -153,7 +153,8 @@ wsl --status
 wsl --list --verbose
 cat /etc/os-release
 microk8s status --wait-ready
-microk8s kubectl get nodes
+kubectl version --client
+kubectl get nodes
 helm version
 terraform version
 ```

@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Framework V1 cerrado |
-| Estado general | Framework validado y congelado; preparado para iniciar la Unidad 00 |
-| Último incremento completado | Corrección de inconsistencias del framework |
-| Unidad activa | Ninguna |
+| Fase actual | Unidad 00 — Preparación del entorno |
+| Estado general | Unidad 00 iniciada; diseño operativo inicial creado |
+| Último incremento completado | Inicio de diseño de la Unidad 00 |
+| Unidad activa | 00 — Preparación del entorno |
 | Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
 | Plataforma local desplegada | No |
-| Contenido formativo generado | No |
+| Contenido formativo generado | Parcial |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generación de la Unidad 00 — `00-environment` |
+| Siguiente incremento permitido | Scripts iniciales de validación de la Unidad 00 |
 
 ---
 
@@ -49,7 +49,7 @@ El framework del repositorio ha sido:
 - congelado como **Framework V1**;
 - incorporado al repositorio.
 
-A partir de este estado se permite comenzar la generación de la **Unidad 00 — Preparación del entorno**. El framework solo deberá reabrirse si una unidad futura identifica una carencia real y verificable.
+La **Unidad 00 — Preparación del entorno** está iniciada con un primer incremento de diseño. El framework solo deberá reabrirse si una unidad futura identifica una carencia real y verificable.
 
 Durante la siguiente fase se permitirá:
 
@@ -117,7 +117,7 @@ Cerrado
 | `README.md` | Completo y aprobado | Bootstrap-01 | Punto de entrada y visión general |
 | `project/architecture.md` | Completo y aprobado | Bootstrap-02 | Arquitectura y decisiones estructurales |
 | `project/project-state.md` | Actualizado con este incremento | Framework-04 | Estado consolidado |
-| `project/roadmap.md` | Completo y aprobado | Framework-04 | Evolución prevista del itinerario |
+| `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
 | `project/project-planning.md` | Completo y aprobado | Framework-04 | Planificación incremental del trabajo |
 | `project/how-to.md` | Completo y aprobado | Framework-04 | Mecanismo operativo de trabajo con asistentes de IA |
 | `playbooks/master.md` | Completo y aprobado | Bootstrap-05 | Reglas globales de generación |
@@ -125,8 +125,8 @@ Cerrado
 | `playbooks/summary-template.md` | Completo y aprobado | Bootstrap-07 | Contrato de continuidad |
 | `playbooks/project-state-template.md` | Completo y aprobado | Bootstrap-08 | Reglas de mantenimiento del estado |
 | `playbooks/generate-session-handoff.md` | Completo y aprobado | Framework-03 | Generación del handoff derivado de sesión |
-| `playbooks/units/00-environment.md` | Completo y aprobado | Bootstrap-09 | Gobierno de la Unidad 00 |
-| `AGENTS.md` | Completo | Framework-04 | Guía operativa para agentes con acceso al repositorio |
+| `playbooks/units/00-environment.md` | Completo y aprobado | Unit-00-01 | Gobierno de la Unidad 00 |
+| `AGENTS.md` | Completo | Unit-00-01 | Guía operativa para agentes con acceso al repositorio |
 
 ---
 
@@ -142,7 +142,8 @@ Cerrado
 ├── platform/
 │   ├── .gitkeep
 │   └── environment/
-│       └── .gitkeep
+│       ├── .gitkeep
+│       └── README.md
 ├── playbooks/
 │   ├── generate-session-handoff.md
 │   ├── master.md
@@ -158,7 +159,10 @@ Cerrado
 │   ├── project-state.md
 │   └── roadmap.md
 └── tutorial/
-    └── .gitkeep
+    ├── .gitkeep
+    └── 00-environment/
+        ├── README.md
+        └── summary.md
 ```
 
 ## Estado de directorios
@@ -168,10 +172,10 @@ Cerrado
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Previsto y materializado | Solo `.gitkeep`; sin laboratorios |
 | `platform/` | Previsto y materializado | Solo `.gitkeep` y `environment/` |
-| `platform/environment/` | Preparado para la Unidad 00 | Solo `.gitkeep`; sin scripts todavía |
+| `platform/environment/` | En diseño para la Unidad 00 | `README.md` y `.gitkeep`; sin scripts todavía |
 | `playbooks/` | Operativo | Framework completo |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
-| `tutorial/` | Preparado para la Unidad 00 | Solo `.gitkeep`; sin contenido formativo |
+| `tutorial/` | En uso por la Unidad 00 | `00-environment/` y `.gitkeep` |
 
 Git no conserva directorios vacíos. Las rutas base previstas se mantienen actualmente mediante `.gitkeep` hasta que existan artefactos reales.
 
@@ -181,7 +185,7 @@ Git no conserva directorios vacíos. Las rutas base previstas se mantienen actua
 
 | Unidad | Estado | Tutorial | Laboratorio o plataforma | Instructor notes | Summary |
 |---|---|---|---|---|---|
-| 00 — Preparación del entorno | Preparada para iniciar | No | No | No | No |
+| 00 — Preparación del entorno | En progreso | Parcial | Parcial | No | Parcial |
 | 01 — Fundamentos operativos y primera aplicación | Prevista | No | No | No | No |
 | 02–25 | Previstas en roadmap | No | No | No | No |
 
@@ -189,14 +193,14 @@ Git no conserva directorios vacíos. Las rutas base previstas se mantienen actua
 
 | Campo | Estado |
 |---|---|
-| Estado | Preparada para iniciar |
-| Fecha de inicio | No iniciada |
+| Estado | En progreso |
+| Fecha de inicio | 2026-07-17 |
 | Fecha de cierre | No aplica |
 | Playbook | `playbooks/units/00-environment.md` |
-| Tutorial | Pendiente |
-| Artefactos ejecutables | Pendientes |
+| Tutorial | `tutorial/00-environment/README.md` parcial |
+| Artefactos ejecutables | `platform/environment/README.md` parcial; scripts pendientes |
 | Instructor notes | Pendientes |
-| Summary | Pendiente |
+| Summary | `tutorial/00-environment/summary.md` parcial |
 
 ### Precondiciones documentales
 
@@ -256,6 +260,7 @@ No existen endpoints de aplicación.
 | Herramienta | Estado | Versión activa | Método de comprobación | Incorporación prevista |
 |---|---|---|---|---|
 | Git | No validado por el proyecto | Pendiente | `git --version` | Unidad 00 |
+| kubectl | No validado por el proyecto | Pendiente | `kubectl version --client` | Unidad 00 |
 | Helm | No validado por el proyecto | Pendiente | `helm version` | Unidad 00 |
 | Terraform | No validado por el proyecto | Pendiente | `terraform version` | Unidad 00 |
 | Argo CD | No incorporado | No aplica | No aplica | Unidad 09 |
@@ -331,9 +336,10 @@ No existen actualmente:
 | D-00-01 — MicroK8s como distribución local | Activa | `playbooks/units/00-environment.md` |
 | D-00-02 — Scripts separados por contexto | Activa | `playbooks/units/00-environment.md` |
 | D-00-03 — Validación antes de instalación | Activa | `playbooks/units/00-environment.md` |
-| D-00-04 — Addons mínimos | Activa, pendiente de concreción | `playbooks/units/00-environment.md` |
+| D-00-04 — Addons mínimos | Activa; baseline inicial `dns` | `playbooks/units/00-environment.md` |
 | D-00-05 — Terraform solo se instala y valida | Activa | `playbooks/units/00-environment.md` |
 | D-00-06 — Helm se instala sin crear charts | Activa | `playbooks/units/00-environment.md` |
+| D-00-07 — `kubectl` como cliente operativo principal | Activa | `playbooks/units/00-environment.md` |
 
 ---
 
@@ -364,7 +370,7 @@ Durante la generación de la Unidad 00:
 
 | ID | Riesgo | Probabilidad | Impacto | Mitigación | Estado |
 |---|---|---|---|---|---|
-| R-001 | Git no conserva directorios vacíos | Alta | Bajo | Crear artefactos reales o `.gitkeep` | Abierto |
+| R-001 | Git no conserva directorios vacíos | Alta | Bajo | Rutas base materializadas con `.gitkeep` | Mitigado |
 | R-002 | Diferencias entre versiones de WSL | Media | Alto | Detectar versión y documentar variantes | Abierto |
 | R-003 | Virtualización no disponible | Baja | Alto | Validación temprana | Abierto |
 | R-004 | Proxy o restricciones corporativas | Media | Alto | Parametrizar sin versionar credenciales | Abierto |
@@ -378,12 +384,12 @@ Durante la generación de la Unidad 00:
 | ID | Cuestión | Bloqueante | Resolución prevista | Estado |
 |---|---|---|---|---|
 | Q-001 | Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | Sí para cerrar la Unidad 00 | Durante la Unidad 00 | Abierta |
-| Q-002 | Addons mínimos exactos | Sí para aprobar scripts | Diseño técnico de la Unidad 00 | Abierta |
-| Q-003 | Alias o instalación independiente de `kubectl` | No | Unidad 00 | Abierta |
+| Q-002 | Addons mínimos exactos | No para el primer diseño; sí para cierre de scripts | Baseline inicial `dns`; reabrir si la validación lo exige | Parcial |
+| Q-003 | Alias o instalación independiente de `kubectl` | No | Resuelto: `kubectl` será cliente principal; `microk8s kubectl` queda como fallback | Cerrada |
 | Q-004 | Requisitos mínimos de CPU, memoria y disco | Sí para publicar tutorial | Unidad 00 | Abierta |
 | Q-005 | Uso de systemd en WSL2 objetivo | No | Validación de Unidad 00 | Abierta |
 | Q-006 | Necesidad de soporte para proxy corporativo | No | Cuando el entorno lo requiera | Abierta |
-| Q-007 | Estrategia definitiva para directorios vacíos | No | Al crear los primeros artefactos | Abierta |
+| Q-007 | Estrategia definitiva para directorios vacíos | No | Resuelta mediante `.gitkeep` hasta crear artefactos reales | Cerrada |
 | Q-008 | Aplicación evolutiva del curso | No para Unidad 00; sí para Unidad 01 | Antes de generar Unidad 01 | Abierta |
 
 ---
@@ -395,7 +401,7 @@ Durante la generación de la Unidad 00:
 | TD-001 | Definir estrategia de validación automatizada del repositorio | Media | Bootstrap | Evolución del framework | Abierta |
 | TD-002 | Definir aplicación evolutiva | Alta antes de Unidad 01 | Roadmap | Antes de Unidad 01 | Abierta |
 | TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Durante Unidad 00 | Abierta |
-| TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Primeros artefactos | Abierta |
+| TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
 
 ---
 
@@ -409,7 +415,8 @@ Actualmente solo pueden validarse documentalmente:
 | Coherencia de rutas | Revisión estática | Rutas alineadas |
 | Orden del bootstrap | Comparación con README y estado | Completado |
 | Existencia del playbook de Unidad 00 | Revisión del repositorio | Archivo presente |
-| Ausencia de contenido formativo prematuro | Revisión del repositorio | Sin tutoriales ni laboratorios |
+| Ausencia de contenido formativo prematuro | Revisión del repositorio | Sin contenido de unidades posteriores ni laboratorios funcionales |
+| Diseño inicial de Unidad 00 | Revisión del repositorio | `tutorial/00-environment/README.md`, `tutorial/00-environment/summary.md` y `platform/environment/README.md` presentes |
 
 No existen todavía validaciones funcionales del entorno.
 
@@ -432,6 +439,7 @@ No existen todavía validaciones funcionales del entorno.
 | 11 | Actualización de `project/project-state.md` | Completado | Bootstrap declarado formalmente completo |
 | 12 | Cierre y sincronización del Framework V1 | Completado con este cambio | Inventario, árbol, ADR y estado sincronizados; Framework V1 congelado |
 | 13 | Corrección de inconsistencias del framework | Completado con este cambio | Handoff alineado, estado documental sincronizado y rutas base materializadas con `.gitkeep` |
+| 14 | Inicio de diseño de la Unidad 00 | Completado con este cambio | Unidad 00 iniciada; `kubectl` definido como cliente principal; diseño inicial creado |
 
 ---
 
@@ -440,7 +448,7 @@ No existen todavía validaciones funcionales del entorno.
 El siguiente incremento principal es:
 
 ```text
-Generar la Unidad 00 — Preparación del entorno
+Generar scripts iniciales de validación de la Unidad 00
 ```
 
 ## Fuentes obligatorias
@@ -456,17 +464,18 @@ playbooks/units/00-environment.md
 playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
+tutorial/00-environment/summary.md
 ```
 
-No existe summary de una unidad anterior.
+No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leerse el summary parcial de la propia unidad.
 
 ## Trabajo permitido
 
-- generar `tutorial/00-environment/README.md`;
+- completar `tutorial/00-environment/README.md`;
 - generar `tutorial/00-environment/instructor-notes.md`;
-- generar artefactos en `platform/environment/`;
+- generar scripts iniciales en `platform/environment/`;
 - definir versiones objetivo justificadas;
-- definir addons mínimos;
+- mantener `dns` como addon mínimo inicial salvo evidencia contraria;
 - crear scripts idempotentes;
 - crear validaciones estáticas y funcionales;
 - documentar validaciones manuales;

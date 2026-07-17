@@ -90,7 +90,7 @@ Al completar la unidad, el alumno deberá ser capaz de:
 - instalación de MicroK8s;
 - configuración de permisos;
 - validación del clúster;
-- configuración de acceso mediante `microk8s kubectl` o mecanismo compatible;
+- configuración de acceso mediante `kubectl` como cliente operativo principal;
 - habilitación de addons mínimos;
 - instalación y validación de Helm;
 - instalación y validación de Terraform;
@@ -226,6 +226,8 @@ El estado inicial esperado es:
 - ninguna aplicación evolutiva;
 - ningún recurso cloud.
 
+MicroK8s se instalará dentro de Ubuntu sobre WSL2. Los scripts de MicroK8s no deberán intentar crear WSL, instalar una distribución Ubuntu ni ejecutar pasos propios de PowerShell.
+
 La unidad deberá admitir dos situaciones:
 
 1. entorno limpio que requiere instalación;
@@ -345,7 +347,8 @@ Utilizar MicroK8s sobre Ubuntu LTS en WSL2.
 ### Consecuencias
 
 - deberán documentarse particularidades de MicroK8s;
-- los comandos deberán distinguir `microk8s kubectl` de `kubectl`;
+- los comandos deberán usar `kubectl` como cliente operativo principal;
+- `microk8s kubectl` quedará reservado como fallback de diagnóstico cuando `kubectl` no esté aún configurado;
 - las capacidades estándar y específicas deberán separarse;
 - la portabilidad futura a AKS y EKS deberá mantenerse.
 
@@ -397,7 +400,7 @@ La unidad debe funcionar tanto en entornos limpios como parcialmente preparados.
 
 ### Decisión
 
-Habilitar únicamente los addons necesarios para iniciar el itinerario.
+Habilitar únicamente el addon `dns` como baseline inicial de MicroK8s.
 
 ### Motivo
 
@@ -405,7 +408,9 @@ Evitar anticipar networking, observabilidad, almacenamiento u otras capacidades 
 
 ### Consecuencias
 
-El conjunto exacto de addons deberá justificarse durante la generación de la unidad y registrarse en `project/project-state.md`.
+- `dns` permite resolución interna básica de Kubernetes y prepara validaciones mínimas del clúster.
+- `hostpath-storage`, `ingress`, `registry`, `metrics-server` y otros addons quedan diferidos hasta que una unidad los requiera explícitamente.
+- La lista final de addons habilitados deberá validarse y registrarse en `project/project-state.md`.
 
 No se habilitarán addons únicamente por conveniencia futura.
 
@@ -441,6 +446,34 @@ No existen manifiestos acumulados ni aplicación evolutiva.
 - no se creará ningún chart;
 - no se instalarán releases funcionales;
 - la primera utilización formativa de Helm se realizará en la Unidad 06.
+
+## D-00-07 — `kubectl` como cliente operativo principal
+
+### Decisión
+
+Utilizar `kubectl` como cliente operativo principal del curso desde Ubuntu sobre WSL2.
+
+MicroK8s seguirá siendo la distribución Kubernetes local inicial, pero sus comandos específicos se limitarán a instalación, configuración, gestión de addons, diagnóstico y recuperación.
+
+### Motivo
+
+- `kubectl` es el cliente estándar de Kubernetes y prepara mejor la evolución hacia AKS y EKS;
+- el alumno trabajará principalmente desde Ubuntu sobre WSL2 como estación Linux de plataforma;
+- evita que los procedimientos operativos queden acoplados al wrapper `microk8s kubectl`;
+- permite separar claramente Kubernetes estándar de operación específica de MicroK8s.
+
+### Consecuencias
+
+- la Unidad 00 deberá instalar o validar `kubectl`;
+- la Unidad 00 deberá configurar un kubeconfig usable por `kubectl`;
+- las validaciones operativas principales usarán `kubectl`;
+- `microk8s kubectl` podrá usarse como fallback de diagnóstico antes de completar la configuración del cliente estándar;
+- los scripts deberán diferenciar entre comandos genéricos de Kubernetes y comandos específicos de MicroK8s.
+
+### Alternativas descartadas
+
+- Usar `microk8s kubectl` como flujo principal: descartado por menor portabilidad pedagógica.
+- Crear solo un alias `kubectl='microk8s kubectl'`: permitido como medida temporal de diagnóstico, pero no como contrato principal del curso.
 
 ---
 
@@ -700,7 +733,8 @@ Las operaciones destructivas no deberán agruparse en un único comando automát
 | Distribución | `wsl --list --verbose` | Ubuntu ejecutándose como WSL2 |
 | Ubuntu | `cat /etc/os-release` | Ubuntu LTS compatible |
 | MicroK8s | `microk8s status --wait-ready` | Clúster preparado |
-| Nodo | `microk8s kubectl get nodes` | Nodo en estado Ready |
+| Nodo | `kubectl get nodes` | Nodo en estado Ready |
+| Cliente Kubernetes | `kubectl version --client` | Versión de cliente disponible |
 | API Kubernetes | Consulta de recursos | Respuesta satisfactoria |
 | Helm | `helm version` | Versión disponible |
 | Terraform | `terraform version` | Versión disponible |
@@ -809,7 +843,7 @@ La unidad deberá diferenciar como estándar:
 - recursos consultados;
 - estado de nodos;
 - namespaces;
-- uso conceptual de `kubectl`;
+- uso operativo de `kubectl`;
 - validación del control plane desde el cliente.
 
 ## Específico de MicroK8s
@@ -841,6 +875,7 @@ Solo podrán añadirse notas comparativas breves sin procedimientos de EKS.
 
 - utilizar manifiestos Kubernetes estándar en unidades posteriores;
 - aislar comandos MicroK8s en scripts específicos;
+- utilizar `kubectl` como interfaz estable para operaciones Kubernetes;
 - evitar propagar rutas internas de MicroK8s;
 - documentar la obtención de kubeconfig;
 - no utilizar addons de MicroK8s como sustitutos conceptuales de componentes estándar;
@@ -913,7 +948,8 @@ La unidad se considerará completada cuando:
 
 - [ ] `wsl --list --verbose` confirma Ubuntu sobre WSL2;
 - [ ] `microk8s status --wait-ready` finaliza correctamente;
-- [ ] `microk8s kubectl get nodes` muestra el nodo Ready;
+- [ ] `kubectl get nodes` muestra el nodo Ready;
+- [ ] `kubectl version --client` muestra una versión válida;
 - [ ] Helm responde con una versión válida;
 - [ ] Terraform responde con una versión válida;
 - [ ] el script de validación integrada finaliza con éxito;
@@ -930,7 +966,7 @@ La unidad se considerará completada cuando:
 - WSL2 operativo;
 - Ubuntu LTS operativo;
 - MicroK8s instalado y ready;
-- acceso Kubernetes configurado;
+- acceso Kubernetes configurado mediante `kubectl`;
 - addons mínimos habilitados y documentados.
 
 ## Herramientas
@@ -992,6 +1028,7 @@ El `summary.md` deberá destacar:
 - versión de Kubernetes;
 - addons habilitados;
 - método de acceso al clúster;
+- versión de `kubectl`;
 - versión de Helm;
 - versión de Terraform;
 - scripts creados;
@@ -1061,6 +1098,7 @@ El siguiente incremento permitido deberá ser la revisión o creación del playb
 | Summary | `tutorial/00-environment/summary.md` | Conocer versiones y estado |
 | Project state | `project/project-state.md` | Confirmar entorno disponible |
 | MicroK8s | Clúster validado | Desplegar el primer workload |
+| kubectl | Cliente Kubernetes configurado | Operar el clúster con comandos estándar |
 | Helm | Instalación validada | Disponible, pero no usar hasta que el roadmap lo indique |
 | Terraform | Instalación validada | Disponible, pero no usar para recursos todavía |
 
@@ -1097,8 +1135,8 @@ El siguiente incremento permitido deberá ser la revisión o creación del playb
 | Cuestión | Bloqueante | Momento de resolución |
 |---|---|---|
 | Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | Sí para cerrar la unidad, no para generar el primer borrador | Durante la generación y validación de la Unidad 00 |
-| Addons mínimos exactos | Sí para aprobar los scripts | Durante el diseño técnico de la Unidad 00 |
-| Política de alias o instalación de `kubectl` independiente | No | Durante la generación de la Unidad 00 |
+| Addons mínimos exactos | Resuelta para el primer incremento: `dns` | Reabrir solo si una validación técnica lo exige |
+| Política de alias o instalación de `kubectl` independiente | Resuelta: `kubectl` como cliente principal | Reabrir solo si la instalación real lo exige |
 | Uso de systemd en la versión objetivo de WSL2 | No | Durante validación del entorno |
 | Requisitos mínimos de CPU, memoria y disco | Sí para publicar el tutorial | Durante la generación de la Unidad 00 |
 | Necesidad de soporte para proxy corporativo | No | Cuando el entorno objetivo lo requiera |
@@ -1141,7 +1179,7 @@ El siguiente incremento permitido deberá ser la revisión o creación del playb
 
 ## Motivo de la última revisión
 
-Creación inicial durante el bootstrap del repositorio.
+Definición de `kubectl` como cliente operativo principal, concreción del addon inicial `dns` y aclaración de que MicroK8s se instala dentro de Ubuntu sobre WSL2.
 
 ## Documentos afectados por cambios futuros
 

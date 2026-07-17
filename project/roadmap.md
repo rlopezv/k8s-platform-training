@@ -226,7 +226,7 @@ platform/environment/
 - configuración de WSL2;
 - instalación reproducible de MicroK8s;
 - gestión de permisos y grupos;
-- acceso mediante `kubectl` o alias compatible;
+- acceso operativo mediante `kubectl`;
 - addons mínimos;
 - Helm;
 - Terraform;
