@@ -22,6 +22,7 @@ La decision principal registrada es usar `kubectl` como cliente operativo princi
 | Diseno inicial del tutorial | `tutorial/00-environment/README.md` | Creado |
 | Diseno operativo de plataforma | `platform/environment/README.md` | Actualizado |
 | Validacion Windows inicial | `platform/environment/windows/check-prerequisites.ps1` | Creado |
+| Preparacion Ubuntu WSL | `platform/environment/windows/prepare-ubuntu-wsl.ps1` | Creado |
 | Validacion Linux inicial | `platform/environment/linux/check-prerequisites.sh` | Creado |
 | Validacion integrada Linux | `platform/environment/validation/validate-environment.sh` | Creado |
 | Playbook de la unidad | `playbooks/units/00-environment.md` | Actualizado con decision `kubectl` |
@@ -92,4 +93,4 @@ terraform version
 
 ## Siguiente incremento recomendado
 
-Preparar el procedimiento de instalacion de Ubuntu 24.04 LTS en WSL2 y repetir las validaciones Linux una vez exista la distribucion.
+Ejecutar `platform/environment/windows/prepare-ubuntu-wsl.ps1` en modo revision, instalar Ubuntu 24.04 LTS con `-Install` cuando proceda y repetir las validaciones Linux una vez exista la distribucion.

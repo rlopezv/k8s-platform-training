@@ -102,12 +102,19 @@ Esta unidad no generara:
 
 ## Siguiente incremento
 
-El siguiente incremento recomendado es ejecutar los scripts de validacion inicial en el entorno real y registrar los resultados observados.
+El siguiente incremento recomendado es preparar Ubuntu 24.04 LTS sobre WSL2 y repetir las validaciones Linux desde esa distribucion objetivo.
 
 Scripts disponibles:
 
 ```text
 platform/environment/windows/check-prerequisites.ps1
+platform/environment/windows/prepare-ubuntu-wsl.ps1
 platform/environment/linux/check-prerequisites.sh
 platform/environment/validation/validate-environment.sh
+```
+
+El script `prepare-ubuntu-wsl.ps1` se ejecuta desde PowerShell. Por defecto no instala nada; muestra el comando recomendado. La instalacion se ejecuta solo con:
+
+```powershell
+.\platform\environment\windows\prepare-ubuntu-wsl.ps1 -Install
 ```

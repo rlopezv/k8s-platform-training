@@ -28,7 +28,8 @@ Los comandos `microk8s` se limitaran a:
 platform/environment/
 ├── README.md
 ├── windows/
-│   └── check-prerequisites.ps1
+│   ├── check-prerequisites.ps1
+│   └── prepare-ubuntu-wsl.ps1
 ├── linux/
 │   └── check-prerequisites.sh
 └── validation/
@@ -103,6 +104,31 @@ El script comprueba de forma no destructiva:
 - salida de `wsl --status`;
 - salida de `wsl --list --verbose`;
 - espacio libre basico en el disco del sistema.
+
+Preparar la distribucion Ubuntu objetivo desde PowerShell:
+
+```powershell
+.\platform\environment\windows\prepare-ubuntu-wsl.ps1
+```
+
+Por defecto el script no instala nada. Valida WSL, comprueba si existe la distribucion objetivo y muestra el comando recomendado:
+
+```powershell
+wsl.exe --install Ubuntu-24.04
+```
+
+Para ejecutar la instalacion de forma explicita:
+
+```powershell
+.\platform\environment\windows\prepare-ubuntu-wsl.ps1 -Install
+```
+
+Tras la primera ejecucion de Ubuntu y la creacion del usuario Linux, validar:
+
+```powershell
+wsl.exe -d Ubuntu-24.04 -- cat /etc/os-release
+wsl.exe --list --verbose
+```
 
 ### Ubuntu sobre WSL2
 

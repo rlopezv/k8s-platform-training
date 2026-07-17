@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 00 — Preparación del entorno |
-| Estado general | Unidad 00 en progreso; validaciones iniciales definidas |
-| Último incremento completado | Definición y ajuste de validaciones iniciales de Unidad 00 |
+| Estado general | Unidad 00 en progreso; preparacion de Ubuntu WSL definida |
+| Último incremento completado | Script de preparacion de Ubuntu 24.04 LTS en WSL2 |
 | Unidad activa | 00 — Preparación del entorno |
 | Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
 | Plataforma local desplegada | No |
 | Contenido formativo generado | Parcial |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Preparar instalación de Ubuntu 24.04 LTS en WSL2 |
+| Siguiente incremento permitido | Ejecutar preparacion de Ubuntu 24.04 LTS en WSL2 |
 
 ---
 
@@ -149,7 +149,8 @@ Cerrado
 │       ├── validation/
 │       │   └── validate-environment.sh
 │       └── windows/
-│           └── check-prerequisites.ps1
+│           ├── check-prerequisites.ps1
+│           └── prepare-ubuntu-wsl.ps1
 ├── playbooks/
 │   ├── generate-session-handoff.md
 │   ├── master.md
@@ -178,7 +179,7 @@ Cerrado
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Previsto y materializado | Solo `.gitkeep`; sin laboratorios |
 | `platform/` | Previsto y materializado | Solo `.gitkeep` y `environment/` |
-| `platform/environment/` | En progreso para la Unidad 00 | `README.md`, `.gitkeep` y scripts iniciales de validación |
+| `platform/environment/` | En progreso para la Unidad 00 | `README.md`, `.gitkeep`, validaciones iniciales y preparacion de Ubuntu WSL |
 | `playbooks/` | Operativo | Framework completo |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
 | `tutorial/` | En uso por la Unidad 00 | `00-environment/` y `.gitkeep` |
@@ -204,7 +205,7 @@ Git no conserva directorios vacíos. Las rutas base previstas se mantienen actua
 | Fecha de cierre | No aplica |
 | Playbook | `playbooks/units/00-environment.md` |
 | Tutorial | `tutorial/00-environment/README.md` parcial |
-| Artefactos ejecutables | Scripts iniciales de validación presentes; instalación pendiente |
+| Artefactos ejecutables | Scripts iniciales de validación y preparacion de Ubuntu WSL presentes; instalación pendiente |
 | Instructor notes | Pendientes |
 | Summary | `tutorial/00-environment/summary.md` parcial |
 
@@ -425,6 +426,7 @@ Actualmente solo pueden validarse documentalmente:
 | Ausencia de contenido formativo prematuro | Revisión del repositorio | Sin contenido de unidades posteriores ni laboratorios funcionales |
 | Diseño inicial de Unidad 00 | Revisión del repositorio | `tutorial/00-environment/README.md`, `tutorial/00-environment/summary.md` y `platform/environment/README.md` presentes |
 | Validación Windows inicial | `platform/environment/windows/check-prerequisites.ps1` | Disponible para comprobar Windows, WSL2 y distribucion Ubuntu objetivo |
+| Preparacion Ubuntu WSL | `platform/environment/windows/prepare-ubuntu-wsl.ps1` | Disponible; modo revision por defecto e instalacion solo con `-Install` |
 | Sintaxis Bash de validaciones iniciales | `bash -n` | Debe ejecutarse desde Ubuntu 24.04 LTS sobre WSL2 |
 | Sintaxis PowerShell de validación Windows | Ejecución de script | Script PowerShell ajustado para tratar comprobaciones no concluyentes como avisos |
 
@@ -453,6 +455,7 @@ No existen todavía validaciones funcionales registradas para MicroK8s, Kubernet
 | 15 | Política inicial de versiones de Unidad 00 | Completado con este cambio | Baseline definida para Ubuntu, MicroK8s, Kubernetes, kubectl, Helm y Terraform |
 | 16 | Scripts iniciales de validación de Unidad 00 | Completado con este cambio | Validaciones no destructivas creadas para Windows y Ubuntu/WSL |
 | 17 | Ajuste de validaciones iniciales | Completado con este cambio | Validaciones expresadas como criterios del entorno objetivo; Ubuntu 24.04 LTS sobre WSL2 sigue siendo el requisito |
+| 18 | Preparacion de Ubuntu WSL | Completado con este cambio | Script Windows creado para validar y ejecutar explicitamente la instalacion de `Ubuntu-24.04` |
 
 ---
 
@@ -461,7 +464,7 @@ No existen todavía validaciones funcionales registradas para MicroK8s, Kubernet
 El siguiente incremento principal es:
 
 ```text
-Preparar instalación de Ubuntu 24.04 LTS en WSL2
+Ejecutar preparacion de Ubuntu 24.04 LTS en WSL2
 ```
 
 ## Fuentes obligatorias
@@ -485,9 +488,9 @@ No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leers
 ## Trabajo permitido
 
 - ejecutar `platform/environment/windows/check-prerequisites.ps1` en PowerShell sobre Windows;
-- documentar o crear el procedimiento de instalacion de Ubuntu 24.04 LTS en WSL2;
+- ejecutar `platform/environment/windows/prepare-ubuntu-wsl.ps1` en modo revision;
 - comprobar `wsl --list --online` antes de seleccionar la distribucion exacta;
-- ejecutar `wsl.exe --install <Distro>` solo con aprobacion explicita del usuario;
+- ejecutar `platform/environment/windows/prepare-ubuntu-wsl.ps1 -Install` solo con aprobacion explicita del usuario;
 - ejecutar `platform/environment/linux/check-prerequisites.sh` en Ubuntu sobre WSL2 cuando exista la distribucion;
 - ejecutar `platform/environment/validation/validate-environment.sh` en Ubuntu sobre WSL2 cuando exista la distribucion;
 - registrar resultados reales en `tutorial/00-environment/summary.md`;
