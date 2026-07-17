@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 00 — Preparación del entorno |
-| Estado general | Unidad 00 en progreso; MicroK8s y kubectl instalados y validados |
-| Último incremento completado | Validacion real de MicroK8s y kubectl completada |
+| Estado general | Unidad 00 en progreso; MicroK8s, kubectl, Helm y Terraform instalados y validados |
+| Último incremento completado | Validacion real de Helm y Terraform completada |
 | Unidad activa | 00 — Preparación del entorno |
 | Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
 | Plataforma local desplegada | No |
 | Contenido formativo generado | Parcial |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Instalar y validar Helm y Terraform |
+| Siguiente incremento permitido | Preparar cierre de la Unidad 00 |
 
 ---
 
@@ -278,8 +278,8 @@ No existen endpoints de aplicación.
 |---|---|---|---|---|
 | Git | Validado en Ubuntu WSL | `/usr/bin/git` | `platform/environment/linux/check-prerequisites.sh` | Unidad 00 |
 | kubectl | Instalado por el usuario desde `1.35/stable`; operativo contra MicroK8s | `v1.35.6` | `kubectl version --client`, `kubectl get nodes` | Unidad 00 |
-| Helm | Script de instalación generado; no validado por resultados reales | Baseline objetivo: `v3.21.0` | `platform/environment/tools/install-helm.sh`, `helm version` | Unidad 00 |
-| Terraform | Script de instalación generado; no validado por resultados reales | Baseline objetivo: `1.15.7` | `platform/environment/tools/install-terraform.sh`, `terraform version` | Unidad 00 |
+| Helm | Instalado y validado por el usuario como CLI | `v3.21.0+ge0878d4` | `platform/environment/tools/install-helm.sh`, `helm version --short` | Unidad 00 |
+| Terraform | Instalado y validado por el usuario como CLI | `1.15.7` | `platform/environment/tools/install-terraform.sh`, `terraform version` | Unidad 00 |
 | Argo CD | No incorporado | No aplica | No aplica | Unidad 09 |
 | Tekton | No incorporado | No aplica | No aplica | Unidad 08 |
 | Prometheus | No incorporado | No aplica | No aplica | Unidad 11 |
@@ -401,7 +401,7 @@ Durante la generación de la Unidad 00:
 
 | ID | Cuestión | Bloqueante | Resolución prevista | Estado |
 |---|---|---|---|---|
-| Q-001 | Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | Sí para cerrar la Unidad 00 | Política inicial definida; falta registrar versiones observadas | Parcial |
+| Q-001 | Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | Sí para cerrar la Unidad 00 | Versiones principales observadas; falta cerrar validacion Windows/WSL desde PowerShell si procede | Parcial |
 | Q-002 | Addons mínimos exactos | No para el primer diseño; sí para cierre de scripts | Baseline inicial `dns`; reabrir si la validación lo exige | Parcial |
 | Q-003 | Alias o instalación independiente de `kubectl` | No | Resuelto: `kubectl` será cliente principal; `microk8s kubectl` queda como fallback | Cerrada |
 | Q-004 | Requisitos mínimos de CPU, memoria y disco | Sí para publicar tutorial | Unidad 00 | Abierta |
@@ -456,9 +456,14 @@ Validaciones registradas actualmente:
 | Correccion parser addon dns | `platform/environment/microk8s/validate.sh` | Corregido para detectar addons en el formato MicroK8s 1.35 |
 | Scripts Helm/Terraform | `platform/environment/tools/*.sh` | Creados con instalacion versionada, checksum y validacion |
 | Sintaxis Bash Helm/Terraform | `bash -n platform/environment/tools/*.sh` | Ejecutada en esta sesion; codigo de salida 0 |
-| Validacion Helm/Terraform actual | `bash platform/environment/tools/validate-tools.sh` | Ejecutada en esta sesion; falla porque Helm y Terraform no estan instalados todavia |
+| Validacion Helm/Terraform previa | `bash platform/environment/tools/validate-tools.sh` | Ejecutada antes de instalar herramientas; fallaba porque Helm y Terraform no estaban instalados todavia |
+| Instalacion Helm | `bash platform/environment/tools/install-helm.sh` | Ejecutada por el usuario; Helm `v3.21.0+ge0878d4` instalado con checksum correcto |
+| Instalacion Terraform | `bash platform/environment/tools/install-terraform.sh` | Ejecutada por el usuario; Terraform `1.15.7` instalado con checksum correcto; falso fallo previo de parser JSON corregido |
+| Validacion Helm/Terraform | `bash platform/environment/tools/validate-tools.sh` | Ejecutada por el usuario; 0 fallos, 0 avisos |
+| Validacion Helm/Terraform post-correccion | `bash platform/environment/tools/validate-tools.sh` | Ejecutada en esta sesion; 0 fallos, 0 avisos |
+| Validacion integrada final | `bash platform/environment/validation/validate-environment.sh` | Ejecutada por el usuario; completada sin fallos bloqueantes |
 
-No existen todavía validaciones funcionales registradas para Helm ni Terraform.
+No existen todavía validaciones funcionales registradas para Windows/WSL desde PowerShell en esta sesion Linux.
 
 ---
 
@@ -490,7 +495,8 @@ No existen todavía validaciones funcionales registradas para Helm ni Terraform.
 | 22 | Scripts y documentacion MicroK8s/kubectl | Completado | Scripts idempotentes generados; instructor notes creadas; validaciones funcionales pendientes de ejecucion real |
 | 23 | Instalacion real MicroK8s/kubectl y correccion de validacion | Completado | MicroK8s `v1.35.6` y `kubectl` `1.35.6` instalados; parser de addon `dns` corregido |
 | 24 | Validacion real MicroK8s/kubectl | Completado con este cambio | `validate.sh` e integrada ejecutadas sin fallos bloqueantes; siguiente bloque permitido Helm y Terraform |
-| 25 | Scripts Helm/Terraform | Completado con este cambio | Scripts idempotentes generados; validacion funcional pendiente de ejecucion real |
+| 25 | Scripts Helm/Terraform | Completado | Scripts idempotentes generados; validacion funcional pendiente de ejecucion real |
+| 26 | Validacion real Helm/Terraform | Completado con este cambio | Helm `v3.21.0+ge0878d4` y Terraform `1.15.7` instalados y validados; integrada sin fallos bloqueantes |
 
 ---
 
@@ -499,7 +505,7 @@ No existen todavía validaciones funcionales registradas para Helm ni Terraform.
 El siguiente incremento principal es:
 
 ```text
-Ejecutar y registrar validacion real de Helm y Terraform
+Preparar cierre de la Unidad 00
 ```
 
 ## Fuentes obligatorias
@@ -522,16 +528,13 @@ No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leers
 
 ## Trabajo permitido
 
-- ejecutar `platform/environment/tools/install-helm.sh`;
-- ejecutar `platform/environment/tools/install-terraform.sh`;
-- ejecutar `platform/environment/tools/validate-tools.sh`;
-- repetir `platform/environment/validation/validate-environment.sh`;
-- registrar versiones reales observadas de Helm y Terraform;
+- revisar si quedan validaciones Windows/WSL pendientes y registrar resultados si el usuario los aporta;
+- revisar `tutorial/00-environment/README.md`, `instructor-notes.md` y `summary.md` para cierre de unidad;
+- confirmar que no existen workloads funcionales, charts Helm, módulos Terraform, releases, backends ni recursos de Unidad 01;
+- actualizar `project/project-state.md` con estado final de la Unidad 00;
 - mantener MicroK8s, Kubernetes y `kubectl` como baseline ya validada;
-- registrar resultados reales en `tutorial/00-environment/summary.md`;
-- actualizar `project/project-state.md` con evidencias reales;
 - documentar validaciones manuales;
-- actualizar nuevamente `project/project-state.md`.
+- preparar el siguiente incremento permitido hacia cierre formal o Unidad 01 solo cuando la Unidad 00 este completa.
 
 ## Trabajo todavía prohibido
 

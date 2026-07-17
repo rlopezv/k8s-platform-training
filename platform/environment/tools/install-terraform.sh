@@ -35,7 +35,7 @@ detect_arch() {
 }
 
 terraform_matches_target() {
-  command_exists terraform && terraform version -json 2>/dev/null | grep -q "\"terraform_version\":\"${TERRAFORM_VERSION}\""
+  command_exists terraform && [ "$(terraform version -json 2>/dev/null | sed -n 's/.*"terraform_version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')" = "$TERRAFORM_VERSION" ]
 }
 
 require_command() {

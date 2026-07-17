@@ -46,7 +46,7 @@ validate_terraform() {
   fi
 
   local terraform_version
-  terraform_version="$(terraform version -json 2>/dev/null | sed -n 's/.*"terraform_version":"\([^"]*\)".*/\1/p' || true)"
+  terraform_version="$(terraform version -json 2>/dev/null | sed -n 's/.*"terraform_version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' || true)"
   if [ -z "$terraform_version" ]; then
     terraform_version="$(terraform version 2>/dev/null | head -n1 | awk '{print $2}' | sed 's/^v//' || true)"
   fi

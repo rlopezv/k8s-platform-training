@@ -15,7 +15,7 @@ La Unidad 00 se ha iniciado y ya dispone de bloques documentados para validar Wi
 
 MicroK8s y `kubectl` ya fueron instalados por el usuario desde el canal `1.35/stable` y responden en el entorno real. La validacion funcional mostro el nodo local en `Ready`, el addon `dns` habilitado y `kubectl` operativo. La validacion integrada termino sin fallos bloqueantes.
 
-Los scripts para instalar y validar Helm y Terraform ya estan generados. Su ejecucion funcional queda pendiente hasta que el usuario ejecute los instaladores y aporte resultados reales.
+Helm y Terraform ya fueron instalados y validados por el usuario como herramientas CLI. No se han creado charts, releases, modulos, backends ni recursos.
 
 ## Cambios introducidos
 
@@ -125,6 +125,13 @@ Resultados ejecutados en la sesion actual desde Ubuntu WSL:
 | `bash -n platform/environment/tools/validate-tools.sh` | Correcto |
 | `bash platform/environment/tools/validate-tools.sh` | Falla con Helm y Terraform ausentes; esperado antes de ejecutar instaladores |
 | `shellcheck` | No disponible en este entorno |
+| `platform/environment/tools/install-helm.sh` | Ejecutado por el usuario; Helm `v3.21.0+ge0878d4` instalado con checksum correcto |
+| `platform/environment/tools/install-terraform.sh` | Ejecutado por el usuario; Terraform `1.15.7` instalado con checksum correcto; falso fallo previo de parser JSON corregido |
+| `platform/environment/tools/validate-tools.sh` | Ejecutado por el usuario; 0 fallos, 0 avisos |
+| `platform/environment/tools/validate-tools.sh` post-correccion | Ejecutado en esta sesion; 0 fallos, 0 avisos |
+| `platform/environment/validation/validate-environment.sh` final | Ejecutado por el usuario; completado sin fallos bloqueantes |
+| Helm | `v3.21.0+ge0878d4` |
+| Terraform | `1.15.7` |
 
 DNS hacia `snapcraft.io` resolvio correctamente durante la instalacion y durante la validacion integrada.
 
@@ -133,8 +140,6 @@ Validaciones pendientes:
 ```text
 wsl --status
 wsl --list --verbose
-helm version
-terraform version
 ```
 
 ## Limitaciones conocidas
@@ -147,10 +152,11 @@ terraform version
 - `platform/environment/tools/install-terraform.sh` instala Terraform `1.15.7` solo cuando el usuario lo ejecuta.
 - Ubuntu 24.04.4 LTS esta instalada y validada como base WSL2 de la Unidad 00.
 - MicroK8s y `kubectl` estan instalados y validados.
-- No se han validado versiones reales de Windows, Helm ni Terraform.
+- Helm y Terraform estan instalados y validados.
+- No se han validado versiones reales de Windows desde este entorno Linux.
 - La plataforma Kubernetes local responde y queda lista para instalar herramientas base restantes.
 - Los addons `helm` y `helm3` aparecen habilitados por MicroK8s como addons core observados; no sustituyen la instalacion/validacion posterior de Helm como herramienta del curso.
 
 ## Siguiente incremento recomendado
 
-Ejecutar los scripts de Helm y Terraform, aportar resultados reales, y repetir la validacion integrada. No crear charts, releases, modulos, backends ni recursos.
+Revisar cierre de la Unidad 00: actualizar cualquier pendiente documental restante, confirmar validaciones de Windows/WSL si el usuario aporta salidas, y preparar el estado final antes de permitir la Unidad 01.
