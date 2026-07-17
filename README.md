@@ -2,7 +2,7 @@
 
 Framework de repositorio para generar, mantener y evolucionar un itinerario completo de formación sobre plataformas Kubernetes con apoyo de inteligencia artificial.
 
-El repositorio actúa como **fuente única de verdad** del proyecto. Su finalidad no es almacenar unidades formativas aisladas, sino proporcionar un sistema reproducible para construir un curso incremental, coherente y técnicamente consistente.
+El repositorio actúa como **fuente única de verdad** del proyecto. Su finalidad no es almacenar unidades formativas aisladas, sino proporcionar un sistema reproducible para construir, validar y mantener un curso incremental, coherente y técnicamente consistente.
 
 ## Objetivo del proyecto
 
@@ -57,7 +57,7 @@ La creación de una aplicación o laboratorio alternativo solo estará permitida
 El contenido del curso se gestiona como software:
 
 - cada cambio debe ser coherente y revisable;
-- cada incremento debe poder corresponderse con un commit Git;
+- cada incremento debe poder corresponderse con uno o varios commits Git relacionados;
 - el estado del proyecto debe permanecer actualizado;
 - las decisiones arquitectónicas deben quedar documentadas;
 - las unidades deben generarse siguiendo playbooks versionados;
@@ -67,7 +67,16 @@ El contenido del curso se gestiona como software:
 
 La IA no debe depender exclusivamente del contexto de una conversación.
 
-Antes de generar una unidad, deberá leer los documentos de gobierno y el estado actual del repositorio. De esta forma, el contenido podrá evolucionar entre sesiones sin perder continuidad.
+Antes de generar o modificar una unidad, deberá leer los documentos de gobierno, el estado actual y los artefactos relevantes del repositorio.
+
+El proyecto admite dos modalidades de trabajo:
+
+- asistentes con acceso directo al workspace;
+- asistentes conversacionales sin acceso directo al repositorio.
+
+En modalidad conversacional se utilizará un paquete mínimo de contexto y, cuando sea necesario, un `SESSION_HANDOFF.md` generado desde el estado actual del repositorio.
+
+El procedimiento operativo se define en `project/how-to.md`.
 
 ## Estructura del repositorio
 
@@ -79,6 +88,7 @@ Antes de generar una unidad, deberá leer los documentos de gobierno y el estado
 ├── platform/
 │   └── environment/
 ├── playbooks/
+│   ├── generate-session-handoff.md
 │   ├── master.md
 │   ├── project-state-template.md
 │   ├── summary-template.md
@@ -87,6 +97,8 @@ Antes de generar una unidad, deberá leer los documentos de gobierno y el estado
 │       └── 00-environment.md
 ├── project/
 │   ├── architecture.md
+│   ├── how-to.md
+│   ├── project-planning.md
 │   ├── project-state.md
 │   └── roadmap.md
 └── tutorial/
@@ -102,15 +114,18 @@ Incluye:
 - plantilla común de las unidades;
 - plantilla de resúmenes;
 - plantilla del estado del proyecto;
-- playbooks específicos para cada unidad.
+- playbooks específicos para cada unidad;
+- procedimiento para generar handoffs entre sesiones.
 
 Los playbooks son instrucciones operativas para la IA y forman parte del código fuente del framework.
 
 ### `project/`
 
-Contiene la información consolidada del proyecto.
+Contiene los documentos de gobierno, arquitectura, planificación, operación y estado consolidado del proyecto.
 
 - `architecture.md`: arquitectura, principios técnicos y decisiones estructurales.
+- `project-planning.md`: fases, secuencia de trabajo, sesiones recomendadas y criterios de cierre.
+- `how-to.md`: mecanismo operativo para trabajar con el repositorio y asistentes de IA.
 - `project-state.md`: estado actual y verificable del laboratorio y del contenido generado.
 - `roadmap.md`: secuencia prevista de unidades, capacidades y dependencias.
 
@@ -165,27 +180,49 @@ Contiene recursos compartidos, por ejemplo:
 - plantillas auxiliares;
 - recursos utilizados por varias unidades.
 
+## Gobierno y operación del proyecto
+
+La documentación de gobierno se distribuye de la siguiente forma:
+
+| Documento | Responsabilidad |
+|---|---|
+| `README.md` | Presentar el proyecto y servir como punto de entrada |
+| `project/architecture.md` | Definir la arquitectura y las restricciones estructurales |
+| `project/project-planning.md` | Definir las fases, sesiones y criterios de cierre |
+| `project/how-to.md` | Definir el mecanismo operativo de trabajo |
+| `project/project-state.md` | Registrar el estado actual y verificable |
+| `project/roadmap.md` | Definir la evolución prevista del itinerario |
+
+Estos documentos no deben duplicarse entre sí. Cada uno debe mantener una responsabilidad clara.
+
 ## Mecanismo de generación de unidades
 
 Antes de generar o modificar una unidad, la IA deberá leer obligatoriamente:
 
-1. `playbooks/master.md`
-2. `project/architecture.md`
-3. `project/project-state.md`
+1. `playbooks/master.md`;
+2. `project/architecture.md`;
+3. `project/project-state.md`;
 4. el `summary.md` de la unidad anterior;
 5. el playbook específico de la unidad.
 
-Para la primera unidad no existirá un resumen anterior. Esta excepción deberá estar contemplada expresamente en su playbook.
+Cuando sea relevante para el alcance de la sesión, también deberá consultar:
+
+- `project/roadmap.md`;
+- `project/project-planning.md`;
+- `project/how-to.md`;
+- artefactos existentes que deban reutilizarse o modificarse.
+
+Para la Unidad 0 no existirá un resumen anterior. Esta excepción deberá estar contemplada expresamente en su playbook.
 
 Cada unidad deberá generar como mínimo:
 
 - documentación del alumno;
-- laboratorio ejecutable;
+- laboratorio o artefactos ejecutables;
 - notas del instructor;
 - resumen de continuidad;
 - actualización de `project/project-state.md`.
 
-Una unidad no se considerará terminada mientras estos artefactos no sean coherentes entre sí.
+Una unidad no se considerará terminada mientras estos artefactos no sean coherentes entre sí y sus validaciones obligatorias no hayan sido ejecutadas o documentadas como pendientes.
 
 ## Estructura prevista de una unidad
 
@@ -213,16 +250,45 @@ en lugar de `labs/`.
 
 El flujo general del proyecto será:
 
-1. revisar el estado actual del repositorio;
-2. seleccionar la siguiente unidad del roadmap;
-3. leer los documentos obligatorios;
-4. generar o actualizar los artefactos;
-5. validar coherencia técnica y pedagógica;
-6. actualizar `project/project-state.md`;
-7. revisar el incremento;
-8. realizar el commit Git.
+1. definir el objetivo y alcance de la sesión;
+2. revisar el estado actual del repositorio;
+3. preparar el contexto necesario;
+4. leer los documentos obligatorios;
+5. diseñar el incremento;
+6. generar o actualizar los artefactos;
+7. incorporar los cambios al repositorio;
+8. ejecutar las validaciones aplicables;
+9. corregir los resultados;
+10. actualizar `summary.md` cuando exista una unidad activa;
+11. actualizar `project/project-state.md`;
+12. revisar los cambios;
+13. realizar el commit Git;
+14. generar un handoff cuando vaya a iniciarse una nueva sesión.
 
-Cada respuesta de IA deberá producir un incremento autocontenido, revisable y compatible con el estado anterior del repositorio.
+El mecanismo detallado de cierre y arranque de sesiones se documenta en `project/how-to.md`.
+
+## Continuidad entre sesiones
+
+El historial de conversación no forma parte de la fuente de verdad.
+
+Antes de cerrar una sesión se deberá:
+
+- actualizar `project/project-state.md`;
+- actualizar el `summary.md` de la unidad activa;
+- registrar decisiones, problemas y pendientes;
+- revisar los cambios Git;
+- realizar el commit correspondiente;
+- generar, cuando sea necesario, un `SESSION_HANDOFF.md`.
+
+`SESSION_HANDOFF.md` es un artefacto derivado y temporal.
+
+Se genera mediante:
+
+```text
+playbooks/generate-session-handoff.md
+```
+
+No debe mantenerse manualmente como fuente de verdad ni sustituir a los documentos versionados del repositorio.
 
 ## Convenciones
 
@@ -281,33 +347,43 @@ Los ejemplos utilizarán placeholders, secretos locales ignorados por Git o meca
 
 ## Estado del proyecto
 
-El proyecto se encuentra actualmente en fase de **Bootstrap**.
+La fase de **Bootstrap** está completada.
 
-En esta fase se construirá únicamente el framework del repositorio:
+El repositorio dispone de:
 
-1. `README.md`
-2. `project/architecture.md`
-3. `project/project-state.md`
-4. `project/roadmap.md`
-5. `playbooks/master.md`
-6. `playbooks/unit-template.md`
-7. `playbooks/summary-template.md`
-8. `playbooks/project-state-template.md`
-9. `playbooks/units/00-environment.md`
+- estructura base;
+- arquitectura;
+- planificación;
+- mecanismo operativo;
+- estado consolidado;
+- roadmap;
+- playbook maestro;
+- plantillas comunes;
+- playbook de la Unidad 0;
+- procedimiento de generación de handoffs.
 
-No se generará contenido formativo de la Unidad 0 hasta completar y revisar todos los elementos del bootstrap.
+El siguiente incremento recomendado es la **Fase 2 — Framework de generación**, definida en `project/project-planning.md`.
 
-## Criterios de finalización del bootstrap
+Esta fase debe validar:
 
-El bootstrap se considerará completo cuando:
+- la coherencia de los playbooks;
+- las entradas y salidas de las unidades;
+- el mecanismo de continuidad;
+- la preparación de los playbooks de las primeras unidades;
+- el funcionamiento del framework sin depender del historial de conversación.
 
-- exista la estructura base del repositorio;
-- estén definidos los documentos de arquitectura, estado y roadmap;
-- exista un playbook maestro;
-- existan las plantillas comunes;
-- exista el playbook específico de la Unidad 0;
-- el mecanismo de continuidad entre unidades esté documentado;
-- el repositorio pueda utilizarse desde una nueva sesión de IA sin depender del historial de conversación.
+No se generará contenido formativo de la Unidad 0 hasta cerrar y aprobar esta fase.
+
+## Criterios de finalización del framework de generación
+
+La Fase 2 se considerará completa cuando:
+
+- los playbooks base hayan sido revisados y aprobados;
+- existan playbooks específicos suficientes para iniciar el itinerario;
+- las entradas, salidas y validaciones de cada unidad estén definidas;
+- el mecanismo de continuidad entre sesiones haya sido probado;
+- una nueva sesión pueda comenzar utilizando únicamente el repositorio y el contexto mínimo documentado;
+- la Unidad 0 pueda iniciarse sin depender de decisiones no registradas.
 
 ## Licencia
 

@@ -22,31 +22,34 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Bootstrap completado |
-| Estado general | Preparado para iniciar la Unidad 00 |
-| Último incremento completado | `playbooks/units/00-environment.md` |
+| Fase actual | Framework V1 cerrado |
+| Estado general | Framework validado y congelado; preparado para iniciar la Unidad 00 |
+| Último incremento completado | Cierre y sincronización del Framework V1 |
 | Unidad activa | Ninguna |
 | Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
 | Plataforma local desplegada | No |
 | Contenido formativo generado | No |
-| Framework de generación | Completo y aprobado |
+| Framework de generación | Validado y congelado (Framework V1) |
 | Siguiente incremento permitido | Generación de la Unidad 00 — `00-environment` |
 
 ---
 
 # Fase actual
 
-El proyecto ha completado formalmente la fase **Bootstrap**.
+El proyecto ha completado formalmente la fase **Bootstrap** y ha cerrado el **Framework V1**.
 
 El framework del repositorio ha sido:
 
 - generado;
 - revisado;
 - aprobado;
+- validado mediante la revisión de sus documentos, playbooks y mecanismos de continuidad;
+- sincronizado con la arquitectura y la estructura actual del repositorio;
+- congelado como **Framework V1**;
 - incorporado al repositorio.
 
-A partir de este estado se permite comenzar la generación de la **Unidad 00 — Preparación del entorno**.
+A partir de este estado se permite comenzar la generación de la **Unidad 00 — Preparación del entorno**. El framework solo deberá reabrirse si una unidad futura identifica una carencia real y verificable.
 
 Durante la siguiente fase se permitirá:
 
@@ -79,7 +82,7 @@ Todavía no se permite:
 ## Resultado
 
 ```text
-Completado y aprobado
+Cerrado
 ```
 
 ## Fecha de cierre
@@ -115,10 +118,13 @@ Completado y aprobado
 | `project/architecture.md` | Completo y aprobado | Bootstrap-02 | Arquitectura y decisiones estructurales |
 | `project/project-state.md` | Actualizado con este incremento | Bootstrap-10 | Estado consolidado |
 | `project/roadmap.md` | Completo y aprobado | Bootstrap-04 | Evolución prevista del itinerario |
+| `project/project-planning.md` | Completo y aprobado | Framework-01 | Planificación incremental del trabajo |
+| `project/how-to.md` | Completo y aprobado | Framework-02 | Mecanismo operativo de trabajo con asistentes de IA |
 | `playbooks/master.md` | Completo y aprobado | Bootstrap-05 | Reglas globales de generación |
 | `playbooks/unit-template.md` | Completo y aprobado | Bootstrap-06 | Plantilla de playbooks específicos |
 | `playbooks/summary-template.md` | Completo y aprobado | Bootstrap-07 | Contrato de continuidad |
 | `playbooks/project-state-template.md` | Completo y aprobado | Bootstrap-08 | Reglas de mantenimiento del estado |
+| `playbooks/generate-session-handoff.md` | Completo y aprobado | Framework-03 | Generación del handoff derivado de sesión |
 | `playbooks/units/00-environment.md` | Completo y aprobado | Bootstrap-09 | Gobierno de la Unidad 00 |
 
 ---
@@ -133,6 +139,7 @@ Completado y aprobado
 ├── platform/
 │   └── environment/
 ├── playbooks/
+│   ├── generate-session-handoff.md
 │   ├── master.md
 │   ├── project-state-template.md
 │   ├── summary-template.md
@@ -141,6 +148,8 @@ Completado y aprobado
 │       └── 00-environment.md
 ├── project/
 │   ├── architecture.md
+│   ├── how-to.md
+│   ├── project-planning.md
 │   ├── project-state.md
 │   └── roadmap.md
 └── tutorial/
@@ -303,7 +312,10 @@ No existen actualmente:
 | ADR-002 — Unidad 0 fuera de `labs/` | Activa | `project/architecture.md` | Artefactos en `platform/environment/` |
 | ADR-003 — Resumen por unidad | Activa | `project/architecture.md` | Obligatorio al cerrar Unidad 00 |
 | ADR-004 — Estado consolidado central | Activa | `project/architecture.md` | Este archivo es fuente de estado |
-| ADR-005 — Playbooks versionados | Activa | `project/architecture.md` | Framework aprobado |
+| ADR-005 — Playbooks versionados | Activa | `project/architecture.md` | Framework gobernado mediante control de versiones |
+| ADR-006 — Planificación y mecanismo operativo separados | Activa | `project/architecture.md` | Separa `project-planning.md` de `how-to.md` |
+| ADR-007 — Handoff como artefacto derivado | Activa | `project/architecture.md` | `SESSION_HANDOFF.md` se regenera desde fuentes versionadas |
+| ADR-008 — Neutralidad respecto al asistente | Activa | `project/architecture.md` | Permite sesiones con y sin acceso al workspace |
 
 ## Decisiones específicas de la Unidad 00
 
@@ -386,7 +398,7 @@ Actualmente solo pueden validarse documentalmente:
 
 | Validación | Método | Resultado esperado |
 |---|---|---|
-| Existencia de documentos del bootstrap | Revisión del repositorio | Nueve documentos presentes |
+| Existencia de documentos del framework | Revisión del repositorio | Doce documentos de gobierno y generación presentes |
 | Coherencia de rutas | Revisión estática | Rutas alineadas |
 | Orden del bootstrap | Comparación con README y estado | Completado |
 | Existencia del playbook de Unidad 00 | Revisión del repositorio | Archivo presente |
@@ -410,7 +422,8 @@ No existen todavía validaciones funcionales del entorno.
 | 8 | `playbooks/project-state-template.md` | Completado | Gobierno del estado |
 | 9 | `playbooks/units/00-environment.md` | Completado | Playbook de Unidad 00 |
 | 10 | Revisión y cierre del bootstrap | Completado | Contenido aprobado y framework operativo |
-| 11 | Actualización de `project/project-state.md` | Completado con este cambio | Bootstrap declarado formalmente completo |
+| 11 | Actualización de `project/project-state.md` | Completado | Bootstrap declarado formalmente completo |
+| 12 | Cierre y sincronización del Framework V1 | Completado con este cambio | Inventario, árbol, ADR y estado sincronizados; Framework V1 congelado |
 
 ---
 

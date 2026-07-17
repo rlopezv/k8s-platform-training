@@ -7,9 +7,10 @@ Este documento define la arquitectura del repositorio de formación Kubernetes y
 Su función es establecer una base estable para:
 
 - organizar el contenido;
-- separar gobierno, documentación y artefactos ejecutables;
-- mantener continuidad entre unidades;
+- separar gobierno, planificación, operación, documentación y artefactos ejecutables;
+- mantener continuidad entre unidades y sesiones;
 - permitir generación asistida por IA sin depender del historial de conversación;
+- soportar asistentes con y sin acceso directo al workspace;
 - evitar divergencias entre documentación, laboratorios y estado real del proyecto.
 
 Este documento forma parte de la fuente única de verdad del repositorio.
@@ -25,6 +26,8 @@ El repositorio no contiene únicamente documentación.
 Debe entenderse como un sistema compuesto por:
 
 - documentos de gobierno;
+- planificación del trabajo;
+- procedimientos operativos;
 - estado consolidado;
 - instrucciones de generación;
 - contenido formativo;
@@ -32,7 +35,7 @@ Debe entenderse como un sistema compuesto por:
 - artefactos de plataforma;
 - recursos compartidos.
 
-La arquitectura debe permitir que una nueva sesión de IA pueda reconstruir el contexto del proyecto leyendo exclusivamente los archivos versionados.
+La arquitectura debe permitir que una nueva sesión de IA reconstruya el contexto del proyecto leyendo exclusivamente los archivos versionados y, cuando proceda, un handoff derivado de ellos.
 
 ## 2. Evolución incremental
 
@@ -48,19 +51,26 @@ Cada unidad debe:
 
 No se deben crear laboratorios independientes cuando sea posible ampliar los existentes.
 
+La unidad de trabajo operativa es una sesión con un objetivo concreto y verificable. Una unidad formativa puede ocupar varias sesiones de diseño, generación, validación, corrección y cierre.
+
 ## 3. Separación de responsabilidades
 
 El repositorio separa claramente:
 
-- gobierno del proyecto;
+- presentación general;
+- arquitectura;
+- planificación;
+- mecanismo operativo;
 - estado del proyecto;
+- roadmap;
 - contenido del alumno;
 - notas del instructor;
 - artefactos ejecutables;
 - recursos de plataforma;
-- recursos visuales o compartidos.
+- recursos visuales o compartidos;
+- instrucciones para asistentes de IA.
 
-Esta separación evita que el contenido pedagógico se convierta en la única fuente de información técnica.
+Esta separación evita que el contenido pedagógico o una conversación se conviertan en la única fuente de información técnica.
 
 ## 4. Coherencia sobre completitud aislada
 
@@ -70,9 +80,11 @@ Debe ser coherente con:
 
 - la arquitectura global;
 - el roadmap;
+- la planificación;
 - el estado anterior;
 - los artefactos ya existentes;
-- las unidades siguientes previstas.
+- las unidades siguientes previstas;
+- las reglas operativas del repositorio.
 
 La coherencia acumulativa tiene prioridad sobre la optimización local de una unidad.
 
@@ -84,7 +96,10 @@ Los procedimientos deberán priorizar:
 - scripts idempotentes;
 - validaciones explícitas;
 - configuraciones versionadas;
-- mínima dependencia de operaciones manuales no documentadas.
+- mínima dependencia de operaciones manuales no documentadas;
+- separación entre contenido generado y contenido validado.
+
+La generación de un artefacto no implica que dicho artefacto esté validado.
 
 ## 6. Neutralidad progresiva de plataforma
 
@@ -93,6 +108,18 @@ El laboratorio inicial utiliza MicroK8s sobre WSL2, pero la arquitectura debe fa
 Los conceptos, manifiestos y automatizaciones deberán evitar acoplamientos innecesarios a una distribución concreta.
 
 Cuando exista una dependencia específica de plataforma, deberá identificarse y aislarse.
+
+## 7. Independencia del asistente
+
+La arquitectura no debe obligar al uso de una herramienta concreta.
+
+El proyecto debe poder operarse mediante:
+
+- un asistente con acceso directo al workspace;
+- un asistente conversacional al que se proporciona un paquete mínimo de contexto;
+- futuras automatizaciones basadas en API o CI.
+
+El acceso directo al repositorio mejora la automatización, pero no constituye un requisito arquitectónico.
 
 ---
 
@@ -106,6 +133,7 @@ Cuando exista una dependencia específica de plataforma, deberá identificarse y
 ├── platform/
 │   └── environment/
 ├── playbooks/
+│   ├── generate-session-handoff.md
 │   ├── master.md
 │   ├── project-state-template.md
 │   ├── summary-template.md
@@ -114,6 +142,8 @@ Cuando exista una dependencia específica de plataforma, deberá identificarse y
 │       └── 00-environment.md
 ├── project/
 │   ├── architecture.md
+│   ├── how-to.md
+│   ├── project-planning.md
 │   ├── project-state.md
 │   └── roadmap.md
 └── tutorial/
@@ -133,14 +163,15 @@ Debe explicar:
 - estructura;
 - principios de trabajo;
 - mecanismo de generación;
+- mecanismo de continuidad;
 - estado general del proyecto;
-- criterios de bootstrap.
+- siguiente incremento recomendado.
 
-No debe duplicar en detalle la información de arquitectura, roadmap o estado.
+No debe duplicar en detalle la información de arquitectura, planificación, operación, roadmap o estado.
 
 ## `project/`
 
-Contiene la información consolidada del proyecto.
+Contiene la información consolidada y los documentos de gobierno del proyecto.
 
 ### `project/architecture.md`
 
@@ -153,6 +184,38 @@ Define:
 - restricciones arquitectónicas;
 - decisiones técnicas de alto nivel.
 
+### `project/project-planning.md`
+
+Define:
+
+- fases del proyecto;
+- secuencia recomendada de ejecución;
+- sesiones recomendadas;
+- objetivos y entregables por sesión;
+- criterios de entrada y salida;
+- criterios de cierre de fases y unidades.
+
+No debe describir en detalle cómo interactuar con un asistente de IA.
+
+### `project/how-to.md`
+
+Define el mecanismo operativo de trabajo.
+
+Debe describir:
+
+- modalidades de trabajo;
+- preparación de sesiones;
+- contexto mínimo requerido;
+- presentación de resultados;
+- validación;
+- cierre de sesiones;
+- commits;
+- generación de handoffs;
+- arranque de nuevas sesiones;
+- patrones operativos frecuentes.
+
+No debe sustituir al roadmap ni al estado del proyecto.
+
 ### `project/project-state.md`
 
 Representa el estado actual y verificable del proyecto.
@@ -164,9 +227,10 @@ Debe permitir responder:
 - qué componentes están desplegados;
 - qué decisiones están activas;
 - qué dependencias existen;
-- qué limitaciones o deuda técnica permanecen.
+- qué limitaciones o deuda técnica permanecen;
+- qué trabajo está validado y qué trabajo continúa pendiente.
 
-No debe utilizarse como roadmap ni como histórico detallado.
+No debe utilizarse como roadmap, manual operativo ni histórico detallado.
 
 ### `project/roadmap.md`
 
@@ -181,7 +245,7 @@ Debe incluir:
 - resultados esperados;
 - criterios de entrada y salida.
 
-El roadmap puede evolucionar, pero cualquier cambio debe preservar la coherencia con el estado real.
+El roadmap puede evolucionar, pero cualquier cambio debe preservar la coherencia con el estado real y con `project/project-planning.md`.
 
 ## `playbooks/`
 
@@ -212,6 +276,18 @@ Define el contenido obligatorio del resumen de continuidad de cada unidad.
 ### `playbooks/project-state-template.md`
 
 Define la estructura y reglas de actualización de `project/project-state.md`.
+
+### `playbooks/generate-session-handoff.md`
+
+Define el procedimiento para generar un `SESSION_HANDOFF.md` temporal a partir de la fuente de verdad versionada.
+
+El handoff:
+
+- no constituye una fuente de verdad;
+- no debe mantenerse manualmente;
+- debe reflejar el estado actual del repositorio;
+- debe incluir un objetivo concreto para la siguiente sesión;
+- debe permitir iniciar una conversación sin depender del historial anterior.
 
 ### `playbooks/units/`
 
@@ -255,7 +331,7 @@ Información adicional para impartición, revisión o facilitación.
 
 ### `summary.md`
 
-Resumen técnico y pedagógico que conecta la unidad con la siguiente.
+Resumen técnico y pedagógico que conecta la unidad con la siguiente y permite continuar el trabajo en nuevas sesiones.
 
 El resumen no sustituye a `project-state.md`.
 
@@ -339,18 +415,27 @@ Para la Unidad 0 no existirá resumen anterior.
 
 Esta excepción deberá estar declarada en `playbooks/units/00-environment.md`.
 
+Cuando el trabajo afecte a planificación, operación o secuencia, también deberá consultar:
+
+- `project/roadmap.md`;
+- `project/project-planning.md`;
+- `project/how-to.md`.
+
+Además, deberá inspeccionar los artefactos existentes que vaya a reutilizar o modificar.
+
 ## Procesamiento
 
 La IA deberá:
 
 1. verificar que las dependencias de entrada existen;
-2. detectar inconsistencias entre arquitectura, estado y roadmap;
+2. detectar inconsistencias entre arquitectura, planificación, estado y roadmap;
 3. identificar artefactos reutilizables;
 4. diseñar el incremento mínimo necesario;
 5. generar documentación y laboratorio coherentes;
 6. incluir validaciones técnicas;
-7. actualizar el estado consolidado;
-8. producir el resumen de continuidad.
+7. diferenciar explícitamente entre trabajo generado y trabajo validado;
+8. actualizar el estado consolidado;
+9. producir el resumen de continuidad.
 
 ## Salida obligatoria
 
@@ -362,11 +447,21 @@ Cada unidad deberá generar:
 - resumen de continuidad;
 - actualización de `project/project-state.md`.
 
+Cuando el asistente no pueda modificar directamente el repositorio, deberá proporcionar:
+
+- ruta exacta de cada archivo;
+- contenido completo o parche acordado;
+- resumen de archivos nuevos y modificados;
+- validaciones pendientes;
+- decisiones tomadas;
+- actualización requerida del estado.
+
 ## Validación
 
 Antes de considerar cerrada una unidad se deberá comprobar:
 
 - coherencia con la arquitectura;
+- coherencia con la planificación y el roadmap;
 - reutilización de artefactos previos;
 - correspondencia entre documentación y laboratorio;
 - comandos reproducibles;
@@ -377,18 +472,83 @@ Antes de considerar cerrada una unidad se deberá comprobar:
 
 ---
 
+# Arquitectura de sesiones y continuidad
+
+## Unidad operativa
+
+La sesión constituye la unidad operativa recomendada.
+
+Una sesión debe tener:
+
+- objetivo concreto;
+- alcance limitado;
+- entradas identificadas;
+- artefactos que pueden modificarse;
+- resultado esperado;
+- criterio de cierre.
+
+Una unidad puede dividirse en sesiones de:
+
+- diseño;
+- generación;
+- validación;
+- corrección;
+- cierre.
+
+## Cierre de sesión
+
+Antes de cerrar una sesión se deberá:
+
+1. revisar los artefactos creados o modificados;
+2. registrar validaciones realizadas y pendientes;
+3. actualizar `tutorial/<unidad>/summary.md`, cuando exista una unidad activa;
+4. actualizar `project/project-state.md`;
+5. actualizar arquitectura, roadmap o planificación cuando corresponda;
+6. revisar `git status` y `git diff`;
+7. realizar el commit;
+8. generar un handoff cuando vaya a iniciarse una nueva conversación.
+
+## Arranque de sesión
+
+Una nueva sesión podrá iniciarse:
+
+- con acceso directo al workspace, leyendo los archivos obligatorios;
+- sin acceso al workspace, mediante un paquete mínimo de contexto.
+
+El paquete conversacional deberá contener como mínimo:
+
+```text
+SESSION_HANDOFF.md
+project/project-state.md
+playbooks/master.md
+playbooks/units/<unidad>.md
+tutorial/<unidad-anterior>/summary.md
+```
+
+Se añadirán los artefactos que deban consultarse o modificarse.
+
+---
+
 # Modelo de dependencias
 
 Las dependencias deben fluir en una única dirección lógica:
 
 ```text
-architecture + roadmap + state + previous summary + unit playbook
-                              ↓
-                    generated unit artifacts
-                              ↓
-                   updated project state
-                              ↓
-                    next unit continuity
+architecture + planning + roadmap + state
+                 + previous summary
+                 + unit playbook
+                         ↓
+                session increment
+                         ↓
+              generated unit artifacts
+                         ↓
+                 external validation
+                         ↓
+              updated summary and state
+                         ↓
+                 commit and handoff
+                         ↓
+                 next session or unit
 ```
 
 No se permite que una unidad redefina unilateralmente la arquitectura global.
@@ -397,8 +557,9 @@ Cuando una unidad requiera un cambio arquitectónico:
 
 1. se actualizará primero `project/architecture.md`;
 2. se revisará el impacto en `project/roadmap.md`;
-3. se actualizará el playbook correspondiente;
-4. se generará posteriormente la unidad.
+3. se actualizará `project/project-planning.md` si cambia la secuencia de trabajo;
+4. se actualizará el playbook correspondiente;
+5. se generará posteriormente la unidad.
 
 ---
 
@@ -456,8 +617,11 @@ Los cambios deberán realizarse preferentemente mediante:
 - introducir herramientas no declaradas sin actualizar arquitectura y roadmap;
 - asumir estado no registrado en `project-state.md`;
 - depender de información exclusiva de una conversación;
+- obligar al uso de un asistente o IDE concreto;
+- mantener manualmente un handoff como fuente de verdad;
 - almacenar credenciales reales;
 - omitir validaciones;
+- declarar validado contenido que solo ha sido generado;
 - cerrar una unidad sin resumen;
 - cerrar una unidad sin actualizar el estado.
 
@@ -469,9 +633,11 @@ Los cambios deberán realizarse preferentemente mediante:
 - sustituir componentes;
 - reorganizar directorios;
 - dividir una unidad;
-- fusionar unidades.
+- fusionar unidades;
+- dividir una unidad en varias sesiones;
+- utilizar herramientas distintas para ejecutar el mismo mecanismo de trabajo.
 
-La justificación deberá registrarse en arquitectura, roadmap o estado según corresponda.
+La justificación deberá registrarse en arquitectura, roadmap, planificación o estado según corresponda.
 
 ---
 
@@ -536,6 +702,44 @@ Motivo:
 
 Las reglas del proyecto deben evolucionar mediante control de versiones y revisión, igual que el resto del código.
 
+## ADR-006 — Planificación y mecanismo operativo separados
+
+La planificación se mantiene en:
+
+```text
+project/project-planning.md
+```
+
+El mecanismo operativo se mantiene en:
+
+```text
+project/how-to.md
+```
+
+Motivo:
+
+Separar qué debe hacerse y en qué orden de cómo se ejecuta el trabajo con asistentes de IA.
+
+## ADR-007 — Handoff como artefacto derivado
+
+`SESSION_HANDOFF.md` se genera mediante:
+
+```text
+playbooks/generate-session-handoff.md
+```
+
+Motivo:
+
+Evitar mantener una fuente de contexto duplicada y potencialmente obsoleta.
+
+## ADR-008 — Neutralidad respecto al asistente
+
+El framework debe soportar asistentes con acceso al workspace y asistentes conversacionales.
+
+Motivo:
+
+Evitar que el proyecto dependa de Visual Studio Code, una extensión concreta o una plataforma de IA determinada.
+
 ---
 
 # Gestión de cambios arquitectónicos
@@ -546,11 +750,41 @@ Cualquier cambio estructural deberá evaluar:
 - impacto en playbooks;
 - impacto en rutas;
 - impacto en automatizaciones;
+- impacto en planificación y sesiones;
 - necesidad de migración;
+- compatibilidad con asistentes con y sin acceso al workspace;
 - compatibilidad con sesiones futuras;
-- actualización del README.
+- actualización del README;
+- actualización de `project/how-to.md` y `project/project-planning.md` cuando corresponda.
 
 Los cambios arquitectónicos deberán realizarse en un incremento independiente cuando su impacto sea significativo.
+
+---
+
+# Estado arquitectónico actual
+
+La fase de Bootstrap está completada.
+
+La arquitectura del repositorio incluye actualmente:
+
+- documentos de gobierno;
+- planificación del trabajo;
+- mecanismo operativo;
+- estado consolidado;
+- roadmap;
+- playbooks versionados;
+- generación de handoffs;
+- soporte para sesiones con y sin acceso al workspace.
+
+El siguiente incremento arquitectónicamente permitido es la Fase 2 — Framework de generación.
+
+No debe iniciarse el contenido formativo de la Unidad 0 hasta validar:
+
+- coherencia de los playbooks base;
+- entradas y salidas de las unidades;
+- mecanismo de continuidad;
+- playbooks específicos iniciales;
+- funcionamiento del framework sin depender del historial de conversación.
 
 ---
 
@@ -559,10 +793,15 @@ Los cambios arquitectónicos deberán realizarse en un incremento independiente 
 La arquitectura se considerará correctamente aplicada cuando:
 
 - una nueva sesión pueda comprender el proyecto leyendo los archivos obligatorios;
+- un asistente conversacional pueda trabajar con un paquete mínimo de contexto;
+- el proyecto no dependa de una herramienta concreta;
 - cada unidad pueda identificar con precisión sus entradas y salidas;
+- cada sesión tenga un alcance y criterio de cierre verificables;
 - no existan duplicidades innecesarias;
 - la plataforma evolucione de forma acumulativa;
 - documentación y artefactos ejecutables permanezcan alineados;
+- se diferencie entre contenido generado y contenido validado;
 - el estado consolidado sea suficiente para continuar;
 - las decisiones técnicas relevantes estén documentadas;
-- el repositorio pueda revisarse mediante commits pequeños y coherentes.
+- el repositorio pueda revisarse mediante commits pequeños y coherentes;
+- el handoff pueda regenerarse desde la fuente de verdad versionada.
