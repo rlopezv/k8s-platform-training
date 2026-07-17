@@ -347,7 +347,7 @@ Los ejemplos utilizarán placeholders, secretos locales ignorados por Git o meca
 
 ## Estado del proyecto
 
-La fase de **Bootstrap** está completada.
+La fase de **Bootstrap** está completada y el **Framework V1** está cerrado.
 
 El repositorio dispone de:
 
@@ -362,25 +362,25 @@ El repositorio dispone de:
 - playbook de la Unidad 0;
 - procedimiento de generación de handoffs.
 
-El siguiente incremento recomendado es la **Fase 2 — Framework de generación**, definida en `project/project-planning.md`.
+El siguiente incremento recomendado es la **Unidad 00 — Preparación del entorno**, definida en `playbooks/units/00-environment.md`.
 
-Esta fase debe validar:
+El Framework V1 ya ha validado:
 
 - la coherencia de los playbooks;
-- las entradas y salidas de las unidades;
+- las entradas y salidas de la Unidad 00;
 - el mecanismo de continuidad;
-- la preparación de los playbooks de las primeras unidades;
+- la preparación del playbook de la Unidad 00;
 - el funcionamiento del framework sin depender del historial de conversación.
 
-No se generará contenido formativo de la Unidad 0 hasta cerrar y aprobar esta fase.
+No se generará contenido de la Unidad 01 ni de unidades posteriores hasta completar y cerrar la Unidad 00.
 
 ## Criterios de finalización del framework de generación
 
-La Fase 2 se considerará completa cuando:
+La Fase 2 se considera completa porque:
 
 - los playbooks base hayan sido revisados y aprobados;
-- existan playbooks específicos suficientes para iniciar el itinerario;
-- las entradas, salidas y validaciones de cada unidad estén definidas;
+- existe el playbook específico necesario para iniciar el itinerario;
+- las entradas, salidas y validaciones de la Unidad 00 estén definidas;
 - el mecanismo de continuidad entre sesiones haya sido probado;
 - una nueva sesión pueda comenzar utilizando únicamente el repositorio y el contexto mínimo documentado;
 - la Unidad 0 pueda iniciarse sin depender de decisiones no registradas.

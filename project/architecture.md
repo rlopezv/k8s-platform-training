@@ -763,7 +763,7 @@ Los cambios arquitectónicos deberán realizarse en un incremento independiente 
 
 # Estado arquitectónico actual
 
-La fase de Bootstrap está completada.
+La fase de Bootstrap está completada y el Framework V1 está cerrado.
 
 La arquitectura del repositorio incluye actualmente:
 
@@ -776,14 +776,16 @@ La arquitectura del repositorio incluye actualmente:
 - generación de handoffs;
 - soporte para sesiones con y sin acceso al workspace.
 
-El siguiente incremento arquitectónicamente permitido es la Fase 2 — Framework de generación.
+El siguiente incremento arquitectónicamente permitido es la Unidad 00 — Preparación del entorno.
 
-No debe iniciarse el contenido formativo de la Unidad 0 hasta validar:
+No debe iniciarse contenido de la Unidad 01 ni de unidades posteriores hasta completar y cerrar la Unidad 00.
+
+El Framework V1 ya ha validado:
 
 - coherencia de los playbooks base;
-- entradas y salidas de las unidades;
+- entradas y salidas de la Unidad 00;
 - mecanismo de continuidad;
-- playbooks específicos iniciales;
+- playbook específico de la Unidad 00;
 - funcionamiento del framework sin depender del historial de conversación.
 
 ---

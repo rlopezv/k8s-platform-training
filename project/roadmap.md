@@ -140,7 +140,7 @@ Resultado:
 
 ### Bootstrap-04 — Roadmap
 
-Estado actual: en elaboración mediante este documento.
+Estado actual: completado.
 
 Resultado:
 
@@ -151,7 +151,9 @@ Resultado:
 
 ### Bootstrap-05 — Playbook maestro
 
-Resultado esperado:
+Estado actual: completado.
+
+Resultado:
 
 - reglas obligatorias de generación;
 - proceso de lectura de contexto;
@@ -161,25 +163,33 @@ Resultado esperado:
 
 ### Bootstrap-06 — Plantilla de unidad
 
-Resultado esperado:
+Estado actual: completado.
+
+Resultado:
 
 - estructura común para los playbooks específicos.
 
 ### Bootstrap-07 — Plantilla de resumen
 
-Resultado esperado:
+Estado actual: completado.
+
+Resultado:
 
 - contrato de continuidad entre unidades.
 
 ### Bootstrap-08 — Plantilla de estado
 
-Resultado esperado:
+Estado actual: completado.
+
+Resultado:
 
 - formato y reglas para mantener `project/project-state.md`.
 
 ### Bootstrap-09 — Playbook de la Unidad 0
 
-Resultado esperado:
+Estado actual: completado.
+
+Resultado:
 
 - alcance, entradas, entregables y validaciones de la preparación del entorno.
 

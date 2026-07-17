@@ -568,7 +568,7 @@ Proporcionar al asistente el objetivo de la sesión y pedirle que lea los docume
 Ejemplo:
 
 ```markdown
-Revisa el estado actual del repositorio y comienza la Unidad 1.
+Revisa el estado actual del repositorio y comienza la Unidad 1 cuando su playbook exista.
 
 Lee:
 
@@ -576,7 +576,7 @@ Lee:
 - `project/architecture.md`
 - `project/roadmap.md`
 - `playbooks/master.md`
-- `playbooks/units/01-kubernetes.md`
+- `playbooks/units/01-kubernetes.md` cuando exista
 - `tutorial/00-environment/summary.md`
 
 Antes de generar artefactos, identifica las dependencias y confirma el
@@ -603,7 +603,7 @@ Generar y validar la Unidad 1 — Kubernetes.
 
 - `project/project-state.md`
 - `playbooks/master.md`
-- `playbooks/units/01-kubernetes.md`
+- `playbooks/units/01-kubernetes.md` cuando exista
 - `tutorial/00-environment/summary.md`
 - artefactos relevantes de `platform/environment/`
 

@@ -103,50 +103,46 @@ La fase se considera completada cuando:
 
 ### 4.2. Fase 2 — Framework de generación
 
+**Estado:** completada y cerrada como Framework V1.
+
 #### Objetivo
 
 Validar que el repositorio contiene todas las reglas, plantillas y contratos necesarios para generar unidades formativas sin depender del historial de conversaciones.
 
-#### Trabajo previsto
+#### Trabajo completado
 
 * Revisar `playbooks/master.md`.
 * Revisar `playbooks/unit-template.md`.
 * Revisar `playbooks/summary-template.md`.
 * Revisar `playbooks/project-state-template.md`.
 * Revisar `playbooks/generate-session-handoff.md`.
-* Definir los playbooks específicos de las primeras unidades.
+* Definir el playbook específico necesario para iniciar la Unidad 00.
 * Verificar que el modelo de resumen y estado permite transferir contexto entre sesiones.
 * Confirmar que el framework funciona tanto con asistentes con acceso al workspace como con asistentes conversacionales.
 
-#### Artefactos recomendados
+#### Artefactos resultantes
 
 ```text
 playbooks/units/
-├── 00-environment.md
-├── 01-kubernetes.md
-├── 02-helm.md
-└── 03-terraform.md
+└── 00-environment.md
 ```
 
-También podrán crearse las estructuras iniciales de salida:
+Las estructuras iniciales de salida se materializan mediante `.gitkeep` hasta que existan artefactos reales:
 
 ```text
 tutorial/
-├── 00-environment/
-├── 01-kubernetes/
-├── 02-helm/
-└── 03-terraform/
+└── .gitkeep
 
 labs/
-├── 01-kubernetes/
-├── 02-helm/
-└── 03-terraform/
+└── .gitkeep
 
 platform/
+├── .gitkeep
 └── environment/
+    └── .gitkeep
 ```
 
-#### Sesiones recomendadas
+#### Sesiones de referencia
 
 ##### Sesión 2.1 — Revisión del framework
 
@@ -166,13 +162,13 @@ Resultado:
 
 Objetivo:
 
-* generar los playbooks de las unidades 0 a 3;
+* generar el playbook de la Unidad 00;
 * definir sus objetivos, entradas, salidas y criterios de aceptación.
 
 Resultado:
 
-* playbooks específicos disponibles;
-* secuencia inicial preparada.
+* playbook específico de la Unidad 00 disponible;
+* secuencia inicial preparada para comenzar el itinerario.
 
 ##### Sesión 2.3 — Validación del mecanismo de continuidad
 
@@ -191,7 +187,7 @@ Resultado:
 La fase se considera completada cuando:
 
 * un nuevo asistente puede identificar el siguiente trabajo leyendo el repositorio;
-* las entradas y salidas de cada unidad están definidas;
+* las entradas y salidas de la Unidad 00 están definidas;
 * la Unidad 0 puede comenzar sin depender de decisiones no documentadas;
 * el mecanismo de cierre y apertura de sesiones ha sido validado.
 
@@ -581,12 +577,12 @@ Debe comprobarse que:
 
 ## 9. Próximo trabajo recomendado
 
-Tras completar el bootstrap y añadir este documento junto con `project/how-to.md`, el siguiente incremento recomendado es la **Fase 2 — Framework de generación**.
+Tras completar Bootstrap y cerrar Framework V1, el siguiente incremento recomendado es la **Unidad 00 — Preparación del entorno**.
 
-La primera sesión debería centrarse en:
+La primera sesión de la Unidad 00 debería centrarse en:
 
-1. revisar los playbooks base;
-2. verificar sus entradas y salidas;
-3. detectar contradicciones;
-4. confirmar el mecanismo de continuidad;
-5. aprobar el framework antes de generar la Unidad 0.
+1. revisar `playbooks/units/00-environment.md`;
+2. definir versiones objetivo y requisitos mínimos;
+3. decidir los addons mínimos de MicroK8s;
+4. diseñar la estructura concreta de scripts en `platform/environment/`;
+5. preparar el primer incremento de documentación y validaciones sin generar contenido de la Unidad 01.

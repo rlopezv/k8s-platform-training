@@ -24,7 +24,7 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 |---|---|
 | Fase actual | Framework V1 cerrado |
 | Estado general | Framework validado y congelado; preparado para iniciar la Unidad 00 |
-| Último incremento completado | Cierre y sincronización del Framework V1 |
+| Último incremento completado | Corrección de inconsistencias del framework |
 | Unidad activa | Ninguna |
 | Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
@@ -116,16 +116,17 @@ Cerrado
 |---|---|---|---|
 | `README.md` | Completo y aprobado | Bootstrap-01 | Punto de entrada y visión general |
 | `project/architecture.md` | Completo y aprobado | Bootstrap-02 | Arquitectura y decisiones estructurales |
-| `project/project-state.md` | Actualizado con este incremento | Bootstrap-10 | Estado consolidado |
-| `project/roadmap.md` | Completo y aprobado | Bootstrap-04 | Evolución prevista del itinerario |
-| `project/project-planning.md` | Completo y aprobado | Framework-01 | Planificación incremental del trabajo |
-| `project/how-to.md` | Completo y aprobado | Framework-02 | Mecanismo operativo de trabajo con asistentes de IA |
+| `project/project-state.md` | Actualizado con este incremento | Framework-04 | Estado consolidado |
+| `project/roadmap.md` | Completo y aprobado | Framework-04 | Evolución prevista del itinerario |
+| `project/project-planning.md` | Completo y aprobado | Framework-04 | Planificación incremental del trabajo |
+| `project/how-to.md` | Completo y aprobado | Framework-04 | Mecanismo operativo de trabajo con asistentes de IA |
 | `playbooks/master.md` | Completo y aprobado | Bootstrap-05 | Reglas globales de generación |
 | `playbooks/unit-template.md` | Completo y aprobado | Bootstrap-06 | Plantilla de playbooks específicos |
 | `playbooks/summary-template.md` | Completo y aprobado | Bootstrap-07 | Contrato de continuidad |
 | `playbooks/project-state-template.md` | Completo y aprobado | Bootstrap-08 | Reglas de mantenimiento del estado |
 | `playbooks/generate-session-handoff.md` | Completo y aprobado | Framework-03 | Generación del handoff derivado de sesión |
 | `playbooks/units/00-environment.md` | Completo y aprobado | Bootstrap-09 | Gobierno de la Unidad 00 |
+| `AGENTS.md` | Completo | Framework-04 | Guía operativa para agentes con acceso al repositorio |
 
 ---
 
@@ -135,9 +136,13 @@ Cerrado
 .
 ├── README.md
 ├── assets/
+│   └── .gitkeep
 ├── labs/
+│   └── .gitkeep
 ├── platform/
+│   ├── .gitkeep
 │   └── environment/
+│       └── .gitkeep
 ├── playbooks/
 │   ├── generate-session-handoff.md
 │   ├── master.md
@@ -153,20 +158,22 @@ Cerrado
 │   ├── project-state.md
 │   └── roadmap.md
 └── tutorial/
+    └── .gitkeep
 ```
 
 ## Estado de directorios
 
 | Directorio | Estado | Contenido actual |
 |---|---|---|
-| `assets/` | Previsto | Sin artefactos formativos |
-| `labs/` | Previsto | Sin laboratorios |
-| `platform/environment/` | Preparado para la Unidad 00 | Sin scripts todavía |
+| `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
+| `labs/` | Previsto y materializado | Solo `.gitkeep`; sin laboratorios |
+| `platform/` | Previsto y materializado | Solo `.gitkeep` y `environment/` |
+| `platform/environment/` | Preparado para la Unidad 00 | Solo `.gitkeep`; sin scripts todavía |
 | `playbooks/` | Operativo | Framework completo |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
-| `tutorial/` | Preparado para la Unidad 00 | Sin contenido formativo |
+| `tutorial/` | Preparado para la Unidad 00 | Solo `.gitkeep`; sin contenido formativo |
 
-Git no conserva directorios vacíos. La existencia física de estos directorios dependerá de que contengan archivos como `.gitkeep` o artefactos reales.
+Git no conserva directorios vacíos. Las rutas base previstas se mantienen actualmente mediante `.gitkeep` hasta que existan artefactos reales.
 
 ---
 
@@ -424,6 +431,7 @@ No existen todavía validaciones funcionales del entorno.
 | 10 | Revisión y cierre del bootstrap | Completado | Contenido aprobado y framework operativo |
 | 11 | Actualización de `project/project-state.md` | Completado | Bootstrap declarado formalmente completo |
 | 12 | Cierre y sincronización del Framework V1 | Completado con este cambio | Inventario, árbol, ADR y estado sincronizados; Framework V1 congelado |
+| 13 | Corrección de inconsistencias del framework | Completado con este cambio | Handoff alineado, estado documental sincronizado y rutas base materializadas con `.gitkeep` |
 
 ---
 

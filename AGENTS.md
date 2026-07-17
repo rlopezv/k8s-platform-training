@@ -174,15 +174,15 @@ Antes de finalizar:
 6. Registra limitaciones o riesgos.
 7. Sugiere un mensaje de commit.
 
-## Nota Sobre Handoff
+## Handoff
 
-La documentacion menciona `playbooks/generate-session-handoff.md`, pero el repositorio actual contiene:
+El procedimiento de handoff esta definido en:
 
 ```text
-playbooks/session-handoff.md
+playbooks/generate-session-handoff.md
 ```
 
-Trata esto como una inconsistencia del repositorio. Antes de depender del procedimiento de handoff, usa explicitamente el archivo existente o corrige nombres y referencias en un incremento documental dedicado.
+`SESSION_HANDOFF.md` es un artefacto derivado y temporal. No debe mantenerse manualmente como fuente de verdad.
 
 ## Idioma
 
