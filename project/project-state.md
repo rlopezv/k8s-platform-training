@@ -31,7 +31,7 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Plataforma local desplegada | No |
 | Contenido formativo generado | Parcial |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Preparar instalacion de MicroK8s y kubectl |
+| Siguiente incremento permitido | Completar verificacion WSL/Ubuntu y handoff para VS Code WSL |
 
 ---
 
@@ -469,7 +469,7 @@ No existen todavía validaciones funcionales registradas para MicroK8s, Kubernet
 El siguiente incremento principal es:
 
 ```text
-Preparar instalacion de MicroK8s y kubectl
+Completar verificacion WSL/Ubuntu y handoff para VS Code WSL
 ```
 
 ## Fuentes obligatorias
@@ -492,11 +492,11 @@ No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leers
 
 ## Trabajo permitido
 
-- ejecutar `platform/environment/windows/check-prerequisites.ps1` en PowerShell sobre Windows;
-- crear o documentar scripts de instalacion de MicroK8s sobre Ubuntu WSL2;
-- crear o documentar configuracion de `kubectl` como cliente operativo principal;
-- mantener `microk8s kubectl` solo como fallback de diagnostico;
-- mantener el addon inicial `dns`;
+- completar `tutorial/00-environment/README.md` como guia de instalacion WSL/Ubuntu hasta el estado validado;
+- documentar troubleshooting inicial de Windows, WSL2, Ubuntu, systemd, snap y conectividad;
+- documentar como continuar el trabajo desde VS Code conectado a Ubuntu WSL;
+- generar `SESSION_HANDOFF.md` como artefacto derivado para la siguiente conversacion;
+- mantener MicroK8s y `kubectl` como siguiente bloque posterior, sin iniciar todavia su instalacion;
 - registrar resultados reales en `tutorial/00-environment/summary.md`;
 - actualizar `project/project-state.md` con evidencias reales;
 - completar `tutorial/00-environment/README.md` si los resultados revelan ajustes necesarios;

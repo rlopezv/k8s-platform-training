@@ -107,4 +107,4 @@ terraform version
 
 ## Siguiente incremento recomendado
 
-Preparar la instalacion de MicroK8s y `kubectl` sobre Ubuntu 24.04 LTS, manteniendo `kubectl` como cliente operativo principal.
+Completar la verificacion de WSL/Ubuntu, documentar la guia de instalacion y troubleshooting inicial, y generar un handoff para continuar desde VS Code conectado directamente a Ubuntu WSL.
