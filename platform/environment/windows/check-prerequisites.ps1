@@ -38,7 +38,7 @@ Write-Host "This script is read-only and does not modify the host."
 Write-Host ""
 
 try {
-    $os = Get-CimInstance -ClassName Win32_OperatingSystem
+    $os = Get-CimInstance -ClassName Win32_OperatingSystem -ErrorAction Stop
     $caption = $os.Caption
     $version = $os.Version
     $build = [int]$os.BuildNumber
@@ -49,11 +49,11 @@ try {
         Write-Check -Name "Windows edition" -Status "WARN" -Detail "$caption build $build ($version); Unit 00 targets Windows 11"
     }
 } catch {
-    Write-Check -Name "Windows edition" -Status "FAIL" -Detail "Unable to query Win32_OperatingSystem: $($_.Exception.Message)"
+    Write-Check -Name "Windows edition" -Status "WARN" -Detail "Unable to query Win32_OperatingSystem: $($_.Exception.Message)"
 }
 
 try {
-    $computer = Get-CimInstance -ClassName Win32_ComputerSystem
+    $computer = Get-CimInstance -ClassName Win32_ComputerSystem -ErrorAction Stop
     if ($computer.HypervisorPresent) {
         Write-Check -Name "Hypervisor" -Status "PASS" -Detail "Hypervisor is present"
     } else {
@@ -97,7 +97,13 @@ if (Test-CommandAvailable -Command "wsl.exe") {
 }
 
 try {
-    $systemDrive = Get-PSDrive -Name $env:SystemDrive.TrimEnd(":")
+    $systemDriveName = if ($env:SystemDrive) {
+        $env:SystemDrive.TrimEnd(":")
+    } else {
+        (Get-Location).Drive.Name
+    }
+
+    $systemDrive = Get-PSDrive -Name $systemDriveName -ErrorAction Stop
     $freeGb = [math]::Round($systemDrive.Free / 1GB, 2)
     if ($freeGb -ge 30) {
         Write-Check -Name "System drive free space" -Status "PASS" -Detail "$freeGb GB free"

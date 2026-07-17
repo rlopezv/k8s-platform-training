@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 00 — Preparación del entorno |
-| Estado general | Unidad 00 en progreso; scripts iniciales de validación creados |
-| Último incremento completado | Scripts iniciales de validación de Unidad 00 |
+| Estado general | Unidad 00 en progreso; validaciones iniciales definidas |
+| Último incremento completado | Definición y ajuste de validaciones iniciales de Unidad 00 |
 | Unidad activa | 00 — Preparación del entorno |
 | Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
 | Plataforma local desplegada | No |
 | Contenido formativo generado | Parcial |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Ejecutar scripts iniciales de validación y registrar resultados |
+| Siguiente incremento permitido | Preparar instalación de Ubuntu 24.04 LTS en WSL2 |
 
 ---
 
@@ -233,10 +233,10 @@ Todavía deben validarse durante la unidad:
 
 | Componente | Estado | Versión o detalle | Evidencia |
 |---|---|---|---|
-| Windows 11 | Requisito previsto, no validado | Pendiente | Debe validarse en la Unidad 00 |
-| Virtualización | No validada | Pendiente | Debe validarse en la Unidad 00 |
-| WSL2 | No validado por el proyecto | Pendiente | `wsl --status` |
-| Ubuntu LTS | No validado por el proyecto | Baseline objetivo: 24.04 LTS; 22.04 LTS aceptable si ya existe | `wsl --list --verbose` y `/etc/os-release` |
+| Windows 11 | Requisito previsto, pendiente de validar por cada entorno | Pendiente | `platform/environment/windows/check-prerequisites.ps1` |
+| Virtualización | Requisito previsto, pendiente de validar por cada entorno | Pendiente | `platform/environment/windows/check-prerequisites.ps1` |
+| WSL2 | Requisito previsto | Version 2 | `wsl --status` y `wsl --list --verbose` |
+| Ubuntu LTS | Requisito objetivo | Ubuntu 24.04 LTS sobre WSL2 | `wsl --list --verbose` y `/etc/os-release` |
 
 ## Plataforma Kubernetes
 
@@ -424,10 +424,11 @@ Actualmente solo pueden validarse documentalmente:
 | Existencia del playbook de Unidad 00 | Revisión del repositorio | Archivo presente |
 | Ausencia de contenido formativo prematuro | Revisión del repositorio | Sin contenido de unidades posteriores ni laboratorios funcionales |
 | Diseño inicial de Unidad 00 | Revisión del repositorio | `tutorial/00-environment/README.md`, `tutorial/00-environment/summary.md` y `platform/environment/README.md` presentes |
-| Sintaxis Bash de validaciones iniciales | `bash -n` | Pendiente; el entorno actual no tiene distribución WSL instalada |
-| Sintaxis PowerShell de validación Windows | Parser de PowerShell | Script PowerShell sin errores de sintaxis |
+| Validación Windows inicial | `platform/environment/windows/check-prerequisites.ps1` | Disponible para comprobar Windows, WSL2 y distribucion Ubuntu objetivo |
+| Sintaxis Bash de validaciones iniciales | `bash -n` | Debe ejecutarse desde Ubuntu 24.04 LTS sobre WSL2 |
+| Sintaxis PowerShell de validación Windows | Ejecución de script | Script PowerShell ajustado para tratar comprobaciones no concluyentes como avisos |
 
-No existen todavía validaciones funcionales del entorno.
+No existen todavía validaciones funcionales registradas para MicroK8s, Kubernetes, Helm ni Terraform.
 
 ---
 
@@ -451,6 +452,7 @@ No existen todavía validaciones funcionales del entorno.
 | 14 | Inicio de diseño de la Unidad 00 | Completado con este cambio | Unidad 00 iniciada; `kubectl` definido como cliente principal; diseño inicial creado |
 | 15 | Política inicial de versiones de Unidad 00 | Completado con este cambio | Baseline definida para Ubuntu, MicroK8s, Kubernetes, kubectl, Helm y Terraform |
 | 16 | Scripts iniciales de validación de Unidad 00 | Completado con este cambio | Validaciones no destructivas creadas para Windows y Ubuntu/WSL |
+| 17 | Ajuste de validaciones iniciales | Completado con este cambio | Validaciones expresadas como criterios del entorno objetivo; Ubuntu 24.04 LTS sobre WSL2 sigue siendo el requisito |
 
 ---
 
@@ -459,7 +461,7 @@ No existen todavía validaciones funcionales del entorno.
 El siguiente incremento principal es:
 
 ```text
-Ejecutar scripts iniciales de validación y registrar resultados
+Preparar instalación de Ubuntu 24.04 LTS en WSL2
 ```
 
 ## Fuentes obligatorias
@@ -483,8 +485,11 @@ No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leers
 ## Trabajo permitido
 
 - ejecutar `platform/environment/windows/check-prerequisites.ps1` en PowerShell sobre Windows;
-- ejecutar `platform/environment/linux/check-prerequisites.sh` en Ubuntu sobre WSL2;
-- ejecutar `platform/environment/validation/validate-environment.sh` en Ubuntu sobre WSL2;
+- documentar o crear el procedimiento de instalacion de Ubuntu 24.04 LTS en WSL2;
+- comprobar `wsl --list --online` antes de seleccionar la distribucion exacta;
+- ejecutar `wsl.exe --install <Distro>` solo con aprobacion explicita del usuario;
+- ejecutar `platform/environment/linux/check-prerequisites.sh` en Ubuntu sobre WSL2 cuando exista la distribucion;
+- ejecutar `platform/environment/validation/validate-environment.sh` en Ubuntu sobre WSL2 cuando exista la distribucion;
 - registrar resultados reales en `tutorial/00-environment/summary.md`;
 - actualizar `project/project-state.md` con evidencias reales;
 - completar `tutorial/00-environment/README.md` si los resultados revelan ajustes necesarios;

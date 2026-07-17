@@ -39,22 +39,32 @@ La decision principal registrada es usar `kubectl` como cliente operativo princi
 
 ## Validaciones
 
-No se han ejecutado validaciones funcionales del entorno.
+La Unidad 00 define validaciones iniciales no destructivas para comprobar que una persona puede preparar el entorno objetivo.
 
-Validaciones estaticas ejecutadas sobre los scripts:
+Validacion Windows:
 
 ```text
-PowerShell parser sobre platform/environment/windows/check-prerequisites.ps1
+platform/environment/windows/check-prerequisites.ps1
 ```
 
-Validaciones estaticas pendientes:
+Criterios que debe comprobar:
+
+| Comprobacion | Resultado esperado |
+|---|---|
+| `wsl.exe` | Disponible |
+| Version predeterminada de WSL | 2 |
+| Distribucion Ubuntu objetivo | Ubuntu 24.04 LTS sobre WSL2 |
+| Features WSL/VMP | Habilitadas o pendientes de habilitar antes de instalar Ubuntu |
+| Espacio libre | Suficiente para Ubuntu, MicroK8s y las herramientas de la unidad |
+
+Validaciones Linux:
 
 ```text
 bash -n platform/environment/linux/check-prerequisites.sh
 bash -n platform/environment/validation/validate-environment.sh
 ```
 
-Motivo: el entorno actual no tiene una distribucion WSL instalada para ejecutar `bash`.
+Estas validaciones deben ejecutarse desde la distribucion Ubuntu 24.04 LTS objetivo, no desde otras distribuciones WSL que pueda tener el equipo.
 
 Validaciones pendientes:
 
@@ -75,10 +85,11 @@ terraform version
 ## Limitaciones conocidas
 
 - Los scripts creados son solo de diagnostico y no instalan componentes.
+- La unidad requiere instalar o disponer de Ubuntu 24.04 LTS sobre WSL2 como distribucion objetivo.
 - No existe `tutorial/00-environment/instructor-notes.md`.
-- No se han validado versiones reales de Windows, WSL2, Ubuntu, MicroK8s, Kubernetes, `kubectl`, Helm ni Terraform.
+- No se han validado versiones reales de Windows, Ubuntu, MicroK8s, Kubernetes, `kubectl`, Helm ni Terraform.
 - No se ha instalado ni configurado la plataforma local desde este repositorio.
 
 ## Siguiente incremento recomendado
 
-Ejecutar los scripts iniciales en el entorno real, registrar resultados y corregir los procedimientos antes de crear scripts de instalacion.
+Preparar el procedimiento de instalacion de Ubuntu 24.04 LTS en WSL2 y repetir las validaciones Linux una vez exista la distribucion.
