@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 00 — Preparación del entorno |
-| Estado general | Unidad 00 iniciada; diseño operativo inicial creado |
-| Último incremento completado | Inicio de diseño de la Unidad 00 |
+| Estado general | Unidad 00 en progreso; scripts iniciales de validación creados |
+| Último incremento completado | Scripts iniciales de validación de Unidad 00 |
 | Unidad activa | 00 — Preparación del entorno |
 | Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
 | Plataforma local desplegada | No |
 | Contenido formativo generado | Parcial |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Scripts iniciales de validación de la Unidad 00 |
+| Siguiente incremento permitido | Ejecutar scripts iniciales de validación y registrar resultados |
 
 ---
 
@@ -143,7 +143,13 @@ Cerrado
 │   ├── .gitkeep
 │   └── environment/
 │       ├── .gitkeep
-│       └── README.md
+│       ├── README.md
+│       ├── linux/
+│       │   └── check-prerequisites.sh
+│       ├── validation/
+│       │   └── validate-environment.sh
+│       └── windows/
+│           └── check-prerequisites.ps1
 ├── playbooks/
 │   ├── generate-session-handoff.md
 │   ├── master.md
@@ -172,7 +178,7 @@ Cerrado
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Previsto y materializado | Solo `.gitkeep`; sin laboratorios |
 | `platform/` | Previsto y materializado | Solo `.gitkeep` y `environment/` |
-| `platform/environment/` | En diseño para la Unidad 00 | `README.md` y `.gitkeep`; sin scripts todavía |
+| `platform/environment/` | En progreso para la Unidad 00 | `README.md`, `.gitkeep` y scripts iniciales de validación |
 | `playbooks/` | Operativo | Framework completo |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
 | `tutorial/` | En uso por la Unidad 00 | `00-environment/` y `.gitkeep` |
@@ -198,7 +204,7 @@ Git no conserva directorios vacíos. Las rutas base previstas se mantienen actua
 | Fecha de cierre | No aplica |
 | Playbook | `playbooks/units/00-environment.md` |
 | Tutorial | `tutorial/00-environment/README.md` parcial |
-| Artefactos ejecutables | `platform/environment/README.md` parcial; scripts pendientes |
+| Artefactos ejecutables | Scripts iniciales de validación presentes; instalación pendiente |
 | Instructor notes | Pendientes |
 | Summary | `tutorial/00-environment/summary.md` parcial |
 
@@ -418,6 +424,8 @@ Actualmente solo pueden validarse documentalmente:
 | Existencia del playbook de Unidad 00 | Revisión del repositorio | Archivo presente |
 | Ausencia de contenido formativo prematuro | Revisión del repositorio | Sin contenido de unidades posteriores ni laboratorios funcionales |
 | Diseño inicial de Unidad 00 | Revisión del repositorio | `tutorial/00-environment/README.md`, `tutorial/00-environment/summary.md` y `platform/environment/README.md` presentes |
+| Sintaxis Bash de validaciones iniciales | `bash -n` | Pendiente; el entorno actual no tiene distribución WSL instalada |
+| Sintaxis PowerShell de validación Windows | Parser de PowerShell | Script PowerShell sin errores de sintaxis |
 
 No existen todavía validaciones funcionales del entorno.
 
@@ -442,6 +450,7 @@ No existen todavía validaciones funcionales del entorno.
 | 13 | Corrección de inconsistencias del framework | Completado con este cambio | Handoff alineado, estado documental sincronizado y rutas base materializadas con `.gitkeep` |
 | 14 | Inicio de diseño de la Unidad 00 | Completado con este cambio | Unidad 00 iniciada; `kubectl` definido como cliente principal; diseño inicial creado |
 | 15 | Política inicial de versiones de Unidad 00 | Completado con este cambio | Baseline definida para Ubuntu, MicroK8s, Kubernetes, kubectl, Helm y Terraform |
+| 16 | Scripts iniciales de validación de Unidad 00 | Completado con este cambio | Validaciones no destructivas creadas para Windows y Ubuntu/WSL |
 
 ---
 
@@ -450,7 +459,7 @@ No existen todavía validaciones funcionales del entorno.
 El siguiente incremento principal es:
 
 ```text
-Generar scripts iniciales de validación de la Unidad 00
+Ejecutar scripts iniciales de validación y registrar resultados
 ```
 
 ## Fuentes obligatorias
@@ -473,9 +482,13 @@ No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leers
 
 ## Trabajo permitido
 
-- completar `tutorial/00-environment/README.md`;
+- ejecutar `platform/environment/windows/check-prerequisites.ps1` en PowerShell sobre Windows;
+- ejecutar `platform/environment/linux/check-prerequisites.sh` en Ubuntu sobre WSL2;
+- ejecutar `platform/environment/validation/validate-environment.sh` en Ubuntu sobre WSL2;
+- registrar resultados reales en `tutorial/00-environment/summary.md`;
+- actualizar `project/project-state.md` con evidencias reales;
+- completar `tutorial/00-environment/README.md` si los resultados revelan ajustes necesarios;
 - generar `tutorial/00-environment/instructor-notes.md`;
-- generar scripts iniciales en `platform/environment/`;
 - definir versiones objetivo justificadas;
 - mantener `dns` como addon mínimo inicial salvo evidencia contraria;
 - crear scripts idempotentes;

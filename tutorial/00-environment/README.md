@@ -102,4 +102,12 @@ Esta unidad no generara:
 
 ## Siguiente incremento
 
-El siguiente incremento recomendado es generar los scripts de validacion inicial y la documentacion operativa detallada en `platform/environment/`.
+El siguiente incremento recomendado es ejecutar los scripts de validacion inicial en el entorno real y registrar los resultados observados.
+
+Scripts disponibles:
+
+```text
+platform/environment/windows/check-prerequisites.ps1
+platform/environment/linux/check-prerequisites.sh
+platform/environment/validation/validate-environment.sh
+```

@@ -20,7 +20,10 @@ La decision principal registrada es usar `kubectl` como cliente operativo princi
 | Artefacto | Ruta | Estado |
 |---|---|---|
 | Diseno inicial del tutorial | `tutorial/00-environment/README.md` | Creado |
-| Diseno operativo de plataforma | `platform/environment/README.md` | Creado |
+| Diseno operativo de plataforma | `platform/environment/README.md` | Actualizado |
+| Validacion Windows inicial | `platform/environment/windows/check-prerequisites.ps1` | Creado |
+| Validacion Linux inicial | `platform/environment/linux/check-prerequisites.sh` | Creado |
+| Validacion integrada Linux | `platform/environment/validation/validate-environment.sh` | Creado |
 | Playbook de la unidad | `playbooks/units/00-environment.md` | Actualizado con decision `kubectl` |
 | Estado del proyecto | `project/project-state.md` | Actualizado para iniciar Unidad 00 |
 
@@ -38,12 +41,29 @@ La decision principal registrada es usar `kubectl` como cliente operativo princi
 
 No se han ejecutado validaciones funcionales del entorno.
 
+Validaciones estaticas ejecutadas sobre los scripts:
+
+```text
+PowerShell parser sobre platform/environment/windows/check-prerequisites.ps1
+```
+
+Validaciones estaticas pendientes:
+
+```text
+bash -n platform/environment/linux/check-prerequisites.sh
+bash -n platform/environment/validation/validate-environment.sh
+```
+
+Motivo: el entorno actual no tiene una distribucion WSL instalada para ejecutar `bash`.
+
 Validaciones pendientes:
 
 ```text
 wsl --status
 wsl --list --verbose
 cat /etc/os-release
+bash -n platform/environment/linux/check-prerequisites.sh
+bash -n platform/environment/validation/validate-environment.sh
 microk8s status --wait-ready
 microk8s version
 kubectl version --client
@@ -54,11 +74,11 @@ terraform version
 
 ## Limitaciones conocidas
 
-- No existen scripts ejecutables todavia.
+- Los scripts creados son solo de diagnostico y no instalan componentes.
 - No existe `tutorial/00-environment/instructor-notes.md`.
 - No se han validado versiones reales de Windows, WSL2, Ubuntu, MicroK8s, Kubernetes, `kubectl`, Helm ni Terraform.
 - No se ha instalado ni configurado la plataforma local desde este repositorio.
 
 ## Siguiente incremento recomendado
 
-Generar los scripts iniciales de validacion y completar la documentacion operativa de Unidad 00 sin crear contenido de la Unidad 01.
+Ejecutar los scripts iniciales en el entorno real, registrar resultados y corregir los procedimientos antes de crear scripts de instalacion.
