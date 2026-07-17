@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 00 — Preparación del entorno |
-| Estado general | Unidad 00 en progreso; scripts MicroK8s/kubectl generados y pendientes de ejecución funcional |
-| Último incremento completado | Scripts y documentación MicroK8s/kubectl generados |
+| Estado general | Unidad 00 en progreso; MicroK8s y kubectl instalados y validados |
+| Último incremento completado | Validacion real de MicroK8s y kubectl completada |
 | Unidad activa | 00 — Preparación del entorno |
 | Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
 | Plataforma local desplegada | No |
 | Contenido formativo generado | Parcial |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Ejecutar y registrar validación real de MicroK8s y kubectl |
+| Siguiente incremento permitido | Instalar y validar Helm y Terraform |
 
 ---
 
@@ -232,7 +232,7 @@ Todavía deben completarse o validarse durante la unidad:
 - espacio en disco;
 - Git.
 
-WSL2 y Ubuntu 24.04.4 LTS ya cuentan con validaciones iniciales, pero permanecen sujetos a avisos no bloqueantes antes de instalar MicroK8s.
+WSL2 y Ubuntu 24.04.4 LTS ya cuentan con validaciones iniciales. DNS hacia `snapcraft.io` resolvio correctamente durante la instalacion real de MicroK8s.
 
 ---
 
@@ -245,16 +245,16 @@ WSL2 y Ubuntu 24.04.4 LTS ya cuentan con validaciones iniciales, pero permanecen
 | Windows 11 | Requisito previsto, pendiente de validar por cada entorno | Pendiente | `platform/environment/windows/check-prerequisites.ps1` |
 | Virtualización | Requisito previsto, pendiente de validar por cada entorno | Pendiente | `platform/environment/windows/check-prerequisites.ps1` |
 | WSL2 | Requisito previsto; Ubuntu objetivo ejecutandose sobre WSL2 segun resultados aportados | Version 2 | `wsl --status` y `wsl --list --verbose` |
-| Ubuntu LTS | Validada con avisos no bloqueantes | Ubuntu 24.04.4 LTS (`noble`) sobre WSL2; usuario inicial `ramon` | `cat /etc/os-release`, validaciones Linux proporcionadas por el usuario y validacion integrada ejecutada en esta sesion |
+| Ubuntu LTS | Validada | Ubuntu 24.04.4 LTS (`noble`) sobre WSL2; usuario inicial `ramon` | `cat /etc/os-release` y validacion integrada aportada por el usuario |
 
 ## Plataforma Kubernetes
 
 | Componente | Estado | Versión | Evidencia |
 |---|---|---|---|
-| MicroK8s | Scripts de instalación/configuración/validación generados; no instalado ni validado por resultados reales | Baseline objetivo: canal `1.35/stable` | `platform/environment/microk8s/install.sh` |
-| Kubernetes | No disponible en el estado consolidado | Baseline objetivo: 1.35.x | Unidad 00 |
-| Clúster local | No disponible | No aplica | Unidad 00 |
-| Addons | Baseline documentada; no habilitados por resultados reales | `dns` | `platform/environment/microk8s/configure.sh` |
+| MicroK8s | Instalado y validado por el usuario | `v1.35.6`, canal `1.35/stable`, revision `9072` | `platform/environment/microk8s/install.sh` y `platform/environment/microk8s/validate.sh` aportados por el usuario |
+| Kubernetes | Disponible y validado en MicroK8s | `v1.35.6` | `kubectl get nodes` aportado por el usuario |
+| Clúster local | Disponible y validado | Nodo `gmktecg2` en `Ready` | `kubectl get nodes` aportado por el usuario |
+| Addons | `dns` habilitado; addons core adicionales observados por MicroK8s | `dns`, `ha-cluster`, `helm`, `helm3` | `platform/environment/microk8s/validate.sh` aportado por el usuario |
 
 ## Namespaces
 
@@ -275,7 +275,7 @@ No existen endpoints de aplicación.
 | Herramienta | Estado | Versión activa | Método de comprobación | Incorporación prevista |
 |---|---|---|---|---|
 | Git | Validado en Ubuntu WSL | `/usr/bin/git` | `platform/environment/linux/check-prerequisites.sh` | Unidad 00 |
-| kubectl | Script de instalación generado; no instalado ni validado por resultados reales | Baseline objetivo: 1.35.x compatible | `kubectl version --client` | Unidad 00 |
+| kubectl | Instalado por el usuario desde `1.35/stable`; operativo contra MicroK8s | `v1.35.6` | `kubectl version --client`, `kubectl get nodes` | Unidad 00 |
 | Helm | No instalado | Baseline objetivo: 3.21.x | `helm version` | Unidad 00 |
 | Terraform | No instalado | Baseline objetivo: 1.15.x | `terraform version` | Unidad 00 |
 | Argo CD | No incorporado | No aplica | No aplica | Unidad 09 |
@@ -438,7 +438,7 @@ Validaciones registradas actualmente:
 | Instalacion Ubuntu WSL | `platform/environment/windows/prepare-ubuntu-wsl.ps1 -Install` | Ejecutada por el usuario; `Ubuntu-24.04` instalada correctamente |
 | Validacion Linux inicial | `platform/environment/linux/check-prerequisites.sh` | Ejecutada por el usuario; 0 fallos y 4 avisos esperados por herramientas pendientes |
 | Validacion integrada Linux | `platform/environment/validation/validate-environment.sh` | Ejecutada por el usuario; completada sin fallos bloqueantes |
-| Validacion integrada Linux actual | `bash platform/environment/validation/validate-environment.sh` | Ejecutada en esta sesion; bloque Ubuntu con 0 fallos y 6 avisos; bloque MicroK8s falla por `microk8s` y `kubectl` ausentes |
+| Validacion integrada Linux actual | `bash platform/environment/validation/validate-environment.sh` | Ejecutada por el usuario; completada sin fallos bloqueantes, 2 avisos esperados por Helm y Terraform pendientes |
 | Guia WSL/Ubuntu | `tutorial/00-environment/README.md` | Documenta validacion Windows/WSL2, instalacion Ubuntu 24.04, validacion Ubuntu, avisos esperados, troubleshooting y continuidad VS Code WSL |
 | Referencia tecnica de entorno | `platform/environment/README.md` | Documenta contexto de ejecucion, efectos, repeticion, recuperacion y pendientes de scripts |
 | Sintaxis Bash de validaciones iniciales | Ejecucion de scripts | Scripts ejecutados correctamente desde Ubuntu 24.04.4 LTS |
@@ -447,9 +447,13 @@ Validaciones registradas actualmente:
 | Sintaxis Bash MicroK8s/kubectl | `bash -n platform/environment/microk8s/*.sh` | Ejecutada en esta sesion; codigo de salida 0 |
 | ShellCheck | `shellcheck` | No disponible en este entorno |
 | Reset MicroK8s dry run | `bash platform/environment/microk8s/reset.sh` | Ejecutada en esta sesion; no ejecuta reset sin `--confirm-reset` |
-| Validacion integrada con bloque MicroK8s | `bash platform/environment/validation/validate-environment.sh` | Ejecutada en esta sesion; falla porque MicroK8s y `kubectl` no estan instalados todavia |
+| Validacion integrada con bloque MicroK8s | `bash platform/environment/validation/validate-environment.sh` | Ejecutada por el usuario; MicroK8s y `kubectl` completados sin fallos |
+| DNS snapcraft.io | `getent hosts snapcraft.io` | Ejecutado por el usuario; resuelve direcciones IPv6 |
+| Instalacion MicroK8s/kubectl | `bash platform/environment/microk8s/install.sh` | Ejecutada por el usuario; MicroK8s `v1.35.6` y `kubectl` `1.35.6` instalados desde `1.35/stable` |
+| Validacion MicroK8s/kubectl aportada | `bash platform/environment/microk8s/validate.sh` | Ejecutada por el usuario; 0 fallos, 0 avisos |
+| Correccion parser addon dns | `platform/environment/microk8s/validate.sh` | Corregido para detectar addons en el formato MicroK8s 1.35 |
 
-No existen todavía validaciones funcionales registradas para MicroK8s, Kubernetes, Helm ni Terraform.
+No existen todavía validaciones funcionales registradas para Helm ni Terraform.
 
 ---
 
@@ -478,7 +482,9 @@ No existen todavía validaciones funcionales registradas para MicroK8s, Kubernet
 | 19 | Instalacion de Ubuntu WSL | Completado con este cambio | El usuario ejecuto la instalacion de `Ubuntu-24.04`, creo el usuario Linux `ramon` y obtuvo primer arranque correcto |
 | 20 | Validacion Linux inicial | Completado | Ubuntu 24.04.4 LTS validada en WSL2; systemd, snap, Git, conectividad DNS y espacio libre correctos |
 | 21 | Guia WSL/Ubuntu y continuidad VS Code WSL | Completado con este cambio | Tutorial y referencia tecnica actualizados; validacion integrada actual sin fallos bloqueantes pero con aviso DNS; siguiente bloque preparado para MicroK8s y `kubectl` |
-| 22 | Scripts y documentacion MicroK8s/kubectl | Completado con este cambio | Scripts idempotentes generados; instructor notes creadas; validaciones funcionales pendientes de ejecucion real |
+| 22 | Scripts y documentacion MicroK8s/kubectl | Completado | Scripts idempotentes generados; instructor notes creadas; validaciones funcionales pendientes de ejecucion real |
+| 23 | Instalacion real MicroK8s/kubectl y correccion de validacion | Completado | MicroK8s `v1.35.6` y `kubectl` `1.35.6` instalados; parser de addon `dns` corregido |
+| 24 | Validacion real MicroK8s/kubectl | Completado con este cambio | `validate.sh` e integrada ejecutadas sin fallos bloqueantes; siguiente bloque permitido Helm y Terraform |
 
 ---
 
@@ -487,7 +493,7 @@ No existen todavía validaciones funcionales registradas para MicroK8s, Kubernet
 El siguiente incremento principal es:
 
 ```text
-Ejecutar y registrar validacion real de MicroK8s y kubectl
+Instalar y validar Helm y Terraform
 ```
 
 ## Fuentes obligatorias
@@ -510,15 +516,12 @@ No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leers
 
 ## Trabajo permitido
 
-- ejecutar `platform/environment/microk8s/install.sh` en Ubuntu WSL2;
-- ejecutar `platform/environment/microk8s/configure.sh`;
-- ejecutar `platform/environment/microk8s/validate.sh`;
-- validar `microk8s status --wait-ready`, `microk8s version`, `kubectl version --client` y `kubectl get nodes` cuando el usuario ejecute los pasos;
-- revisar conectividad DNS/proxy/VPN si `snapcraft.io` sigue sin resolver;
-- mantener Helm y Terraform como pasos posteriores de la Unidad 00 hasta cerrar MicroK8s/kubectl;
+- crear scripts útiles e idempotentes en `platform/environment/tools/` para instalar y validar Helm y Terraform;
+- instalar y validar Helm sin crear charts ni releases funcionales;
+- instalar y validar Terraform sin crear módulos, backends ni recursos;
+- mantener MicroK8s, Kubernetes y `kubectl` como baseline ya validada;
 - registrar resultados reales en `tutorial/00-environment/summary.md`;
 - actualizar `project/project-state.md` con evidencias reales;
-- mantener `dns` como addon mínimo inicial salvo evidencia contraria;
 - documentar validaciones manuales;
 - actualizar nuevamente `project/project-state.md`.
 

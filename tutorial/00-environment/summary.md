@@ -13,7 +13,9 @@
 
 La Unidad 00 se ha iniciado y ya dispone de bloques documentados para validar Windows, WSL2, Ubuntu 24.04 LTS, MicroK8s y `kubectl`. Ubuntu 24.04.4 LTS sobre WSL2 fue validada como base Linux inicial, con `snap`, Git, herramientas basicas y espacio libre correctos.
 
-Todavia no existe plataforma Kubernetes local validada por ejecucion del usuario. Los scripts de MicroK8s y `kubectl` estan generados, pero su instalacion y validacion funcional quedan pendientes hasta ejecutar los comandos en el entorno real. Helm y Terraform siguen pendientes para bloques posteriores de la misma unidad.
+MicroK8s y `kubectl` ya fueron instalados por el usuario desde el canal `1.35/stable` y responden en el entorno real. La validacion funcional mostro el nodo local en `Ready`, el addon `dns` habilitado y `kubectl` operativo. La validacion integrada termino sin fallos bloqueantes.
+
+Helm y Terraform siguen pendientes para bloques posteriores de la misma unidad.
 
 ## Cambios introducidos
 
@@ -104,23 +106,26 @@ Resultados ejecutados en la sesion actual desde Ubuntu WSL:
 | `bash -n platform/environment/microk8s/validate.sh` | Correcto |
 | `bash -n platform/environment/microk8s/reset.sh` | Correcto |
 | `shellcheck` | No disponible en este entorno |
-| `bash platform/environment/validation/validate-environment.sh` | Falla en bloque MicroK8s porque `microk8s` y `kubectl` no estan instalados |
+| `bash platform/environment/validation/validate-environment.sh` previo | Fallaba en bloque MicroK8s antes de instalar `microk8s` y `kubectl` |
 | `bash platform/environment/microk8s/reset.sh` | Dry run correcto; no ejecuta reset sin `--confirm-reset` |
+| `platform/environment/microk8s/install.sh` | Ejecutado por el usuario; MicroK8s `v1.35.6` y `kubectl` `1.35.6` instalados desde `1.35/stable` |
+| `platform/environment/microk8s/validate.sh` | Ejecutado por el usuario; 0 fallos, 0 avisos |
+| `kubectl get nodes` | Nodo `gmktecg2` en estado `Ready`, Kubernetes `v1.35.6` |
+| `kubectl get namespaces` | `default`, `kube-node-lease`, `kube-public` y `kube-system` activos |
+| Addons MicroK8s observados | `dns`, `ha-cluster`, `helm` y `helm3` aparecen habilitados por MicroK8s |
+| `platform/environment/validation/validate-environment.sh` | Ejecutado por el usuario; completado sin fallos bloqueantes |
+| Ubuntu/WSL integrado | 0 fallos, 2 avisos esperados por Helm y Terraform pendientes |
+| `systemd` | Disponible y en ejecucion |
+| `snap` | Disponible (`2.76`) |
+| DNS | `snapcraft.io` resuelve correctamente |
 
-La diferencia de DNS debe revisarse antes de instalar MicroK8s con `snap`. La validacion integrada falla hasta que el usuario ejecute instalacion/configuracion de MicroK8s y `kubectl`.
+DNS hacia `snapcraft.io` resolvio correctamente durante la instalacion y durante la validacion integrada.
 
 Validaciones pendientes:
 
 ```text
 wsl --status
 wsl --list --verbose
-microk8s status --wait-ready
-microk8s version
-kubectl version --client
-kubectl get nodes
-bash platform/environment/microk8s/install.sh
-bash platform/environment/microk8s/configure.sh
-bash platform/environment/microk8s/validate.sh
 helm version
 terraform version
 ```
@@ -132,11 +137,11 @@ terraform version
 - `platform/environment/microk8s/install.sh` instala MicroK8s y `kubectl` solo cuando el usuario lo ejecuta.
 - `platform/environment/microk8s/reset.sh` no ejecuta reset sin `--confirm-reset`.
 - Ubuntu 24.04.4 LTS esta instalada y validada como base WSL2 de la Unidad 00.
-- `kubectl`, MicroK8s, Helm y Terraform aun no estan instalados o configurados por resultados reales aportados.
-- No se han validado versiones reales de Windows, MicroK8s, Kubernetes, `kubectl`, Helm ni Terraform.
-- No se ha instalado ni configurado la plataforma Kubernetes local desde este repositorio.
-- La validacion actual no resolvio `snapcraft.io`; revisar DNS/proxy/VPN antes de instalar MicroK8s.
+- MicroK8s y `kubectl` estan instalados y validados.
+- No se han validado versiones reales de Windows, Helm ni Terraform.
+- La plataforma Kubernetes local responde y queda lista para instalar herramientas base restantes.
+- Los addons `helm` y `helm3` aparecen habilitados por MicroK8s como addons core observados; no sustituyen la instalacion/validacion posterior de Helm como herramienta del curso.
 
 ## Siguiente incremento recomendado
 
-Ejecutar en el entorno real los scripts de MicroK8s y `kubectl`, aportar resultados, y actualizar el estado con versiones observadas antes de continuar con Helm y Terraform.
+Instalar y validar Helm y Terraform como herramientas de la Unidad 00, sin crear charts ni modulos.

@@ -392,15 +392,17 @@ Resultados aportados para este repositorio:
 | DNS | Validacion previa correcta; validacion actual no resolvio `snapcraft.io` |
 | Espacio libre en `$HOME` | 952-954 GB observados |
 | Validacion Linux inicial | 0 fallos; avisos esperados por herramientas pendientes |
-| Validacion integrada Linux | El bloque Ubuntu no tiene fallos; el bloque MicroK8s falla hasta instalar `microk8s` y `kubectl` |
+| DNS `snapcraft.io` | Resuelve correctamente antes de instalar MicroK8s |
+| MicroK8s | Instalado desde `1.35/stable`; version observada `v1.35.6` |
+| `kubectl` | Instalado desde `1.35/stable`; version observada `v1.35.6` |
+| Nodo Kubernetes | `gmktecg2` en estado `Ready`, version `v1.35.6` |
+| Namespaces de sistema | `default`, `kube-node-lease`, `kube-public` y `kube-system` activos |
+| Validacion MicroK8s | `platform/environment/microk8s/validate.sh` con 0 fallos y 0 avisos |
+| Validacion integrada | Completada sin fallos bloqueantes; avisos esperados por Helm y Terraform pendientes |
 
 No se ha validado todavia:
 
 ```text
-microk8s status --wait-ready
-microk8s version
-kubectl version --client
-kubectl get nodes
 helm version
 terraform version
 ```

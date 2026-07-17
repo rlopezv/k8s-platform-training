@@ -21,12 +21,40 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+microk8s_needs_sudo() {
+  ! id -nG "$USER" | tr ' ' '\n' | grep -qx microk8s
+}
+
 run_microk8s() {
-  microk8s "$@" || sudo microk8s "$@"
+  if microk8s_needs_sudo; then
+    sudo microk8s "$@"
+  else
+    local output_file
+    output_file="$(mktemp)"
+    if microk8s "$@" >"$output_file" 2>&1; then
+      cat "$output_file"
+      rm -f "$output_file"
+    else
+      rm -f "$output_file"
+      sudo microk8s "$@"
+    fi
+  fi
 }
 
 microk8s_output() {
-  microk8s "$@" 2>/dev/null || sudo microk8s "$@"
+  if microk8s_needs_sudo; then
+    sudo microk8s "$@"
+  else
+    local output_file
+    output_file="$(mktemp)"
+    if microk8s "$@" >"$output_file" 2>&1; then
+      cat "$output_file"
+      rm -f "$output_file"
+    else
+      rm -f "$output_file"
+      sudo microk8s "$@"
+    fi
+  fi
 }
 
 ensure_microk8s_group() {

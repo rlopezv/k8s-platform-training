@@ -20,16 +20,54 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+microk8s_needs_sudo() {
+  ! id -nG "$USER" | tr ' ' '\n' | grep -qx microk8s
+}
+
 run_microk8s_readonly() {
-  microk8s "$@" || sudo microk8s "$@"
+  if microk8s_needs_sudo; then
+    sudo microk8s "$@"
+  else
+    local output_file
+    output_file="$(mktemp)"
+    if microk8s "$@" >"$output_file" 2>&1; then
+      cat "$output_file"
+      rm -f "$output_file"
+    else
+      rm -f "$output_file"
+      sudo microk8s "$@"
+    fi
+  fi
 }
 
 run_microk8s_wait_ready() {
   if command_exists timeout; then
-    timeout 180 microk8s status --wait-ready || timeout 180 sudo microk8s status --wait-ready
+    if microk8s_needs_sudo; then
+      timeout 180 sudo microk8s status --wait-ready
+    else
+      local output_file
+      output_file="$(mktemp)"
+      if timeout 180 microk8s status --wait-ready >"$output_file" 2>&1; then
+        cat "$output_file"
+        rm -f "$output_file"
+      else
+        rm -f "$output_file"
+        timeout 180 sudo microk8s status --wait-ready
+      fi
+    fi
   else
-    microk8s status --wait-ready || sudo microk8s status --wait-ready
+    run_microk8s_readonly status --wait-ready
   fi
+}
+
+addon_enabled() {
+  local addon_name="$1"
+  awk '
+    /^[[:space:]]+enabled:/ {enabled=1; next}
+    /^[[:space:]]+disabled:/ {enabled=0; next}
+    enabled && $1 == addon {found=1}
+    END {exit found ? 0 : 1}
+  ' addon="$addon_name"
 }
 
 validate_microk8s() {
@@ -51,7 +89,7 @@ validate_microk8s() {
   echo "microk8s status"
   status_output="$(run_microk8s_readonly status 2>/dev/null || true)"
   printf '%s\n' "$status_output"
-  if printf '%s\n' "$status_output" | grep -Eq 'dns:[[:space:]]+enabled'; then
+  if printf '%s\n' "$status_output" | addon_enabled dns; then
     check PASS "MicroK8s dns addon" "dns is enabled"
   else
     check FAIL "MicroK8s dns addon" "dns is not reported as enabled"
