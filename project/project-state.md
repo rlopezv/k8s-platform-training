@@ -152,7 +152,9 @@ Cerrado
 │       │   ├── reset.sh
 │       │   └── validate.sh
 │       ├── tools/
-│       │   └── .gitkeep
+│       │   ├── install-helm.sh
+│       │   ├── install-terraform.sh
+│       │   └── validate-tools.sh
 │       ├── validation/
 │       │   └── validate-environment.sh
 │       └── windows/
@@ -187,7 +189,7 @@ Cerrado
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Previsto y materializado | Solo `.gitkeep`; sin laboratorios |
 | `platform/` | Previsto y materializado | Solo `.gitkeep` y `environment/` |
-| `platform/environment/` | En progreso para la Unidad 00 | `README.md`, validaciones iniciales, preparacion Ubuntu WSL, scripts MicroK8s/kubectl y ruta reservada `tools/` |
+| `platform/environment/` | En progreso para la Unidad 00 | `README.md`, validaciones iniciales, preparacion Ubuntu WSL, scripts MicroK8s/kubectl y scripts Helm/Terraform |
 | `playbooks/` | Operativo | Framework completo |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
 | `tutorial/` | En uso por la Unidad 00 | `00-environment/` y `.gitkeep` |
@@ -212,8 +214,8 @@ Git no conserva directorios vacíos. Las rutas base previstas se mantienen actua
 | Fecha de inicio | 2026-07-17 |
 | Fecha de cierre | No aplica |
 | Playbook | `playbooks/units/00-environment.md` |
-| Tutorial | `tutorial/00-environment/README.md` parcial; bloques WSL/Ubuntu y MicroK8s/kubectl documentados |
-| Artefactos ejecutables | Scripts iniciales, preparacion Ubuntu WSL y scripts MicroK8s/kubectl presentes; ejecución funcional pendiente |
+| Tutorial | `tutorial/00-environment/README.md` parcial; bloques WSL/Ubuntu, MicroK8s/kubectl y Helm/Terraform documentados |
+| Artefactos ejecutables | Scripts iniciales, preparacion Ubuntu WSL, scripts MicroK8s/kubectl y scripts Helm/Terraform presentes; ejecución funcional de herramientas pendiente |
 | Instructor notes | `tutorial/00-environment/instructor-notes.md` creado |
 | Summary | `tutorial/00-environment/summary.md` parcial |
 
@@ -276,8 +278,8 @@ No existen endpoints de aplicación.
 |---|---|---|---|---|
 | Git | Validado en Ubuntu WSL | `/usr/bin/git` | `platform/environment/linux/check-prerequisites.sh` | Unidad 00 |
 | kubectl | Instalado por el usuario desde `1.35/stable`; operativo contra MicroK8s | `v1.35.6` | `kubectl version --client`, `kubectl get nodes` | Unidad 00 |
-| Helm | No instalado | Baseline objetivo: 3.21.x | `helm version` | Unidad 00 |
-| Terraform | No instalado | Baseline objetivo: 1.15.x | `terraform version` | Unidad 00 |
+| Helm | Script de instalación generado; no validado por resultados reales | Baseline objetivo: `v3.21.0` | `platform/environment/tools/install-helm.sh`, `helm version` | Unidad 00 |
+| Terraform | Script de instalación generado; no validado por resultados reales | Baseline objetivo: `1.15.7` | `platform/environment/tools/install-terraform.sh`, `terraform version` | Unidad 00 |
 | Argo CD | No incorporado | No aplica | No aplica | Unidad 09 |
 | Tekton | No incorporado | No aplica | No aplica | Unidad 08 |
 | Prometheus | No incorporado | No aplica | No aplica | Unidad 11 |
@@ -452,6 +454,9 @@ Validaciones registradas actualmente:
 | Instalacion MicroK8s/kubectl | `bash platform/environment/microk8s/install.sh` | Ejecutada por el usuario; MicroK8s `v1.35.6` y `kubectl` `1.35.6` instalados desde `1.35/stable` |
 | Validacion MicroK8s/kubectl aportada | `bash platform/environment/microk8s/validate.sh` | Ejecutada por el usuario; 0 fallos, 0 avisos |
 | Correccion parser addon dns | `platform/environment/microk8s/validate.sh` | Corregido para detectar addons en el formato MicroK8s 1.35 |
+| Scripts Helm/Terraform | `platform/environment/tools/*.sh` | Creados con instalacion versionada, checksum y validacion |
+| Sintaxis Bash Helm/Terraform | `bash -n platform/environment/tools/*.sh` | Ejecutada en esta sesion; codigo de salida 0 |
+| Validacion Helm/Terraform actual | `bash platform/environment/tools/validate-tools.sh` | Ejecutada en esta sesion; falla porque Helm y Terraform no estan instalados todavia |
 
 No existen todavía validaciones funcionales registradas para Helm ni Terraform.
 
@@ -485,6 +490,7 @@ No existen todavía validaciones funcionales registradas para Helm ni Terraform.
 | 22 | Scripts y documentacion MicroK8s/kubectl | Completado | Scripts idempotentes generados; instructor notes creadas; validaciones funcionales pendientes de ejecucion real |
 | 23 | Instalacion real MicroK8s/kubectl y correccion de validacion | Completado | MicroK8s `v1.35.6` y `kubectl` `1.35.6` instalados; parser de addon `dns` corregido |
 | 24 | Validacion real MicroK8s/kubectl | Completado con este cambio | `validate.sh` e integrada ejecutadas sin fallos bloqueantes; siguiente bloque permitido Helm y Terraform |
+| 25 | Scripts Helm/Terraform | Completado con este cambio | Scripts idempotentes generados; validacion funcional pendiente de ejecucion real |
 
 ---
 
@@ -493,7 +499,7 @@ No existen todavía validaciones funcionales registradas para Helm ni Terraform.
 El siguiente incremento principal es:
 
 ```text
-Instalar y validar Helm y Terraform
+Ejecutar y registrar validacion real de Helm y Terraform
 ```
 
 ## Fuentes obligatorias
@@ -516,9 +522,11 @@ No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leers
 
 ## Trabajo permitido
 
-- crear scripts útiles e idempotentes en `platform/environment/tools/` para instalar y validar Helm y Terraform;
-- instalar y validar Helm sin crear charts ni releases funcionales;
-- instalar y validar Terraform sin crear módulos, backends ni recursos;
+- ejecutar `platform/environment/tools/install-helm.sh`;
+- ejecutar `platform/environment/tools/install-terraform.sh`;
+- ejecutar `platform/environment/tools/validate-tools.sh`;
+- repetir `platform/environment/validation/validate-environment.sh`;
+- registrar versiones reales observadas de Helm y Terraform;
 - mantener MicroK8s, Kubernetes y `kubectl` como baseline ya validada;
 - registrar resultados reales en `tutorial/00-environment/summary.md`;
 - actualizar `project/project-state.md` con evidencias reales;

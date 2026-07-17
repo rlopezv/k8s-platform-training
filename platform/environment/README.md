@@ -41,6 +41,9 @@ platform/environment/
 │   ├── reset.sh
 │   └── validate.sh
 ├── tools/
+│   ├── install-helm.sh
+│   ├── install-terraform.sh
+│   └── validate-tools.sh
 ├── windows/
 │   ├── check-prerequisites.ps1
 │   └── prepare-ubuntu-wsl.ps1
@@ -251,6 +254,61 @@ bash platform/environment/microk8s/reset.sh --confirm-reset
 
 Sin `--confirm-reset`, el script solo muestra el impacto. Con confirmacion, ejecuta `microk8s reset`. No elimina Ubuntu, WSL ni Windows.
 
+### Helm y Terraform
+
+Ejecutar desde Ubuntu, en la raiz del repositorio.
+
+Instalar Helm:
+
+```bash
+bash platform/environment/tools/install-helm.sh
+```
+
+Efectos:
+
+- instala Helm `v3.21.0` como CLI local en `/usr/local/bin/helm`;
+- descarga desde `https://get.helm.sh`;
+- verifica checksum SHA256;
+- no crea charts ni releases.
+
+Variable admitida:
+
+```bash
+HELM_VERSION=v3.21.0
+```
+
+Instalar Terraform:
+
+```bash
+bash platform/environment/tools/install-terraform.sh
+```
+
+Efectos:
+
+- instala Terraform `1.15.7` como CLI local en `/usr/local/bin/terraform`;
+- descarga desde `https://releases.hashicorp.com`;
+- verifica checksum SHA256;
+- instala `unzip` mediante `apt-get` si falta;
+- no crea modulos, backends ni recursos.
+
+Variable admitida:
+
+```bash
+TERRAFORM_VERSION=1.15.7
+```
+
+Validar herramientas:
+
+```bash
+bash platform/environment/tools/validate-tools.sh
+```
+
+El script es de solo lectura y comprueba:
+
+- `helm version`;
+- `terraform version`;
+- versiones alineadas con Helm `3.21.x` y Terraform `1.15.x`.
+
 ### Validacion integrada Linux
 
 Ejecutar desde Ubuntu, en la raiz del repositorio:
@@ -259,14 +317,15 @@ Ejecutar desde Ubuntu, en la raiz del repositorio:
 bash platform/environment/validation/validate-environment.sh
 ```
 
-Ejecuta las validaciones Linux disponibles y la validacion MicroK8s/kubectl cuando el script existe. No instala MicroK8s, Helm, Terraform ni `kubectl`.
+Ejecuta las validaciones Linux disponibles, la validacion MicroK8s/kubectl y la validacion de herramientas cuando los scripts existen. No instala MicroK8s, Helm, Terraform ni `kubectl`.
 
 Comportamiento al repetir:
 
 - seguro de ejecutar varias veces;
 - falla si alguna validacion integrada devuelve fallos bloqueantes;
 - falla si MicroK8s o `kubectl` no estan instalados despues de crear el bloque MicroK8s;
-- debe usarse como validacion global despues de ejecutar `install.sh` y `configure.sh`.
+- falla si Helm o Terraform no estan instalados despues de crear el bloque de herramientas;
+- debe usarse como validacion global despues de ejecutar los scripts de instalacion/configuracion correspondientes.
 
 ## Validaciones ejecutadas en el entorno actual
 
@@ -278,25 +337,21 @@ Resultados aportados por el usuario para la Unidad 00:
 | Primer arranque Ubuntu | Correcto; usuario inicial `ramon` |
 | `cat /etc/os-release` | Ubuntu 24.04.4 LTS (`noble`) |
 | `platform/environment/linux/check-prerequisites.sh` | 0 fallos y 4 avisos esperados |
-| `platform/environment/validation/validate-environment.sh` | Sin fallos bloqueantes; ultima ejecucion con 6 avisos |
-| `systemd` | Disponible; estado observado previamente en ejecucion y ultima ejecucion con `unknown` |
-| `snap` | Disponible (`2.73+ubuntu24.04`) |
-| DNS | Validado previamente; ultima ejecucion no resolvio `snapcraft.io` |
-| Espacio libre en `$HOME` | 952-954 GB observados |
-| Scripts MicroK8s | Creados; pendientes de ejecucion funcional por el usuario |
+| `platform/environment/validation/validate-environment.sh` | Ejecutada sin fallos bloqueantes despues de validar MicroK8s; avisos por Helm y Terraform pendientes |
+| `systemd` | Disponible y en ejecucion |
+| `snap` | Disponible (`2.76`) |
+| DNS | `snapcraft.io` resuelve correctamente |
+| Espacio libre en `$HOME` | 951-954 GB observados |
+| Scripts MicroK8s | Creados y validados funcionalmente por el usuario |
+| Scripts Helm/Terraform | Creados; pendientes de ejecucion funcional por el usuario |
 
 ## Pendiente para el siguiente bloque
 
-El directorio siguiente queda reservado para artefactos reales de la Unidad 00:
-
-```text
-platform/environment/tools/
-```
-
-El siguiente incremento debera incorporar scripts utiles para Helm y Terraform, sin crear charts ni modulos.
-
-Antes de instalar MicroK8s, revisar cualquier aviso activo de DNS o `systemd` en:
+Ejecutar los scripts de Helm y Terraform, aportar resultados reales y repetir la validacion integrada:
 
 ```bash
+bash platform/environment/tools/install-helm.sh
+bash platform/environment/tools/install-terraform.sh
+bash platform/environment/tools/validate-tools.sh
 bash platform/environment/validation/validate-environment.sh
 ```

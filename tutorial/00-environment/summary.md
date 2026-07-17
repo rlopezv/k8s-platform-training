@@ -15,7 +15,7 @@ La Unidad 00 se ha iniciado y ya dispone de bloques documentados para validar Wi
 
 MicroK8s y `kubectl` ya fueron instalados por el usuario desde el canal `1.35/stable` y responden en el entorno real. La validacion funcional mostro el nodo local en `Ready`, el addon `dns` habilitado y `kubectl` operativo. La validacion integrada termino sin fallos bloqueantes.
 
-Helm y Terraform siguen pendientes para bloques posteriores de la misma unidad.
+Los scripts para instalar y validar Helm y Terraform ya estan generados. Su ejecucion funcional queda pendiente hasta que el usuario ejecute los instaladores y aporte resultados reales.
 
 ## Cambios introducidos
 
@@ -31,7 +31,9 @@ Helm y Terraform siguen pendientes para bloques posteriores de la misma unidad.
 | Configuracion MicroK8s/kubectl | `platform/environment/microk8s/configure.sh` | Creado |
 | Validacion MicroK8s/kubectl | `platform/environment/microk8s/validate.sh` | Creado |
 | Reset MicroK8s protegido | `platform/environment/microk8s/reset.sh` | Creado |
-| Estructura reservada herramientas | `platform/environment/tools/` | Preparada sin scripts vacios |
+| Instalacion Helm | `platform/environment/tools/install-helm.sh` | Creado |
+| Instalacion Terraform | `platform/environment/tools/install-terraform.sh` | Creado |
+| Validacion Helm/Terraform | `platform/environment/tools/validate-tools.sh` | Creado |
 | Notas del instructor | `tutorial/00-environment/instructor-notes.md` | Creado |
 | Playbook de la unidad | `playbooks/units/00-environment.md` | Actualizado con decision `kubectl` |
 | Estado del proyecto | `project/project-state.md` | Actualizado con scripts MicroK8s/kubectl generados y validaciones funcionales pendientes |
@@ -118,6 +120,11 @@ Resultados ejecutados en la sesion actual desde Ubuntu WSL:
 | `systemd` | Disponible y en ejecucion |
 | `snap` | Disponible (`2.76`) |
 | DNS | `snapcraft.io` resuelve correctamente |
+| `bash -n platform/environment/tools/install-helm.sh` | Correcto |
+| `bash -n platform/environment/tools/install-terraform.sh` | Correcto |
+| `bash -n platform/environment/tools/validate-tools.sh` | Correcto |
+| `bash platform/environment/tools/validate-tools.sh` | Falla con Helm y Terraform ausentes; esperado antes de ejecutar instaladores |
+| `shellcheck` | No disponible en este entorno |
 
 DNS hacia `snapcraft.io` resolvio correctamente durante la instalacion y durante la validacion integrada.
 
@@ -136,6 +143,8 @@ terraform version
 - El script Windows `prepare-ubuntu-wsl.ps1` puede ejecutar la instalacion de Ubuntu solo con `-Install`.
 - `platform/environment/microk8s/install.sh` instala MicroK8s y `kubectl` solo cuando el usuario lo ejecuta.
 - `platform/environment/microk8s/reset.sh` no ejecuta reset sin `--confirm-reset`.
+- `platform/environment/tools/install-helm.sh` instala Helm `v3.21.0` solo cuando el usuario lo ejecuta.
+- `platform/environment/tools/install-terraform.sh` instala Terraform `1.15.7` solo cuando el usuario lo ejecuta.
 - Ubuntu 24.04.4 LTS esta instalada y validada como base WSL2 de la Unidad 00.
 - MicroK8s y `kubectl` estan instalados y validados.
 - No se han validado versiones reales de Windows, Helm ni Terraform.
@@ -144,4 +153,4 @@ terraform version
 
 ## Siguiente incremento recomendado
 
-Instalar y validar Helm y Terraform como herramientas de la Unidad 00, sin crear charts ni modulos.
+Ejecutar los scripts de Helm y Terraform, aportar resultados reales, y repetir la validacion integrada. No crear charts, releases, modulos, backends ni recursos.

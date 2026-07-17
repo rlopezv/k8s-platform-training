@@ -41,6 +41,13 @@ else
   echo
 fi
 
+if [ -x "$environment_dir/tools/validate-tools.sh" ]; then
+  run_step "Helm and Terraform" "$environment_dir/tools/validate-tools.sh"
+else
+  echo "[WARN] $environment_dir/tools/validate-tools.sh is not executable or does not exist"
+  echo
+fi
+
 if [ "$failures" -gt 0 ]; then
   echo "Integrated validation completed with $failures failure(s)."
   exit 1

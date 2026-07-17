@@ -18,7 +18,7 @@ El foco no es memorizar comandos de MicroK8s, sino aprender a separar:
 - `microk8s kubectl` solo debe usarse como fallback para diagnostico.
 - MicroK8s se instala dentro de Ubuntu WSL2, no desde PowerShell.
 - El addon inicial permitido es solo `dns`.
-- Helm y Terraform se instalan despues, sin charts ni modulos en esta fase.
+- Helm y Terraform se instalan como CLI, sin charts ni modulos en esta fase.
 - La aplicacion evolutiva no se define ni se despliega durante la Unidad 00.
 
 ## Demostracion recomendada
@@ -30,6 +30,9 @@ El foco no es memorizar comandos de MicroK8s, sino aprender a separar:
 5. Explicar por que puede requerirse cerrar y reabrir Ubuntu tras modificar el grupo `microk8s`.
 6. Validar con `kubectl get nodes`, no con `microk8s kubectl`, salvo diagnostico.
 7. Mostrar que `reset.sh` no ejecuta nada destructivo sin `--confirm-reset`.
+8. Ejecutar o revisar `platform/environment/tools/install-helm.sh`.
+9. Ejecutar o revisar `platform/environment/tools/install-terraform.sh`.
+10. Validar que instalar las herramientas no crea charts, releases, modulos, backends ni recursos.
 
 ## Errores frecuentes
 
@@ -41,6 +44,9 @@ El foco no es memorizar comandos de MicroK8s, sino aprender a separar:
 | Usuario fuera del grupo `microk8s` | Permisos al ejecutar `microk8s` | Reabrir sesion Ubuntu tras `usermod -a -G microk8s` |
 | kubeconfig ausente o incorrecto | `kubectl get nodes` falla | Regenerar con `configure.sh` y revisar `~/.kube/config` |
 | DNS addon no habilitado | Resolucion interna de Kubernetes falla | Ejecutar `configure.sh` y validar addon `dns` |
+| Helm no es 3.21.x | `validate-tools.sh` falla | Reinstalar con `install-helm.sh` o registrar desviacion |
+| Terraform no es 1.15.x | `validate-tools.sh` falla | Reinstalar con `install-terraform.sh` o registrar desviacion |
+| Falta `unzip` | Instalacion Terraform no puede extraer zip | El script intenta instalar `unzip` mediante `apt-get` |
 
 ## Criterios para aceptar el laboratorio
 
@@ -52,6 +58,8 @@ Aceptar el entorno solo cuando el alumno pueda aportar evidencias de:
 - addon `dns` habilitado;
 - `kubectl version --client` correcto;
 - `kubectl get nodes` con el nodo en `Ready`;
+- `helm version` con version 3.21.x;
+- `terraform version` con version 1.15.x;
 - validacion integrada sin fallos bloqueantes.
 
 Si el entorno no puede instalar MicroK8s por DNS, proxy o VPN, registrar el bloqueo. No sustituir MicroK8s por Minikube, kind ni Docker Desktop Kubernetes.
@@ -63,11 +71,14 @@ Si el entorno no puede instalar MicroK8s por DNS, proxy o VPN, registrar el bloq
 - Que implica anadir el usuario al grupo `microk8s`?
 - Que addon se habilita en esta unidad y cuales quedan diferidos?
 - Que diferencia hay entre resetear MicroK8s y eliminar la distribucion WSL?
+- Por que instalar Helm no implica crear charts?
+- Por que instalar Terraform no implica crear modulos ni backends?
 
 ## Riesgos tecnicos
 
 - Cambios de red corporativa pueden hacer que una validacion DNS pase en una sesion y falle en otra.
 - El estado `degraded` o `unknown` de `systemd` en WSL puede requerir diagnostico adicional antes de instalar.
 - `snap install` puede necesitar privilegios y conectividad estable.
+- Las descargas de Helm y Terraform dependen de conectividad HTTPS externa y verificacion de checksum.
 - Un reset de MicroK8s elimina recursos locales del cluster, aunque esta unidad todavia no debe contener workloads funcionales.
 - Versiones ya instaladas manualmente deben registrarse como observadas, no asumirse como validadas por el repositorio.

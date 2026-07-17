@@ -377,7 +377,49 @@ bash platform/environment/microk8s/reset.sh --confirm-reset
 
 Este reset afecta solo al clúster MicroK8s local. No elimina Ubuntu, WSL ni configuraciones de Windows.
 
-## 11. Estado validado hasta ahora
+## 11. Instalar Helm y Terraform
+
+Helm y Terraform se instalan como herramientas de linea de comandos para preparar las unidades posteriores.
+
+En esta unidad no se crean charts, releases de Helm, modulos Terraform, backends ni recursos.
+
+Instalar Helm:
+
+```bash
+bash platform/environment/tools/install-helm.sh
+```
+
+El script instala Helm `v3.21.0` desde un tarball versionado de `get.helm.sh` y verifica el checksum SHA256 antes de copiar el binario a `/usr/local/bin/helm`.
+
+Instalar Terraform:
+
+```bash
+bash platform/environment/tools/install-terraform.sh
+```
+
+El script instala Terraform `1.15.7` desde `releases.hashicorp.com`, verifica el checksum SHA256 y copia el binario a `/usr/local/bin/terraform`.
+
+Si falta `unzip`, el script de Terraform intentara instalarlo mediante `apt-get`, porque Terraform se distribuye como archivo zip.
+
+Validar herramientas:
+
+```bash
+bash platform/environment/tools/validate-tools.sh
+```
+
+Resultado esperado:
+
+```text
+Tools validation summary: 0 failure(s), 0 warning(s).
+```
+
+Despues ejecutar la validacion integrada:
+
+```bash
+bash platform/environment/validation/validate-environment.sh
+```
+
+## 12. Estado validado hasta ahora
 
 Resultados aportados para este repositorio:
 
@@ -399,6 +441,7 @@ Resultados aportados para este repositorio:
 | Namespaces de sistema | `default`, `kube-node-lease`, `kube-public` y `kube-system` activos |
 | Validacion MicroK8s | `platform/environment/microk8s/validate.sh` con 0 fallos y 0 avisos |
 | Validacion integrada | Completada sin fallos bloqueantes; avisos esperados por Helm y Terraform pendientes |
+| Scripts Helm/Terraform | Creados; ejecucion funcional pendiente |
 
 No se ha validado todavia:
 
@@ -407,8 +450,8 @@ helm version
 terraform version
 ```
 
-## 12. Siguiente bloque
+## 13. Siguiente bloque
 
-El siguiente incremento de la Unidad 00, despues de validar MicroK8s y `kubectl` con resultados reales, debe instalar y validar Helm y Terraform sin crear charts ni modulos.
+El siguiente paso de la Unidad 00 es ejecutar los scripts de Helm y Terraform, aportar los resultados reales y actualizar el estado.
 
 No iniciar la Unidad 01 hasta cerrar completamente la Unidad 00.
