@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 00 — Preparación del entorno |
-| Estado general | Unidad 00 en progreso; preparacion de Ubuntu WSL definida |
-| Último incremento completado | Script de preparacion de Ubuntu 24.04 LTS en WSL2 |
+| Estado general | Unidad 00 en progreso; Ubuntu 24.04.4 LTS validada en WSL2 |
+| Último incremento completado | Validacion Linux inicial sobre Ubuntu 24.04 LTS en WSL2 |
 | Unidad activa | 00 — Preparación del entorno |
 | Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
 | Plataforma local desplegada | No |
 | Contenido formativo generado | Parcial |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Ejecutar preparacion de Ubuntu 24.04 LTS en WSL2 |
+| Siguiente incremento permitido | Preparar instalacion de MicroK8s y kubectl |
 
 ---
 
@@ -237,7 +237,7 @@ Todavía deben validarse durante la unidad:
 | Windows 11 | Requisito previsto, pendiente de validar por cada entorno | Pendiente | `platform/environment/windows/check-prerequisites.ps1` |
 | Virtualización | Requisito previsto, pendiente de validar por cada entorno | Pendiente | `platform/environment/windows/check-prerequisites.ps1` |
 | WSL2 | Requisito previsto | Version 2 | `wsl --status` y `wsl --list --verbose` |
-| Ubuntu LTS | Requisito objetivo | Ubuntu 24.04 LTS sobre WSL2 | `wsl --list --verbose` y `/etc/os-release` |
+| Ubuntu LTS | Validada | Ubuntu 24.04.4 LTS (`noble`) sobre WSL2; usuario inicial `ramon` | `cat /etc/os-release` y validaciones Linux proporcionadas por el usuario |
 
 ## Plataforma Kubernetes
 
@@ -266,10 +266,10 @@ No existen endpoints de aplicación.
 
 | Herramienta | Estado | Versión activa | Método de comprobación | Incorporación prevista |
 |---|---|---|---|---|
-| Git | No validado por el proyecto | Pendiente | `git --version` | Unidad 00 |
-| kubectl | No validado por el proyecto | Baseline objetivo: 1.35.x compatible | `kubectl version --client` | Unidad 00 |
-| Helm | No validado por el proyecto | Baseline objetivo: 3.21.x | `helm version` | Unidad 00 |
-| Terraform | No validado por el proyecto | Baseline objetivo: 1.15.x | `terraform version` | Unidad 00 |
+| Git | Validado en Ubuntu WSL | `/usr/bin/git` | `platform/environment/linux/check-prerequisites.sh` | Unidad 00 |
+| kubectl | No instalado | Baseline objetivo: 1.35.x compatible | `kubectl version --client` | Unidad 00 |
+| Helm | No instalado | Baseline objetivo: 3.21.x | `helm version` | Unidad 00 |
+| Terraform | No instalado | Baseline objetivo: 1.15.x | `terraform version` | Unidad 00 |
 | Argo CD | No incorporado | No aplica | No aplica | Unidad 09 |
 | Tekton | No incorporado | No aplica | No aplica | Unidad 08 |
 | Prometheus | No incorporado | No aplica | No aplica | Unidad 11 |
@@ -427,7 +427,10 @@ Actualmente solo pueden validarse documentalmente:
 | Diseño inicial de Unidad 00 | Revisión del repositorio | `tutorial/00-environment/README.md`, `tutorial/00-environment/summary.md` y `platform/environment/README.md` presentes |
 | Validación Windows inicial | `platform/environment/windows/check-prerequisites.ps1` | Disponible para comprobar Windows, WSL2 y distribucion Ubuntu objetivo |
 | Preparacion Ubuntu WSL | `platform/environment/windows/prepare-ubuntu-wsl.ps1` | Disponible; modo revision por defecto e instalacion solo con `-Install` |
-| Sintaxis Bash de validaciones iniciales | `bash -n` | Debe ejecutarse desde Ubuntu 24.04 LTS sobre WSL2 |
+| Instalacion Ubuntu WSL | `platform/environment/windows/prepare-ubuntu-wsl.ps1 -Install` | Ejecutada por el usuario; `Ubuntu-24.04` instalada correctamente |
+| Validacion Linux inicial | `platform/environment/linux/check-prerequisites.sh` | Ejecutada por el usuario; 0 fallos y 4 avisos esperados por herramientas pendientes |
+| Validacion integrada Linux | `platform/environment/validation/validate-environment.sh` | Ejecutada por el usuario; completada sin fallos bloqueantes |
+| Sintaxis Bash de validaciones iniciales | Ejecucion de scripts | Scripts ejecutados correctamente desde Ubuntu 24.04.4 LTS |
 | Sintaxis PowerShell de validación Windows | Ejecución de script | Script PowerShell ajustado para tratar comprobaciones no concluyentes como avisos |
 
 No existen todavía validaciones funcionales registradas para MicroK8s, Kubernetes, Helm ni Terraform.
@@ -456,6 +459,8 @@ No existen todavía validaciones funcionales registradas para MicroK8s, Kubernet
 | 16 | Scripts iniciales de validación de Unidad 00 | Completado con este cambio | Validaciones no destructivas creadas para Windows y Ubuntu/WSL |
 | 17 | Ajuste de validaciones iniciales | Completado con este cambio | Validaciones expresadas como criterios del entorno objetivo; Ubuntu 24.04 LTS sobre WSL2 sigue siendo el requisito |
 | 18 | Preparacion de Ubuntu WSL | Completado con este cambio | Script Windows creado para validar y ejecutar explicitamente la instalacion de `Ubuntu-24.04` |
+| 19 | Instalacion de Ubuntu WSL | Completado con este cambio | El usuario ejecuto la instalacion de `Ubuntu-24.04`, creo el usuario Linux `ramon` y obtuvo primer arranque correcto |
+| 20 | Validacion Linux inicial | Completado con este cambio | Ubuntu 24.04.4 LTS validada en WSL2; systemd, snap, Git, conectividad DNS y espacio libre correctos |
 
 ---
 
@@ -464,7 +469,7 @@ No existen todavía validaciones funcionales registradas para MicroK8s, Kubernet
 El siguiente incremento principal es:
 
 ```text
-Ejecutar preparacion de Ubuntu 24.04 LTS en WSL2
+Preparar instalacion de MicroK8s y kubectl
 ```
 
 ## Fuentes obligatorias
@@ -488,11 +493,10 @@ No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leers
 ## Trabajo permitido
 
 - ejecutar `platform/environment/windows/check-prerequisites.ps1` en PowerShell sobre Windows;
-- ejecutar `platform/environment/windows/prepare-ubuntu-wsl.ps1` en modo revision;
-- comprobar `wsl --list --online` antes de seleccionar la distribucion exacta;
-- ejecutar `platform/environment/windows/prepare-ubuntu-wsl.ps1 -Install` solo con aprobacion explicita del usuario;
-- ejecutar `platform/environment/linux/check-prerequisites.sh` en Ubuntu sobre WSL2 cuando exista la distribucion;
-- ejecutar `platform/environment/validation/validate-environment.sh` en Ubuntu sobre WSL2 cuando exista la distribucion;
+- crear o documentar scripts de instalacion de MicroK8s sobre Ubuntu WSL2;
+- crear o documentar configuracion de `kubectl` como cliente operativo principal;
+- mantener `microk8s kubectl` solo como fallback de diagnostico;
+- mantener el addon inicial `dns`;
 - registrar resultados reales en `tutorial/00-environment/summary.md`;
 - actualizar `project/project-state.md` con evidencias reales;
 - completar `tutorial/00-environment/README.md` si los resultados revelan ajustes necesarios;

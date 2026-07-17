@@ -67,14 +67,27 @@ bash -n platform/environment/validation/validate-environment.sh
 
 Estas validaciones deben ejecutarse desde la distribucion Ubuntu 24.04 LTS objetivo, no desde otras distribuciones WSL que pueda tener el equipo.
 
+Resultados proporcionados por el usuario:
+
+| Validacion | Resultado observado |
+|---|---|
+| `platform/environment/windows/prepare-ubuntu-wsl.ps1 -Install` | Instala correctamente `Ubuntu-24.04` |
+| Distribucion instalada | `Ubuntu-24.04` |
+| Primer arranque | Correcto |
+| Usuario Linux inicial | `ramon` |
+| `cat /etc/os-release` | Ubuntu 24.04.4 LTS (`noble`) |
+| `platform/environment/linux/check-prerequisites.sh` | 0 fallos, 4 avisos esperados |
+| `platform/environment/validation/validate-environment.sh` | Validacion integrada completada sin fallos bloqueantes |
+| systemd | Disponible y en ejecucion |
+| snap | Disponible (`2.73+ubuntu24.04`) |
+| Espacio libre HOME | 954 GB |
+| DNS | `snapcraft.io` resuelve correctamente |
+
 Validaciones pendientes:
 
 ```text
 wsl --status
 wsl --list --verbose
-cat /etc/os-release
-bash -n platform/environment/linux/check-prerequisites.sh
-bash -n platform/environment/validation/validate-environment.sh
 microk8s status --wait-ready
 microk8s version
 kubectl version --client
@@ -86,11 +99,12 @@ terraform version
 ## Limitaciones conocidas
 
 - Los scripts creados son solo de diagnostico y no instalan componentes.
-- La unidad requiere instalar o disponer de Ubuntu 24.04 LTS sobre WSL2 como distribucion objetivo.
 - No existe `tutorial/00-environment/instructor-notes.md`.
-- No se han validado versiones reales de Windows, Ubuntu, MicroK8s, Kubernetes, `kubectl`, Helm ni Terraform.
+- Ubuntu 24.04.4 LTS esta instalada y validada como base WSL2 de la Unidad 00.
+- `kubectl`, MicroK8s, Helm y Terraform aun no estan instalados o configurados.
+- No se han validado versiones reales de Windows, MicroK8s, Kubernetes, `kubectl`, Helm ni Terraform.
 - No se ha instalado ni configurado la plataforma local desde este repositorio.
 
 ## Siguiente incremento recomendado
 
-Ejecutar `platform/environment/windows/prepare-ubuntu-wsl.ps1` en modo revision, instalar Ubuntu 24.04 LTS con `-Install` cuando proceda y repetir las validaciones Linux una vez exista la distribucion.
+Preparar la instalacion de MicroK8s y `kubectl` sobre Ubuntu 24.04 LTS, manteniendo `kubectl` como cliente operativo principal.
