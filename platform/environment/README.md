@@ -2,7 +2,15 @@
 
 ## Proposito
 
-Este directorio contendra los artefactos ejecutables para preparar y validar el entorno local de la Unidad 00.
+Este directorio contiene los artefactos ejecutables para preparar y validar el entorno local de la Unidad 00.
+
+La guia pedagogica del alumno vive en:
+
+```text
+tutorial/00-environment/README.md
+```
+
+Este archivo funciona como referencia tecnica de los scripts: contexto de ejecucion, efectos, repeticion, validaciones y limites.
 
 La plataforma objetivo es:
 
@@ -27,6 +35,8 @@ Los comandos `microk8s` se limitaran a:
 ```text
 platform/environment/
 ├── README.md
+├── microk8s/
+├── tools/
 ├── windows/
 │   ├── check-prerequisites.ps1
 │   └── prepare-ubuntu-wsl.ps1
@@ -36,7 +46,7 @@ platform/environment/
     └── validate-environment.sh
 ```
 
-Los scripts de instalacion, configuracion, herramientas y recuperacion se anadiran en incrementos posteriores.
+Los scripts de instalacion de MicroK8s y herramientas se anadiran en incrementos posteriores con comportamiento util e idempotente. No deben crearse scripts vacios.
 
 ## Separacion por contexto
 
@@ -105,6 +115,13 @@ El script comprueba de forma no destructiva:
 - salida de `wsl --list --verbose`;
 - espacio libre basico en el disco del sistema.
 
+Comportamiento al repetir:
+
+- seguro de ejecutar varias veces;
+- no modifica features de Windows;
+- no instala WSL ni distribuciones;
+- devuelve codigo distinto de cero solo si detecta fallos bloqueantes.
+
 Preparar la distribucion Ubuntu objetivo desde PowerShell:
 
 ```powershell
@@ -130,6 +147,19 @@ wsl.exe -d Ubuntu-24.04 -- cat /etc/os-release
 wsl.exe --list --verbose
 ```
 
+Comportamiento al repetir:
+
+- sin `-Install`, es una revision no destructiva;
+- si la distribucion objetivo ya existe como WSL2, termina correctamente sin reinstalar;
+- si existe pero no se confirma WSL2, informa del comando de conversion;
+- con `-Install`, delega la instalacion en `wsl.exe --install Ubuntu-24.04`.
+
+Recuperacion:
+
+- si `wsl.exe --install` falla, resolver primero el error de Windows/WSL;
+- no borrar distribuciones desde este script;
+- no versionar kubeconfigs, credenciales ni datos del usuario Linux.
+
 ### Ubuntu sobre WSL2
 
 Ejecutar desde Ubuntu, en la raiz del repositorio:
@@ -148,6 +178,14 @@ El script comprueba de forma no destructiva:
 - espacio libre en el filesystem de `$HOME`;
 - resolucion DNS basica.
 
+Comportamiento al repetir:
+
+- seguro de ejecutar varias veces;
+- no instala paquetes;
+- no cambia permisos;
+- no inicia ni detiene servicios;
+- los avisos de `kubectl`, MicroK8s, Helm y Terraform son esperados antes de su instalacion.
+
 ### Validacion integrada Linux
 
 Ejecutar desde Ubuntu, en la raiz del repositorio:
@@ -157,3 +195,42 @@ bash platform/environment/validation/validate-environment.sh
 ```
 
 Por ahora ejecuta las validaciones Linux disponibles. No instala MicroK8s, Helm, Terraform ni `kubectl`.
+
+Comportamiento al repetir:
+
+- seguro de ejecutar varias veces;
+- falla si alguna validacion integrada devuelve fallos bloqueantes;
+- actualmente depende solo de `platform/environment/linux/check-prerequisites.sh`.
+
+## Validaciones ejecutadas en el entorno actual
+
+Resultados aportados por el usuario para la Unidad 00:
+
+| Validacion | Resultado |
+|---|---|
+| `platform/environment/windows/prepare-ubuntu-wsl.ps1 -Install` | `Ubuntu-24.04` instalada correctamente |
+| Primer arranque Ubuntu | Correcto; usuario inicial `ramon` |
+| `cat /etc/os-release` | Ubuntu 24.04.4 LTS (`noble`) |
+| `platform/environment/linux/check-prerequisites.sh` | 0 fallos y 4 avisos esperados |
+| `platform/environment/validation/validate-environment.sh` | Sin fallos bloqueantes; ultima ejecucion con 6 avisos |
+| `systemd` | Disponible; estado observado previamente en ejecucion y ultima ejecucion con `unknown` |
+| `snap` | Disponible (`2.73+ubuntu24.04`) |
+| DNS | Validado previamente; ultima ejecucion no resolvio `snapcraft.io` |
+| Espacio libre en `$HOME` | 952-954 GB observados |
+
+## Pendiente para el siguiente bloque
+
+Los siguientes directorios estan reservados para artefactos reales de la Unidad 00:
+
+```text
+platform/environment/microk8s/
+platform/environment/tools/
+```
+
+El siguiente incremento debera incorporar scripts utiles para MicroK8s y `kubectl`, con validaciones reales y comportamiento idempotente.
+
+Antes de instalar MicroK8s, revisar cualquier aviso activo de DNS o `systemd` en:
+
+```bash
+bash platform/environment/validation/validate-environment.sh
+```

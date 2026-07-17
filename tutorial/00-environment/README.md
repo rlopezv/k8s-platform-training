@@ -2,119 +2,310 @@
 
 ## Estado de este documento
 
-Este archivo inicia el diseno de la Unidad 00. No es todavia el tutorial completo del alumno.
+Este documento cubre el bloque inicial de la Unidad 00: validacion de Windows, WSL2 y Ubuntu 24.04 LTS, mas la continuidad del trabajo desde VS Code conectado a WSL.
 
-La unidad queda orientada por una decision operativa clave:
+MicroK8s, `kubectl`, Helm y Terraform quedan preparados como siguiente bloque de la unidad. No se instalan ni se validan todavia desde este tutorial.
 
-```text
-kubectl sera el cliente principal para operar Kubernetes.
-```
+## Objetivo
 
-MicroK8s se utilizara como distribucion local inicial dentro de Ubuntu sobre WSL2, pero sus comandos propios se reservaran para instalacion, configuracion, gestion de addons, diagnostico y recuperacion.
+Al finalizar este bloque, el alumno debe poder justificar con evidencias que:
+
+- el host Windows puede ejecutar WSL2;
+- existe una distribucion Ubuntu LTS objetivo para el laboratorio;
+- Ubuntu se ejecuta sobre WSL2;
+- `systemd`, `snap`, Git y herramientas basicas estan disponibles dentro de Ubuntu;
+- los avisos sobre MicroK8s, `kubectl`, Helm y Terraform son esperados en esta fase;
+- el repositorio puede continuarse desde VS Code conectado directamente a Ubuntu WSL.
 
 ## Arquitectura objetivo
 
-El entorno se construira en esta secuencia:
+La Unidad 00 construye el entorno en esta secuencia:
 
 ```text
 Windows 11
   -> WSL2
-    -> Ubuntu LTS
+    -> Ubuntu 24.04 LTS
       -> MicroK8s
-        -> kubeconfig para kubectl
+        -> kubectl
 ```
 
-MicroK8s no instala ni prepara WSL2 por si mismo. Para instalar MicroK8s ya debe existir una distribucion Ubuntu sobre WSL2.
+En este bloque solo se valida hasta Ubuntu WSL. La plataforma Kubernetes se incorporara despues.
 
-## Decisiones iniciales
+## Reglas de la unidad
 
-| Decision | Estado | Consecuencia |
-|---|---|---|
-| `kubectl` como cliente operativo principal | Aprobada | Los comandos Kubernetes del curso usaran `kubectl` |
-| `microk8s kubectl` como fallback de diagnostico | Aprobada | Solo se usara antes de completar la configuracion de `kubectl` o para aislar problemas |
-| MicroK8s dentro de Ubuntu/WSL2 | Aprobada | Los scripts MicroK8s se ejecutaran desde Ubuntu, no desde PowerShell |
-| Addon inicial `dns` | Aprobada para el primer diseno | Otros addons quedan diferidos hasta que una unidad los necesite |
-| Sin workloads funcionales | Aprobada | La aplicacion evolutiva no se crea en la Unidad 00 |
+- `kubectl` sera el cliente operativo principal del curso.
+- `microk8s kubectl` se usara solo como fallback de diagnostico.
+- MicroK8s se instalara dentro de Ubuntu sobre WSL2.
+- La Unidad 00 no crea workloads, namespaces funcionales, charts Helm, modulos Terraform ni aplicacion evolutiva.
+- Las validaciones reales se registran solo cuando se han ejecutado en el entorno o el alumno aporta sus resultados.
 
-## Politica inicial de versiones
-
-| Producto | Baseline inicial | Criterio |
-|---|---|---|
-| Windows | Windows 11 soportado | Validar version y build; no fijar build exacta |
-| WSL | WSL2 actualizado | Validar con `wsl --status` |
-| Ubuntu | 24.04 LTS | Baseline principal; aceptar 22.04 LTS si ya existe y pasa validaciones |
-| MicroK8s | `1.35/stable` | Canal snap fijo |
-| Kubernetes | 1.35.x | Derivado de MicroK8s |
-| kubectl | 1.35.x compatible | Alineado con el API server |
-| Helm | 3.21.x | Baseline inicial; reevaluar Helm 4 antes de la Unidad 06 |
-| Terraform | 1.15.x | Rama estable; evitar prereleases |
-
-Las versiones exactas observadas se registraran despues de ejecutar validaciones reales en el entorno.
-
-## Flujo previsto
-
-1. Validar Windows 11 y virtualizacion desde PowerShell.
-2. Validar o preparar WSL2.
-3. Validar o instalar Ubuntu LTS sobre WSL2.
-4. Preparar dependencias base dentro de Ubuntu.
-5. Instalar MicroK8s dentro de Ubuntu.
-6. Habilitar el addon minimo `dns`.
-7. Configurar kubeconfig para usar `kubectl`.
-8. Validar el cluster con `kubectl`.
-9. Instalar y validar Helm y Terraform sin crear charts ni modulos.
-10. Documentar diagnostico, recuperacion y validaciones pendientes.
-
-## Validaciones principales previstas
-
-PowerShell:
-
-```powershell
-wsl --status
-wsl --list --verbose
-```
-
-Ubuntu sobre WSL2:
-
-```bash
-cat /etc/os-release
-kubectl version --client
-kubectl get nodes
-microk8s status --wait-ready
-microk8s version
-kubectl version
-helm version
-terraform version
-```
-
-Las validaciones funcionales del host, WSL2, Ubuntu, MicroK8s, Helm y Terraform se consideraran pendientes hasta que se ejecuten en el entorno real.
-
-## Fuera de alcance
-
-Esta unidad no generara:
-
-- contenido de la Unidad 01;
-- aplicacion evolutiva;
-- namespaces funcionales del curso;
-- workloads;
-- charts Helm;
-- modulos Terraform;
-- componentes de CI/CD, GitOps, observabilidad, seguridad avanzada o cloud.
-
-## Siguiente incremento
-
-El siguiente incremento recomendado es preparar Ubuntu 24.04 LTS sobre WSL2 y repetir las validaciones Linux desde esa distribucion objetivo.
-
-Scripts disponibles:
+## Rutas relevantes
 
 ```text
+tutorial/00-environment/README.md
+tutorial/00-environment/summary.md
+platform/environment/README.md
 platform/environment/windows/check-prerequisites.ps1
 platform/environment/windows/prepare-ubuntu-wsl.ps1
 platform/environment/linux/check-prerequisites.sh
 platform/environment/validation/validate-environment.sh
 ```
 
-El script `prepare-ubuntu-wsl.ps1` se ejecuta desde PowerShell. Por defecto no instala nada; muestra el comando recomendado. La instalacion se ejecuta solo con:
+Los scripts de `platform/environment/windows/` se ejecutan desde PowerShell en Windows.
+
+Los scripts de `platform/environment/linux/` y `platform/environment/validation/` se ejecutan dentro de Ubuntu sobre WSL2, en la raiz del repositorio.
+
+## 1. Validar Windows y WSL2
+
+Abrir PowerShell en Windows y situarse en la raiz del repositorio.
+
+Ejecutar:
+
+```powershell
+.\platform\environment\windows\check-prerequisites.ps1
+```
+
+El script es no destructivo. Comprueba senales del host:
+
+- edicion y build de Windows;
+- presencia de hipervisor;
+- features `Microsoft-Windows-Subsystem-Linux` y `VirtualMachinePlatform`;
+- disponibilidad de `wsl.exe`;
+- salida de `wsl --status`;
+- salida de `wsl --list --verbose`;
+- espacio libre basico.
+
+Resultado esperado:
+
+```text
+Completed without blocking failures. Review WARN entries before continuing.
+```
+
+Un `WARN` no siempre bloquea. Debe revisarse antes de continuar porque puede indicar una feature pendiente, una version no confirmada o un entorno que necesita reinicio.
+
+## 2. Preparar Ubuntu 24.04 LTS
+
+Desde PowerShell, ejecutar primero en modo revision:
+
+```powershell
+.\platform\environment\windows\prepare-ubuntu-wsl.ps1
+```
+
+Si `Ubuntu-24.04` no existe, el script muestra el comando recomendado:
+
+```powershell
+wsl.exe --install Ubuntu-24.04
+```
+
+Para lanzar la instalacion desde el script, usar:
 
 ```powershell
 .\platform\environment\windows\prepare-ubuntu-wsl.ps1 -Install
 ```
+
+La instalacion puede requerir permisos elevados, reinicio o apertura manual de Ubuntu para crear el primer usuario Linux.
+
+Tras el primer arranque, comprobar desde PowerShell:
+
+```powershell
+wsl.exe -d Ubuntu-24.04 -- cat /etc/os-release
+wsl.exe --list --verbose
+```
+
+Resultado esperado:
+
+```text
+Ubuntu 24.04.x LTS
+Ubuntu-24.04    Running o Stopped    2
+```
+
+Si la distribucion aparece como version `1`, convertirla explicitamente:
+
+```powershell
+wsl.exe --set-version Ubuntu-24.04 2
+```
+
+## 3. Validar Ubuntu desde WSL
+
+Abrir Ubuntu 24.04 y situarse en la raiz del repositorio desde el filesystem Linux.
+
+Ejecutar:
+
+```bash
+bash platform/environment/linux/check-prerequisites.sh
+```
+
+El script no instala nada. Comprueba:
+
+- marcador WSL en el kernel;
+- distribucion Ubuntu y version;
+- arquitectura;
+- estado de `systemd`;
+- disponibilidad de `snap`;
+- Git, `curl`, `tar` y `gzip`;
+- presencia o ausencia de `kubectl`, MicroK8s, Helm y Terraform;
+- espacio libre en `$HOME`;
+- resolucion DNS para `snapcraft.io`.
+
+Despues ejecutar la validacion integrada:
+
+```bash
+bash platform/environment/validation/validate-environment.sh
+```
+
+Resultado esperado en este punto de la unidad:
+
+```text
+Integrated validation completed without blocking failures.
+```
+
+## 4. Interpretar avisos esperados
+
+En este bloque son esperados los avisos siguientes:
+
+| Aviso | Interpretacion |
+|---|---|
+| `kubectl command not found` | Esperado; se instalara o configurara en el bloque MicroK8s/kubectl |
+| `microk8s command not found` | Esperado; MicroK8s aun no se ha instalado |
+| `helm command not found` | Esperado; Helm se instalara despues sin crear charts |
+| `terraform command not found` | Esperado; Terraform se instalara despues sin crear modulos |
+
+Estos avisos no bloquean la validacion inicial de Ubuntu. Si aparecen fallos (`FAIL`), no continuar con MicroK8s hasta resolverlos.
+
+## 5. Troubleshooting inicial
+
+### `wsl.exe` no existe
+
+Revisar que WSL este instalado y habilitado en Windows. Ejecutar las comprobaciones desde PowerShell, no desde Ubuntu.
+
+```powershell
+wsl --status
+```
+
+Si el comando no existe, instalar WSL siguiendo el procedimiento corporativo o la instalacion oficial de Windows.
+
+### La distribucion no es WSL2
+
+Comprobar:
+
+```powershell
+wsl --list --verbose
+```
+
+Si `Ubuntu-24.04` aparece con version `1`:
+
+```powershell
+wsl --set-version Ubuntu-24.04 2
+```
+
+### Ubuntu no es 24.04 LTS
+
+Ubuntu 24.04 LTS es la baseline principal de la unidad. Ubuntu 22.04 LTS puede aceptarse temporalmente si ya existe y pasa validaciones, pero el estado consolidado del proyecto debe registrar la version real.
+
+### `systemd` no esta disponible
+
+MicroK8s requiere un entorno WSL2 con soporte de `systemd`. Revisar dentro de Ubuntu:
+
+```bash
+systemctl is-system-running
+```
+
+Estados como `running` o `degraded` pueden ser operativos para esta fase. Si `systemctl` no existe, revisar la version de WSL y la configuracion de Ubuntu antes de instalar MicroK8s.
+
+### `snap` no esta disponible
+
+MicroK8s se instalara mediante `snap`. Validar:
+
+```bash
+snap version
+```
+
+Si falta `snap`, no instalar MicroK8s todavia. Resolver primero la preparacion base de Ubuntu.
+
+### DNS no resuelve `snapcraft.io`
+
+Validar:
+
+```bash
+getent hosts snapcraft.io
+```
+
+Si falla, revisar conectividad, DNS corporativo, proxy o VPN. No guardar credenciales, certificados privados ni configuraciones sensibles en el repositorio.
+
+### El repositorio esta en una ruta de Windows
+
+Para trabajar desde WSL, preferir una ruta Linux, por ejemplo:
+
+```text
+/home/<usuario>/git/k8s-platform-training
+```
+
+Evitar ejecutar scripts Linux desde `/mnt/c/...` si aparecen problemas de permisos, rendimiento o finales de linea.
+
+## 6. Continuar desde VS Code en WSL
+
+El flujo recomendado para continuar la Unidad 00 es abrir VS Code conectado a la distribucion `Ubuntu-24.04`.
+
+Desde Ubuntu:
+
+```bash
+cd ~/git/k8s-platform-training
+pwd
+git status --short
+```
+
+La ruta debe apuntar al repositorio dentro de Linux.
+
+Si se usa VS Code con soporte WSL, abrir el workspace desde esa shell:
+
+```bash
+code .
+```
+
+Una vez dentro de VS Code, confirmar que la terminal integrada muestra una ruta Linux y no una ruta de Windows:
+
+```bash
+pwd
+cat /etc/os-release
+```
+
+## 7. Estado validado hasta ahora
+
+Resultados aportados para este repositorio:
+
+| Elemento | Estado observado |
+|---|---|
+| Distribucion WSL | `Ubuntu-24.04` instalada |
+| Usuario Linux inicial | `ramon` |
+| Ubuntu | 24.04.4 LTS (`noble`) |
+| `systemd` | Disponible; validacion previa en ejecucion, validacion actual con estado `unknown` |
+| `snap` | Disponible (`2.73+ubuntu24.04`) |
+| Herramientas base | Git, `curl`, `tar` y `gzip` disponibles |
+| DNS | Validacion previa correcta; validacion actual no resolvio `snapcraft.io` |
+| Espacio libre en `$HOME` | 952-954 GB observados |
+| Validacion Linux inicial | 0 fallos; avisos esperados por herramientas pendientes |
+| Validacion integrada Linux | Sin fallos bloqueantes; revisar avisos antes de instalar MicroK8s |
+
+No se ha validado todavia:
+
+```text
+microk8s status --wait-ready
+microk8s version
+kubectl version --client
+kubectl get nodes
+helm version
+terraform version
+```
+
+## 8. Siguiente bloque
+
+El siguiente incremento de la Unidad 00 debe preparar MicroK8s y `kubectl`:
+
+- instalar MicroK8s en Ubuntu WSL2;
+- habilitar el addon minimo `dns`;
+- configurar kubeconfig para usar `kubectl`;
+- validar el nodo local;
+- confirmar conectividad DNS hacia `snapcraft.io` antes de instalar desde `snap`;
+- mantener Helm y Terraform como instalaciones posteriores dentro de la misma unidad.
+
+No iniciar la Unidad 01 hasta cerrar completamente la Unidad 00.

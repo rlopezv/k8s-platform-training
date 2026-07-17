@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 00 — Preparación del entorno |
-| Estado general | Unidad 00 en progreso; Ubuntu 24.04.4 LTS validada en WSL2 |
-| Último incremento completado | Validacion Linux inicial sobre Ubuntu 24.04 LTS en WSL2 |
+| Estado general | Unidad 00 en progreso; bloque WSL/Ubuntu documentado y Ubuntu 24.04.4 LTS validada en WSL2 con avisos no bloqueantes |
+| Último incremento completado | Guia WSL/Ubuntu y continuidad VS Code WSL documentadas |
 | Unidad activa | 00 — Preparación del entorno |
 | Última unidad completada | Ninguna |
 | Laboratorio disponible | No |
 | Plataforma local desplegada | No |
 | Contenido formativo generado | Parcial |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Completar verificacion WSL/Ubuntu y handoff para VS Code WSL |
+| Siguiente incremento permitido | Preparar bloque MicroK8s y kubectl de la Unidad 00 |
 
 ---
 
@@ -49,7 +49,7 @@ El framework del repositorio ha sido:
 - congelado como **Framework V1**;
 - incorporado al repositorio.
 
-La **Unidad 00 — Preparación del entorno** está iniciada con un primer incremento de diseño. El framework solo deberá reabrirse si una unidad futura identifica una carencia real y verificable.
+La **Unidad 00 — Preparación del entorno** está en progreso. El bloque inicial de Windows/WSL2/Ubuntu ya cuenta con guia, scripts de validacion y resultados reales aportados por el usuario para Ubuntu 24.04.4 LTS sobre WSL2. El framework solo deberá reabrirse si una unidad futura identifica una carencia real y verificable.
 
 Durante la siguiente fase se permitirá:
 
@@ -146,6 +146,10 @@ Cerrado
 │       ├── README.md
 │       ├── linux/
 │       │   └── check-prerequisites.sh
+│       ├── microk8s/
+│       │   └── .gitkeep
+│       ├── tools/
+│       │   └── .gitkeep
 │       ├── validation/
 │       │   └── validate-environment.sh
 │       └── windows/
@@ -179,7 +183,7 @@ Cerrado
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Previsto y materializado | Solo `.gitkeep`; sin laboratorios |
 | `platform/` | Previsto y materializado | Solo `.gitkeep` y `environment/` |
-| `platform/environment/` | En progreso para la Unidad 00 | `README.md`, `.gitkeep`, validaciones iniciales y preparacion de Ubuntu WSL |
+| `platform/environment/` | En progreso para la Unidad 00 | `README.md`, `.gitkeep`, validaciones iniciales, preparacion de Ubuntu WSL y rutas reservadas `microk8s/` y `tools/` |
 | `playbooks/` | Operativo | Framework completo |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
 | `tutorial/` | En uso por la Unidad 00 | `00-environment/` y `.gitkeep` |
@@ -204,7 +208,7 @@ Git no conserva directorios vacíos. Las rutas base previstas se mantienen actua
 | Fecha de inicio | 2026-07-17 |
 | Fecha de cierre | No aplica |
 | Playbook | `playbooks/units/00-environment.md` |
-| Tutorial | `tutorial/00-environment/README.md` parcial |
+| Tutorial | `tutorial/00-environment/README.md` parcial; bloque WSL/Ubuntu documentado |
 | Artefactos ejecutables | Scripts iniciales de validación y preparacion de Ubuntu WSL presentes; instalación pendiente |
 | Instructor notes | Pendientes |
 | Summary | `tutorial/00-environment/summary.md` parcial |
@@ -215,16 +219,16 @@ Todas las precondiciones documentales están cumplidas.
 
 ### Precondiciones técnicas
 
-Todavía deben validarse durante la unidad:
+Todavía deben completarse o validarse durante la unidad:
 
 - Windows 11;
 - virtualización;
-- WSL2;
-- Ubuntu LTS;
 - acceso administrativo;
 - conectividad;
 - espacio en disco;
 - Git.
+
+WSL2 y Ubuntu 24.04.4 LTS ya cuentan con validaciones iniciales, pero permanecen sujetos a avisos no bloqueantes antes de instalar MicroK8s.
 
 ---
 
@@ -236,8 +240,8 @@ Todavía deben validarse durante la unidad:
 |---|---|---|---|
 | Windows 11 | Requisito previsto, pendiente de validar por cada entorno | Pendiente | `platform/environment/windows/check-prerequisites.ps1` |
 | Virtualización | Requisito previsto, pendiente de validar por cada entorno | Pendiente | `platform/environment/windows/check-prerequisites.ps1` |
-| WSL2 | Requisito previsto | Version 2 | `wsl --status` y `wsl --list --verbose` |
-| Ubuntu LTS | Validada | Ubuntu 24.04.4 LTS (`noble`) sobre WSL2; usuario inicial `ramon` | `cat /etc/os-release` y validaciones Linux proporcionadas por el usuario |
+| WSL2 | Requisito previsto; Ubuntu objetivo ejecutandose sobre WSL2 segun resultados aportados | Version 2 | `wsl --status` y `wsl --list --verbose` |
+| Ubuntu LTS | Validada con avisos no bloqueantes | Ubuntu 24.04.4 LTS (`noble`) sobre WSL2; usuario inicial `ramon` | `cat /etc/os-release`, validaciones Linux proporcionadas por el usuario y validacion integrada ejecutada en esta sesion |
 
 ## Plataforma Kubernetes
 
@@ -415,7 +419,7 @@ Durante la generación de la Unidad 00:
 
 # Validaciones globales disponibles
 
-Actualmente solo pueden validarse documentalmente:
+Validaciones registradas actualmente:
 
 | Validación | Método | Resultado esperado |
 |---|---|---|
@@ -430,6 +434,9 @@ Actualmente solo pueden validarse documentalmente:
 | Instalacion Ubuntu WSL | `platform/environment/windows/prepare-ubuntu-wsl.ps1 -Install` | Ejecutada por el usuario; `Ubuntu-24.04` instalada correctamente |
 | Validacion Linux inicial | `platform/environment/linux/check-prerequisites.sh` | Ejecutada por el usuario; 0 fallos y 4 avisos esperados por herramientas pendientes |
 | Validacion integrada Linux | `platform/environment/validation/validate-environment.sh` | Ejecutada por el usuario; completada sin fallos bloqueantes |
+| Validacion integrada Linux actual | `bash platform/environment/validation/validate-environment.sh` | Ejecutada en esta sesion; 0 fallos, 6 avisos: `systemd` estado `unknown`, `kubectl`/MicroK8s/Helm/Terraform ausentes y DNS de `snapcraft.io` no resuelto |
+| Guia WSL/Ubuntu | `tutorial/00-environment/README.md` | Documenta validacion Windows/WSL2, instalacion Ubuntu 24.04, validacion Ubuntu, avisos esperados, troubleshooting y continuidad VS Code WSL |
+| Referencia tecnica de entorno | `platform/environment/README.md` | Documenta contexto de ejecucion, efectos, repeticion, recuperacion y pendientes de scripts |
 | Sintaxis Bash de validaciones iniciales | Ejecucion de scripts | Scripts ejecutados correctamente desde Ubuntu 24.04.4 LTS |
 | Sintaxis PowerShell de validación Windows | Ejecución de script | Script PowerShell ajustado para tratar comprobaciones no concluyentes como avisos |
 
@@ -460,7 +467,8 @@ No existen todavía validaciones funcionales registradas para MicroK8s, Kubernet
 | 17 | Ajuste de validaciones iniciales | Completado con este cambio | Validaciones expresadas como criterios del entorno objetivo; Ubuntu 24.04 LTS sobre WSL2 sigue siendo el requisito |
 | 18 | Preparacion de Ubuntu WSL | Completado con este cambio | Script Windows creado para validar y ejecutar explicitamente la instalacion de `Ubuntu-24.04` |
 | 19 | Instalacion de Ubuntu WSL | Completado con este cambio | El usuario ejecuto la instalacion de `Ubuntu-24.04`, creo el usuario Linux `ramon` y obtuvo primer arranque correcto |
-| 20 | Validacion Linux inicial | Completado con este cambio | Ubuntu 24.04.4 LTS validada en WSL2; systemd, snap, Git, conectividad DNS y espacio libre correctos |
+| 20 | Validacion Linux inicial | Completado | Ubuntu 24.04.4 LTS validada en WSL2; systemd, snap, Git, conectividad DNS y espacio libre correctos |
+| 21 | Guia WSL/Ubuntu y continuidad VS Code WSL | Completado con este cambio | Tutorial y referencia tecnica actualizados; validacion integrada actual sin fallos bloqueantes pero con aviso DNS; siguiente bloque preparado para MicroK8s y `kubectl` |
 
 ---
 
@@ -469,7 +477,7 @@ No existen todavía validaciones funcionales registradas para MicroK8s, Kubernet
 El siguiente incremento principal es:
 
 ```text
-Completar verificacion WSL/Ubuntu y handoff para VS Code WSL
+Preparar bloque MicroK8s y kubectl de la Unidad 00
 ```
 
 ## Fuentes obligatorias
@@ -492,16 +500,15 @@ No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leers
 
 ## Trabajo permitido
 
-- completar `tutorial/00-environment/README.md` como guia de instalacion WSL/Ubuntu hasta el estado validado;
-- documentar troubleshooting inicial de Windows, WSL2, Ubuntu, systemd, snap y conectividad;
-- documentar como continuar el trabajo desde VS Code conectado a Ubuntu WSL;
-- generar `SESSION_HANDOFF.md` como artefacto derivado para la siguiente conversacion;
-- mantener MicroK8s y `kubectl` como siguiente bloque posterior, sin iniciar todavia su instalacion;
+- crear scripts utiles e idempotentes para instalar y validar MicroK8s dentro de Ubuntu WSL2;
+- documentar la instalacion de MicroK8s y la habilitacion del addon minimo `dns`;
+- configurar o documentar kubeconfig para usar `kubectl` como cliente principal;
+- validar `microk8s status --wait-ready`, `microk8s version`, `kubectl version --client` y `kubectl get nodes` cuando el usuario ejecute los pasos;
+- revisar conectividad DNS/proxy/VPN si `snapcraft.io` sigue sin resolver;
+- mantener Helm y Terraform como pasos posteriores de la Unidad 00 hasta cerrar MicroK8s/kubectl;
 - registrar resultados reales en `tutorial/00-environment/summary.md`;
 - actualizar `project/project-state.md` con evidencias reales;
-- completar `tutorial/00-environment/README.md` si los resultados revelan ajustes necesarios;
 - generar `tutorial/00-environment/instructor-notes.md`;
-- definir versiones objetivo justificadas;
 - mantener `dns` como addon mínimo inicial salvo evidencia contraria;
 - crear scripts idempotentes;
 - crear validaciones estáticas y funcionales;
