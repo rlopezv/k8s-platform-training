@@ -53,7 +53,7 @@ platform/environment/
     └── validate-environment.sh
 ```
 
-Los scripts de herramientas se anadiran en incrementos posteriores con comportamiento util e idempotente. No deben crearse scripts vacios.
+Los scripts de herramientas ya forman parte de la Unidad 00. Instalan y validan Helm y Terraform como CLI sin crear charts, releases, modulos, backends ni recursos.
 
 ## Separacion por contexto
 
@@ -337,21 +337,24 @@ Resultados aportados por el usuario para la Unidad 00:
 | Primer arranque Ubuntu | Correcto; usuario inicial `ramon` |
 | `cat /etc/os-release` | Ubuntu 24.04.4 LTS (`noble`) |
 | `platform/environment/linux/check-prerequisites.sh` | 0 fallos y 4 avisos esperados |
-| `platform/environment/validation/validate-environment.sh` | Ejecutada sin fallos bloqueantes despues de validar MicroK8s; avisos por Helm y Terraform pendientes |
+| `platform/environment/validation/validate-environment.sh` | Ejecutada sin fallos bloqueantes despues de validar MicroK8s, `kubectl`, Helm y Terraform |
 | `systemd` | Disponible y en ejecucion |
 | `snap` | Disponible (`2.76`) |
 | DNS | `snapcraft.io` resuelve correctamente |
 | Espacio libre en `$HOME` | 951-954 GB observados |
 | Scripts MicroK8s | Creados y validados funcionalmente por el usuario |
-| Scripts Helm/Terraform | Creados; pendientes de ejecucion funcional por el usuario |
+| Scripts Helm/Terraform | Creados y validados funcionalmente por el usuario |
+| Helm | `v3.21.0+ge0878d4` |
+| Terraform | `1.15.7` |
 
-## Pendiente para el siguiente bloque
+## Pendientes conocidos
 
-Ejecutar los scripts de Helm y Terraform, aportar resultados reales y repetir la validacion integrada:
+Quedan pendientes de evidencia directa completa desde Windows/PowerShell:
 
-```bash
-bash platform/environment/tools/install-helm.sh
-bash platform/environment/tools/install-terraform.sh
-bash platform/environment/tools/validate-tools.sh
-bash platform/environment/validation/validate-environment.sh
+```text
+wsl --status
+wsl --list --verbose
+platform/environment/windows/check-prerequisites.ps1
 ```
+
+Estas comprobaciones no cambian el resultado validado de Ubuntu, MicroK8s, `kubectl`, Helm y Terraform, pero deben mantenerse visibles para diagnosticar diferencias entre equipos Windows.

@@ -6,16 +6,18 @@
 |---|---|
 | Unidad | 00 - Preparacion del entorno |
 | Identificador | `00-environment` |
-| Estado | En progreso |
+| Estado | Completada con limitaciones documentadas |
 | Ultima actualizacion | 2026-07-18 |
 
 ## Resumen ejecutivo
 
-La Unidad 00 se ha iniciado y ya dispone de bloques documentados para validar Windows, WSL2, Ubuntu 24.04 LTS, MicroK8s y `kubectl`. Ubuntu 24.04.4 LTS sobre WSL2 fue validada como base Linux inicial, con `snap`, Git, herramientas basicas y espacio libre correctos.
+La Unidad 00 queda cerrada como preparacion del entorno base. Dispone de bloques documentados y scripts idempotentes para validar Windows, WSL2, Ubuntu 24.04 LTS, MicroK8s, `kubectl`, Helm y Terraform.
+
+Ubuntu 24.04.4 LTS sobre WSL2 fue validada como base Linux inicial, con `snap`, Git, herramientas basicas, DNS hacia `snapcraft.io` y espacio libre correctos.
 
 MicroK8s y `kubectl` ya fueron instalados por el usuario desde el canal `1.35/stable` y responden en el entorno real. La validacion funcional mostro el nodo local en `Ready`, el addon `dns` habilitado y `kubectl` operativo. La validacion integrada termino sin fallos bloqueantes.
 
-Helm y Terraform ya fueron instalados y validados por el usuario como herramientas CLI. No se han creado charts, releases, modulos, backends ni recursos.
+Helm y Terraform ya fueron instalados y validados por el usuario como herramientas CLI. No se han creado charts, releases, modulos, backends, workloads, namespaces funcionales ni recursos de Unidad 01.
 
 ## Cambios introducidos
 
@@ -36,7 +38,7 @@ Helm y Terraform ya fueron instalados y validados por el usuario como herramient
 | Validacion Helm/Terraform | `platform/environment/tools/validate-tools.sh` | Creado |
 | Notas del instructor | `tutorial/00-environment/instructor-notes.md` | Creado |
 | Playbook de la unidad | `playbooks/units/00-environment.md` | Actualizado con decision `kubectl` |
-| Estado del proyecto | `project/project-state.md` | Actualizado con scripts MicroK8s/kubectl generados y validaciones funcionales pendientes |
+| Estado del proyecto | `project/project-state.md` | Actualizado con cierre de Unidad 00 y limitaciones documentadas |
 
 ## Decisiones registradas
 
@@ -99,9 +101,9 @@ Resultados ejecutados en la sesion actual desde Ubuntu WSL:
 |---|---|
 | `bash -n platform/environment/linux/check-prerequisites.sh` | Correcto |
 | `bash -n platform/environment/validation/validate-environment.sh` | Correcto |
-| `platform/environment/validation/validate-environment.sh` | 0 fallos, 6 avisos |
-| `systemd` | `systemctl` disponible; estado `unknown` en esta ejecucion |
-| DNS | `snapcraft.io` no resolvio en esta ejecucion |
+| `platform/environment/validation/validate-environment.sh` inicial desde Codex | 0 fallos, 6 avisos antes de instalar componentes |
+| `systemd` | Disponible; validacion final fuera del sandbox con estado `running` |
+| DNS inicial desde sandbox | `snapcraft.io` no resolvio en esa ejecucion; validaciones finales resolvieron correctamente |
 | Espacio libre HOME | 952 GB |
 | `bash -n platform/environment/microk8s/install.sh` | Correcto |
 | `bash -n platform/environment/microk8s/configure.sh` | Correcto |
@@ -116,7 +118,7 @@ Resultados ejecutados en la sesion actual desde Ubuntu WSL:
 | `kubectl get namespaces` | `default`, `kube-node-lease`, `kube-public` y `kube-system` activos |
 | Addons MicroK8s observados | `dns`, `ha-cluster`, `helm` y `helm3` aparecen habilitados por MicroK8s |
 | `platform/environment/validation/validate-environment.sh` | Ejecutado por el usuario; completado sin fallos bloqueantes |
-| Ubuntu/WSL integrado | 0 fallos, 2 avisos esperados por Helm y Terraform pendientes |
+| Ubuntu/WSL integrado previo a herramientas | 0 fallos, 2 avisos esperados por Helm y Terraform pendientes |
 | `systemd` | Disponible y en ejecucion |
 | `snap` | Disponible (`2.76`) |
 | DNS | `snapcraft.io` resuelve correctamente |
@@ -132,6 +134,10 @@ Resultados ejecutados en la sesion actual desde Ubuntu WSL:
 | `platform/environment/validation/validate-environment.sh` final | Ejecutado por el usuario; completado sin fallos bloqueantes |
 | Helm | `v3.21.0+ge0878d4` |
 | Terraform | `1.15.7` |
+| Revalidacion integrada desde Codex | Ubuntu, DNS, `kubectl get nodes`, Helm y Terraform correctos; `microk8s status/version` bloqueados por sesion no interactiva sin grupo `microk8s` activo |
+| Revision de ausencia de charts Helm | Sin `Chart.yaml` en el repositorio |
+| Revision de ausencia de Terraform | Sin archivos `.tf` ni `.tfvars` en el repositorio |
+| Revision de laboratorios funcionales | `labs/` solo contiene `.gitkeep` |
 
 DNS hacia `snapcraft.io` resolvio correctamente durante la instalacion y durante la validacion integrada.
 
@@ -140,6 +146,7 @@ Validaciones pendientes:
 ```text
 wsl --status
 wsl --list --verbose
+platform/environment/windows/check-prerequisites.ps1
 ```
 
 ## Limitaciones conocidas
@@ -154,9 +161,10 @@ wsl --list --verbose
 - MicroK8s y `kubectl` estan instalados y validados.
 - Helm y Terraform estan instalados y validados.
 - No se han validado versiones reales de Windows desde este entorno Linux.
-- La plataforma Kubernetes local responde y queda lista para instalar herramientas base restantes.
-- Los addons `helm` y `helm3` aparecen habilitados por MicroK8s como addons core observados; no sustituyen la instalacion/validacion posterior de Helm como herramienta del curso.
+- La plataforma Kubernetes local responde y queda lista para la siguiente unidad formativa cuando el estado del proyecto lo permita.
+- Los addons `helm` y `helm3` aparecen habilitados por MicroK8s como addons core observados; no sustituyen la instalacion y validacion de Helm como herramienta CLI del curso.
+- Windows 11, virtualizacion y salida completa de `wsl --status` / `wsl --list --verbose` deben validarse por equipo cuando se replique el laboratorio.
 
 ## Siguiente incremento recomendado
 
-Revisar cierre de la Unidad 00: actualizar cualquier pendiente documental restante, confirmar validaciones de Windows/WSL si el usuario aporta salidas, y preparar el estado final antes de permitir la Unidad 01.
+Generar el playbook de la Unidad 01 antes de crear contenido formativo nuevo. La Unidad 01 no debe iniciarse desde historial de conversacion: debe gobernarse con un playbook versionado y usando este summary como fuente de continuidad.

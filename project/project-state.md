@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 00 — Preparación del entorno |
-| Estado general | Unidad 00 en progreso; MicroK8s, kubectl, Helm y Terraform instalados y validados |
-| Último incremento completado | Validacion real de Helm y Terraform completada |
-| Unidad activa | 00 — Preparación del entorno |
-| Última unidad completada | Ninguna |
-| Laboratorio disponible | No |
-| Plataforma local desplegada | No |
-| Contenido formativo generado | Parcial |
+| Estado general | Unidad 00 completada con limitaciones documentadas |
+| Último incremento completado | Cierre de la Unidad 00 |
+| Unidad activa | Ninguna |
+| Última unidad completada | 00 — Preparación del entorno |
+| Laboratorio disponible | Sí, entorno base local |
+| Plataforma local desplegada | Sí, MicroK8s local validado |
+| Contenido formativo generado | Sí |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Preparar cierre de la Unidad 00 |
+| Siguiente incremento permitido | Generar playbook de la Unidad 01 |
 
 ---
 
@@ -49,20 +49,16 @@ El framework del repositorio ha sido:
 - congelado como **Framework V1**;
 - incorporado al repositorio.
 
-La **Unidad 00 — Preparación del entorno** está en progreso. El bloque inicial de Windows/WSL2/Ubuntu ya cuenta con guia, scripts de validacion y resultados reales aportados por el usuario para Ubuntu 24.04.4 LTS sobre WSL2. El framework solo deberá reabrirse si una unidad futura identifica una carencia real y verificable.
+La **Unidad 00 — Preparación del entorno** está completada con limitaciones documentadas. Cuenta con guia, scripts de validacion, resultados reales aportados por el usuario para Ubuntu 24.04.4 LTS sobre WSL2, MicroK8s, Kubernetes, `kubectl`, Helm y Terraform. El framework solo deberá reabrirse si una unidad futura identifica una carencia real y verificable.
 
 Durante la siguiente fase se permitirá:
 
-- crear documentación en `tutorial/00-environment/`;
-- crear artefactos ejecutables en `platform/environment/`;
-- validar Windows 11, WSL2 y Ubuntu LTS;
-- instalar y configurar MicroK8s;
-- instalar y validar Helm y Terraform;
-- generar notas del instructor;
-- generar el resumen de continuidad;
-- actualizar nuevamente este documento con resultados reales.
+- generar el playbook específico de la Unidad 01;
+- usar `tutorial/00-environment/summary.md` como fuente de continuidad;
+- mantener visibles las limitaciones Windows/WSL pendientes por equipo;
+- actualizar este documento antes de crear contenido formativo de Unidad 01.
 
-Todavía no se permite:
+Todavía no se permite, hasta que exista playbook versionado de Unidad 01:
 
 - generar contenido de la Unidad 01;
 - desplegar la aplicación evolutiva;
@@ -116,7 +112,7 @@ Cerrado
 |---|---|---|---|
 | `README.md` | Completo y aprobado | Bootstrap-01 | Punto de entrada y visión general |
 | `project/architecture.md` | Completo y aprobado | Bootstrap-02 | Arquitectura y decisiones estructurales |
-| `project/project-state.md` | Actualizado con este incremento | Framework-04 | Estado consolidado |
+| `project/project-state.md` | Actualizado con cierre de Unidad 00 | Unit-00-Closure | Estado consolidado |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
 | `project/project-planning.md` | Completo y aprobado | Framework-04 | Planificación incremental del trabajo |
 | `project/how-to.md` | Completo y aprobado | Framework-04 | Mecanismo operativo de trabajo con asistentes de IA |
@@ -189,10 +185,10 @@ Cerrado
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Previsto y materializado | Solo `.gitkeep`; sin laboratorios |
 | `platform/` | Previsto y materializado | Solo `.gitkeep` y `environment/` |
-| `platform/environment/` | En progreso para la Unidad 00 | `README.md`, validaciones iniciales, preparacion Ubuntu WSL, scripts MicroK8s/kubectl y scripts Helm/Terraform |
+| `platform/environment/` | Completo para la Unidad 00 | `README.md`, validaciones iniciales, preparacion Ubuntu WSL, scripts MicroK8s/kubectl y scripts Helm/Terraform |
 | `playbooks/` | Operativo | Framework completo |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
-| `tutorial/` | En uso por la Unidad 00 | `00-environment/` y `.gitkeep` |
+| `tutorial/` | Unidad 00 completada | `00-environment/` y `.gitkeep` |
 
 Git no conserva directorios vacíos. Las rutas base previstas se mantienen actualmente mediante `.gitkeep` hasta que existan artefactos reales.
 
@@ -202,7 +198,7 @@ Git no conserva directorios vacíos. Las rutas base previstas se mantienen actua
 
 | Unidad | Estado | Tutorial | Laboratorio o plataforma | Instructor notes | Summary |
 |---|---|---|---|---|---|
-| 00 — Preparación del entorno | En progreso | Parcial | Parcial | Sí | Parcial |
+| 00 — Preparación del entorno | Completada con limitaciones | Sí | Sí | Sí | Sí |
 | 01 — Fundamentos operativos y primera aplicación | Prevista | No | No | No | No |
 | 02–25 | Previstas en roadmap | No | No | No | No |
 
@@ -210,14 +206,14 @@ Git no conserva directorios vacíos. Las rutas base previstas se mantienen actua
 
 | Campo | Estado |
 |---|---|
-| Estado | En progreso |
+| Estado | Completada con limitaciones documentadas |
 | Fecha de inicio | 2026-07-17 |
-| Fecha de cierre | No aplica |
+| Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/00-environment.md` |
-| Tutorial | `tutorial/00-environment/README.md` parcial; bloques WSL/Ubuntu, MicroK8s/kubectl y Helm/Terraform documentados |
-| Artefactos ejecutables | Scripts iniciales, preparacion Ubuntu WSL, scripts MicroK8s/kubectl y scripts Helm/Terraform presentes; ejecución funcional de herramientas pendiente |
+| Tutorial | `tutorial/00-environment/README.md` completo para Windows/WSL2/Ubuntu, MicroK8s/kubectl y Helm/Terraform |
+| Artefactos ejecutables | Scripts iniciales, preparacion Ubuntu WSL, scripts MicroK8s/kubectl y scripts Helm/Terraform presentes; ejecuciones funcionales principales validadas |
 | Instructor notes | `tutorial/00-environment/instructor-notes.md` creado |
-| Summary | `tutorial/00-environment/summary.md` parcial |
+| Summary | `tutorial/00-environment/summary.md` cerrado con limitaciones |
 
 ### Precondiciones documentales
 
@@ -225,7 +221,7 @@ Todas las precondiciones documentales están cumplidas.
 
 ### Precondiciones técnicas
 
-Todavía deben completarse o validarse durante la unidad:
+Quedan como validaciones por equipo, especialmente al replicar el laboratorio:
 
 - Windows 11;
 - virtualización;
@@ -234,7 +230,7 @@ Todavía deben completarse o validarse durante la unidad:
 - espacio en disco;
 - Git.
 
-WSL2 y Ubuntu 24.04.4 LTS ya cuentan con validaciones iniciales. DNS hacia `snapcraft.io` resolvio correctamente durante la instalacion real de MicroK8s.
+WSL2 y Ubuntu 24.04.4 LTS ya cuentan con resultados iniciales aportados. DNS hacia `snapcraft.io` resolvio correctamente durante la instalacion real de MicroK8s.
 
 ---
 
@@ -363,7 +359,7 @@ No existen actualmente:
 
 # Restricciones activas
 
-Durante la generación de la Unidad 00:
+Tras el cierre de la Unidad 00 y hasta que exista un playbook versionado de Unidad 01:
 
 - no generar la aplicación evolutiva;
 - no crear contenido de la Unidad 01;
@@ -401,11 +397,11 @@ Durante la generación de la Unidad 00:
 
 | ID | Cuestión | Bloqueante | Resolución prevista | Estado |
 |---|---|---|---|---|
-| Q-001 | Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | Sí para cerrar la Unidad 00 | Versiones principales observadas; falta cerrar validacion Windows/WSL desde PowerShell si procede | Parcial |
-| Q-002 | Addons mínimos exactos | No para el primer diseño; sí para cierre de scripts | Baseline inicial `dns`; reabrir si la validación lo exige | Parcial |
+| Q-001 | Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | No | Versiones principales observadas y registradas; validacion Windows/WSL completa queda como comprobacion por equipo | Cerrada con limitacion |
+| Q-002 | Addons mínimos exactos | No | Baseline inicial `dns`; addons core `ha-cluster`, `helm` y `helm3` observados en MicroK8s | Cerrada para Unidad 00 |
 | Q-003 | Alias o instalación independiente de `kubectl` | No | Resuelto: `kubectl` será cliente principal; `microk8s kubectl` queda como fallback | Cerrada |
-| Q-004 | Requisitos mínimos de CPU, memoria y disco | Sí para publicar tutorial | Unidad 00 | Abierta |
-| Q-005 | Uso de systemd en WSL2 objetivo | No | Validación de Unidad 00 | Abierta |
+| Q-004 | Requisitos mínimos de CPU, memoria y disco | No para cierre de Unidad 00 | Validacion por equipo antes de replicar laboratorio | Abierta |
+| Q-005 | Uso de systemd en WSL2 objetivo | No | Validado en el entorno aportado; revisar si otro equipo difiere | Cerrada con limitacion |
 | Q-006 | Necesidad de soporte para proxy corporativo | No | Cuando el entorno lo requiera | Abierta |
 | Q-007 | Estrategia definitiva para directorios vacíos | No | Resuelta mediante `.gitkeep` hasta crear artefactos reales | Cerrada |
 | Q-008 | Aplicación evolutiva del curso | No para Unidad 00; sí para Unidad 01 | Antes de generar Unidad 01 | Abierta |
@@ -418,7 +414,7 @@ Durante la generación de la Unidad 00:
 |---|---|---|---|---|---|
 | TD-001 | Definir estrategia de validación automatizada del repositorio | Media | Bootstrap | Evolución del framework | Abierta |
 | TD-002 | Definir aplicación evolutiva | Alta antes de Unidad 01 | Roadmap | Antes de Unidad 01 | Abierta |
-| TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida; validar versiones reales durante scripts | En progreso |
+| TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida y versiones reales registradas | Cerrada para Unidad 00 |
 | TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
 
 ---
@@ -440,9 +436,9 @@ Validaciones registradas actualmente:
 | Instalacion Ubuntu WSL | `platform/environment/windows/prepare-ubuntu-wsl.ps1 -Install` | Ejecutada por el usuario; `Ubuntu-24.04` instalada correctamente |
 | Validacion Linux inicial | `platform/environment/linux/check-prerequisites.sh` | Ejecutada por el usuario; 0 fallos y 4 avisos esperados por herramientas pendientes |
 | Validacion integrada Linux | `platform/environment/validation/validate-environment.sh` | Ejecutada por el usuario; completada sin fallos bloqueantes |
-| Validacion integrada Linux actual | `bash platform/environment/validation/validate-environment.sh` | Ejecutada por el usuario; completada sin fallos bloqueantes, 2 avisos esperados por Helm y Terraform pendientes |
-| Guia WSL/Ubuntu | `tutorial/00-environment/README.md` | Documenta validacion Windows/WSL2, instalacion Ubuntu 24.04, validacion Ubuntu, avisos esperados, troubleshooting y continuidad VS Code WSL |
-| Referencia tecnica de entorno | `platform/environment/README.md` | Documenta contexto de ejecucion, efectos, repeticion, recuperacion y pendientes de scripts |
+| Validacion integrada Linux previa a herramientas | `bash platform/environment/validation/validate-environment.sh` | Ejecutada por el usuario; completada sin fallos bloqueantes, 2 avisos esperados por Helm y Terraform pendientes en esa fase |
+| Guia de Unidad 00 | `tutorial/00-environment/README.md` | Documenta validacion Windows/WSL2, instalacion Ubuntu 24.04, validacion Ubuntu, MicroK8s/kubectl, Helm/Terraform, troubleshooting y continuidad VS Code WSL |
+| Referencia tecnica de entorno | `platform/environment/README.md` | Documenta contexto de ejecucion, efectos, repeticion, recuperacion, validaciones y limitaciones de scripts |
 | Sintaxis Bash de validaciones iniciales | Ejecucion de scripts | Scripts ejecutados correctamente desde Ubuntu 24.04.4 LTS |
 | Sintaxis PowerShell de validación Windows | Ejecución de script | Script PowerShell ajustado para tratar comprobaciones no concluyentes como avisos |
 | Scripts MicroK8s/kubectl | `platform/environment/microk8s/*.sh` | Creados con instalacion, configuracion, validacion y reset protegido |
@@ -462,6 +458,11 @@ Validaciones registradas actualmente:
 | Validacion Helm/Terraform | `bash platform/environment/tools/validate-tools.sh` | Ejecutada por el usuario; 0 fallos, 0 avisos |
 | Validacion Helm/Terraform post-correccion | `bash platform/environment/tools/validate-tools.sh` | Ejecutada en esta sesion; 0 fallos, 0 avisos |
 | Validacion integrada final | `bash platform/environment/validation/validate-environment.sh` | Ejecutada por el usuario; completada sin fallos bloqueantes |
+| Revalidacion integrada desde Codex | `bash platform/environment/validation/validate-environment.sh` | Ubuntu, DNS, `kubectl get nodes`, Helm y Terraform correctos; `microk8s status/version` no ejecutables desde esta sesion no interactiva sin grupo `microk8s` activo |
+| Ausencia de charts Helm | `find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print` | Ejecutada en esta sesion; sin resultados |
+| Ausencia de archivos Terraform | `find . -path ./.git -prune -o -type f \( -name '*.tf' -o -name '*.tfvars' -o -name '*.yaml' -o -name '*.yml' \) -print` | Ejecutada en esta sesion; sin resultados |
+| Ausencia de laboratorios funcionales | `find labs -type f -not -name .gitkeep -print` | Ejecutada en esta sesion; sin resultados |
+| Cierre documental de Unidad 00 | Revisión de `tutorial/00-environment/README.md`, `summary.md`, `instructor-notes.md` y `platform/environment/README.md` | Ejecutada en esta sesion; estado final actualizado |
 
 No existen todavía validaciones funcionales registradas para Windows/WSL desde PowerShell en esta sesion Linux.
 
@@ -497,6 +498,7 @@ No existen todavía validaciones funcionales registradas para Windows/WSL desde 
 | 24 | Validacion real MicroK8s/kubectl | Completado con este cambio | `validate.sh` e integrada ejecutadas sin fallos bloqueantes; siguiente bloque permitido Helm y Terraform |
 | 25 | Scripts Helm/Terraform | Completado | Scripts idempotentes generados; validacion funcional pendiente de ejecucion real |
 | 26 | Validacion real Helm/Terraform | Completado con este cambio | Helm `v3.21.0+ge0878d4` y Terraform `1.15.7` instalados y validados; integrada sin fallos bloqueantes |
+| 27 | Cierre de Unidad 00 | Completado con este cambio | Unidad 00 cerrada con limitaciones Windows/WSL documentadas; siguiente paso gobernado: playbook de Unidad 01 |
 
 ---
 
@@ -505,7 +507,7 @@ No existen todavía validaciones funcionales registradas para Windows/WSL desde 
 El siguiente incremento principal es:
 
 ```text
-Preparar cierre de la Unidad 00
+Generar playbook de la Unidad 01
 ```
 
 ## Fuentes obligatorias
@@ -517,28 +519,25 @@ playbooks/master.md
 project/architecture.md
 project/project-state.md
 project/roadmap.md
-playbooks/units/00-environment.md
 playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
 tutorial/00-environment/summary.md
 ```
 
-No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leerse el summary parcial de la propia unidad.
+Para generar contenido de Unidad 01, primero debe existir un playbook versionado en `playbooks/units/`.
 
 ## Trabajo permitido
 
-- revisar si quedan validaciones Windows/WSL pendientes y registrar resultados si el usuario los aporta;
-- revisar `tutorial/00-environment/README.md`, `instructor-notes.md` y `summary.md` para cierre de unidad;
-- confirmar que no existen workloads funcionales, charts Helm, módulos Terraform, releases, backends ni recursos de Unidad 01;
-- actualizar `project/project-state.md` con estado final de la Unidad 00;
-- mantener MicroK8s, Kubernetes y `kubectl` como baseline ya validada;
-- documentar validaciones manuales;
-- preparar el siguiente incremento permitido hacia cierre formal o Unidad 01 solo cuando la Unidad 00 este completa.
+- crear el playbook específico de Unidad 01 siguiendo `playbooks/unit-template.md`;
+- usar el summary cerrado de Unidad 00 como entrada;
+- definir alcance, precondiciones, salidas esperadas y restricciones de Unidad 01;
+- mantener MicroK8s, Kubernetes, `kubectl`, Helm y Terraform como baseline ya validada;
+- registrar cualquier validacion Windows/WSL adicional si el usuario la aporta.
 
 ## Trabajo todavía prohibido
 
-- iniciar la Unidad 01;
+- crear contenido tutorial o laboratorio de Unidad 01 antes de generar su playbook;
 - crear la aplicación evolutiva;
 - desplegar workloads funcionales;
 - crear charts Helm;
@@ -549,13 +548,13 @@ No existe summary de una unidad anterior. Para continuar la Unidad 00 debe leers
 
 # Regla de actualización
 
-Este documento deberá actualizarse durante la Unidad 00:
+Este documento deberá actualizarse:
 
-1. al iniciar formalmente la unidad;
-2. después de definir versiones y addons;
-3. después de generar los artefactos;
+1. al generar el playbook de Unidad 01;
+2. al iniciar formalmente una nueva unidad;
+3. después de generar artefactos;
 4. después de recibir resultados reales de validación;
-5. al cerrar la unidad;
-6. antes de permitir la generación del playbook o contenido de la Unidad 01.
+5. al cerrar cada unidad;
+6. antes de permitir contenido que dependa de trabajo todavía no validado.
 
 Las actualizaciones deberán reflejar únicamente hechos verificables en el repositorio o resultados de ejecución proporcionados por el usuario.

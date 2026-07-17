@@ -62,6 +62,10 @@ Aceptar el entorno solo cuando el alumno pueda aportar evidencias de:
 - `terraform version` con version 1.15.x;
 - validacion integrada sin fallos bloqueantes.
 
+El cierre de la unidad puede aceptarse con limitaciones si Windows 11, virtualizacion o la salida completa de `wsl --status` / `wsl --list --verbose` no se han capturado desde PowerShell, siempre que la limitacion quede registrada y el entorno Ubuntu/MicroK8s/herramientas este validado.
+
+Antes de permitir la Unidad 01, confirmar que no existen workloads, namespaces funcionales, charts Helm, releases, modulos Terraform, backends ni recursos creados por la Unidad 00.
+
 Si el entorno no puede instalar MicroK8s por DNS, proxy o VPN, registrar el bloqueo. No sustituir MicroK8s por Minikube, kind ni Docker Desktop Kubernetes.
 
 ## Preguntas de comprobacion

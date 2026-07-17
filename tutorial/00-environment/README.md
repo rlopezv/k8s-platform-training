@@ -2,9 +2,9 @@
 
 ## Estado de este documento
 
-Este documento cubre el bloque inicial de la Unidad 00: validacion de Windows, WSL2 y Ubuntu 24.04 LTS, continuidad del trabajo desde VS Code conectado a WSL, y preparacion de MicroK8s con `kubectl`.
+Este documento cubre la Unidad 00 completa: validacion de Windows, WSL2 y Ubuntu 24.04 LTS, continuidad del trabajo desde VS Code conectado a WSL, preparacion de MicroK8s con `kubectl`, e instalacion de Helm y Terraform como herramientas CLI.
 
-Helm y Terraform quedan preparados como bloques posteriores de la misma unidad. No se instalan ni se validan todavia desde este tutorial.
+Helm y Terraform se instalan y validan como herramientas base. En esta unidad no se crean charts, releases, modulos, backends ni recursos.
 
 ## Objetivo
 
@@ -15,7 +15,7 @@ Al finalizar este bloque, el alumno debe poder justificar con evidencias que:
 - Ubuntu se ejecuta sobre WSL2;
 - `systemd`, `snap`, Git y herramientas basicas estan disponibles dentro de Ubuntu;
 - MicroK8s y `kubectl` pueden instalarse y validarse mediante scripts del repositorio;
-- los avisos sobre Helm y Terraform son esperados en esta fase;
+- Helm y Terraform pueden instalarse y validarse como CLI sin crear artefactos funcionales;
 - el repositorio puede continuarse desde VS Code conectado directamente a Ubuntu WSL.
 
 ## Arquitectura objetivo
@@ -30,7 +30,7 @@ Windows 11
         -> kubectl
 ```
 
-En este bloque solo se valida hasta Ubuntu WSL. La plataforma Kubernetes se incorporara despues.
+La plataforma Kubernetes local se incorpora durante la misma unidad, despues de validar Ubuntu WSL.
 
 ## Reglas de la unidad
 
@@ -53,12 +53,15 @@ platform/environment/microk8s/install.sh
 platform/environment/microk8s/configure.sh
 platform/environment/microk8s/validate.sh
 platform/environment/microk8s/reset.sh
+platform/environment/tools/install-helm.sh
+platform/environment/tools/install-terraform.sh
+platform/environment/tools/validate-tools.sh
 platform/environment/validation/validate-environment.sh
 ```
 
 Los scripts de `platform/environment/windows/` se ejecutan desde PowerShell en Windows.
 
-Los scripts de `platform/environment/linux/`, `platform/environment/microk8s/` y `platform/environment/validation/` se ejecutan dentro de Ubuntu sobre WSL2, en la raiz del repositorio.
+Los scripts de `platform/environment/linux/`, `platform/environment/microk8s/`, `platform/environment/tools/` y `platform/environment/validation/` se ejecutan dentro de Ubuntu sobre WSL2, en la raiz del repositorio.
 
 ## 1. Validar Windows y WSL2
 
@@ -167,16 +170,16 @@ MicroK8s and kubectl exited with 1
 
 La validacion integrada falla hasta que MicroK8s y `kubectl` existan. En este punto es aceptable que el bloque Ubuntu no tenga fallos y que el bloque MicroK8s indique que los comandos faltan.
 
-## 4. Interpretar avisos esperados
+## 4. Interpretar avisos por fase
 
-En este bloque son esperados los avisos siguientes:
+Antes de instalar cada componente son esperados los avisos siguientes:
 
 | Aviso | Interpretacion |
 |---|---|
 | `kubectl command not found` | Esperado antes de ejecutar `platform/environment/microk8s/install.sh` |
 | `microk8s command not found` | Esperado antes de ejecutar `platform/environment/microk8s/install.sh` |
-| `helm command not found` | Esperado; Helm se instalara despues sin crear charts |
-| `terraform command not found` | Esperado; Terraform se instalara despues sin crear modulos |
+| `helm command not found` | Esperado antes de ejecutar `platform/environment/tools/install-helm.sh` |
+| `terraform command not found` | Esperado antes de ejecutar `platform/environment/tools/install-terraform.sh` |
 
 Estos avisos no bloquean la validacion inicial de Ubuntu. Si aparecen fallos (`FAIL`) en WSL, Ubuntu, `snap`, DNS o espacio disponible, no continuar con MicroK8s hasta resolverlos.
 
@@ -428,30 +431,34 @@ Resultados aportados para este repositorio:
 | Distribucion WSL | `Ubuntu-24.04` instalada |
 | Usuario Linux inicial | `ramon` |
 | Ubuntu | 24.04.4 LTS (`noble`) |
-| `systemd` | Disponible; validacion previa en ejecucion, validacion actual con estado `unknown` |
+| `systemd` | Disponible y en ejecucion |
 | `snap` | Disponible (`2.73+ubuntu24.04`) |
 | Herramientas base | Git, `curl`, `tar` y `gzip` disponibles |
-| DNS | Validacion previa correcta; validacion actual no resolvio `snapcraft.io` |
+| DNS | `snapcraft.io` resuelve correctamente en las validaciones finales |
 | Espacio libre en `$HOME` | 952-954 GB observados |
-| Validacion Linux inicial | 0 fallos; avisos esperados por herramientas pendientes |
+| Validacion Linux inicial | 0 fallos; avisos esperados antes de instalar componentes |
 | DNS `snapcraft.io` | Resuelve correctamente antes de instalar MicroK8s |
 | MicroK8s | Instalado desde `1.35/stable`; version observada `v1.35.6` |
 | `kubectl` | Instalado desde `1.35/stable`; version observada `v1.35.6` |
 | Nodo Kubernetes | `gmktecg2` en estado `Ready`, version `v1.35.6` |
 | Namespaces de sistema | `default`, `kube-node-lease`, `kube-public` y `kube-system` activos |
 | Validacion MicroK8s | `platform/environment/microk8s/validate.sh` con 0 fallos y 0 avisos |
-| Validacion integrada | Completada sin fallos bloqueantes; avisos esperados por Helm y Terraform pendientes |
-| Scripts Helm/Terraform | Creados; ejecucion funcional pendiente |
+| Helm | `v3.21.0+ge0878d4` instalado y validado |
+| Terraform | `1.15.7` instalado y validado |
+| Validacion herramientas | `platform/environment/tools/validate-tools.sh` con 0 fallos y 0 avisos |
+| Validacion integrada | Completada sin fallos bloqueantes tras validar MicroK8s, `kubectl`, Helm y Terraform |
+| Revalidacion integrada desde Codex | Bloqueada en `microk8s status/version` por sesion no interactiva sin grupo `microk8s`; `kubectl get nodes`, Helm y Terraform responden correctamente |
 
-No se ha validado todavia:
+Quedan sin evidencia directa completa desde esta sesion Linux:
 
 ```text
-helm version
-terraform version
+wsl --status
+wsl --list --verbose
+platform/environment/windows/check-prerequisites.ps1
 ```
 
 ## 13. Siguiente bloque
 
-El siguiente paso de la Unidad 00 es ejecutar los scripts de Helm y Terraform, aportar los resultados reales y actualizar el estado.
+La Unidad 00 queda lista para cierre documental con las limitaciones registradas. Antes de iniciar contenido de Unidad 01, confirmar que `tutorial/00-environment/summary.md` y `project/project-state.md` reflejan el estado final.
 
-No iniciar la Unidad 01 hasta cerrar completamente la Unidad 00.
+No crear workloads, charts, modulos Terraform ni aplicacion evolutiva como parte de este cierre.
