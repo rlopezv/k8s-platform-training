@@ -22,22 +22,22 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Unidad 03 — Networking e ingreso |
-| Estado general | Playbook de Unidad 03 aprobado; Unidad 02 completada, validada técnicamente y aprobada |
-| Último incremento completado | Aprobación del playbook de la Unidad 03 — Networking e ingreso |
-| Unidad activa | 03 — Networking e ingreso, playbook aprobado; contenido no generado |
-| Última unidad completada | 02 — Configuración, secretos y ciclo de vida |
+| Fase actual | Unidad 04 — Persistencia y estado |
+| Estado general | Unidad 03 generada y validada técnicamente; revisión pedagógica del usuario pendiente |
+| Último incremento completado | Generación y validación técnica de la Unidad 03 — Networking e ingreso |
+| Unidad activa | 04 — Persistencia y estado, playbook no generado |
+| Última unidad completada | 03 — Networking e ingreso |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
-| Contenido formativo generado | Sí, Unidades 00, 01 y 02 con hardening pedagógico inicial mínimo |
+| Contenido formativo generado | Sí, Unidades 00, 01, 02 y 03 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar la Unidad 03 — Networking e ingreso |
+| Siguiente incremento permitido | Generar el playbook de la Unidad 04 — Persistencia y estado |
 
 ---
 
 # Fase actual
 
-El proyecto ha completado la **Unidad 00 — Preparación del entorno**, la **Unidad 01 — Fundamentos operativos y primera aplicación** y la **Unidad 02 — Configuración, secretos y ciclo de vida**.
+El proyecto ha completado la **Unidad 00 — Preparación del entorno**, la **Unidad 01 — Fundamentos operativos y primera aplicación**, la **Unidad 02 — Configuración, secretos y ciclo de vida** y la **Unidad 03 — Networking e ingreso**.
 
 La Unidad 01 incorporó la primera aplicación evolutiva del curso, `platform-api`, desplegada sobre MicroK8s mediante manifiestos Kubernetes estándar. El laboratorio local ya contiene un namespace funcional, un Deployment, Pods gestionados por ReplicaSet y un Service interno.
 
@@ -49,13 +49,13 @@ Como consecuencia, se actualizaron `playbooks/master.md` y `playbooks/unit-templ
 
 El usuario y el proyecto acuerdan que el nivel pedagógico deseado puede abordarse en una fase posterior dedicada específicamente a desarrollar los `README.md` como soporte formativo profundo. Esta fase no debe avanzar capacidades técnicas ni sustituir laboratorios; debe ampliar teoría, modelos mentales, ejemplos conceptuales, razonamiento, lectura guiada y progresión didáctica. La deuda queda abierta y no bloquea por sí sola la revisión del playbook de Unidad 03 ni la generación posterior de la unidad cuando el playbook sea aprobado.
 
-La siguiente fase de trabajo es preparar la **Unidad 03 — Networking e ingreso**. El playbook de Unidad 03 existe y esta aprobado en `playbooks/units/03-networking-ingress.md`.
+La Unidad 03 generó el acceso HTTP local para `platform-api` mediante un recurso `Ingress` y el addon Ingress de MicroK8s. La validación técnica se ejecutó contra el MicroK8s local con 0 fallos y 0 avisos. La revisión pedagógica final del usuario queda pendiente.
 
 Durante esta fase se permite:
 
-- generar la Unidad 03 — Networking e ingreso siguiendo el playbook aprobado;
-- reutilizar `tutorial/02-configuration-lifecycle/summary.md` como fuente de continuidad;
-- reutilizar `labs/02-configuration-lifecycle/solution/` como estado activo de la aplicación;
+- generar el playbook de la Unidad 04 — Persistencia y estado;
+- reutilizar `tutorial/03-networking-ingress/summary.md` como fuente de continuidad;
+- reutilizar `labs/03-networking-ingress/solution/` como estado activo de la aplicación;
 - mantener visible cualquier ajuste pedagógico posterior sin resolverlo dentro del playbook de Unidad 03 salvo decisión explícita.
 
 Todavía no se permite:
@@ -131,6 +131,24 @@ Todavía no se permite:
 │       │   └── service.yaml
 │       └── validation/
 │           └── validate.sh
+│   └── 03-networking-ingress/
+│       ├── README.md
+│       ├── starter/
+│       │   ├── configmap.yaml
+│       │   ├── deployment.yaml
+│       │   ├── ingress.yaml
+│       │   ├── namespace.yaml
+│       │   ├── secret.yaml
+│       │   └── service.yaml
+│       ├── solution/
+│       │   ├── configmap.yaml
+│       │   ├── deployment.yaml
+│       │   ├── ingress.yaml
+│       │   ├── namespace.yaml
+│       │   ├── secret.yaml
+│       │   └── service.yaml
+│       └── validation/
+│           └── validate.sh
 ├── platform/
 │   ├── .gitkeep
 │   └── environment/
@@ -179,7 +197,11 @@ Todavía no se permite:
     │   ├── instructor-notes.md
     │   ├── README.md
     │   └── summary.md
-    └── 02-configuration-lifecycle/
+    ├── 02-configuration-lifecycle/
+    │   ├── instructor-notes.md
+    │   ├── README.md
+    │   └── summary.md
+    └── 03-networking-ingress/
         ├── instructor-notes.md
         ├── README.md
         └── summary.md
@@ -190,11 +212,11 @@ Todavía no se permite:
 | Directorio | Estado | Contenido actual |
 |---|---|---|
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
-| `labs/` | Materializado con Unidades 01 y 02 | `.gitkeep`, `01-kubernetes/` y `02-configuration-lifecycle/` |
+| `labs/` | Materializado con Unidades 01, 02 y 03 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/` y `03-networking-ingress/` |
 | `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base |
-| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01 y 02 |
+| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02 y 03 |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
-| `tutorial/` | Unidades 00, 01 y 02 generadas | Documentación de alumno, instructor notes y summaries |
+| `tutorial/` | Unidades 00, 01, 02 y 03 generadas | Documentación de alumno, instructor notes y summaries |
 
 ---
 
@@ -205,7 +227,7 @@ Todavía no se permite:
 | 00 — Preparación del entorno | Completada con limitaciones; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `platform/environment/` | Sí | Sí |
 | 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
 | 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
-| 03 — Networking e ingreso | Playbook aprobado; unidad no generada | No | No | No | No |
+| 03 — Networking e ingreso | Completada con validación técnica; revisión pedagógica pendiente | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
 | 04–25 | Previstas en roadmap | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
@@ -284,29 +306,40 @@ Limitaciones activas:
 
 - ShellCheck no está disponible en este entorno para validar scripts;
 - los Secrets son únicamente de laboratorio y no representan gestión corporativa de secretos;
-- Ingress, Gateway API, DNS y TLS quedan diferidos a Unidad 03;
+- Ingress y DNS interno ya fueron incorporados en Unidad 03; Gateway API operativa y TLS productivo siguen diferidos;
 - Helm y Terraform siguen sin gestionar recursos del curso.
 
 ## Unidad 03 — Networking e ingreso
 
 | Campo | Estado |
 |---|---|
-| Estado | Playbook aprobado; unidad no generada |
-| Fecha de inicio | No aplica |
-| Fecha de cierre | No aplica |
+| Estado | Completada con validación técnica; revisión pedagógica pendiente |
+| Fecha de inicio | 2026-07-18 |
+| Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/03-networking-ingress.md` |
-| Tutorial | No existe |
-| Laboratorio | No existe |
-| Instructor notes | No existe |
-| Summary | No existe |
+| Tutorial | `tutorial/03-networking-ingress/README.md` |
+| Laboratorio | `labs/03-networking-ingress/` |
+| Instructor notes | `tutorial/03-networking-ingress/instructor-notes.md` |
+| Summary | `tutorial/03-networking-ingress/summary.md` |
 
-Alcance aprobado del playbook:
+Capacidades incorporadas:
 
 - reutilizar `platform-api`, `platform-training` y `labs/02-configuration-lifecycle/solution/`;
 - conservar el Service `platform-api` como `ClusterIP`;
-- introducir DNS interno, EndpointSlice, Ingress Controller local de MicroK8s e `Ingress` HTTP;
-- tratar Gateway API como comparación conceptual salvo decisión explícita y validación real;
-- diferir TLS productivo, DNS público, LoadBalancer cloud, NetworkPolicies, Helm, Terraform, CI/CD, GitOps, observabilidad avanzada y cloud.
+- validar DNS interno de Kubernetes para `platform-api.platform-training.svc.cluster.local`;
+- habilitar el addon Ingress de MicroK8s como controlador local;
+- desplegar Traefik `v3.6.2` en namespace `ingress` mediante el addon local;
+- crear `ingress/platform-api` con host `platform-api.local`, `ingressClassName: public` y backend `service/platform-api:80`;
+- validar HTTP por Ingress con `curl -H 'Host: platform-api.local' http://127.0.0.1/`;
+- tratar Gateway API como comparación conceptual, aunque el addon haya instalado CRDs como efecto de plataforma local.
+
+Limitaciones activas:
+
+- ShellCheck no está disponible en este entorno para validar scripts;
+- la revisión pedagógica final del usuario queda pendiente;
+- el addon Ingress de MicroK8s es específico de plataforma local y no debe extrapolarse a AKS, EKS o entornos corporativos;
+- no se crearon recursos `GatewayClass`, `Gateway` ni `HTTPRoute` gestionados por el curso;
+- TLS productivo, DNS público, LoadBalancer cloud, NetworkPolicies, Helm, Terraform, CI/CD, GitOps, observabilidad avanzada y cloud siguen diferidos.
 
 ---
 
@@ -328,7 +361,7 @@ Alcance aprobado del playbook:
 | MicroK8s | Instalado y validado | `v1.35.6`, canal `1.35/stable`, revisión `9072` | `bash platform/environment/validation/validate-environment.sh` |
 | Kubernetes | Disponible y validado en MicroK8s | `v1.35.6` | `kubectl get nodes`: nodo `gmktecg2` en `Ready` |
 | Clúster local | Disponible y validado | Nodo `gmktecg2` en `Ready` | `kubectl get nodes` |
-| Addons | `dns` habilitado; addons core adicionales observados por MicroK8s | `dns`, `ha-cluster`, `helm`, `helm3` | `bash platform/environment/validation/validate-environment.sh` |
+| Addons | `dns` e `ingress` habilitados; addons core adicionales observados por MicroK8s | `dns`, `ha-cluster`, `helm`, `helm3`, `ingress` | `microk8s status --wait-ready` |
 
 ## Namespaces
 
@@ -338,23 +371,26 @@ Alcance aprobado del playbook:
 | `kube-node-lease` | Activo | Sistema | Kubernetes |
 | `kube-public` | Activo | Sistema | Kubernetes |
 | `kube-system` | Activo | Sistema | Kubernetes |
-| `platform-training` | Activo | Recursos funcionales del curso | `labs/02-configuration-lifecycle/solution/namespace.yaml` |
+| `platform-training` | Activo | Recursos funcionales del curso | `labs/03-networking-ingress/solution/namespace.yaml` |
+| `ingress` | Activo | Controlador Ingress local de MicroK8s | Addon `microk8s enable ingress` |
 
 ## Workloads
 
 | Recurso | Namespace | Estado esperado | Definición |
 |---|---|---|---|
-| `deployment/platform-api` | `platform-training` | `2/2` replicas disponibles, con ConfigMap, Secret, probes y resources | `labs/02-configuration-lifecycle/solution/deployment.yaml` |
-| `replicaset/platform-api-66fb76b758` | `platform-training` | 2 deseadas, 2 actuales, 2 ready | Generado por Deployment |
-| Pods `platform-api-66fb76b758-*` | `platform-training` | 2 Pods `Running`, `1/1`, 0 restarts | Generados por ReplicaSet |
+| `deployment/platform-api` | `platform-training` | `2/2` replicas disponibles, con ConfigMap, Secret, probes y resources | `labs/03-networking-ingress/solution/deployment.yaml` |
+| `replicaset/platform-api-76f746dbc` | `platform-training` | 2 deseadas, 2 actuales, 2 ready | Generado por Deployment |
+| Pods `platform-api-76f746dbc-*` | `platform-training` | 2 Pods `Running`, `1/1`, 0 restarts | Generados por ReplicaSet |
+| `pod/traefik-rp75h` | `ingress` | `Running`, `1/1`, 0 restarts observado | Addon Ingress de MicroK8s |
 
 ## Endpoints
 
 | Servicio | Acceso | Estado | Propósito |
 |---|---|---|---|
 | `service/platform-api` | `ClusterIP` `10.152.183.150`, puerto `80/TCP` hacia contenedor `8080` | Activo | Acceso interno estable a `platform-api` |
-| `endpointslice/platform-api-fbxzx` | `10.1.16.71:8080`, `10.1.16.72:8080` observados durante validación | Activo | Evidencia preferente de selección de Pods Ready por el Service |
-| Port-forward local | `http://127.0.0.1:18080/` durante la prueba | Validado con `HTTP/1.1 200 OK` y contenido de Unidad 02 desde ConfigMap | Prueba HTTP desde la máquina local |
+| `endpointslice/platform-api-fbxzx` | `10.1.16.74:8080`, `10.1.16.75:8080` observados durante validación | Activo | Evidencia preferente de selección de Pods Ready por el Service |
+| `ingress/platform-api` | Host `platform-api.local`, path `/`, clase `public` | Activo | Entrada HTTP local hacia `service/platform-api:80` |
+| HTTP por Ingress local | `http://127.0.0.1/` con cabecera `Host: platform-api.local` | Validado con `HTTP/1.1 200 OK` y contenido de Unidad 03 desde ConfigMap | Prueba HTTP desde la máquina local |
 
 ---
 
@@ -364,7 +400,7 @@ Alcance aprobado del playbook:
 |---|---|---|---|---|
 | Git | Validado en Ubuntu WSL | `/usr/bin/git` | `platform/environment/linux/check-prerequisites.sh` | Unidad 00 |
 | kubectl | Instalado y operativo contra MicroK8s | `v1.35.6` | `kubectl version --client`, `kubectl get nodes` | Unidad 00 |
-| Helm | Instalado y validado como CLI; no gestiona recursos del curso | `v3.21.0+ge0878d4` | `platform/environment/tools/validate-tools.sh` | Unidad 00 |
+| Helm | Instalado y validado como CLI; MicroK8s lo usa internamente para el addon Ingress, pero no existen charts del curso | `v3.21.0+ge0878d4` | `platform/environment/tools/validate-tools.sh`, `microk8s enable ingress` | Unidad 00 |
 | Terraform | Instalado y validado como CLI; no gestiona recursos del curso | `1.15.7` | `platform/environment/tools/validate-tools.sh` | Unidad 00 |
 | Argo CD | No incorporado | No aplica | No aplica | Unidad 09 |
 | Tekton | No incorporado | No aplica | No aplica | Unidad 08 |
@@ -385,17 +421,18 @@ Alcance aprobado del playbook:
 |---|---|
 | Nombre | `platform-api` |
 | Propósito | Servicio HTTP mínimo para evolucionar configuración, red, salud, observabilidad, seguridad, escalado y despliegue cloud |
-| Versión actual | Unidad 02 |
-| Repositorio o ruta | `labs/02-configuration-lifecycle/solution/` |
+| Versión actual | Unidad 03 |
+| Repositorio o ruta | `labs/03-networking-ingress/solution/` |
 
 ## Componentes
 
 | Componente | Estado | Imagen o versión | Definición |
 |---|---|---|---|
-| `Deployment/platform-api` | Desplegado y validado | `nginxinc/nginx-unprivileged:1.27.4-alpine` | `labs/02-configuration-lifecycle/solution/deployment.yaml` |
-| `Service/platform-api` | Desplegado y validado | `ClusterIP` | `labs/02-configuration-lifecycle/solution/service.yaml` |
-| `ConfigMap/platform-api-config` | Desplegado y validado | 4 claves | `labs/02-configuration-lifecycle/solution/configmap.yaml` |
-| `Secret/platform-api-secret` | Desplegado y validado | `Opaque`, 2 claves ficticias | `labs/02-configuration-lifecycle/solution/secret.yaml` |
+| `Deployment/platform-api` | Desplegado y validado | `nginxinc/nginx-unprivileged:1.27.4-alpine` | `labs/03-networking-ingress/solution/deployment.yaml` |
+| `Service/platform-api` | Desplegado y validado | `ClusterIP` | `labs/03-networking-ingress/solution/service.yaml` |
+| `ConfigMap/platform-api-config` | Desplegado y validado | 4 claves | `labs/03-networking-ingress/solution/configmap.yaml` |
+| `Secret/platform-api-secret` | Desplegado y validado | `Opaque`, 2 claves ficticias | `labs/03-networking-ingress/solution/secret.yaml` |
+| `Ingress/platform-api` | Desplegado y validado | Host `platform-api.local`, clase `public` | `labs/03-networking-ingress/solution/ingress.yaml` |
 
 ## Capacidades activas
 
@@ -407,11 +444,13 @@ Alcance aprobado del playbook:
 - `startupProbe`, `readinessProbe` y `livenessProbe`;
 - requests y limits iniciales;
 - logs de contenedor legibles;
-- validación de rollout, Pods, EndpointSlice y HTTP local.
+- validación de rollout, Pods, EndpointSlice y HTTP por Ingress local;
+- DNS interno validado para `platform-api.platform-training.svc.cluster.local`;
+- entrada HTTP local mediante `ingress/platform-api`.
 
 ## Capacidades todavía no incorporadas
 
-- Ingress y Gateway API;
+- Gateway API operativa como artefacto del curso;
 - almacenamiento persistente;
 - empaquetado Helm;
 - gestión Terraform;
@@ -429,12 +468,19 @@ Alcance aprobado del playbook:
 - `labs/02-configuration-lifecycle/solution/secret.yaml`;
 - `labs/02-configuration-lifecycle/solution/deployment.yaml`;
 - `labs/02-configuration-lifecycle/solution/service.yaml`;
-- `labs/02-configuration-lifecycle/validation/validate.sh`.
+- `labs/02-configuration-lifecycle/validation/validate.sh`;
+- `labs/03-networking-ingress/solution/namespace.yaml`;
+- `labs/03-networking-ingress/solution/configmap.yaml`;
+- `labs/03-networking-ingress/solution/secret.yaml`;
+- `labs/03-networking-ingress/solution/deployment.yaml`;
+- `labs/03-networking-ingress/solution/service.yaml`;
+- `labs/03-networking-ingress/solution/ingress.yaml`;
+- `labs/03-networking-ingress/validation/validate.sh`.
 
 ## Helm
 
 - No existen charts Helm del curso.
-- No existen releases Helm del curso.
+- No existen releases Helm del curso. El addon Ingress de MicroK8s despliega Traefik mediante Helm como componente de plataforma local, no como artefacto gestionado por el curso.
 - Helm permanece como CLI validada desde Unidad 00.
 
 ## Terraform
@@ -463,9 +509,10 @@ Alcance aprobado del playbook:
 
 | Control | Estado | Ámbito | Evidencia |
 |---|---|---|---|
-| Namespace de aislamiento | Activo | `platform-training` | `labs/02-configuration-lifecycle/solution/namespace.yaml` |
-| Secret de aplicación | Implementado solo como laboratorio ficticio | `platform-api-secret` | `labs/02-configuration-lifecycle/solution/secret.yaml` |
-| Credenciales reales | No versionadas | Repositorio | Revisión de manifiestos de Unidad 02 |
+| Namespace de aislamiento | Activo | `platform-training` | `labs/03-networking-ingress/solution/namespace.yaml` |
+| Secret de aplicación | Implementado solo como laboratorio ficticio | `platform-api-secret` | `labs/03-networking-ingress/solution/secret.yaml` |
+| Ingress HTTP local | Activo sin TLS productivo | `platform-api.local` | `labs/03-networking-ingress/solution/ingress.yaml` |
+| Credenciales reales | No versionadas | Repositorio | Revisión de manifiestos de Unidad 03 |
 
 ---
 
@@ -538,17 +585,29 @@ No existen actualmente:
 | D-02-05 — Laboratorio acumulativo con ruta propia | Activa | `playbooks/units/02-configuration-lifecycle.md` | `labs/02-configuration-lifecycle/solution/` es la nueva base para Unidad 03 |
 | D-02-06 — EndpointSlice como comprobación principal de endpoints | Activa | `tutorial/02-configuration-lifecycle/summary.md` | Validación de Unidad 02 consulta EndpointSlice y conserva fallback a `Endpoints` |
 
+## Decisiones específicas de la Unidad 03
+
+| Decisión | Estado | Documento fuente | Impacto actual |
+|---|---|---|---|
+| D-03-01 — Service interno conservado como backend estable | Activa | `playbooks/units/03-networking-ingress.md` y `tutorial/03-networking-ingress/summary.md` | `service/platform-api` sigue siendo `ClusterIP` y backend del Ingress |
+| D-03-02 — Ingress Controller local como dependencia explícita de MicroK8s | Activa | `playbooks/units/03-networking-ingress.md` y `tutorial/03-networking-ingress/summary.md` | Addon `ingress` habilitado; Traefik `v3.6.2` desplegado en namespace `ingress` |
+| D-03-03 — HTTP local antes que TLS productivo | Activa | `playbooks/units/03-networking-ingress.md` y `tutorial/03-networking-ingress/summary.md` | Host local `platform-api.local`; TLS queda diferido |
+| D-03-04 — Gateway API como comparación, no como eje operativo | Activa | `playbooks/units/03-networking-ingress.md` y `tutorial/03-networking-ingress/summary.md` | CRDs instalados por el addon, pero sin recursos Gateway API gestionados por el curso |
+| D-03-05 — Laboratorio acumulativo con ruta propia | Activa | `playbooks/units/03-networking-ingress.md` | `labs/03-networking-ingress/solution/` es la nueva base para Unidad 04 |
+
 ---
 
 # Restricciones activas
 
-Tras generar, validar técnicamente y aprobar la Unidad 02:
+Tras generar y validar técnicamente la Unidad 03:
 
-- la Unidad 03 deberá reutilizar `platform-api`, `platform-training` y `labs/02-configuration-lifecycle/solution/`;
+- la Unidad 04 deberá reutilizar `platform-api`, `platform-training` y `labs/03-networking-ingress/solution/`;
 - conservar la deuda pedagógica reforzada: los README actuales siguen siendo insuficientes como material formativo profundo para alumnos que no conocen el tema;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
 - no crear charts Helm hasta la unidad prevista;
 - no crear módulos Terraform hasta la unidad prevista;
+- no crear recursos Gateway API como eje operativo salvo decisión explícita posterior;
+- no introducir TLS productivo, DNS público, LoadBalancer cloud, NetworkPolicies ni almacenamiento persistente antes de su unidad prevista;
 - no instalar Tekton;
 - no instalar Argo CD;
 - no desplegar observabilidad avanzada;
@@ -623,8 +682,14 @@ Tras generar, validar técnicamente y aprobar la Unidad 02:
 | Estado de la aplicación | `bash labs/02-configuration-lifecycle/validation/validate.sh` | 0 fallos; Deployment 2/2; Pods Ready; ConfigMap, Secret, probes, resources, Service y EndpointSlice validados |
 | Inventario de aplicación | `kubectl -n platform-training get deploy,rs,pods,svc,endpointslice -l app.kubernetes.io/name=platform-api` | Recursos de `platform-api` visibles |
 | HTTP local | `kubectl -n platform-training port-forward service/platform-api 18080:80` y `curl -i http://127.0.0.1:18080/` | `HTTP/1.1 200 OK`; contenido de Unidad 02 servido desde ConfigMap |
+| Sintaxis cliente de Unidad 03 | `kubectl apply --dry-run=client -f labs/03-networking-ingress/solution/` | Manifiestos aceptados por el cliente |
+| Despliegue Unidad 03 | `kubectl apply -f labs/03-networking-ingress/solution/` | Namespace, ConfigMap, Secret, Deployment, Service e Ingress aplicados |
+| Addon Ingress MicroK8s | `microk8s enable ingress` y `microk8s status --wait-ready` | Addon `ingress` habilitado; Traefik `v3.6.2` desplegado; `IngressClass/public` disponible |
+| Estado de la aplicación por Ingress | `bash labs/03-networking-ingress/validation/validate.sh` | 0 fallos; Deployment 2/2; Service `ClusterIP`; EndpointSlice, DNS interno, Ingress Controller, Ingress y HTTP validados |
+| HTTP por Ingress local | `curl -i -H 'Host: platform-api.local' http://127.0.0.1/` | `HTTP/1.1 200 OK`; contenido de Unidad 03 servido desde ConfigMap |
 | Revisión pedagógica Unidad 01 | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
 | Revisión pedagógica Unidad 02 | Aprobación del usuario el 2026-07-18 | Aprobada |
+| Revisión pedagógica Unidad 03 | Pendiente de revisión del usuario | Pendiente |
 | Hardening pedagógico global inicial | Revisión documental de `tutorial/00-environment/`, `tutorial/01-kubernetes/`, `tutorial/02-configuration-lifecycle/` y summaries | Aceptado por el usuario como cambio mínimo; deuda pedagógica profunda sigue abierta |
 | Ausencia de charts Helm | `find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print` | Sin resultados |
 | Ausencia de módulos Terraform | `find . -path ./.git -prune -o -type f \( -name '*.tf' -o -name '*.tfvars' \) -print` | Sin resultados |
@@ -683,6 +748,7 @@ Validaciones no disponibles en esta sesión:
 | 41 | Acuerdo de fase pedagógica posterior para README | Completado | Se registra que el desarrollo profundo de README puede abordarse como fase posterior sin avanzar capacidades técnicas; `project/project-planning.md` actualizado |
 | 42 | Playbook de Unidad 03 | Completado con revisión pendiente | `playbooks/units/03-networking-ingress.md` creado en borrador; `project/project-state.md` actualizado |
 | 43 | Aprobación del playbook de Unidad 03 | Completado | El usuario aprueba `playbooks/units/03-networking-ingress.md`; se permite generar la Unidad 03 |
+| 44 | Generación y validación técnica de Unidad 03 | Completado con revisión pedagógica pendiente | Tutorial, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` expuesta por Ingress HTTP local y validada en MicroK8s |
 
 ---
 
@@ -691,7 +757,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Generar la Unidad 03 - Networking e ingreso
+Generar el playbook de la Unidad 04 - Persistencia y estado
 ```
 
 ## Fuentes obligatorias
@@ -708,25 +774,25 @@ project/how-to.md
 playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
-tutorial/02-configuration-lifecycle/summary.md
-playbooks/units/03-networking-ingress.md
-labs/02-configuration-lifecycle/solution/
-labs/02-configuration-lifecycle/validation/validate.sh
+tutorial/03-networking-ingress/summary.md
+labs/03-networking-ingress/solution/
+labs/03-networking-ingress/validation/validate.sh
 ```
 
 ## Trabajo permitido
 
-- generar la Unidad 03 — Networking e ingreso siguiendo `playbooks/units/03-networking-ingress.md`;
-- usar `tutorial/02-configuration-lifecycle/summary.md` como entrada;
-- reutilizar `labs/02-configuration-lifecycle/solution/`;
+- generar el playbook de la Unidad 04 — Persistencia y estado;
+- usar `tutorial/03-networking-ingress/summary.md` como entrada;
+- reutilizar `labs/03-networking-ingress/solution/`;
 - mantener `platform-api` y `platform-training` como base;
-- no ampliar el hardening pedagógico dentro del playbook de Unidad 03 salvo decisión explícita;
+- no ampliar el hardening pedagógico dentro del playbook de Unidad 04 salvo decisión explícita;
 - permitir que una fase posterior específica desarrolle en profundidad los `README.md` sin crear nuevas capacidades técnicas.
 
 ## Trabajo todavía prohibido
 
 - crear charts Helm;
 - crear módulos Terraform;
+- generar la Unidad 04 antes de aprobar su playbook;
 - incorporar CI/CD, GitOps, observabilidad avanzada, seguridad avanzada o cloud;
 - sustituir MicroK8s por otra plataforma local;
 - sustituir la aplicación evolutiva sin decisión documentada.
