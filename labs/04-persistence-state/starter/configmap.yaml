@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-api-config
+  namespace: platform-training
+  labels:
+    app.kubernetes.io/name: platform-api
+    app.kubernetes.io/instance: platform-api-local
+    app.kubernetes.io/component: configuration
+    app.kubernetes.io/part-of: k8s-platform-training
+    app.kubernetes.io/managed-by: kubectl
+    training.k8s-platform.io/unit: "04"
+data:
+  APP_ENV: "lab"
+  LOG_LEVEL: "info"
+  FEATURE_GREETING: "persistence-state"
+  index.html: |
+    <!doctype html>
+    <html lang="es">
+    <head>
+      <meta charset="utf-8">
+      <title>platform-api</title>
+    </head>
+    <body>
+      <h1>platform-api</h1>
+      <p>Unidad 04: persistencia mediante PersistentVolumeClaim.</p>
+    </body>
+    </html>

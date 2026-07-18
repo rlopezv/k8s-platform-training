@@ -22,22 +22,22 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Preparación del playbook de la Unidad 04 |
-| Estado general | Unidades 00-03 generadas; refuerzo pedagógico transversal con `student-notes.md` aprobado y comiteado |
-| Último incremento completado | Revisión y aprobación de `student-notes.md` de Unidades 00-03 |
-| Unidad activa | 04 — Persistencia y estado, playbook pendiente |
+| Fase actual | Unidad 04 aprobada; validación funcional pendiente |
+| Estado general | Unidades 00-03 completadas y aprobadas; Unidad 04 generada y aprobada con StorageClass local pendiente |
+| Último incremento completado | Aprobación pedagógica de la Unidad 04 |
+| Unidad activa | 04 — Persistencia y estado |
 | Última unidad completada | 03 — Networking e ingreso |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
-| Contenido formativo generado | Sí, Unidades 00, 01, 02 y 03 |
+| Contenido formativo generado | Sí, Unidades 00, 01, 02, 03 y 04 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar el playbook de la Unidad 04 — Persistencia y estado |
+| Siguiente incremento permitido | Validar funcionalmente la Unidad 04 — Persistencia y estado |
 
 ---
 
 # Fase actual
 
-El proyecto ha completado la **Unidad 00 — Preparación del entorno**, la **Unidad 01 — Fundamentos operativos y primera aplicación**, la **Unidad 02 — Configuración, secretos y ciclo de vida** y la **Unidad 03 — Networking e ingreso**.
+El proyecto ha completado la **Unidad 00 — Preparación del entorno**, la **Unidad 01 — Fundamentos operativos y primera aplicación**, la **Unidad 02 — Configuración, secretos y ciclo de vida** y la **Unidad 03 — Networking e ingreso**. La **Unidad 04 — Persistencia y estado** ha sido generada y aprobada por el usuario el 2026-07-19, pero su validación funcional queda pendiente porque la habilitación de `hostpath-storage` en MicroK8s requiere `sudo` interactivo en esta sesión.
 
 La Unidad 01 incorporó la primera aplicación evolutiva del curso, `platform-api`, desplegada sobre MicroK8s mediante manifiestos Kubernetes estándar. El laboratorio local ya contiene un namespace funcional, un Deployment, Pods gestionados por ReplicaSet y un Service interno.
 
@@ -57,19 +57,20 @@ El 2026-07-19 se incorpora `student-notes.md` como artefacto pedagógico estruct
 
 El usuario aceptó los cambios y confirmó que fueron comiteados en `b842f33 Add student notes for units 00-03`. La fase pedagógica transversal queda cerrada para poder continuar con la Unidad 04.
 
-Durante la preparación de la Unidad 04 se permite:
+Durante la validación funcional de la Unidad 04 se permite:
 
-- reutilizar `tutorial/03-networking-ingress/summary.md` como fuente de continuidad;
-- reutilizar `labs/03-networking-ingress/solution/` como estado activo de la aplicación;
-- generar `playbooks/units/04-persistence-state.md`;
-- definir alcance, entregables, restricciones y criterios de aceptación de persistencia y estado;
-- mantener congeladas las capacidades tecnicas ya validadas.
+- reutilizar `tutorial/04-persistence-state/summary.md` como fuente de continuidad;
+- reutilizar `labs/04-persistence-state/solution/` como estado generado de la aplicación;
+- habilitar `hostpath-storage` en MicroK8s cuando el usuario proporcione permisos locales;
+- aplicar `labs/04-persistence-state/solution/`;
+- ejecutar `bash labs/04-persistence-state/validation/validate.sh`;
+- registrar el cierre técnico si la validación funcional se completa correctamente.
 
 Todavía no se permite:
 
 - crear charts Helm;
 - crear módulos Terraform;
-- generar la Unidad 04 antes de aprobar su playbook;
+- generar la Unidad 05 antes de resolver o registrar explicitamente la validacion funcional pendiente de la Unidad 04;
 - instalar Tekton;
 - instalar Argo CD;
 - desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
@@ -98,6 +99,7 @@ Todavía no se permite:
 | `playbooks/units/01-kubernetes.md` | Completo y aprobado | Unit-01-Concept-Scope | Gobierno de la Unidad 01 |
 | `playbooks/units/02-configuration-lifecycle.md` | Completo y aprobado | Unit-02-Playbook-Approval | Gobierno de la Unidad 02 |
 | `playbooks/units/03-networking-ingress.md` | Completo y aprobado | Unit-03-Playbook-Approval | Gobierno de la Unidad 03 |
+| `playbooks/units/04-persistence-state.md` | Completo y aprobado por instrucción de generación | Unit-04-Generation | Gobierno de la Unidad 04 |
 | `AGENTS.md` | Completo | Unit-00-01 | Guía operativa para agentes con acceso al repositorio |
 
 ---
@@ -157,6 +159,26 @@ Todavía no se permite:
 │       │   └── service.yaml
 │       └── validation/
 │           └── validate.sh
+│   └── 04-persistence-state/
+│       ├── README.md
+│       ├── starter/
+│       │   ├── configmap.yaml
+│       │   ├── deployment.yaml
+│       │   ├── ingress.yaml
+│       │   ├── namespace.yaml
+│       │   ├── pvc.yaml
+│       │   ├── secret.yaml
+│       │   └── service.yaml
+│       ├── solution/
+│       │   ├── configmap.yaml
+│       │   ├── deployment.yaml
+│       │   ├── ingress.yaml
+│       │   ├── namespace.yaml
+│       │   ├── pvc.yaml
+│       │   ├── secret.yaml
+│       │   └── service.yaml
+│       └── validation/
+│           └── validate.sh
 ├── platform/
 │   ├── .gitkeep
 │   └── environment/
@@ -188,7 +210,8 @@ Todavía no se permite:
 │       ├── 00-environment.md
 │       ├── 01-kubernetes.md
 │       ├── 02-configuration-lifecycle.md
-│       └── 03-networking-ingress.md
+│       ├── 03-networking-ingress.md
+│       └── 04-persistence-state.md
 ├── project/
 │   ├── architecture.md
 │   ├── how-to.md
@@ -217,6 +240,11 @@ Todavía no se permite:
         ├── README.md
         ├── student-notes.md
         └── summary.md
+    └── 04-persistence-state/
+        ├── instructor-notes.md
+        ├── README.md
+        ├── student-notes.md
+        └── summary.md
 ```
 
 ## Estado de directorios
@@ -224,11 +252,11 @@ Todavía no se permite:
 | Directorio | Estado | Contenido actual |
 |---|---|---|
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
-| `labs/` | Materializado con Unidades 01, 02 y 03 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/` y `03-networking-ingress/` |
+| `labs/` | Materializado con Unidades 01, 02, 03 y 04 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/` y `04-persistence-state/` |
 | `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base |
-| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02 y 03 |
+| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03 y 04 |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
-| `tutorial/` | Unidades 00, 01, 02 y 03 generadas | README de entrada, `student-notes.md`, instructor notes y summaries |
+| `tutorial/` | Unidades 00, 01, 02, 03 y 04 generadas | README de entrada, `student-notes.md`, instructor notes y summaries |
 
 ---
 
@@ -240,7 +268,8 @@ Todavía no se permite:
 | 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
 | 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
 | 03 — Networking e ingreso | Completada, validada técnicamente y aprobada | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
-| 04–25 | Previstas en roadmap | No | No | No | No | No |
+| 04 — Persistencia y estado | Generada y aprobada; validación funcional pendiente | Sí | Sí | Sí, `labs/04-persistence-state/` | Sí | Sí |
+| 05–25 | Previstas en roadmap | No | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
 
@@ -357,6 +386,36 @@ Limitaciones activas:
 - no se crearon recursos `GatewayClass`, `Gateway` ni `HTTPRoute` gestionados por el curso;
 - TLS productivo, DNS público, LoadBalancer cloud, NetworkPolicies, Helm, Terraform, CI/CD, GitOps, observabilidad avanzada y cloud siguen diferidos.
 
+## Unidad 04 — Persistencia y estado
+
+| Campo | Estado |
+|---|---|
+| Estado | Generada y aprobada pedagógicamente; validación funcional pendiente |
+| Fecha de inicio | 2026-07-19 |
+| Fecha de cierre | No aplica |
+| Playbook | `playbooks/units/04-persistence-state.md` |
+| Tutorial | `tutorial/04-persistence-state/README.md` |
+| Student notes | `tutorial/04-persistence-state/student-notes.md` |
+| Laboratorio | `labs/04-persistence-state/` |
+| Instructor notes | `tutorial/04-persistence-state/instructor-notes.md` |
+| Summary | `tutorial/04-persistence-state/summary.md` |
+
+Capacidades generadas:
+
+- PVC `platform-api-data` para almacenamiento persistente de laboratorio;
+- montaje del PVC en `/usr/share/nginx/html/persistent`;
+- procedimiento de escritura, lectura, recreación de Pod, copia y restauración básica;
+- validación automatizada de StorageClass, PVC, PV, montaje, persistencia, Service e Ingress;
+- explicación pedagógica de filesystem efímero, `Volume`, `PersistentVolume`, `PersistentVolumeClaim`, `StorageClass`, access modes, permisos y recuperación básica.
+
+Limitaciones activas:
+
+- `hostpath-storage` de MicroK8s no pudo habilitarse en esta sesión porque requiere `sudo` interactivo;
+- `kubectl get storageclass` devolvió `No resources found`;
+- los manifiestos fueron aceptados por dry-run cliente, pero no se aplicaron funcionalmente;
+- PVC, PV, montaje, escritura, persistencia tras recreación e HTTP de `/persistent/message.txt` siguen pendientes de validación real;
+- la revisión pedagógica final del usuario fue aprobada el 2026-07-19.
+
 ---
 
 # Estado del laboratorio
@@ -387,14 +446,14 @@ Limitaciones activas:
 | `kube-node-lease` | Activo | Sistema | Kubernetes |
 | `kube-public` | Activo | Sistema | Kubernetes |
 | `kube-system` | Activo | Sistema | Kubernetes |
-| `platform-training` | Activo | Recursos funcionales del curso | `labs/03-networking-ingress/solution/namespace.yaml` |
+| `platform-training` | Activo | Recursos funcionales del curso | `labs/03-networking-ingress/solution/namespace.yaml`; redeclarado en `labs/04-persistence-state/solution/namespace.yaml` |
 | `ingress` | Activo | Controlador Ingress local de MicroK8s | Addon `microk8s enable ingress` |
 
 ## Workloads
 
 | Recurso | Namespace | Estado esperado | Definición |
 |---|---|---|---|
-| `deployment/platform-api` | `platform-training` | `2/2` replicas disponibles, con ConfigMap, Secret, probes y resources | `labs/03-networking-ingress/solution/deployment.yaml` |
+| `deployment/platform-api` | `platform-training` | `2/2` replicas disponibles con estado validado de Unidad 03; montaje persistente generado en Unidad 04 pendiente de aplicar | Validado: `labs/03-networking-ingress/solution/deployment.yaml`; generado: `labs/04-persistence-state/solution/deployment.yaml` |
 | `replicaset/platform-api-76f746dbc` | `platform-training` | 2 deseadas, 2 actuales, 2 ready | Generado por Deployment |
 | Pods `platform-api-76f746dbc-*` | `platform-training` | 2 Pods `Running`, `1/1`, 0 restarts | Generados por ReplicaSet |
 | `pod/traefik-rp75h` | `ingress` | `Running`, `1/1`, 0 restarts observado | Addon Ingress de MicroK8s |
@@ -437,18 +496,19 @@ Limitaciones activas:
 |---|---|
 | Nombre | `platform-api` |
 | Propósito | Servicio HTTP mínimo para evolucionar configuración, red, salud, observabilidad, seguridad, escalado y despliegue cloud |
-| Versión actual | Unidad 03 |
-| Repositorio o ruta | `labs/03-networking-ingress/solution/` |
+| Versión actual | Unidad 04 generada; Unidad 03 sigue siendo el último estado funcionalmente validado |
+| Repositorio o ruta | Generada en `labs/04-persistence-state/solution/`; última validada en `labs/03-networking-ingress/solution/` |
 
 ## Componentes
 
 | Componente | Estado | Imagen o versión | Definición |
 |---|---|---|---|
-| `Deployment/platform-api` | Desplegado y validado | `nginxinc/nginx-unprivileged:1.27.4-alpine` | `labs/03-networking-ingress/solution/deployment.yaml` |
-| `Service/platform-api` | Desplegado y validado | `ClusterIP` | `labs/03-networking-ingress/solution/service.yaml` |
-| `ConfigMap/platform-api-config` | Desplegado y validado | 4 claves | `labs/03-networking-ingress/solution/configmap.yaml` |
-| `Secret/platform-api-secret` | Desplegado y validado | `Opaque`, 2 claves ficticias | `labs/03-networking-ingress/solution/secret.yaml` |
-| `Ingress/platform-api` | Desplegado y validado | Host `platform-api.local`, clase `public` | `labs/03-networking-ingress/solution/ingress.yaml` |
+| `Deployment/platform-api` | Unidad 04 generada; Unidad 03 desplegada y validada | `nginxinc/nginx-unprivileged:1.27.4-alpine` | Generado: `labs/04-persistence-state/solution/deployment.yaml`; validado: `labs/03-networking-ingress/solution/deployment.yaml` |
+| `Service/platform-api` | Generado y conservado como `ClusterIP`; Unidad 03 validada | `ClusterIP` | `labs/04-persistence-state/solution/service.yaml` |
+| `ConfigMap/platform-api-config` | Generado para Unidad 04; Unidad 03 validada | 4 claves | `labs/04-persistence-state/solution/configmap.yaml` |
+| `Secret/platform-api-secret` | Generado con valores ficticios heredados | `Opaque`, 2 claves ficticias | `labs/04-persistence-state/solution/secret.yaml` |
+| `Ingress/platform-api` | Generado y conservado para host `platform-api.local`; Unidad 03 validada | Clase `public` | `labs/04-persistence-state/solution/ingress.yaml` |
+| `PersistentVolumeClaim/platform-api-data` | Generado; pendiente de aplicar y validar | `1Gi`, `ReadWriteOnce`, `microk8s-hostpath` | `labs/04-persistence-state/solution/pvc.yaml` |
 
 ## Capacidades activas
 
@@ -462,12 +522,13 @@ Limitaciones activas:
 - logs de contenedor legibles;
 - validación de rollout, Pods, EndpointSlice y HTTP por Ingress local;
 - DNS interno validado para `platform-api.platform-training.svc.cluster.local`;
-- entrada HTTP local mediante `ingress/platform-api`.
+- entrada HTTP local mediante `ingress/platform-api`;
+- manifiestos generados para montar un PVC en `/usr/share/nginx/html/persistent`, pendientes de validación funcional.
 
 ## Capacidades todavía no incorporadas
 
 - Gateway API operativa como artefacto del curso;
-- almacenamiento persistente;
+- almacenamiento persistente validado funcionalmente;
 - empaquetado Helm;
 - gestión Terraform;
 - CI/CD, GitOps, observabilidad avanzada, seguridad avanzada, KEDA, AKS y EKS.
@@ -492,6 +553,14 @@ Limitaciones activas:
 - `labs/03-networking-ingress/solution/service.yaml`;
 - `labs/03-networking-ingress/solution/ingress.yaml`;
 - `labs/03-networking-ingress/validation/validate.sh`.
+- `labs/04-persistence-state/solution/namespace.yaml`;
+- `labs/04-persistence-state/solution/configmap.yaml`;
+- `labs/04-persistence-state/solution/secret.yaml`;
+- `labs/04-persistence-state/solution/pvc.yaml`;
+- `labs/04-persistence-state/solution/deployment.yaml`;
+- `labs/04-persistence-state/solution/service.yaml`;
+- `labs/04-persistence-state/solution/ingress.yaml`;
+- `labs/04-persistence-state/validation/validate.sh`.
 
 ## Helm
 
@@ -528,6 +597,7 @@ Limitaciones activas:
 | Namespace de aislamiento | Activo | `platform-training` | `labs/03-networking-ingress/solution/namespace.yaml` |
 | Secret de aplicación | Implementado solo como laboratorio ficticio | `platform-api-secret` | `labs/03-networking-ingress/solution/secret.yaml` |
 | Ingress HTTP local | Activo sin TLS productivo | `platform-api.local` | `labs/03-networking-ingress/solution/ingress.yaml` |
+| PVC de laboratorio | Generado, pendiente de aplicar y validar | `platform-api-data` | `labs/04-persistence-state/solution/pvc.yaml` |
 | Credenciales reales | No versionadas | Repositorio | Revisión de manifiestos de Unidad 03 |
 
 ---
@@ -611,19 +681,32 @@ No existen actualmente:
 | D-03-04 — Gateway API como comparación, no como eje operativo | Activa | `playbooks/units/03-networking-ingress.md` y `tutorial/03-networking-ingress/summary.md` | CRDs instalados por el addon, pero sin recursos Gateway API gestionados por el curso |
 | D-03-05 — Laboratorio acumulativo con ruta propia | Activa | `playbooks/units/03-networking-ingress.md` | `labs/03-networking-ingress/solution/` es la nueva base para Unidad 04 |
 
+## Decisiones específicas de la Unidad 04
+
+| Decisión | Estado | Documento fuente | Impacto actual |
+|---|---|---|---|
+| D-04-01 — Persistencia como evolución de `platform-api` | Activa | `playbooks/units/04-persistence-state.md` y `tutorial/04-persistence-state/summary.md` | No se crea aplicación alternativa ni base de datos real |
+| D-04-02 — PVC como interfaz principal | Activa | `playbooks/units/04-persistence-state.md` y `tutorial/04-persistence-state/summary.md` | `platform-api-data` solicita almacenamiento; PV y StorageClass se diagnostican como plataforma |
+| D-04-03 — MicroK8s hostpath aislado como detalle local | Activa con validación pendiente | `playbooks/units/04-persistence-state.md` y `tutorial/04-persistence-state/summary.md` | `microk8s-hostpath` es clase prevista, pero no habilitada en esta sesión |
+| D-04-04 — Recuperación básica, no backup productivo | Activa | `playbooks/units/04-persistence-state.md` y `tutorial/04-persistence-state/summary.md` | Se documenta copia/restauración de fichero inocuo; backups productivos quedan diferidos |
+| D-04-05 — Deployment conservado | Activa | `tutorial/04-persistence-state/summary.md` | No se migra a StatefulSet en esta unidad |
+| D-04-06 — Laboratorio acumulativo con ruta propia | Activa | `playbooks/units/04-persistence-state.md` | `labs/04-persistence-state/solution/` será la base de Unidad 05 cuando se valide o se registre la limitación |
+
 ---
 
 # Restricciones activas
 
-Tras generar y validar técnicamente la Unidad 03:
+Tras generar la Unidad 04:
 
-- la Unidad 04 deberá reutilizar `platform-api`, `platform-training` y `labs/03-networking-ingress/solution/`;
+- antes de avanzar a la Unidad 05 debe resolverse o registrar explícitamente la validación funcional pendiente de Unidad 04;
+- la Unidad 05 deberá reutilizar `platform-api`, `platform-training` y `labs/04-persistence-state/solution/` como base generada;
 - conservar la deuda pedagógica reforzada: los README actuales siguen siendo insuficientes como material formativo profundo para alumnos que no conocen el tema;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
 - no crear charts Helm hasta la unidad prevista;
 - no crear módulos Terraform hasta la unidad prevista;
 - no crear recursos Gateway API como eje operativo salvo decisión explícita posterior;
-- no introducir TLS productivo, DNS público, LoadBalancer cloud, NetworkPolicies ni almacenamiento persistente antes de su unidad prevista;
+- no introducir TLS productivo, DNS público, LoadBalancer cloud ni NetworkPolicies antes de su unidad prevista;
+- no presentar `hostpath-storage` como almacenamiento productivo ni cloud;
 - no instalar Tekton;
 - no instalar Argo CD;
 - no desplegar observabilidad avanzada;
@@ -703,6 +786,12 @@ Tras generar y validar técnicamente la Unidad 03:
 | Addon Ingress MicroK8s | `microk8s enable ingress` y `microk8s status --wait-ready` | Addon `ingress` habilitado; Traefik `v3.6.2` desplegado; `IngressClass/public` disponible |
 | Estado de la aplicación por Ingress | `bash labs/03-networking-ingress/validation/validate.sh` | 0 fallos; Deployment 2/2; Service `ClusterIP`; EndpointSlice, DNS interno, Ingress Controller, Ingress y HTTP validados |
 | HTTP por Ingress local | `curl -i -H 'Host: platform-api.local' http://127.0.0.1/` | `HTTP/1.1 200 OK`; contenido de Unidad 03 servido desde ConfigMap |
+| Sintaxis cliente de Unidad 04 | `kubectl apply --dry-run=client -f labs/04-persistence-state/solution/` | Manifiestos aceptados por el cliente |
+| Despliegue Unidad 04 | `kubectl apply -f labs/04-persistence-state/solution/` | Pendiente hasta habilitar `hostpath-storage` |
+| Addon storage MicroK8s | `microk8s enable hostpath-storage` | Pendiente; en esta sesión falló por requerir `sudo` interactivo |
+| StorageClass Unidad 04 | `kubectl get storageclass` | Pendiente; en esta sesión devolvió `No resources found` |
+| Estado de persistencia Unidad 04 | `bash labs/04-persistence-state/validation/validate.sh` | Pendiente; debe validar PVC `Bound`, PV, mount, escritura, recreación de Pod, Service e Ingress |
+| Revisión pedagógica Unidad 04 | Aprobación del usuario el 2026-07-19 | Aprobada; validación funcional sigue pendiente |
 | Revisión pedagógica Unidad 01 | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
 | Revisión pedagógica Unidad 02 | Aprobación del usuario el 2026-07-18 | Aprobada |
 | Revisión pedagógica Unidad 03 | Aprobación del usuario el 2026-07-19 junto con el refuerzo `student-notes.md` | Aprobada |
@@ -770,6 +859,8 @@ Validaciones no disponibles en esta sesión:
 | 45 | Refuerzo pedagógico README Unidades 00-03 | Completado y aprobado | Se añaden guías pedagógicas, mapas de aprendizaje y preguntas centrales sin modificar laboratorios ni capacidades técnicas |
 | 46 | Estructura `student-notes.md` y notas de alumno Unidades 00-03 | Completado y aprobado | `student-notes.md` incorporado al contrato de unidad; notas profundas creadas, README enlazados, summaries actualizados y commit `b842f33` confirmado |
 | 47 | Cierre de revisión pedagógica transversal | Completado | `project-state.md` y `tutorial/03-networking-ingress/summary.md` actualizados para registrar aprobación y permitir el playbook de Unidad 04 |
+| 48 | Generación de Unidad 04 | Completado con validación funcional pendiente | Tutorial, student notes, instructor notes, summary, laboratorio, manifiestos y validación creados; dry-run cliente correcto; `hostpath-storage` pendiente por requerir `sudo` interactivo |
+| 49 | Aprobación pedagógica de Unidad 04 | Completado | El usuario aprueba la Unidad 04 el 2026-07-19; queda pendiente la validación funcional con `hostpath-storage` |
 
 ---
 
@@ -778,7 +869,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Generar el playbook de la Unidad 04 - Persistencia y estado
+Validar funcionalmente la Unidad 04 - Persistencia y estado
 ```
 
 ## Fuentes obligatorias
@@ -795,26 +886,30 @@ project/how-to.md
 playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
-tutorial/03-networking-ingress/README.md
-tutorial/03-networking-ingress/student-notes.md
-tutorial/03-networking-ingress/summary.md
-labs/03-networking-ingress/solution/
+tutorial/04-persistence-state/README.md
+tutorial/04-persistence-state/student-notes.md
+tutorial/04-persistence-state/summary.md
+labs/04-persistence-state/README.md
+labs/04-persistence-state/solution/
+labs/04-persistence-state/validation/validate.sh
 project/project-state.md
 ```
 
 ## Trabajo permitido
 
-- crear `playbooks/units/04-persistence-state.md`;
-- definir objetivos, precondiciones, entregables, restricciones y validaciones de la Unidad 04;
-- mantener la separacion entre tutorial formativo, `student-notes.md` y laboratorio operativo;
-- conservar `platform-api`, `platform-training` y `labs/03-networking-ingress/solution/` como estado tecnico validado;
-- no crear todavia tutorial, laboratorio ni manifiestos de la Unidad 04.
+- habilitar `hostpath-storage` en MicroK8s si el usuario proporciona permisos locales;
+- comprobar que existe `storageclass.storage.k8s.io/microk8s-hostpath`;
+- aplicar `labs/04-persistence-state/solution/`;
+- ejecutar `bash labs/04-persistence-state/validation/validate.sh`;
+- corregir defectos reales detectados;
+- registrar resultados en `tutorial/04-persistence-state/summary.md` y `project/project-state.md`;
+- registrar el resultado técnico y cerrar la unidad si la validación funcional se completa correctamente.
 
 ## Trabajo todavía prohibido
 
 - crear charts Helm;
 - crear módulos Terraform;
-- generar la Unidad 04 antes de aprobar su playbook;
+- generar la Unidad 05 sin resolver o registrar explícitamente la validación funcional pendiente de Unidad 04;
 - incorporar CI/CD, GitOps, observabilidad avanzada, seguridad avanzada o cloud;
 - sustituir MicroK8s por otra plataforma local;
 - sustituir la aplicación evolutiva sin decisión documentada.

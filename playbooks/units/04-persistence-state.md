@@ -23,7 +23,7 @@ Fase 2 - Fundamentos Kubernetes
 ### Estado del playbook
 
 ```text
-Borrador
+Aprobado
 ```
 
 ### Propietario logico
@@ -1051,7 +1051,7 @@ Al cerrar la Unidad 04 en una sesion posterior:
 
 # Siguiente incremento permitido tras aprobar este playbook
 
-Cuando el usuario apruebe este playbook, el siguiente incremento permitido sera:
+El usuario solicito generar la Unidad 04 el 2026-07-19. Con esa instruccion, el siguiente incremento permitido es:
 
 ```text
 Generar la Unidad 04 - Persistencia y estado
