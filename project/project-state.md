@@ -47,6 +47,8 @@ El 2026-07-18 se generó un hardening pedagógico global inicial sobre las Unida
 
 Como consecuencia, se actualizaron `playbooks/master.md` y `playbooks/unit-template.md` para exigir que futuras unidades no asuman dominio previo del tema, construyan modelo mental desde el problema real, expliquen conceptos con progresión didáctica y mantengan una separación más estricta entre tutorial formativo y laboratorio operativo.
 
+El usuario y el proyecto acuerdan que el nivel pedagógico deseado puede abordarse en una fase posterior dedicada específicamente a desarrollar los `README.md` como soporte formativo profundo. Esta fase no debe avanzar capacidades técnicas ni sustituir laboratorios; debe ampliar teoría, modelos mentales, ejemplos conceptuales, razonamiento, lectura guiada y progresión didáctica. La deuda queda abierta y no bloquea por sí sola la generación del playbook de Unidad 03.
+
 La siguiente fase de trabajo es preparar la **Unidad 03 — Networking e ingreso**. Durante esta fase se permite:
 
 - generar el playbook de la Unidad 03 — Networking e ingreso;
@@ -75,7 +77,7 @@ Todavía no se permite:
 | `project/architecture.md` | Completo y aprobado | Bootstrap-02 | Arquitectura y decisiones estructurales |
 | `project/project-state.md` | Actualizado con reglas pedagógicas y deuda reforzada | Pedagogical-Hardening-Rules | Estado consolidado |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
-| `project/project-planning.md` | Completo y aprobado | Unit-01-Concept-Scope | Planificación incremental del trabajo |
+| `project/project-planning.md` | Actualizado | Pedagogical-Deepening-Phase | Planificación incremental del trabajo; incluye sesiones de desarrollo pedagógico profundo |
 | `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
 | `playbooks/master.md` | Actualizado | Pedagogical-Hardening-Rules | Reglas globales de generación; exige tutoriales pedagógicos para alumnos que no dominan aún el tema |
 | `playbooks/unit-template.md` | Actualizado | Pedagogical-Hardening-Rules | Plantilla de playbooks específicos; exige problema real, modelo mental, progresión conceptual, trade-offs y lectura guiada |
@@ -547,8 +549,8 @@ Tras generar, validar técnicamente y aprobar la Unidad 02:
 | R-008 | Recursos insuficientes en el host | Media | Medio | Validar requisitos mínimos | Abierto |
 | R-009 | Disponibilidad futura de imagen externa | Media | Medio | Imagen versionada y pull real validado; sustituir solo con registro en summary y estado | Mitigado |
 | R-010 | Uso de `Endpoints` con advertencia de deprecación en Kubernetes 1.35 | Media | Bajo | Unidad 02 incorpora EndpointSlice como comprobación principal; mantener `Endpoints` solo como referencia histórica o fallback | Mitigado |
-| R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Alta | Alto | Hardening pedagógico global inicial aceptado solo como cambio mínimo; se requiere rediseño pedagógico profundo antes de que temas especializados sean difíciles de seguir | Abierto |
-| R-012 | Futuras unidades especializadas pueden volverse difíciles de seguir si los README siguen asumiendo conocimiento previo | Alta | Alto | Playbooks actualizados para exigir explicación desde el problema real, progresión conceptual, modelos mentales, trade-offs y lectura guiada | Abierto |
+| R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Alta | Alto | Hardening pedagógico global inicial aceptado solo como cambio mínimo; se acuerda una fase posterior posible de desarrollo profundo de README | Abierto |
+| R-012 | Futuras unidades especializadas pueden volverse difíciles de seguir si los README siguen asumiendo conocimiento previo | Alta | Alto | Playbooks actualizados y `project-planning.md` incorpora sesión de desarrollo pedagógico profundo | Abierto |
 
 ## Cuestiones abiertas
 
@@ -575,7 +577,7 @@ Tras generar, validar técnicamente y aprobar la Unidad 02:
 | TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida y versiones reales registradas | Cerrada para Unidad 00 |
 | TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
 | TD-005 | Incorporar `EndpointSlice` como observación posterior al Service clásico | Baja | Unidad 01 | Resuelto en Unidad 02 como comprobación principal de endpoints | Cerrada |
-| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | Hardening inicial aceptado como mínimo; requiere rediseño pedagógico profundo de README para no presuponer conocimiento previo | Abierta |
+| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | Hardening inicial aceptado como mínimo; acordada como posible fase posterior centrada en desarrollar README sin avanzar capacidad técnica | Abierta |
 | TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo | `playbooks/master.md` y `playbooks/unit-template.md` actualizados con criterios pedagógicos más estrictos | Cerrada |
 
 ---
@@ -652,6 +654,7 @@ Validaciones no disponibles en esta sesión:
 | 38 | Aprobación de Unidad 02 | Completado | El usuario revisa y aprueba la Unidad 02; se permite generar el playbook de la Unidad 03 |
 | 39 | Hardening pedagógico global inicial de Unidades 00-02 | Completado como cambio mínimo | Tutoriales reforzados como material formativo principal; instructor notes y summaries actualizados; sin cambios en manifiestos ni scripts; el usuario lo acepta como mínimo |
 | 40 | Actualización de reglas pedagógicas de generación | Completado | El usuario acepta el hardening como cambio mínimo, registra que el nivel pedagógico sigue siendo pobre y se actualizan `playbooks/master.md` y `playbooks/unit-template.md` |
+| 41 | Acuerdo de fase pedagógica posterior para README | Completado | Se registra que el desarrollo profundo de README puede abordarse como fase posterior sin avanzar capacidades técnicas; `project/project-planning.md` actualizado |
 
 ---
 
@@ -689,7 +692,8 @@ labs/02-configuration-lifecycle/validation/validate.sh
 - usar `tutorial/02-configuration-lifecycle/summary.md` como entrada;
 - reutilizar `labs/02-configuration-lifecycle/solution/`;
 - mantener `platform-api` y `platform-training` como base;
-- no ampliar el hardening pedagógico dentro del playbook de Unidad 03 salvo decisión explícita.
+- no ampliar el hardening pedagógico dentro del playbook de Unidad 03 salvo decisión explícita;
+- permitir que una fase posterior específica desarrolle en profundidad los `README.md` sin crear nuevas capacidades técnicas.
 
 ## Trabajo todavía prohibido
 
