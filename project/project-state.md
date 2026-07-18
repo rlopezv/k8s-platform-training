@@ -22,34 +22,33 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Unidad 02 — Configuración, secretos y ciclo de vida |
-| Estado general | Playbook de Unidad 02 aprobado; preparado para generar la unidad |
-| Último incremento completado | Aprobación del playbook de la Unidad 02 |
+| Fase actual | Unidad 03 — Networking e ingreso |
+| Estado general | Unidad 02 completada, validada técnicamente y aprobada |
+| Último incremento completado | Aprobación de la Unidad 02 |
 | Unidad activa | Ninguna |
-| Última unidad completada | 01 — Fundamentos operativos y primera aplicación |
+| Última unidad completada | 02 — Configuración, secretos y ciclo de vida |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
-| Contenido formativo generado | Sí, Unidades 00 y 01 |
+| Contenido formativo generado | Sí, Unidades 00, 01 y 02 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar la Unidad 02 — Configuración, secretos y ciclo de vida |
+| Siguiente incremento permitido | Generar el playbook de la Unidad 03 — Networking e ingreso |
 
 ---
 
 # Fase actual
 
-El proyecto ha completado la **Unidad 00 — Preparación del entorno** y la **Unidad 01 — Fundamentos operativos y primera aplicación**.
+El proyecto ha completado la **Unidad 00 — Preparación del entorno**, la **Unidad 01 — Fundamentos operativos y primera aplicación** y la **Unidad 02 — Configuración, secretos y ciclo de vida**.
 
 La Unidad 01 incorporó la primera aplicación evolutiva del curso, `platform-api`, desplegada sobre MicroK8s mediante manifiestos Kubernetes estándar. El laboratorio local ya contiene un namespace funcional, un Deployment, Pods gestionados por ReplicaSet y un Service interno.
 
 La revisión del usuario aprobó la Unidad 01. También identificó que el contenido tiene un nivel de entrada exigente y está más orientado a explicar el laboratorio que a construir una visión amplia sobre Kubernetes. Esta observación queda registrada como deuda pedagógica para una futura sesión de hardening global, preferiblemente cuando existan varias unidades y pueda revisarse la progresión completa.
 
-Durante la siguiente fase se permite:
+La siguiente fase de trabajo es preparar la **Unidad 03 — Networking e ingreso**. Durante esta fase se permite:
 
-- generar la Unidad 02 segun el playbook aprobado;
-- reutilizar `tutorial/01-kubernetes/summary.md` como fuente de continuidad;
-- extender los manifiestos de `labs/01-kubernetes/solution/`;
-- planificar ConfigMaps, Secrets de laboratorio, variables de entorno, volúmenes de configuración, probes y primeros requests/limits;
-- mantener visible la deuda de hardening pedagógico global sin resolverla dentro de Unidad 02 salvo decisión explícita.
+- generar el playbook de la Unidad 03 — Networking e ingreso;
+- reutilizar `tutorial/02-configuration-lifecycle/summary.md` como fuente de continuidad;
+- reutilizar `labs/02-configuration-lifecycle/solution/` como estado activo de la aplicación;
+- mantener visible la deuda de hardening pedagógico global sin resolverla dentro del playbook de Unidad 03 salvo decisión explícita.
 
 Todavía no se permite:
 
@@ -95,7 +94,7 @@ Todavía no se permite:
 │   └── .gitkeep
 ├── labs/
 │   ├── .gitkeep
-│   └── 01-kubernetes/
+│   ├── 01-kubernetes/
 │       ├── README.md
 │       ├── starter/
 │       │   ├── deployment.yaml
@@ -104,6 +103,22 @@ Todavía no se permite:
 │       ├── solution/
 │       │   ├── deployment.yaml
 │       │   ├── namespace.yaml
+│       │   └── service.yaml
+│       └── validation/
+│           └── validate.sh
+│   └── 02-configuration-lifecycle/
+│       ├── README.md
+│       ├── starter/
+│       │   ├── configmap.yaml
+│       │   ├── deployment.yaml
+│       │   ├── namespace.yaml
+│       │   ├── secret.yaml
+│       │   └── service.yaml
+│       ├── solution/
+│       │   ├── configmap.yaml
+│       │   ├── deployment.yaml
+│       │   ├── namespace.yaml
+│       │   ├── secret.yaml
 │       │   └── service.yaml
 │       └── validation/
 │           └── validate.sh
@@ -150,7 +165,11 @@ Todavía no se permite:
     │   ├── instructor-notes.md
     │   ├── README.md
     │   └── summary.md
-    └── 01-kubernetes/
+    ├── 01-kubernetes/
+    │   ├── instructor-notes.md
+    │   ├── README.md
+    │   └── summary.md
+    └── 02-configuration-lifecycle/
         ├── instructor-notes.md
         ├── README.md
         └── summary.md
@@ -161,11 +180,11 @@ Todavía no se permite:
 | Directorio | Estado | Contenido actual |
 |---|---|---|
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
-| `labs/` | Materializado con Unidad 01 | `.gitkeep` y `01-kubernetes/` |
+| `labs/` | Materializado con Unidades 01 y 02 | `.gitkeep`, `01-kubernetes/` y `02-configuration-lifecycle/` |
 | `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base |
 | `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01 y 02 |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
-| `tutorial/` | Unidades 00 y 01 completadas | Documentación de alumno, instructor notes y summaries |
+| `tutorial/` | Unidades 00, 01 y 02 generadas | Documentación de alumno, instructor notes y summaries |
 
 ---
 
@@ -175,7 +194,7 @@ Todavía no se permite:
 |---|---|---|---|---|---|
 | 00 — Preparación del entorno | Completada con limitaciones | Sí | Sí, `platform/environment/` | Sí | Sí |
 | 01 — Fundamentos operativos y primera aplicación | Completada y aprobada con deuda pedagógica registrada | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
-| 02 — Configuración, secretos y ciclo de vida | Playbook aprobado, pendiente de generación | No | No | No | No |
+| 02 — Configuración, secretos y ciclo de vida | Completada y aprobada | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
 | 03–25 | Previstas en roadmap | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
@@ -219,9 +238,9 @@ Capacidades incorporadas:
 - diagnóstico básico con estado, eventos, logs y endpoints;
 - prueba HTTP local mediante `kubectl port-forward`.
 
-Limitaciones activas:
+Limitaciones al cierre de la Unidad 01:
 
-- la aplicación todavía no usa ConfigMaps, Secrets, probes, requests ni limits;
+- antes de la Unidad 02, la aplicación todavía no usaba ConfigMaps, Secrets, probes, requests ni limits;
 - el Service es interno y no hay Ingress ni Gateway API;
 - `kubectl get endpoints` funciona para la práctica, pero Kubernetes `v1.35.6` muestra advertencia de deprecación de `Endpoints` en favor de `EndpointSlice`;
 - ShellCheck no está disponible en este entorno para validar scripts;
@@ -232,16 +251,16 @@ Limitaciones activas:
 
 | Campo | Estado |
 |---|---|
-| Estado | Playbook aprobado, pendiente de generación |
-| Fecha de inicio | No aplica |
-| Fecha de cierre | No aplica |
+| Estado | Completada, validada técnicamente y aprobada |
+| Fecha de inicio | 2026-07-18 |
+| Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/02-configuration-lifecycle.md` |
-| Tutorial | No generado |
-| Laboratorio | No generado |
-| Instructor notes | No generado |
-| Summary | No generado |
+| Tutorial | `tutorial/02-configuration-lifecycle/README.md` |
+| Laboratorio | `labs/02-configuration-lifecycle/` |
+| Instructor notes | `tutorial/02-configuration-lifecycle/instructor-notes.md` |
+| Summary | `tutorial/02-configuration-lifecycle/summary.md` |
 
-Capacidades previstas por el playbook:
+Capacidades incorporadas:
 
 - ConfigMaps para configuración no sensible;
 - Secrets de laboratorio con valores ficticios;
@@ -252,10 +271,10 @@ Capacidades previstas por el playbook:
 
 Limitaciones activas:
 
-- la Unidad 02 todavía no está generada;
-- el playbook fue aprobado por el usuario;
-- no existen todavía artefactos en `tutorial/02-configuration-lifecycle/` ni `labs/02-configuration-lifecycle/`;
-- no se han creado ConfigMaps, Secrets, probes, requests ni limits en el laboratorio.
+- ShellCheck no está disponible en este entorno para validar scripts;
+- los Secrets son únicamente de laboratorio y no representan gestión corporativa de secretos;
+- Ingress, Gateway API, DNS y TLS quedan diferidos a Unidad 03;
+- Helm y Terraform siguen sin gestionar recursos del curso.
 
 ---
 
@@ -287,23 +306,23 @@ Limitaciones activas:
 | `kube-node-lease` | Activo | Sistema | Kubernetes |
 | `kube-public` | Activo | Sistema | Kubernetes |
 | `kube-system` | Activo | Sistema | Kubernetes |
-| `platform-training` | Activo | Recursos funcionales del curso | `labs/01-kubernetes/solution/namespace.yaml` |
+| `platform-training` | Activo | Recursos funcionales del curso | `labs/02-configuration-lifecycle/solution/namespace.yaml` |
 
 ## Workloads
 
 | Recurso | Namespace | Estado esperado | Definición |
 |---|---|---|---|
-| `deployment/platform-api` | `platform-training` | `2/2` replicas disponibles | `labs/01-kubernetes/solution/deployment.yaml` |
-| `replicaset/platform-api-cf86fc7c6` | `platform-training` | 2 deseadas, 2 actuales, 2 ready | Generado por Deployment |
-| Pods `platform-api-cf86fc7c6-*` | `platform-training` | 2 Pods `Running`, `1/1`, 0 restarts | Generados por ReplicaSet |
+| `deployment/platform-api` | `platform-training` | `2/2` replicas disponibles, con ConfigMap, Secret, probes y resources | `labs/02-configuration-lifecycle/solution/deployment.yaml` |
+| `replicaset/platform-api-66fb76b758` | `platform-training` | 2 deseadas, 2 actuales, 2 ready | Generado por Deployment |
+| Pods `platform-api-66fb76b758-*` | `platform-training` | 2 Pods `Running`, `1/1`, 0 restarts | Generados por ReplicaSet |
 
 ## Endpoints
 
 | Servicio | Acceso | Estado | Propósito |
 |---|---|---|---|
 | `service/platform-api` | `ClusterIP` `10.152.183.150`, puerto `80/TCP` hacia contenedor `8080` | Activo | Acceso interno estable a `platform-api` |
-| `endpoints/platform-api` | `10.1.16.69:8080`, `10.1.16.70:8080` observados durante validación | Activo; `Endpoints` emite advertencia de deprecación en Kubernetes 1.35 | Evidencia de selección de Pods por el Service |
-| Port-forward local | `http://127.0.0.1:8080/` durante la prueba | Validado con `HTTP/1.1 200 OK` | Prueba HTTP desde la máquina local |
+| `endpointslice/platform-api-fbxzx` | `10.1.16.71:8080`, `10.1.16.72:8080` observados durante validación | Activo | Evidencia preferente de selección de Pods Ready por el Service |
+| Port-forward local | `http://127.0.0.1:18080/` durante la prueba | Validado con `HTTP/1.1 200 OK` y contenido de Unidad 02 desde ConfigMap | Prueba HTTP desde la máquina local |
 
 ---
 
@@ -334,26 +353,32 @@ Limitaciones activas:
 |---|---|
 | Nombre | `platform-api` |
 | Propósito | Servicio HTTP mínimo para evolucionar configuración, red, salud, observabilidad, seguridad, escalado y despliegue cloud |
-| Versión actual | Unidad 01 |
-| Repositorio o ruta | `labs/01-kubernetes/solution/` |
+| Versión actual | Unidad 02 |
+| Repositorio o ruta | `labs/02-configuration-lifecycle/solution/` |
 
 ## Componentes
 
 | Componente | Estado | Imagen o versión | Definición |
 |---|---|---|---|
-| `Deployment/platform-api` | Desplegado y validado | `nginxinc/nginx-unprivileged:1.27.4-alpine` | `labs/01-kubernetes/solution/deployment.yaml` |
-| `Service/platform-api` | Desplegado y validado | `ClusterIP` | `labs/01-kubernetes/solution/service.yaml` |
+| `Deployment/platform-api` | Desplegado y validado | `nginxinc/nginx-unprivileged:1.27.4-alpine` | `labs/02-configuration-lifecycle/solution/deployment.yaml` |
+| `Service/platform-api` | Desplegado y validado | `ClusterIP` | `labs/02-configuration-lifecycle/solution/service.yaml` |
+| `ConfigMap/platform-api-config` | Desplegado y validado | 4 claves | `labs/02-configuration-lifecycle/solution/configmap.yaml` |
+| `Secret/platform-api-secret` | Desplegado y validado | `Opaque`, 2 claves ficticias | `labs/02-configuration-lifecycle/solution/secret.yaml` |
 
 ## Capacidades activas
 
 - HTTP interno mediante Service;
 - dos réplicas gestionadas por Deployment;
+- configuración no sensible mediante ConfigMap;
+- Secret de laboratorio con valores ficticios;
+- variables de entorno y volumen de configuración;
+- `startupProbe`, `readinessProbe` y `livenessProbe`;
+- requests y limits iniciales;
 - logs de contenedor legibles;
-- validación de rollout, Pods y endpoints.
+- validación de rollout, Pods, EndpointSlice y HTTP local.
 
 ## Capacidades todavía no incorporadas
 
-- ConfigMaps, Secrets, probes, requests y limits;
 - Ingress y Gateway API;
 - almacenamiento persistente;
 - empaquetado Helm;
@@ -366,10 +391,13 @@ Limitaciones activas:
 
 ## Manifiestos Kubernetes
 
-- `labs/01-kubernetes/solution/namespace.yaml`;
-- `labs/01-kubernetes/solution/deployment.yaml`;
-- `labs/01-kubernetes/solution/service.yaml`;
-- `labs/01-kubernetes/validation/validate.sh`.
+- `labs/01-kubernetes/solution/` se conserva como evidencia de Unidad 01;
+- `labs/02-configuration-lifecycle/solution/namespace.yaml`;
+- `labs/02-configuration-lifecycle/solution/configmap.yaml`;
+- `labs/02-configuration-lifecycle/solution/secret.yaml`;
+- `labs/02-configuration-lifecycle/solution/deployment.yaml`;
+- `labs/02-configuration-lifecycle/solution/service.yaml`;
+- `labs/02-configuration-lifecycle/validation/validate.sh`.
 
 ## Helm
 
@@ -392,6 +420,7 @@ Limitaciones activas:
 | Estado Kubernetes | Disponible | `kubectl -n platform-training get deploy,rs,pods,svc,endpoints` |
 | Eventos | Disponible | `kubectl -n platform-training get events --sort-by=.lastTimestamp` |
 | Logs | Disponible | `kubectl -n platform-training logs deployment/platform-api --tail=20` |
+| EndpointSlice | Disponible | `kubectl -n platform-training get endpointslice -l kubernetes.io/service-name=platform-api` |
 | Métricas avanzadas | No incorporadas | Diferidas a Unidades 11-12 |
 | Logs centralizados | No incorporados | Diferidos a Unidad 13 |
 | Trazas | No incorporadas | Diferidas a Unidad 14 |
@@ -402,9 +431,9 @@ Limitaciones activas:
 
 | Control | Estado | Ámbito | Evidencia |
 |---|---|---|---|
-| Namespace de aislamiento | Activo | `platform-training` | `labs/01-kubernetes/solution/namespace.yaml` |
-| Secrets de aplicación | No implementados | No aplica | Diferidos a Unidad 02 |
-| Credenciales reales | No versionadas | Repositorio | Revisión de manifiestos de Unidad 01 |
+| Namespace de aislamiento | Activo | `platform-training` | `labs/02-configuration-lifecycle/solution/namespace.yaml` |
+| Secret de aplicación | Implementado solo como laboratorio ficticio | `platform-api-secret` | `labs/02-configuration-lifecycle/solution/secret.yaml` |
+| Credenciales reales | No versionadas | Repositorio | Revisión de manifiestos de Unidad 02 |
 
 ---
 
@@ -466,13 +495,24 @@ No existen actualmente:
 | D-01-07 — Service interno como primera exposición | Activa | `tutorial/01-kubernetes/summary.md` | `ClusterIP` y validación con port-forward |
 | D-01-08 — Aprobación de contenido por el usuario | Activa | `project/how-to.md`, `playbooks/master.md`, `tutorial/01-kubernetes/summary.md` | La IA valida técnicamente; el usuario aprueba el contenido formativo |
 
+## Decisiones específicas de la Unidad 02
+
+| Decisión | Estado | Documento fuente | Impacto actual |
+|---|---|---|---|
+| D-02-01 — Configuración externa sin cambiar la aplicación evolutiva | Activa | `playbooks/units/02-configuration-lifecycle.md` y `tutorial/02-configuration-lifecycle/summary.md` | `platform-api` se mantiene y evoluciona mediante manifiestos |
+| D-02-02 — Secrets solo de laboratorio | Activa | `playbooks/units/02-configuration-lifecycle.md` y `tutorial/02-configuration-lifecycle/summary.md` | `platform-api-secret` contiene valores ficticios |
+| D-02-03 — Probes HTTP sobre el contenedor existente | Activa | `playbooks/units/02-configuration-lifecycle.md` | `startupProbe`, `readinessProbe` y `livenessProbe` usan `/` en puerto `http` |
+| D-02-04 — Requests y limits iniciales conservadores | Activa | `playbooks/units/02-configuration-lifecycle.md` | CPU y memoria acotadas para laboratorio local |
+| D-02-05 — Laboratorio acumulativo con ruta propia | Activa | `playbooks/units/02-configuration-lifecycle.md` | `labs/02-configuration-lifecycle/solution/` es la nueva base para Unidad 03 |
+| D-02-06 — EndpointSlice como comprobación principal de endpoints | Activa | `tutorial/02-configuration-lifecycle/summary.md` | Validación de Unidad 02 consulta EndpointSlice y conserva fallback a `Endpoints` |
+
 ---
 
 # Restricciones activas
 
-Tras generar la Unidad 01:
+Tras generar, validar técnicamente y aprobar la Unidad 02:
 
-- la Unidad 02 debe reutilizar `platform-api`, `platform-training` y `labs/01-kubernetes/solution/`;
+- la Unidad 03 deberá reutilizar `platform-api`, `platform-training` y `labs/02-configuration-lifecycle/solution/`;
 - conservar la deuda de hardening pedagógico global para revisar progresión, visión conceptual y referencias del itinerario;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
 - no crear charts Helm hasta la unidad prevista;
@@ -502,7 +542,7 @@ Tras generar la Unidad 01:
 | R-007 | Operaciones destructivas del entorno | Baja | Alto | Confirmación explícita y separación entre limpieza de unidad y reset de plataforma | Abierto |
 | R-008 | Recursos insuficientes en el host | Media | Medio | Validar requisitos mínimos | Abierto |
 | R-009 | Disponibilidad futura de imagen externa | Media | Medio | Imagen versionada y pull real validado; sustituir solo con registro en summary y estado | Mitigado |
-| R-010 | Uso de `Endpoints` con advertencia de deprecación en Kubernetes 1.35 | Media | Bajo | Mantener para explicar Service en Unidad 01; evaluar `EndpointSlice` en una unidad posterior | Abierto |
+| R-010 | Uso de `Endpoints` con advertencia de deprecación en Kubernetes 1.35 | Media | Bajo | Unidad 02 incorpora EndpointSlice como comprobación principal; mantener `Endpoints` solo como referencia histórica o fallback | Mitigado |
 | R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Media | Medio | Planificar hardening pedagógico global cuando existan varias unidades para ajustar progresión, visión conceptual y referencias | Abierto |
 
 ## Cuestiones abiertas
@@ -529,7 +569,7 @@ Tras generar la Unidad 01:
 | TD-002 | Definir aplicación evolutiva | Alta durante Unidad 01 | Roadmap y `playbooks/units/01-kubernetes.md` | Resuelto en Unidad 01 | Cerrada |
 | TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida y versiones reales registradas | Cerrada para Unidad 00 |
 | TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
-| TD-005 | Incorporar `EndpointSlice` como observación posterior al Service clásico | Baja | Unidad 01 | Unidad 03 o unidad de networking | Abierta |
+| TD-005 | Incorporar `EndpointSlice` como observación posterior al Service clásico | Baja | Unidad 01 | Resuelto en Unidad 02 como comprobación principal de endpoints | Cerrada |
 | TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 | Sesión específica cuando existan varias unidades generadas | Abierta |
 
 ---
@@ -544,9 +584,13 @@ Tras generar la Unidad 01:
 | Sintaxis cliente de Unidad 01 | `kubectl apply --dry-run=client -f labs/01-kubernetes/solution/` | Manifiestos aceptados por el cliente |
 | Despliegue Unidad 01 | `kubectl apply -f labs/01-kubernetes/solution/namespace.yaml -f labs/01-kubernetes/solution/deployment.yaml -f labs/01-kubernetes/solution/service.yaml` | Namespace, Deployment y Service aplicados |
 | Estado de la aplicación | `bash labs/01-kubernetes/validation/validate.sh` | 0 fallos; Deployment 2/2; Pods Running; Service con endpoints; logs legibles |
-| Inventario de aplicación | `kubectl -n platform-training get deploy,rs,pods,svc,endpoints` | Recursos de `platform-api` visibles |
-| HTTP local | `kubectl -n platform-training port-forward service/platform-api 8080:80` y `curl -i http://127.0.0.1:8080/` | `HTTP/1.1 200 OK` |
-| Revisión pedagógica | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
+| Sintaxis cliente de Unidad 02 | `kubectl apply --dry-run=client -f labs/02-configuration-lifecycle/solution/` | Manifiestos aceptados por el cliente |
+| Despliegue Unidad 02 | `kubectl apply -f labs/02-configuration-lifecycle/solution/namespace.yaml -f labs/02-configuration-lifecycle/solution/configmap.yaml -f labs/02-configuration-lifecycle/solution/secret.yaml -f labs/02-configuration-lifecycle/solution/deployment.yaml -f labs/02-configuration-lifecycle/solution/service.yaml` | Namespace y recursos aplicados; ConfigMap y Secret creados; Deployment y Service configurados |
+| Estado de la aplicación | `bash labs/02-configuration-lifecycle/validation/validate.sh` | 0 fallos; Deployment 2/2; Pods Ready; ConfigMap, Secret, probes, resources, Service y EndpointSlice validados |
+| Inventario de aplicación | `kubectl -n platform-training get deploy,rs,pods,svc,endpointslice -l app.kubernetes.io/name=platform-api` | Recursos de `platform-api` visibles |
+| HTTP local | `kubectl -n platform-training port-forward service/platform-api 18080:80` y `curl -i http://127.0.0.1:18080/` | `HTTP/1.1 200 OK`; contenido de Unidad 02 servido desde ConfigMap |
+| Revisión pedagógica Unidad 01 | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
+| Revisión pedagógica Unidad 02 | Aprobación del usuario el 2026-07-18 | Aprobada |
 | Ausencia de charts Helm | `find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print` | Sin resultados |
 | Ausencia de módulos Terraform | `find . -path ./.git -prune -o -type f \( -name '*.tf' -o -name '*.tfvars' \) -print` | Sin resultados |
 
@@ -597,6 +641,8 @@ Validaciones no disponibles en esta sesión:
 | 34 | Playbook de Unidad 02 | Completado con revisión pendiente | `playbooks/units/02-configuration-lifecycle.md` creado; `project/project-state.md` actualizado |
 | 35 | Mejora de plantilla de unidades | Completado | `playbooks/unit-template.md` actualizado para exigir referencias oficiales o fuentes primarias en tutoriales; playbook de Unidad 02 alineado |
 | 36 | Aprobación del playbook de Unidad 02 | Completado | El usuario aprueba `playbooks/units/02-configuration-lifecycle.md`; se permite generar la Unidad 02 |
+| 37 | Generación y validación técnica de Unidad 02 | Completado | Tutorial, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` evolucionada con ConfigMap, Secret ficticio, probes, resources y validación funcional en MicroK8s |
+| 38 | Aprobación de Unidad 02 | Completado | El usuario revisa y aprueba la Unidad 02; se permite generar el playbook de la Unidad 03 |
 
 ---
 
@@ -605,7 +651,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Generar la Unidad 02 - Configuracion, secretos y ciclo de vida
+Generar el playbook de la Unidad 03 - Networking e ingreso
 ```
 
 ## Fuentes obligatorias
@@ -622,19 +668,19 @@ project/how-to.md
 playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
-tutorial/01-kubernetes/summary.md
+tutorial/02-configuration-lifecycle/summary.md
 playbooks/units/02-configuration-lifecycle.md
+labs/02-configuration-lifecycle/solution/
+labs/02-configuration-lifecycle/validation/validate.sh
 ```
 
 ## Trabajo permitido
 
-- generar la Unidad 02 segun `playbooks/units/02-configuration-lifecycle.md`;
-- usar `tutorial/01-kubernetes/summary.md` como entrada;
-- reutilizar `labs/01-kubernetes/solution/`;
-- crear `tutorial/02-configuration-lifecycle/` y `labs/02-configuration-lifecycle/` segun el playbook aprobado;
-- implementar ConfigMaps, Secrets de laboratorio, variables de entorno, volúmenes de configuración, probes, requests y limits;
+- generar el playbook de la Unidad 03 — Networking e ingreso;
+- usar `tutorial/02-configuration-lifecycle/summary.md` como entrada;
+- reutilizar `labs/02-configuration-lifecycle/solution/`;
 - mantener `platform-api` y `platform-training` como base;
-- no resolver dentro de Unidad 02 la deuda de hardening pedagógico global salvo decisión explícita.
+- no resolver dentro del playbook de Unidad 03 la deuda de hardening pedagógico global salvo decisión explícita.
 
 ## Trabajo todavía prohibido
 

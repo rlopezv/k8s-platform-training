@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: platform-training
+  labels:
+    app.kubernetes.io/part-of: k8s-platform-training
+    training.k8s-platform.io/unit: "02"
