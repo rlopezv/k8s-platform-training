@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-api-config
+  namespace: platform-training
+  labels:
+    app.kubernetes.io/name: platform-api
+    app.kubernetes.io/instance: platform-api-local
+    app.kubernetes.io/component: configuration
+    app.kubernetes.io/part-of: k8s-platform-training
+    app.kubernetes.io/managed-by: kubectl
+    training.k8s-platform.io/unit: "05"
+data:
+  APP_ENV: "lab"
+  LOG_LEVEL: "info"
+  FEATURE_GREETING: "scheduling-resilience-maintenance"
+  index.html: |
+    <!doctype html>
+    <html lang="es">
+    <head>
+      <meta charset="utf-8">
+      <title>platform-api</title>
+    </head>
+    <body>
+      <h1>platform-api</h1>
+      <p>Unidad 05: scheduling, resiliencia y mantenimiento.</p>
+      <p>La aplicacion conserva persistencia local y ahora declara estrategia de rollout y presupuesto de interrupcion.</p>
+      <p>El dato persistente del laboratorio se sirve desde /persistent/message.txt cuando existe.</p>
+    </body>
+    </html>

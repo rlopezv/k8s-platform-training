@@ -23,21 +23,21 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Generación de la Unidad 05 |
-| Estado general | Unidades 00-04 completadas, validadas funcionalmente y aprobadas |
-| Último incremento completado | Playbook de la Unidad 05 aprobado |
-| Unidad activa | 05 — Scheduling, resiliencia y mantenimiento, generación pendiente |
-| Última unidad completada | 04 — Persistencia y estado |
+| Estado general | Unidades 00-04 completadas, validadas funcionalmente y aprobadas; Unidad 05 generada y validada funcionalmente con revision pedagogica pendiente |
+| Último incremento completado | Generacion y validacion funcional de la Unidad 05 |
+| Unidad activa | 05 — Scheduling, resiliencia y mantenimiento, revision pedagogica pendiente |
+| Última unidad completada | 05 — Scheduling, resiliencia y mantenimiento, completada con revision pedagogica pendiente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
-| Contenido formativo generado | Sí, Unidades 00, 01, 02, 03 y 04 |
+| Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04 y 05 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar la Unidad 05 — Scheduling, resiliencia y mantenimiento |
+| Siguiente incremento permitido | Revision pedagogica y aprobacion de la Unidad 05 |
 
 ---
 
 # Fase actual
 
-El proyecto ha completado la **Unidad 00 — Preparación del entorno**, la **Unidad 01 — Fundamentos operativos y primera aplicación**, la **Unidad 02 — Configuración, secretos y ciclo de vida**, la **Unidad 03 — Networking e ingreso** y la **Unidad 04 — Persistencia y estado**. La Unidad 04 ha sido aprobada por el usuario y validada funcionalmente el 2026-07-19.
+El proyecto ha completado la **Unidad 00 — Preparación del entorno**, la **Unidad 01 — Fundamentos operativos y primera aplicación**, la **Unidad 02 — Configuración, secretos y ciclo de vida**, la **Unidad 03 — Networking e ingreso** y la **Unidad 04 — Persistencia y estado**. La Unidad 04 ha sido aprobada por el usuario y validada funcionalmente el 2026-07-19. La **Unidad 05 — Scheduling, resiliencia y mantenimiento** ha sido generada y validada funcionalmente el 2026-07-19; queda pendiente la revision pedagogica y aprobacion final del usuario.
 
 La Unidad 01 incorporó la primera aplicación evolutiva del curso, `platform-api`, desplegada sobre MicroK8s mediante manifiestos Kubernetes estándar. El laboratorio local ya contiene un namespace funcional, un Deployment, Pods gestionados por ReplicaSet y un Service interno.
 
@@ -59,16 +59,19 @@ El usuario aceptó los cambios y confirmó que fueron comiteados en `b842f33 Add
 
 El 2026-07-19 se generó `playbooks/units/05-scheduling-resilience-maintenance.md` y fue comiteado en `361b2df Generate unit 05 scheduling playbook`. El usuario confirmó que el playbook queda aprobado. El playbook define alcance, supuestos pedagógicos, entregables, restricciones, decisiones y criterios de aceptación para scheduling, resiliencia y mantenimiento.
 
-Durante la generación de la Unidad 05 se permite:
+El 2026-07-19 se generó la Unidad 05. La unidad reutiliza `tutorial/04-persistence-state/summary.md` y `labs/04-persistence-state/solution/`, crea `tutorial/05-scheduling-resilience-maintenance/`, crea `labs/05-scheduling-resilience-maintenance/`, añade `poddisruptionbudget/platform-api`, declara estrategia `RollingUpdate` y constraints de scheduling seguros en `deployment/platform-api`, conserva el PVC, Service e Ingress heredados y deja `labs/05-scheduling-resilience-maintenance/solution/` como base prevista para la Unidad 06.
 
-- reutilizar `tutorial/04-persistence-state/summary.md` como fuente de continuidad;
-- reutilizar `labs/04-persistence-state/solution/` como estado activo y validado de la aplicación;
-- generar `tutorial/05-scheduling-resilience-maintenance/README.md`;
-- generar `tutorial/05-scheduling-resilience-maintenance/student-notes.md`;
-- generar `tutorial/05-scheduling-resilience-maintenance/instructor-notes.md`;
-- generar `tutorial/05-scheduling-resilience-maintenance/summary.md`;
-- generar `labs/05-scheduling-resilience-maintenance/`;
-- extender la solución acumulada con scheduling, resiliencia y mantenimiento segun el playbook aprobado.
+La validacion funcional de Unidad 05 se ejecuto correctamente en MicroK8s con 0 fallos y 0 avisos. El PDB mostro `minAvailable: 1` y `disruptionsAllowed: 1`, los Pods quedaron asignados al nodo `gmktecg2`, el Service mantuvo EndpointSlices con endpoints, el Ingress sirvio contenido de Unidad 05 y la eliminacion controlada de un Pod fue recuperada por el Deployment.
+
+Durante la revision de la Unidad 05 se permite:
+
+- revisar `tutorial/05-scheduling-resilience-maintenance/README.md`;
+- revisar `tutorial/05-scheduling-resilience-maintenance/student-notes.md`;
+- revisar `tutorial/05-scheduling-resilience-maintenance/instructor-notes.md`;
+- revisar `tutorial/05-scheduling-resilience-maintenance/summary.md`;
+- revisar `labs/05-scheduling-resilience-maintenance/`;
+- corregir contenido o artefactos de Unidad 05 manteniendo el alcance aprobado;
+- registrar la aprobacion pedagogica del usuario cuando se produzca.
 
 Todavía no se permite:
 
@@ -183,6 +186,27 @@ Todavía no se permite:
 │       │   └── service.yaml
 │       └── validation/
 │           └── validate.sh
+│   └── 05-scheduling-resilience-maintenance/
+│       ├── README.md
+│       ├── starter/
+│       │   ├── configmap.yaml
+│       │   ├── deployment.yaml
+│       │   ├── ingress.yaml
+│       │   ├── namespace.yaml
+│       │   ├── pvc.yaml
+│       │   ├── secret.yaml
+│       │   └── service.yaml
+│       ├── solution/
+│       │   ├── configmap.yaml
+│       │   ├── deployment.yaml
+│       │   ├── ingress.yaml
+│       │   ├── namespace.yaml
+│       │   ├── pdb.yaml
+│       │   ├── pvc.yaml
+│       │   ├── secret.yaml
+│       │   └── service.yaml
+│       └── validation/
+│           └── validate.sh
 ├── platform/
 │   ├── .gitkeep
 │   └── environment/
@@ -250,6 +274,11 @@ Todavía no se permite:
         ├── README.md
         ├── student-notes.md
         └── summary.md
+    └── 05-scheduling-resilience-maintenance/
+        ├── instructor-notes.md
+        ├── README.md
+        ├── student-notes.md
+        └── summary.md
 ```
 
 ## Estado de directorios
@@ -257,11 +286,11 @@ Todavía no se permite:
 | Directorio | Estado | Contenido actual |
 |---|---|---|
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
-| `labs/` | Materializado con Unidades 01, 02, 03 y 04 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/` y `04-persistence-state/` |
+| `labs/` | Materializado con Unidades 01, 02, 03, 04 y 05 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/`, `04-persistence-state/` y `05-scheduling-resilience-maintenance/` |
 | `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base |
 | `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03, 04 y 05 |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
-| `tutorial/` | Unidades 00, 01, 02, 03 y 04 generadas | README de entrada, `student-notes.md`, instructor notes y summaries |
+| `tutorial/` | Unidades 00, 01, 02, 03, 04 y 05 generadas | README de entrada, `student-notes.md`, instructor notes y summaries |
 
 ---
 
@@ -274,7 +303,7 @@ Todavía no se permite:
 | 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
 | 03 — Networking e ingreso | Completada, validada técnicamente y aprobada | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
 | 04 — Persistencia y estado | Completada, validada funcionalmente y aprobada | Sí | Sí | Sí, `labs/04-persistence-state/` | Sí | Sí |
-| 05 — Scheduling, resiliencia y mantenimiento | Playbook aprobado; generación pendiente | No | No | No | No | No |
+| 05 — Scheduling, resiliencia y mantenimiento | Generada y validada funcionalmente; revision pedagogica pendiente | Sí | Sí | Sí, `labs/05-scheduling-resilience-maintenance/` | Sí | Sí |
 | 06–25 | Previstas en roadmap | No | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
@@ -428,30 +457,33 @@ Limitaciones activas:
 
 | Campo | Estado |
 |---|---|
-| Estado | Playbook aprobado; generación pendiente |
+| Estado | Generada y validada funcionalmente; revision pedagogica pendiente |
 | Fecha de inicio | 2026-07-19 |
-| Fecha de cierre | No aplica |
+| Fecha de cierre | 2026-07-19 |
 | Playbook | `playbooks/units/05-scheduling-resilience-maintenance.md` |
-| Tutorial | No generado |
-| Student notes | No generado |
-| Laboratorio | No generado |
-| Instructor notes | No generado |
-| Summary | No generado |
+| Tutorial | `tutorial/05-scheduling-resilience-maintenance/README.md` |
+| Student notes | `tutorial/05-scheduling-resilience-maintenance/student-notes.md` |
+| Laboratorio | `labs/05-scheduling-resilience-maintenance/` |
+| Instructor notes | `tutorial/05-scheduling-resilience-maintenance/instructor-notes.md` |
+| Summary | `tutorial/05-scheduling-resilience-maintenance/summary.md` |
 
-Capacidades previstas por el playbook:
+Capacidades incorporadas:
 
-- scheduler, colocación de Pods y eventos de scheduling;
-- `nodeSelector`, affinity, anti-affinity, taints y tolerations con constraints seguros para MicroK8s local;
-- `PodDisruptionBudget` para `platform-api`;
-- estrategia de rolling update, rollout y rollback del Deployment;
-- simulación controlada de fallos de Pod y recuperación por Deployment;
-- diagnóstico de Pods `Pending`, rollouts bloqueados, endpoints degradados y límites de resiliencia local;
+- scheduler, colocación de Pods y eventos de scheduling documentados;
+- `nodeSelector` seguro, node affinity preferida y pod anti-affinity preferida en `deployment/platform-api`;
+- `PodDisruptionBudget` `platform-api` con `minAvailable: 1`;
+- estrategia `RollingUpdate`, `maxUnavailable: 1`, `maxSurge: 1`, `revisionHistoryLimit: 5` y `minReadySeconds: 5`;
+- simulación controlada de eliminacion de Pod y recuperacion por Deployment;
+- validacion de Deployment, PDB, Pods asignados, Service, EndpointSlice, Ingress, PVC, HTTP y rollout history;
 - continuidad hacia Helm en Unidad 06.
 
 Limitaciones activas:
 
-- no se ha generado tutorial, `student-notes.md`, laboratorio, manifiestos ni summary de Unidad 05;
-- el playbook fue aprobado por el usuario el 2026-07-19;
+- la revision pedagogica final del usuario queda pendiente;
+- el cluster validado tiene un solo nodo `gmktecg2`; la unidad no demuestra alta disponibilidad multi-nodo;
+- `hostpath-storage` y el PVC local siguen siendo especificos de MicroK8s;
+- el PDB no protege ante fallos involuntarios de nodo, proceso o almacenamiento;
+- no se automatiza `kubectl drain`, modificacion de taints ni borrado de PVC;
 - Helm, Terraform, CI/CD, GitOps, observabilidad avanzada, autoscaling y cloud siguen diferidos.
 
 ---
@@ -474,7 +506,7 @@ Limitaciones activas:
 | MicroK8s | Instalado y validado | `v1.35.6`, canal `1.35/stable`, revisión `9072` | `bash platform/environment/validation/validate-environment.sh` |
 | Kubernetes | Disponible y validado en MicroK8s | `v1.35.6` | `kubectl get nodes`: nodo `gmktecg2` en `Ready` |
 | Clúster local | Disponible y validado | Nodo `gmktecg2` en `Ready` | `kubectl get nodes` |
-| Addons | `dns` e `ingress` habilitados; addons core adicionales observados por MicroK8s | `dns`, `ha-cluster`, `helm`, `helm3`, `ingress` | `microk8s status --wait-ready` |
+| Addons | `dns`, `ingress` y `hostpath-storage` habilitados; addons core adicionales observados por MicroK8s | `dns`, `ha-cluster`, `helm`, `helm3`, `hostpath-storage`, `ingress`, `storage` | `microk8s status --wait-ready` |
 
 ## Namespaces
 
@@ -484,16 +516,17 @@ Limitaciones activas:
 | `kube-node-lease` | Activo | Sistema | Kubernetes |
 | `kube-public` | Activo | Sistema | Kubernetes |
 | `kube-system` | Activo | Sistema | Kubernetes |
-| `platform-training` | Activo | Recursos funcionales del curso | `labs/03-networking-ingress/solution/namespace.yaml`; redeclarado en `labs/04-persistence-state/solution/namespace.yaml` |
+| `platform-training` | Activo | Recursos funcionales del curso | `labs/05-scheduling-resilience-maintenance/solution/namespace.yaml` |
 | `ingress` | Activo | Controlador Ingress local de MicroK8s | Addon `microk8s enable ingress` |
 
 ## Workloads
 
 | Recurso | Namespace | Estado esperado | Definición |
 |---|---|---|---|
-| `deployment/platform-api` | `platform-training` | `2/2` replicas disponibles con PVC montado | `labs/04-persistence-state/solution/deployment.yaml` |
-| `replicaset/platform-api-65d7f868fc` | `platform-training` | 2 deseadas, 2 actuales, 2 ready observadas durante validación | Generado por Deployment |
-| Pods `platform-api-65d7f868fc-*` | `platform-training` | 2 Pods `Running`, `1/1`, 0 restarts observados durante validación | Generados por ReplicaSet |
+| `deployment/platform-api` | `platform-training` | `2/2` replicas disponibles con PVC montado, estrategia `RollingUpdate` y scheduling seguro | `labs/05-scheduling-resilience-maintenance/solution/deployment.yaml` |
+| `replicaset/platform-api-678c7ddc89` | `platform-training` | 2 deseadas, 2 actuales, 2 ready observadas durante validacion de Unidad 05 | Generado por Deployment |
+| Pods `platform-api-678c7ddc89-*` | `platform-training` | 2 Pods `Running`, `1/1`, 0 restarts observados durante validacion | Generados por ReplicaSet |
+| `poddisruptionbudget/platform-api` | `platform-training` | `minAvailable: 1`, `disruptionsAllowed: 1` observado | `labs/05-scheduling-resilience-maintenance/solution/pdb.yaml` |
 | `pod/traefik-rp75h` | `ingress` | `Running`, `1/1`, 0 restarts observado | Addon Ingress de MicroK8s |
 
 ## Endpoints
@@ -501,9 +534,9 @@ Limitaciones activas:
 | Servicio | Acceso | Estado | Propósito |
 |---|---|---|---|
 | `service/platform-api` | `ClusterIP` `10.152.183.150`, puerto `80/TCP` hacia contenedor `8080` | Activo | Acceso interno estable a `platform-api` |
-| `endpointslice/platform-api-fbxzx` | `10.1.16.74:8080`, `10.1.16.75:8080` observados durante validación | Activo | Evidencia preferente de selección de Pods Ready por el Service |
+| `endpointslice/platform-api-fbxzx` | `10.1.16.87:8080`, `10.1.16.88:8080` observados durante validacion final | Activo | Evidencia preferente de selección de Pods Ready por el Service |
 | `ingress/platform-api` | Host `platform-api.local`, path `/`, clase `public` | Activo | Entrada HTTP local hacia `service/platform-api:80` |
-| HTTP por Ingress local | `http://127.0.0.1/` con cabecera `Host: platform-api.local` | Validado con `HTTP/1.1 200 OK` y contenido de Unidad 03 desde ConfigMap | Prueba HTTP desde la máquina local |
+| HTTP por Ingress local | `http://127.0.0.1/` con cabecera `Host: platform-api.local` | Validado con contenido de Unidad 05 desde ConfigMap | Prueba HTTP desde la máquina local |
 
 ---
 
@@ -534,19 +567,20 @@ Limitaciones activas:
 |---|---|
 | Nombre | `platform-api` |
 | Propósito | Servicio HTTP mínimo para evolucionar configuración, red, salud, observabilidad, seguridad, escalado y despliegue cloud |
-| Versión actual | Unidad 04 validada funcionalmente |
-| Repositorio o ruta | `labs/04-persistence-state/solution/` |
+| Versión actual | Unidad 05 validada funcionalmente; revision pedagogica pendiente |
+| Repositorio o ruta | `labs/05-scheduling-resilience-maintenance/solution/` |
 
 ## Componentes
 
 | Componente | Estado | Imagen o versión | Definición |
 |---|---|---|---|
-| `Deployment/platform-api` | Desplegado y validado con montaje persistente | `nginxinc/nginx-unprivileged:1.27.4-alpine` | `labs/04-persistence-state/solution/deployment.yaml` |
-| `Service/platform-api` | Desplegado y validado como `ClusterIP` | `ClusterIP` | `labs/04-persistence-state/solution/service.yaml` |
-| `ConfigMap/platform-api-config` | Desplegado y validado para Unidad 04 | 4 claves | `labs/04-persistence-state/solution/configmap.yaml` |
-| `Secret/platform-api-secret` | Desplegado con valores ficticios heredados | `Opaque`, 2 claves ficticias | `labs/04-persistence-state/solution/secret.yaml` |
-| `Ingress/platform-api` | Desplegado y validado para host `platform-api.local` | Clase `public` | `labs/04-persistence-state/solution/ingress.yaml` |
-| `PersistentVolumeClaim/platform-api-data` | Desplegado y validado en estado `Bound` | `1Gi`, `ReadWriteOnce`, `microk8s-hostpath` | `labs/04-persistence-state/solution/pvc.yaml` |
+| `Deployment/platform-api` | Desplegado y validado con PVC, `RollingUpdate` y scheduling seguro | `nginxinc/nginx-unprivileged:1.27.4-alpine` | `labs/05-scheduling-resilience-maintenance/solution/deployment.yaml` |
+| `PodDisruptionBudget/platform-api` | Desplegado y validado | `minAvailable: 1` | `labs/05-scheduling-resilience-maintenance/solution/pdb.yaml` |
+| `Service/platform-api` | Desplegado y validado como `ClusterIP` | `ClusterIP` | `labs/05-scheduling-resilience-maintenance/solution/service.yaml` |
+| `ConfigMap/platform-api-config` | Desplegado y validado para Unidad 05 | 4 claves | `labs/05-scheduling-resilience-maintenance/solution/configmap.yaml` |
+| `Secret/platform-api-secret` | Desplegado con valores ficticios heredados | `Opaque`, 2 claves ficticias | `labs/05-scheduling-resilience-maintenance/solution/secret.yaml` |
+| `Ingress/platform-api` | Desplegado y validado para host `platform-api.local` | Clase `public` | `labs/05-scheduling-resilience-maintenance/solution/ingress.yaml` |
+| `PersistentVolumeClaim/platform-api-data` | Desplegado y validado en estado `Bound` | `1Gi`, `ReadWriteOnce`, `microk8s-hostpath` | `labs/05-scheduling-resilience-maintenance/solution/pvc.yaml` |
 
 ## Capacidades activas
 
@@ -561,12 +595,15 @@ Limitaciones activas:
 - validación de rollout, Pods, EndpointSlice y HTTP por Ingress local;
 - DNS interno validado para `platform-api.platform-training.svc.cluster.local`;
 - entrada HTTP local mediante `ingress/platform-api`;
-- PVC montado en `/usr/share/nginx/html/persistent` y persistencia validada tras recreación de Pod.
+- PVC montado en `/usr/share/nginx/html/persistent` y persistencia validada tras recreación de Pod;
+- estrategia `RollingUpdate` declarada con `maxUnavailable: 1` y `maxSurge: 1`;
+- scheduling seguro con `nodeSelector` Linux, node affinity preferida y pod anti-affinity preferida;
+- PDB `platform-api` con `minAvailable: 1`;
+- recuperacion validada tras eliminacion controlada de un Pod.
 
 ## Capacidades todavía no incorporadas
 
 - Gateway API operativa como artefacto del curso;
-- scheduling avanzado, PDB, rollout/rollback guiado y mantenimiento de workloads;
 - empaquetado Helm;
 - gestión Terraform;
 - CI/CD, GitOps, observabilidad avanzada, seguridad avanzada, KEDA, AKS y EKS.
@@ -599,6 +636,15 @@ Limitaciones activas:
 - `labs/04-persistence-state/solution/service.yaml`;
 - `labs/04-persistence-state/solution/ingress.yaml`;
 - `labs/04-persistence-state/validation/validate.sh`.
+- `labs/05-scheduling-resilience-maintenance/solution/namespace.yaml`;
+- `labs/05-scheduling-resilience-maintenance/solution/configmap.yaml`;
+- `labs/05-scheduling-resilience-maintenance/solution/secret.yaml`;
+- `labs/05-scheduling-resilience-maintenance/solution/pvc.yaml`;
+- `labs/05-scheduling-resilience-maintenance/solution/pdb.yaml`;
+- `labs/05-scheduling-resilience-maintenance/solution/deployment.yaml`;
+- `labs/05-scheduling-resilience-maintenance/solution/service.yaml`;
+- `labs/05-scheduling-resilience-maintenance/solution/ingress.yaml`;
+- `labs/05-scheduling-resilience-maintenance/validation/validate.sh`.
 
 ## Helm
 
@@ -618,10 +664,12 @@ Limitaciones activas:
 
 | Señal | Estado | Evidencia |
 |---|---|---|
-| Estado Kubernetes | Disponible | `kubectl -n platform-training get deploy,rs,pods,svc,endpoints` |
+| Estado Kubernetes | Disponible | `kubectl -n platform-training get deploy,rs,pods,svc,endpointslice,pdb` |
 | Eventos | Disponible | `kubectl -n platform-training get events --sort-by=.lastTimestamp` |
 | Logs | Disponible | `kubectl -n platform-training logs deployment/platform-api --tail=20` |
 | EndpointSlice | Disponible | `kubectl -n platform-training get endpointslice -l kubernetes.io/service-name=platform-api` |
+| Rollout history | Disponible | `kubectl -n platform-training rollout history deployment/platform-api` |
+| PDB | Disponible | `kubectl -n platform-training get pdb platform-api` |
 | Métricas avanzadas | No incorporadas | Diferidas a Unidades 11-12 |
 | Logs centralizados | No incorporados | Diferidos a Unidad 13 |
 | Trazas | No incorporadas | Diferidas a Unidad 14 |
@@ -632,11 +680,12 @@ Limitaciones activas:
 
 | Control | Estado | Ámbito | Evidencia |
 |---|---|---|---|
-| Namespace de aislamiento | Activo | `platform-training` | `labs/03-networking-ingress/solution/namespace.yaml` |
-| Secret de aplicación | Implementado solo como laboratorio ficticio | `platform-api-secret` | `labs/03-networking-ingress/solution/secret.yaml` |
-| Ingress HTTP local | Activo sin TLS productivo | `platform-api.local` | `labs/03-networking-ingress/solution/ingress.yaml` |
-| PVC de laboratorio | Activo y validado | `platform-api-data` | `labs/04-persistence-state/solution/pvc.yaml` |
-| Credenciales reales | No versionadas | Repositorio | Revisión de manifiestos de Unidad 03 |
+| Namespace de aislamiento | Activo | `platform-training` | `labs/05-scheduling-resilience-maintenance/solution/namespace.yaml` |
+| Secret de aplicación | Implementado solo como laboratorio ficticio | `platform-api-secret` | `labs/05-scheduling-resilience-maintenance/solution/secret.yaml` |
+| Ingress HTTP local | Activo sin TLS productivo | `platform-api.local` | `labs/05-scheduling-resilience-maintenance/solution/ingress.yaml` |
+| PVC de laboratorio | Activo y validado | `platform-api-data` | `labs/05-scheduling-resilience-maintenance/solution/pvc.yaml` |
+| PDB de laboratorio | Activo y validado | `platform-api` | `labs/05-scheduling-resilience-maintenance/solution/pdb.yaml` |
+| Credenciales reales | No versionadas | Repositorio | Revisión de manifiestos de Unidad 05 |
 
 ---
 
@@ -745,9 +794,12 @@ No existen actualmente:
 
 # Restricciones activas
 
-Tras aprobar el playbook de la Unidad 05:
+Tras generar y validar funcionalmente la Unidad 05:
 
-- la Unidad 05 deberá reutilizar `platform-api`, `platform-training` y `labs/04-persistence-state/solution/` como base validada;
+- la Unidad 05 conserva `platform-api`, `platform-training` y la evolucion acumulativa desde `labs/04-persistence-state/solution/`;
+- `labs/05-scheduling-resilience-maintenance/solution/` es la base tecnica validada prevista para Unidad 06;
+- la revision pedagogica y aprobacion final de Unidad 05 siguen pendientes;
+- no se debe generar la Unidad 06 ni crear Helm charts hasta que la Unidad 05 sea revisada y aprobada;
 - conservar la deuda pedagógica reforzada: los README actuales siguen siendo insuficientes como material formativo profundo para alumnos que no conocen el tema;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
 - no crear charts Helm hasta la unidad prevista;
@@ -833,13 +885,17 @@ Tras aprobar el playbook de la Unidad 05:
 | Despliegue Unidad 03 | `kubectl apply -f labs/03-networking-ingress/solution/` | Namespace, ConfigMap, Secret, Deployment, Service e Ingress aplicados |
 | Addon Ingress MicroK8s | `microk8s enable ingress` y `microk8s status --wait-ready` | Addon `ingress` habilitado; Traefik `v3.6.2` desplegado; `IngressClass/public` disponible |
 | Estado de la aplicación por Ingress | `bash labs/03-networking-ingress/validation/validate.sh` | 0 fallos; Deployment 2/2; Service `ClusterIP`; EndpointSlice, DNS interno, Ingress Controller, Ingress y HTTP validados |
-| HTTP por Ingress local | `curl -i -H 'Host: platform-api.local' http://127.0.0.1/` | `HTTP/1.1 200 OK`; contenido de Unidad 03 servido desde ConfigMap |
+| HTTP por Ingress local | `curl -i -H 'Host: platform-api.local' http://127.0.0.1/` | `HTTP/1.1 200 OK`; contenido de Unidad 05 servido desde ConfigMap |
 | Sintaxis cliente de Unidad 04 | `kubectl apply --dry-run=client -f labs/04-persistence-state/solution/` | Manifiestos aceptados por el cliente |
 | Despliegue Unidad 04 | `kubectl apply -f labs/04-persistence-state/solution/` | Recursos aplicados |
 | Addon storage MicroK8s | `microk8s enable hostpath-storage` | Addon habilitado; `storage` aparece como alias de `hostpath-storage` |
 | StorageClass Unidad 04 | `kubectl get storageclass` | `microk8s-hostpath (default)` disponible |
 | Estado de persistencia Unidad 04 | `bash labs/04-persistence-state/validation/validate.sh` | 0 fallos, 0 avisos; PVC `Bound`, PV, mount, escritura, recreación de Pod, Service e Ingress validados |
 | Revisión pedagógica Unidad 04 | Aprobación del usuario el 2026-07-19 | Aprobada |
+| Sintaxis cliente de Unidad 05 | `kubectl apply --dry-run=client -f labs/05-scheduling-resilience-maintenance/solution/` | Manifiestos aceptados por el cliente |
+| Despliegue Unidad 05 | `kubectl apply -f labs/05-scheduling-resilience-maintenance/solution/` | Namespace, ConfigMap, Secret, PVC, PDB, Deployment, Service e Ingress aplicados |
+| Estado de scheduling y resiliencia Unidad 05 | `bash labs/05-scheduling-resilience-maintenance/validation/validate.sh` | 0 fallos, 0 avisos; Deployment, PDB, Pods asignados, Service, EndpointSlice, Ingress, PVC, HTTP, recreacion de Pod y rollout history validados |
+| Revisión pedagógica Unidad 05 | Pendiente de revisión del usuario | Pendiente |
 | Revisión pedagógica Unidad 01 | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
 | Revisión pedagógica Unidad 02 | Aprobación del usuario el 2026-07-18 | Aprobada |
 | Revisión pedagógica Unidad 03 | Aprobación del usuario el 2026-07-19 junto con el refuerzo `student-notes.md` | Aprobada |
@@ -912,6 +968,7 @@ Validaciones no disponibles en esta sesión:
 | 50 | Validación funcional de Unidad 04 | Completado | `hostpath-storage` habilitado; PVC `platform-api-data` `Bound`; `bash labs/04-persistence-state/validation/validate.sh` con 0 fallos y 0 avisos |
 | 51 | Playbook de Unidad 05 | Completado | `playbooks/units/05-scheduling-resilience-maintenance.md` creado; `project/project-state.md` actualizado |
 | 52 | Aprobación del playbook de Unidad 05 | Completado | El usuario aprueba el playbook de Unidad 05 el 2026-07-19 y confirma commit `361b2df Generate unit 05 scheduling playbook` |
+| 53 | Generación y validación funcional de Unidad 05 | Completado con revisión pedagógica pendiente | Tutorial, student notes, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` evolucionada con scheduling seguro, `RollingUpdate`, PDB y validación funcional en MicroK8s |
 
 ---
 
@@ -920,7 +977,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Generar la Unidad 05 - Scheduling, resiliencia y mantenimiento
+Revisar y aprobar pedagogicamente la Unidad 05 - Scheduling, resiliencia y mantenimiento
 ```
 
 ## Fuentes obligatorias
@@ -929,33 +986,24 @@ La sesión deberá leer:
 
 ```text
 playbooks/master.md
-project/architecture.md
 project/project-state.md
-project/roadmap.md
-project/project-planning.md
-project/how-to.md
-playbooks/unit-template.md
-playbooks/summary-template.md
-playbooks/project-state-template.md
-tutorial/04-persistence-state/README.md
-tutorial/04-persistence-state/student-notes.md
-tutorial/04-persistence-state/summary.md
-labs/04-persistence-state/solution/
-labs/04-persistence-state/validation/validate.sh
 playbooks/units/05-scheduling-resilience-maintenance.md
-project/project-state.md
+tutorial/05-scheduling-resilience-maintenance/README.md
+tutorial/05-scheduling-resilience-maintenance/student-notes.md
+tutorial/05-scheduling-resilience-maintenance/instructor-notes.md
+tutorial/05-scheduling-resilience-maintenance/summary.md
+labs/05-scheduling-resilience-maintenance/README.md
+labs/05-scheduling-resilience-maintenance/solution/
+labs/05-scheduling-resilience-maintenance/validation/validate.sh
 ```
 
 ## Trabajo permitido
 
-- generar `tutorial/05-scheduling-resilience-maintenance/README.md`;
-- generar `tutorial/05-scheduling-resilience-maintenance/student-notes.md`;
-- generar `tutorial/05-scheduling-resilience-maintenance/instructor-notes.md`;
-- generar `tutorial/05-scheduling-resilience-maintenance/summary.md`;
-- generar `labs/05-scheduling-resilience-maintenance/`;
-- actualizar `project/project-state.md` con estado real y validaciones ejecutadas;
-- mantener la separacion entre tutorial formativo, `student-notes.md` y laboratorio operativo;
-- conservar `platform-api`, `platform-training` y `labs/04-persistence-state/solution/` como estado tecnico validado.
+- revisar contenido pedagogico de la Unidad 05;
+- corregir `tutorial/05-scheduling-resilience-maintenance/` si la revision detecta lagunas;
+- corregir `labs/05-scheduling-resilience-maintenance/` si la revision detecta errores operativos;
+- registrar aprobacion pedagogica del usuario cuando se produzca;
+- mantener `labs/05-scheduling-resilience-maintenance/solution/` como base tecnica validada para Unidad 06.
 
 ## Trabajo todavía prohibido
 

@@ -626,12 +626,13 @@ Debe comprobarse que:
 
 El siguiente incremento recomendado vigente se registra en `project/project-state.md`, que debe prevalecer sobre esta sección cuando el itinerario avance.
 
-Tras generar y validar técnicamente la Unidad 03, el siguiente incremento recomendado es revisar y aprobar el refuerzo pedagógico transversal de las Unidades 00-03, especialmente los nuevos `student-notes.md`.
+Tras generar y validar funcionalmente la Unidad 05, el siguiente incremento recomendado es revisar y aprobar pedagogicamente la Unidad 05.
 
 Esa sesión debería centrarse en:
 
-1. leer `tutorial/03-networking-ingress/summary.md`;
-2. revisar `tutorial/00-environment/student-notes.md`, `tutorial/01-kubernetes/student-notes.md`, `tutorial/02-configuration-lifecycle/student-notes.md` y `tutorial/03-networking-ingress/student-notes.md`;
-3. comprobar que los README actúan como entrada y no como laboratorio extendido;
-4. mantener `platform-api`, `platform-training` y `labs/03-networking-ingress/solution/` como base técnica congelada;
-5. no avanzar a Unidad 04 hasta cerrar esta revisión pedagógica transversal o registrar una decisión explícita.
+1. leer `tutorial/05-scheduling-resilience-maintenance/summary.md`;
+2. revisar `tutorial/05-scheduling-resilience-maintenance/README.md`, `student-notes.md` e `instructor-notes.md`;
+3. revisar `labs/05-scheduling-resilience-maintenance/README.md` y los manifiestos de `solution/`;
+4. comprobar que el README actua como entrada y que `student-notes.md` contiene el desarrollo pedagogico profundo;
+5. mantener `platform-api`, `platform-training` y `labs/05-scheduling-resilience-maintenance/solution/` como base tecnica validada;
+6. no avanzar a Unidad 06 hasta cerrar esta revision pedagogica o registrar una decision explicita.

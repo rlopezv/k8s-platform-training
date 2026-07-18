@@ -360,11 +360,11 @@ El repositorio dispone de:
 - roadmap;
 - playbook maestro;
 - plantillas comunes;
-- playbooks de las Unidades 00 y 01;
-- contenido y laboratorios de las Unidades 00 y 01;
+- playbooks de las Unidades 00, 01, 02, 03, 04 y 05;
+- contenido y laboratorios de las Unidades 00, 01, 02, 03, 04 y 05;
 - procedimiento de generación de handoffs.
 
-El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es generar el playbook de la **Unidad 02 — Configuración, secretos y ciclo de vida**.
+El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es revisar y aprobar pedagogicamente la **Unidad 05 — Scheduling, resiliencia y mantenimiento**.
 
 El Framework V1 ya ha validado:
 
