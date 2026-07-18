@@ -7,9 +7,9 @@
 | Unidad | 03 - Networking e ingreso |
 | Identificador | `03-networking-ingress` |
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
-| Estado | Completada con limitaciones |
-| Fecha de cierre o actualizacion | 2026-07-18 |
-| Revision pedagogica del usuario | Pendiente |
+| Estado | Completada, validada tecnicamente y aprobada con limitaciones |
+| Fecha de cierre o actualizacion | 2026-07-19 |
+| Revision pedagogica del usuario | Aprobada el 2026-07-19 junto con el refuerzo `student-notes.md` |
 
 ## Resumen ejecutivo
 
@@ -102,7 +102,7 @@ Gateway API queda documentada como comparacion conceptual. El addon Ingress de M
 
 | Componente | Ruta | Cambio realizado |
 |---|---|---|
-| Estado del proyecto | `project/project-state.md` | Registrado que la Unidad 03 fue generada y validada tecnicamente, con revision pedagogica pendiente |
+| Estado del proyecto | `project/project-state.md` | Registrado que la Unidad 03 fue generada, validada tecnicamente y aprobada pedagogicamente |
 | Manifiestos heredados | `labs/03-networking-ingress/solution/` | Copiados desde Unidad 02 y etiquetados como Unidad 03 |
 
 ## Componentes retirados

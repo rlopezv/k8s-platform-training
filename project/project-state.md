@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Refuerzo pedagógico transversal de Unidades 00-03 |
-| Estado general | `student-notes.md` creados para Unidades 00-03 y enlazados desde los README; revisión del usuario pendiente |
-| Último incremento completado | Creación de notas pedagógicas profundas de alumno para Unidades 00-03 sin cambios técnicos |
-| Unidad activa | Revisión pedagógica transversal de Unidades 00-03 |
+| Fase actual | Preparación del playbook de la Unidad 04 |
+| Estado general | Unidades 00-03 generadas; refuerzo pedagógico transversal con `student-notes.md` aprobado y comiteado |
+| Último incremento completado | Revisión y aprobación de `student-notes.md` de Unidades 00-03 |
+| Unidad activa | 04 — Persistencia y estado, playbook pendiente |
 | Última unidad completada | 03 — Networking e ingreso |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02 y 03 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Revisar y aprobar `student-notes.md` de Unidades 00-03 y el nuevo contrato pedagógico |
+| Siguiente incremento permitido | Generar el playbook de la Unidad 04 — Persistencia y estado |
 
 ---
 
@@ -49,24 +49,27 @@ Como consecuencia, se actualizaron `playbooks/master.md` y `playbooks/unit-templ
 
 El usuario y el proyecto acuerdan que el nivel pedagógico deseado no debe resolverse cargando indefinidamente los `README.md`. A partir de este incremento, cada unidad debe separar el `README.md` como puerta de entrada y `student-notes.md` como material pedagógico profundo. Esta fase no debe avanzar capacidades técnicas ni sustituir laboratorios; debe ampliar teoría, modelos mentales, ejemplos conceptuales, razonamiento, lectura guiada y progresión didáctica.
 
-La Unidad 03 generó el acceso HTTP local para `platform-api` mediante un recurso `Ingress` y el addon Ingress de MicroK8s. La validación técnica se ejecutó contra el MicroK8s local con 0 fallos y 0 avisos. La revisión pedagógica final del usuario queda pendiente.
+La Unidad 03 generó el acceso HTTP local para `platform-api` mediante un recurso `Ingress` y el addon Ingress de MicroK8s. La validación técnica se ejecutó contra el MicroK8s local con 0 fallos y 0 avisos. La revisión pedagógica final fue aprobada por el usuario el 2026-07-19 junto con el refuerzo `student-notes.md`.
 
 El 2026-07-18 se inicio esta fase pedagogica transversal sobre `tutorial/00-environment/README.md`, `tutorial/01-kubernetes/README.md`, `tutorial/02-configuration-lifecycle/README.md` y `tutorial/03-networking-ingress/README.md`. El incremento añade una guia pedagogica inicial, mapas de aprendizaje, preguntas centrales y separacion mas explicita entre capitulo formativo y laboratorio. No modifica manifiestos, scripts ni estado del cluster.
 
 El 2026-07-19 se incorpora `student-notes.md` como artefacto pedagógico estructural de cada unidad. Se crean notas del alumno para las Unidades 00, 01, 02 y 03, con explicaciones desde cero de los conceptos principales, modelos mentales, relaciones entre recursos, errores frecuentes, preguntas de comprobación y continuidad con unidades posteriores. Los README quedan enlazados a estas notas y conservan su función de entrada y orientación. No se modifican manifiestos, scripts, laboratorios ni estado del clúster.
 
-Durante esta fase se permite:
+El usuario aceptó los cambios y confirmó que fueron comiteados en `b842f33 Add student notes for units 00-03`. La fase pedagógica transversal queda cerrada para poder continuar con la Unidad 04.
 
-- revisar y ajustar los `student-notes.md` y los enlaces desde README de Unidades 00-03;
+Durante la preparación de la Unidad 04 se permite:
+
 - reutilizar `tutorial/03-networking-ingress/summary.md` como fuente de continuidad;
 - reutilizar `labs/03-networking-ingress/solution/` como estado activo de la aplicación;
+- generar `playbooks/units/04-persistence-state.md`;
+- definir alcance, entregables, restricciones y criterios de aceptación de persistencia y estado;
 - mantener congeladas las capacidades tecnicas ya validadas.
 
 Todavía no se permite:
 
 - crear charts Helm;
 - crear módulos Terraform;
-- generar el playbook de la Unidad 04 antes de cerrar la revisión pedagógica transversal;
+- generar la Unidad 04 antes de aprobar su playbook;
 - instalar Tekton;
 - instalar Argo CD;
 - desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
@@ -233,10 +236,10 @@ Todavía no se permite:
 
 | Unidad | Estado | Tutorial | Student notes | Laboratorio o plataforma | Instructor notes | Summary |
 |---|---|---|---|---|---|---|
-| 00 — Preparación del entorno | Completada con limitaciones; `student-notes.md` pendiente de revisión | Sí | Sí | Sí, `platform/environment/` | Sí | Sí |
-| 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; `student-notes.md` pendiente de revisión | Sí | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
-| 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; `student-notes.md` pendiente de revisión | Sí | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
-| 03 — Networking e ingreso | Completada con validación técnica; revisión pedagógica pendiente | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
+| 00 — Preparación del entorno | Completada con limitaciones; `student-notes.md` aprobado | Sí | Sí | Sí, `platform/environment/` | Sí | Sí |
+| 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
+| 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
+| 03 — Networking e ingreso | Completada, validada técnicamente y aprobada | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
 | 04–25 | Previstas en roadmap | No | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
@@ -325,7 +328,7 @@ Limitaciones activas:
 
 | Campo | Estado |
 |---|---|
-| Estado | Completada con validación técnica; revisión pedagógica pendiente |
+| Estado | Completada, validada técnicamente y aprobada con limitaciones |
 | Fecha de inicio | 2026-07-18 |
 | Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/03-networking-ingress.md` |
@@ -349,7 +352,7 @@ Capacidades incorporadas:
 Limitaciones activas:
 
 - ShellCheck no está disponible en este entorno para validar scripts;
-- la revisión pedagógica final del usuario queda pendiente;
+- la revisión pedagógica final del usuario fue aprobada el 2026-07-19;
 - el addon Ingress de MicroK8s es específico de plataforma local y no debe extrapolarse a AKS, EKS o entornos corporativos;
 - no se crearon recursos `GatewayClass`, `Gateway` ni `HTTPRoute` gestionados por el curso;
 - TLS productivo, DNS público, LoadBalancer cloud, NetworkPolicies, Helm, Terraform, CI/CD, GitOps, observabilidad avanzada y cloud siguen diferidos.
@@ -647,8 +650,8 @@ Tras generar y validar técnicamente la Unidad 03:
 | R-008 | Recursos insuficientes en el host | Media | Medio | Validar requisitos mínimos | Abierto |
 | R-009 | Disponibilidad futura de imagen externa | Media | Medio | Imagen versionada y pull real validado; sustituir solo con registro en summary y estado | Mitigado |
 | R-010 | Uso de `Endpoints` con advertencia de deprecación en Kubernetes 1.35 | Media | Bajo | Unidad 02 incorpora EndpointSlice como comprobación principal; mantener `Endpoints` solo como referencia histórica o fallback | Mitigado |
-| R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Alta | Alto | `student-notes.md` creado para Unidades 00-03; pendiente revisión pedagógica del usuario | Abierto |
-| R-012 | Futuras unidades especializadas pueden volverse difíciles de seguir si los materiales siguen asumiendo conocimiento previo | Alta | Alto | Playbooks y plantillas actualizados para exigir `student-notes.md` en futuras unidades | Abierto |
+| R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Alta | Alto | `student-notes.md` creado, aprobado y comiteado para Unidades 00-03; mantener el criterio en futuras unidades | Mitigado |
+| R-012 | Futuras unidades especializadas pueden volverse difíciles de seguir si los materiales siguen asumiendo conocimiento previo | Media | Alto | Playbooks y plantillas actualizados para exigir `student-notes.md` en futuras unidades | Mitigado |
 
 ## Cuestiones abiertas
 
@@ -675,7 +678,7 @@ Tras generar y validar técnicamente la Unidad 03:
 | TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida y versiones reales registradas | Cerrada para Unidad 00 |
 | TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
 | TD-005 | Incorporar `EndpointSlice` como observación posterior al Service clásico | Baja | Unidad 01 | Resuelto en Unidad 02 como comprobación principal de endpoints | Cerrada |
-| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | `student-notes.md` incorporado como artefacto estructural y creado para Unidades 00-03; pendiente revisión del usuario | Abierta |
+| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | `student-notes.md` incorporado como artefacto estructural, creado para Unidades 00-03 y aprobado por el usuario | Cerrada para Unidades 00-03; aplicar en futuras unidades |
 | TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo | `playbooks/master.md` y `playbooks/unit-template.md` actualizados con criterios pedagógicos más estrictos | Cerrada |
 
 ---
@@ -702,10 +705,10 @@ Tras generar y validar técnicamente la Unidad 03:
 | HTTP por Ingress local | `curl -i -H 'Host: platform-api.local' http://127.0.0.1/` | `HTTP/1.1 200 OK`; contenido de Unidad 03 servido desde ConfigMap |
 | Revisión pedagógica Unidad 01 | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
 | Revisión pedagógica Unidad 02 | Aprobación del usuario el 2026-07-18 | Aprobada |
-| Revisión pedagógica Unidad 03 | Pendiente de revisión del usuario | Pendiente |
+| Revisión pedagógica Unidad 03 | Aprobación del usuario el 2026-07-19 junto con el refuerzo `student-notes.md` | Aprobada |
 | Hardening pedagógico global inicial | Revisión documental de `tutorial/00-environment/`, `tutorial/01-kubernetes/`, `tutorial/02-configuration-lifecycle/` y summaries | Aceptado por el usuario como cambio mínimo; deuda pedagógica profunda sigue abierta |
-| Refuerzo pedagógico README Unidades 00-03 | Revisión documental de `tutorial/00-environment/README.md`, `tutorial/01-kubernetes/README.md`, `tutorial/02-configuration-lifecycle/README.md` y `tutorial/03-networking-ingress/README.md` | Guías pedagógicas, mapas de aprendizaje y preguntas centrales añadidas; revisión del usuario pendiente |
-| Student notes Unidades 00-03 | Revisión documental de `tutorial/00-environment/student-notes.md`, `tutorial/01-kubernetes/student-notes.md`, `tutorial/02-configuration-lifecycle/student-notes.md` y `tutorial/03-networking-ingress/student-notes.md` | Notas pedagógicas profundas creadas y enlazadas desde los README; revisión del usuario pendiente |
+| Refuerzo pedagógico README Unidades 00-03 | Revisión documental de `tutorial/00-environment/README.md`, `tutorial/01-kubernetes/README.md`, `tutorial/02-configuration-lifecycle/README.md` y `tutorial/03-networking-ingress/README.md` | Guías pedagógicas, mapas de aprendizaje y preguntas centrales añadidas; aprobado por el usuario |
+| Student notes Unidades 00-03 | Revisión documental de `tutorial/00-environment/student-notes.md`, `tutorial/01-kubernetes/student-notes.md`, `tutorial/02-configuration-lifecycle/student-notes.md` y `tutorial/03-networking-ingress/student-notes.md` | Notas pedagógicas profundas creadas, enlazadas desde los README, aprobadas por el usuario y comiteadas en `b842f33` |
 | Ausencia de charts Helm | `find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print` | Sin resultados |
 | Ausencia de módulos Terraform | `find . -path ./.git -prune -o -type f \( -name '*.tf' -o -name '*.tfvars' \) -print` | Sin resultados |
 
@@ -763,9 +766,10 @@ Validaciones no disponibles en esta sesión:
 | 41 | Acuerdo de fase pedagógica posterior para README | Completado | Se registra que el desarrollo profundo de README puede abordarse como fase posterior sin avanzar capacidades técnicas; `project/project-planning.md` actualizado |
 | 42 | Playbook de Unidad 03 | Completado con revisión pendiente | `playbooks/units/03-networking-ingress.md` creado en borrador; `project/project-state.md` actualizado |
 | 43 | Aprobación del playbook de Unidad 03 | Completado | El usuario aprueba `playbooks/units/03-networking-ingress.md`; se permite generar la Unidad 03 |
-| 44 | Generación y validación técnica de Unidad 03 | Completado con revisión pedagógica pendiente | Tutorial, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` expuesta por Ingress HTTP local y validada en MicroK8s |
-| 45 | Refuerzo pedagógico README Unidades 00-03 | Completado con revisión pendiente | Se añaden guías pedagógicas, mapas de aprendizaje y preguntas centrales sin modificar laboratorios ni capacidades técnicas |
-| 46 | Estructura `student-notes.md` y notas de alumno Unidades 00-03 | Completado con revisión pendiente | `student-notes.md` incorporado al contrato de unidad; notas profundas creadas, README enlazados y summaries actualizados sin modificar capacidades técnicas |
+| 44 | Generación y validación técnica de Unidad 03 | Completado y aprobado | Tutorial, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` expuesta por Ingress HTTP local, validada en MicroK8s y aprobada pedagógicamente |
+| 45 | Refuerzo pedagógico README Unidades 00-03 | Completado y aprobado | Se añaden guías pedagógicas, mapas de aprendizaje y preguntas centrales sin modificar laboratorios ni capacidades técnicas |
+| 46 | Estructura `student-notes.md` y notas de alumno Unidades 00-03 | Completado y aprobado | `student-notes.md` incorporado al contrato de unidad; notas profundas creadas, README enlazados, summaries actualizados y commit `b842f33` confirmado |
+| 47 | Cierre de revisión pedagógica transversal | Completado | `project-state.md` y `tutorial/03-networking-ingress/summary.md` actualizados para registrar aprobación y permitir el playbook de Unidad 04 |
 
 ---
 
@@ -774,7 +778,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Revisar y aprobar `student-notes.md` de Unidades 00-03 y el nuevo contrato pedagogico
+Generar el playbook de la Unidad 04 - Persistencia y estado
 ```
 
 ## Fuentes obligatorias
@@ -791,31 +795,26 @@ project/how-to.md
 playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
-tutorial/00-environment/README.md
-tutorial/00-environment/student-notes.md
-tutorial/01-kubernetes/README.md
-tutorial/01-kubernetes/student-notes.md
-tutorial/02-configuration-lifecycle/README.md
-tutorial/02-configuration-lifecycle/student-notes.md
 tutorial/03-networking-ingress/README.md
 tutorial/03-networking-ingress/student-notes.md
+tutorial/03-networking-ingress/summary.md
+labs/03-networking-ingress/solution/
 project/project-state.md
 ```
 
 ## Trabajo permitido
 
-- revisar, corregir o ampliar los `student-notes.md` de Unidades 00-03;
-- ajustar los README solo cuando sea necesario para orientar mejor hacia las notas del alumno;
-- mantener la separacion entre tutorial formativo y laboratorio operativo;
+- crear `playbooks/units/04-persistence-state.md`;
+- definir objetivos, precondiciones, entregables, restricciones y validaciones de la Unidad 04;
+- mantener la separacion entre tutorial formativo, `student-notes.md` y laboratorio operativo;
 - conservar `platform-api`, `platform-training` y `labs/03-networking-ingress/solution/` como estado tecnico validado;
-- no crear nuevas capacidades tecnicas durante esta fase.
+- no crear todavia tutorial, laboratorio ni manifiestos de la Unidad 04.
 
 ## Trabajo todavía prohibido
 
 - crear charts Helm;
 - crear módulos Terraform;
 - generar la Unidad 04 antes de aprobar su playbook;
-- generar el playbook de Unidad 04 antes de cerrar esta revision pedagogica transversal;
 - incorporar CI/CD, GitOps, observabilidad avanzada, seguridad avanzada o cloud;
 - sustituir MicroK8s por otra plataforma local;
 - sustituir la aplicación evolutiva sin decisión documentada.
