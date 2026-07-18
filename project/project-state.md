@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Preparación del playbook de la Unidad 05 |
+| Fase actual | Revisión del playbook de la Unidad 05 |
 | Estado general | Unidades 00-04 completadas, validadas funcionalmente y aprobadas |
-| Último incremento completado | Validación funcional de la Unidad 04 |
-| Unidad activa | 05 — Scheduling, resiliencia y mantenimiento, playbook pendiente |
+| Último incremento completado | Playbook de la Unidad 05 generado |
+| Unidad activa | 05 — Scheduling, resiliencia y mantenimiento, playbook en revisión |
 | Última unidad completada | 04 — Persistencia y estado |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03 y 04 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar el playbook de la Unidad 05 — Scheduling, resiliencia y mantenimiento |
+| Siguiente incremento permitido | Revisar y aprobar el playbook de la Unidad 05 — Scheduling, resiliencia y mantenimiento |
 
 ---
 
@@ -57,12 +57,14 @@ El 2026-07-19 se incorpora `student-notes.md` como artefacto pedagógico estruct
 
 El usuario aceptó los cambios y confirmó que fueron comiteados en `b842f33 Add student notes for units 00-03`. La fase pedagógica transversal queda cerrada para poder continuar con la Unidad 04.
 
-Durante la preparación de la Unidad 05 se permite:
+El 2026-07-19 se generó `playbooks/units/05-scheduling-resilience-maintenance.md` en estado `En revision`. El playbook define alcance, supuestos pedagógicos, entregables, restricciones, decisiones y criterios de aceptación para scheduling, resiliencia y mantenimiento. La revisión y aprobación del usuario queda pendiente antes de generar tutorial, laboratorio o manifiestos de la Unidad 05.
+
+Durante la revisión del playbook de la Unidad 05 se permite:
 
 - reutilizar `tutorial/04-persistence-state/summary.md` como fuente de continuidad;
 - reutilizar `labs/04-persistence-state/solution/` como estado activo y validado de la aplicación;
-- generar `playbooks/units/05-scheduling-resilience-maintenance.md`;
-- definir alcance, entregables, restricciones y criterios de aceptación de scheduling, resiliencia y mantenimiento;
+- revisar y ajustar `playbooks/units/05-scheduling-resilience-maintenance.md`;
+- definir o corregir alcance, entregables, restricciones y criterios de aceptación de scheduling, resiliencia y mantenimiento;
 - mantener congeladas las capacidades tecnicas ya validadas.
 
 Todavía no se permite:
@@ -99,6 +101,7 @@ Todavía no se permite:
 | `playbooks/units/02-configuration-lifecycle.md` | Completo y aprobado | Unit-02-Playbook-Approval | Gobierno de la Unidad 02 |
 | `playbooks/units/03-networking-ingress.md` | Completo y aprobado | Unit-03-Playbook-Approval | Gobierno de la Unidad 03 |
 | `playbooks/units/04-persistence-state.md` | Completo y aprobado por instrucción de generación | Unit-04-Generation | Gobierno de la Unidad 04 |
+| `playbooks/units/05-scheduling-resilience-maintenance.md` | Generado, en revisión | Unit-05-Playbook | Gobierno propuesto de la Unidad 05 |
 | `AGENTS.md` | Completo | Unit-00-01 | Guía operativa para agentes con acceso al repositorio |
 
 ---
@@ -210,7 +213,8 @@ Todavía no se permite:
 │       ├── 01-kubernetes.md
 │       ├── 02-configuration-lifecycle.md
 │       ├── 03-networking-ingress.md
-│       └── 04-persistence-state.md
+│       ├── 04-persistence-state.md
+│       └── 05-scheduling-resilience-maintenance.md
 ├── project/
 │   ├── architecture.md
 │   ├── how-to.md
@@ -253,7 +257,7 @@ Todavía no se permite:
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Materializado con Unidades 01, 02, 03 y 04 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/` y `04-persistence-state/` |
 | `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base |
-| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03 y 04 |
+| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03, 04 y 05 |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
 | `tutorial/` | Unidades 00, 01, 02, 03 y 04 generadas | README de entrada, `student-notes.md`, instructor notes y summaries |
 
@@ -268,7 +272,8 @@ Todavía no se permite:
 | 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
 | 03 — Networking e ingreso | Completada, validada técnicamente y aprobada | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
 | 04 — Persistencia y estado | Completada, validada funcionalmente y aprobada | Sí | Sí | Sí, `labs/04-persistence-state/` | Sí | Sí |
-| 05–25 | Previstas en roadmap | No | No | No | No | No |
+| 05 — Scheduling, resiliencia y mantenimiento | Playbook generado, revisión pendiente | No | No | No | No | No |
+| 06–25 | Previstas en roadmap | No | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
 
@@ -417,6 +422,37 @@ Limitaciones activas:
 - el dato persistente fue servido por Ingress en `/persistent/message.txt`;
 - la revisión pedagógica final del usuario fue aprobada el 2026-07-19.
 
+## Unidad 05 — Scheduling, resiliencia y mantenimiento
+
+| Campo | Estado |
+|---|---|
+| Estado | Playbook generado, revisión y aprobación pendientes |
+| Fecha de inicio | 2026-07-19 |
+| Fecha de cierre | No aplica |
+| Playbook | `playbooks/units/05-scheduling-resilience-maintenance.md` |
+| Tutorial | No generado |
+| Student notes | No generado |
+| Laboratorio | No generado |
+| Instructor notes | No generado |
+| Summary | No generado |
+
+Capacidades previstas por el playbook:
+
+- scheduler, colocación de Pods y eventos de scheduling;
+- `nodeSelector`, affinity, anti-affinity, taints y tolerations con constraints seguros para MicroK8s local;
+- `PodDisruptionBudget` para `platform-api`;
+- estrategia de rolling update, rollout y rollback del Deployment;
+- simulación controlada de fallos de Pod y recuperación por Deployment;
+- diagnóstico de Pods `Pending`, rollouts bloqueados, endpoints degradados y límites de resiliencia local;
+- continuidad hacia Helm en Unidad 06.
+
+Limitaciones activas:
+
+- no se ha generado tutorial, `student-notes.md`, laboratorio, manifiestos ni summary de Unidad 05;
+- la revisión y aprobación del usuario sobre el playbook está pendiente;
+- no se permite generar la Unidad 05 hasta aprobar el playbook;
+- Helm, Terraform, CI/CD, GitOps, observabilidad avanzada, autoscaling y cloud siguen diferidos.
+
 ---
 
 # Estado del laboratorio
@@ -529,7 +565,7 @@ Limitaciones activas:
 ## Capacidades todavía no incorporadas
 
 - Gateway API operativa como artefacto del curso;
-- almacenamiento persistente validado funcionalmente;
+- scheduling avanzado, PDB, rollout/rollback guiado y mantenimiento de workloads;
 - empaquetado Helm;
 - gestión Terraform;
 - CI/CD, GitOps, observabilidad avanzada, seguridad avanzada, KEDA, AKS y EKS.
@@ -693,13 +729,27 @@ No existen actualmente:
 | D-04-05 — Deployment conservado | Activa | `tutorial/04-persistence-state/summary.md` | No se migra a StatefulSet en esta unidad |
 | D-04-06 — Laboratorio acumulativo con ruta propia | Activa | `playbooks/units/04-persistence-state.md` | `labs/04-persistence-state/solution/` es la base validada para Unidad 05 |
 
+## Decisiones propuestas de la Unidad 05
+
+Estas decisiones pertenecen al playbook generado y no deben tratarse como aprobadas hasta que el usuario revise y apruebe `playbooks/units/05-scheduling-resilience-maintenance.md`.
+
+| Decisión | Estado | Documento fuente | Impacto previsto |
+|---|---|---|---|
+| D-05-01 — Resiliencia explicada desde el Deployment existente | Propuesta | `playbooks/units/05-scheduling-resilience-maintenance.md` | Mantener `platform-api` como eje de scheduling, rollout y recuperacion |
+| D-05-02 — Preferir constraints no bloqueantes en laboratorio local | Propuesta | `playbooks/units/05-scheduling-resilience-maintenance.md` | Evitar que anti-affinity estricta bloquee MicroK8s de un nodo |
+| D-05-03 — PDB como proteccion ante interrupciones voluntarias | Propuesta | `playbooks/units/05-scheduling-resilience-maintenance.md` | Introducir mantenimiento responsable sin prometer tolerancia a todos los fallos |
+| D-05-04 — Rollout y rollback antes de Helm | Propuesta | `playbooks/units/05-scheduling-resilience-maintenance.md` | Preparar la Unidad 06 desde comportamiento nativo de Deployment |
+| D-05-05 — Mantenimiento seguro, no destruccion del entorno | Propuesta | `playbooks/units/05-scheduling-resilience-maintenance.md` | Evitar automatizar `drain`, reset de MicroK8s o borrado de PVC |
+| D-05-06 — Laboratorio acumulativo con ruta propia | Propuesta | `playbooks/units/05-scheduling-resilience-maintenance.md` | `labs/05-scheduling-resilience-maintenance/solution/` sera la base prevista para Unidad 06 |
+
 ---
 
 # Restricciones activas
 
-Tras validar funcionalmente la Unidad 04:
+Tras generar el playbook de la Unidad 05:
 
 - la Unidad 05 deberá reutilizar `platform-api`, `platform-training` y `labs/04-persistence-state/solution/` como base validada;
+- no se permite generar tutorial, laboratorio ni manifiestos de Unidad 05 hasta aprobar `playbooks/units/05-scheduling-resilience-maintenance.md`;
 - conservar la deuda pedagógica reforzada: los README actuales siguen siendo insuficientes como material formativo profundo para alumnos que no conocen el tema;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
 - no crear charts Helm hasta la unidad prevista;
@@ -862,6 +912,7 @@ Validaciones no disponibles en esta sesión:
 | 48 | Generación de Unidad 04 | Completado | Tutorial, student notes, instructor notes, summary, laboratorio, manifiestos y validación creados; dry-run cliente correcto |
 | 49 | Aprobación pedagógica de Unidad 04 | Completado | El usuario aprueba la Unidad 04 el 2026-07-19 y confirma commit `1a588fa Generate and approve unit 04 persistence` |
 | 50 | Validación funcional de Unidad 04 | Completado | `hostpath-storage` habilitado; PVC `platform-api-data` `Bound`; `bash labs/04-persistence-state/validation/validate.sh` con 0 fallos y 0 avisos |
+| 51 | Playbook de Unidad 05 | Completado con revisión pendiente | `playbooks/units/05-scheduling-resilience-maintenance.md` creado en estado `En revision`; `project/project-state.md` actualizado |
 
 ---
 
@@ -870,7 +921,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Generar el playbook de la Unidad 05 - Scheduling, resiliencia y mantenimiento
+Revisar y aprobar el playbook de la Unidad 05 - Scheduling, resiliencia y mantenimiento
 ```
 
 ## Fuentes obligatorias
@@ -887,15 +938,19 @@ project/how-to.md
 playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
+tutorial/04-persistence-state/README.md
+tutorial/04-persistence-state/student-notes.md
 tutorial/04-persistence-state/summary.md
 labs/04-persistence-state/solution/
+playbooks/units/05-scheduling-resilience-maintenance.md
 project/project-state.md
 ```
 
 ## Trabajo permitido
 
-- crear `playbooks/units/05-scheduling-resilience-maintenance.md`;
-- definir objetivos, precondiciones, entregables, restricciones y validaciones de la Unidad 05;
+- revisar y ajustar `playbooks/units/05-scheduling-resilience-maintenance.md`;
+- aprobar el playbook de Unidad 05 si el usuario lo valida;
+- definir o corregir objetivos, precondiciones, entregables, restricciones y validaciones de la Unidad 05;
 - mantener la separacion entre tutorial formativo, `student-notes.md` y laboratorio operativo;
 - conservar `platform-api`, `platform-training` y `labs/04-persistence-state/solution/` como estado tecnico validado;
 - no crear todavia tutorial, laboratorio ni manifiestos de la Unidad 05.
