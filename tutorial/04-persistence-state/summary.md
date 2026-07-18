@@ -7,7 +7,7 @@
 | Unidad | 04 - Persistencia y estado |
 | Identificador | `04-persistence-state` |
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
-| Estado | Generada y aprobada pedagogicamente; validacion funcional pendiente |
+| Estado | Completada, validada funcionalmente y aprobada |
 | Fecha de cierre o actualizacion | 2026-07-19 |
 | Revision pedagogica del usuario | Aprobada el 2026-07-19 |
 
@@ -17,7 +17,7 @@ La Unidad 04 introduce persistencia en `platform-api` mediante un `PersistentVol
 
 La solucion final queda en `labs/04-persistence-state/solution/` y conserva namespace `platform-training`, Deployment `platform-api`, ConfigMap, Secret ficticio, probes, requests/limits, Service `ClusterIP` e Ingress HTTP local heredados de Unidad 03. La unidad anade un PVC con `storageClassName: microk8s-hostpath` y documenta el addon local `hostpath-storage` de MicroK8s como dependencia de laboratorio.
 
-La validacion funcional completa queda pendiente porque `microk8s enable hostpath-storage` requiere `sudo` interactivo en esta sesion. Si el usuario habilita el addon, la validacion prevista es `bash labs/04-persistence-state/validation/validate.sh`.
+La validacion funcional se ejecuto correctamente en MicroK8s. El addon `hostpath-storage` quedo habilitado, la StorageClass `microk8s-hostpath` quedo disponible como default, el PVC `platform-api-data` quedo `Bound`, el volumen se monto en `platform-api`, el dato de laboratorio sobrevivio a la recreacion de un Pod y el fichero persistente fue servido por Ingress.
 
 ## Objetivos alcanzados
 
@@ -32,7 +32,7 @@ La validacion funcional completa queda pendiente porque `microk8s enable hostpat
 | Montar PVC en `platform-api` | Alcanzado en manifiestos | `labs/04-persistence-state/solution/deployment.yaml` |
 | Conservar Service `ClusterIP` e Ingress local | Alcanzado | `labs/04-persistence-state/solution/service.yaml`, `labs/04-persistence-state/solution/ingress.yaml` |
 | Crear validacion de Unidad 04 | Alcanzado | `labs/04-persistence-state/validation/validate.sh` |
-| Validar funcionalmente persistencia en MicroK8s | Pendiente | `microk8s enable hostpath-storage` fallo por requerir `sudo` interactivo |
+| Validar funcionalmente persistencia en MicroK8s | Alcanzado | `bash labs/04-persistence-state/validation/validate.sh`: 0 fallos, 0 avisos |
 
 ## Estado inicial utilizado
 
@@ -107,7 +107,7 @@ La validacion funcional completa queda pendiente porque `microk8s enable hostpat
 | Componente | Ruta | Cambio realizado |
 |---|---|---|
 | Playbook Unidad 04 | `playbooks/units/04-persistence-state.md` | Marcado como aprobado por instruccion del usuario de generar la unidad |
-| Estado del proyecto | `project/project-state.md` | Registra Unidad 04 generada, aprobada pedagogicamente y con validacion funcional pendiente |
+| Estado del proyecto | `project/project-state.md` | Registra Unidad 04 completada, aprobada pedagogicamente y validada funcionalmente |
 
 ## Componentes retirados
 
@@ -153,8 +153,8 @@ labs/04-persistence-state/
 | MicroK8s local | Heredado; no modificado por archivos generados | `project/project-state.md` |
 | Addon DNS | Heredado | `microk8s status --wait-ready` |
 | Addon Ingress | Heredado y validado por Unidad 03 | `bash labs/03-networking-ingress/validation/validate.sh` |
-| Addon `hostpath-storage` | Pendiente de habilitar por requerir `sudo` interactivo | `microk8s enable hostpath-storage` fallo en esta sesion |
-| StorageClass `microk8s-hostpath` | Pendiente | `kubectl get storageclass`: sin recursos |
+| Addon `hostpath-storage` | Habilitado | `microk8s enable hostpath-storage`; `microk8s status --wait-ready` |
+| StorageClass `microk8s-hostpath` | Disponible como default | `kubectl get storageclass` |
 
 ## Aplicacion
 
@@ -172,7 +172,7 @@ labs/04-persistence-state/
 | Elemento | Estado final | Evidencia |
 |---|---|---|
 | Manifiestos Kubernetes | Disponibles y aceptados por dry-run cliente | `kubectl apply --dry-run=client -f labs/04-persistence-state/solution/` |
-| Validacion de laboratorio | Disponible; ejecucion funcional pendiente | `labs/04-persistence-state/validation/validate.sh` |
+| Validacion de laboratorio | Ejecutada correctamente | `bash labs/04-persistence-state/validation/validate.sh`: 0 fallos, 0 avisos |
 | Helm charts | No creados | `find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print` sin resultados |
 | Terraform modules | No creados | `find . -path ./.git -prune -o -type f '(' -name '*.tf' -o -name '*.tfvars' ')' -print` sin resultados |
 
@@ -265,7 +265,11 @@ No se migra a StatefulSet porque `platform-api` no requiere identidad estable po
 |---|---|
 | Unidad 03 heredada | `bash labs/03-networking-ingress/validation/validate.sh`: 0 fallos, 0 avisos |
 | Estado StorageClass inicial | `kubectl get storageclass`: sin recursos |
-| Habilitacion de hostpath-storage | Fallo por `sudo` interactivo requerido |
+| Habilitacion de hostpath-storage | `microk8s enable hostpath-storage`: StorageClass `microk8s-hostpath` creada |
+| StorageClass tras habilitacion | `kubectl get storageclass`: `microk8s-hostpath (default)` |
+| Despliegue Unidad 04 | `kubectl apply -f labs/04-persistence-state/solution/`: recursos aplicados |
+| Estado PVC/PV | PVC `platform-api-data` `Bound` a PV `pvc-d7b0bce5-dab0-40e4-9542-2bd9b4f3b638` |
+| Persistencia funcional | `bash labs/04-persistence-state/validation/validate.sh`: 0 fallos, 0 avisos |
 | Sintaxis Bash | `bash -n labs/04-persistence-state/validation/validate.sh`: 0 |
 | Dry-run cliente | `kubectl apply --dry-run=client -f labs/04-persistence-state/solution/`: aceptado |
 | Ausencia de charts Helm | Sin resultados |
@@ -274,24 +278,14 @@ No se migra a StatefulSet porque `platform-api` no requiere identidad estable po
 
 ## Validaciones pendientes
 
-- habilitar `hostpath-storage` en MicroK8s con permisos locales del usuario;
-- confirmar `storageclass.storage.k8s.io/microk8s-hostpath`;
-- aplicar `labs/04-persistence-state/solution/`;
-- comprobar PVC `platform-api-data` en estado `Bound`;
-- comprobar PV asociado;
-- comprobar montaje escribible;
-- escribir y leer `message.txt`;
-- eliminar un Pod y comprobar persistencia;
-- validar acceso HTTP a `/persistent/message.txt`;
-- ejecutar `bash labs/04-persistence-state/validation/validate.sh` con 0 fallos;
-- revision pedagogica y aprobacion final del usuario: aprobada el 2026-07-19.
+- Ninguna validacion funcional de la Unidad 04 queda pendiente en este entorno.
+- Las validaciones Windows/WSL desde PowerShell siguen siendo validaciones por equipo al replicar el laboratorio, como en unidades anteriores.
 
 ## Limitaciones activas
 
 - `hostpath-storage` es especifico de MicroK8s y no portable a cloud.
 - Los datos del laboratorio quedan ligados al nodo local.
 - No se incorporan backups productivos, snapshots, cifrado, politicas de datos ni storage cloud.
-- La unidad esta generada, pero no validada funcionalmente hasta habilitar la StorageClass y ejecutar el laboratorio.
 - La aprobacion pedagogica del usuario fue recibida el 2026-07-19.
 
 ## Continuidad para Unidad 05
@@ -303,4 +297,4 @@ labs/04-persistence-state/solution/
 tutorial/04-persistence-state/summary.md
 ```
 
-Antes de generar Unidad 05, debe resolverse o registrarse explicitamente si la validacion funcional de persistencia de Unidad 04 sigue pendiente.
+La Unidad 05 puede reutilizar la solucion validada de Unidad 04 como base para scheduling, resiliencia y mantenimiento.
