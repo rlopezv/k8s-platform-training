@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 03 — Networking e ingreso |
-| Estado general | Unidad 02 completada, validada técnicamente y aprobada; hardening pedagógico global inicial aceptado como cambio mínimo |
-| Último incremento completado | Actualización de reglas pedagógicas en playbooks tras hardening mínimo |
-| Unidad activa | Ninguna |
+| Estado general | Playbook de Unidad 03 aprobado; Unidad 02 completada, validada técnicamente y aprobada |
+| Último incremento completado | Aprobación del playbook de la Unidad 03 — Networking e ingreso |
+| Unidad activa | 03 — Networking e ingreso, playbook aprobado; contenido no generado |
 | Última unidad completada | 02 — Configuración, secretos y ciclo de vida |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01 y 02 con hardening pedagógico inicial mínimo |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar el playbook de la Unidad 03 — Networking e ingreso |
+| Siguiente incremento permitido | Generar la Unidad 03 — Networking e ingreso |
 
 ---
 
@@ -47,11 +47,13 @@ El 2026-07-18 se generó un hardening pedagógico global inicial sobre las Unida
 
 Como consecuencia, se actualizaron `playbooks/master.md` y `playbooks/unit-template.md` para exigir que futuras unidades no asuman dominio previo del tema, construyan modelo mental desde el problema real, expliquen conceptos con progresión didáctica y mantengan una separación más estricta entre tutorial formativo y laboratorio operativo.
 
-El usuario y el proyecto acuerdan que el nivel pedagógico deseado puede abordarse en una fase posterior dedicada específicamente a desarrollar los `README.md` como soporte formativo profundo. Esta fase no debe avanzar capacidades técnicas ni sustituir laboratorios; debe ampliar teoría, modelos mentales, ejemplos conceptuales, razonamiento, lectura guiada y progresión didáctica. La deuda queda abierta y no bloquea por sí sola la generación del playbook de Unidad 03.
+El usuario y el proyecto acuerdan que el nivel pedagógico deseado puede abordarse en una fase posterior dedicada específicamente a desarrollar los `README.md` como soporte formativo profundo. Esta fase no debe avanzar capacidades técnicas ni sustituir laboratorios; debe ampliar teoría, modelos mentales, ejemplos conceptuales, razonamiento, lectura guiada y progresión didáctica. La deuda queda abierta y no bloquea por sí sola la revisión del playbook de Unidad 03 ni la generación posterior de la unidad cuando el playbook sea aprobado.
 
-La siguiente fase de trabajo es preparar la **Unidad 03 — Networking e ingreso**. Durante esta fase se permite:
+La siguiente fase de trabajo es preparar la **Unidad 03 — Networking e ingreso**. El playbook de Unidad 03 existe y esta aprobado en `playbooks/units/03-networking-ingress.md`.
 
-- generar el playbook de la Unidad 03 — Networking e ingreso;
+Durante esta fase se permite:
+
+- generar la Unidad 03 — Networking e ingreso siguiendo el playbook aprobado;
 - reutilizar `tutorial/02-configuration-lifecycle/summary.md` como fuente de continuidad;
 - reutilizar `labs/02-configuration-lifecycle/solution/` como estado activo de la aplicación;
 - mantener visible cualquier ajuste pedagógico posterior sin resolverlo dentro del playbook de Unidad 03 salvo decisión explícita.
@@ -87,6 +89,7 @@ Todavía no se permite:
 | `playbooks/units/00-environment.md` | Completo y aprobado | Unit-00-01 | Gobierno de la Unidad 00 |
 | `playbooks/units/01-kubernetes.md` | Completo y aprobado | Unit-01-Concept-Scope | Gobierno de la Unidad 01 |
 | `playbooks/units/02-configuration-lifecycle.md` | Completo y aprobado | Unit-02-Playbook-Approval | Gobierno de la Unidad 02 |
+| `playbooks/units/03-networking-ingress.md` | Completo y aprobado | Unit-03-Playbook-Approval | Gobierno de la Unidad 03 |
 | `AGENTS.md` | Completo | Unit-00-01 | Guía operativa para agentes con acceso al repositorio |
 
 ---
@@ -158,7 +161,8 @@ Todavía no se permite:
 │   └── units/
 │       ├── 00-environment.md
 │       ├── 01-kubernetes.md
-│       └── 02-configuration-lifecycle.md
+│       ├── 02-configuration-lifecycle.md
+│       └── 03-networking-ingress.md
 ├── project/
 │   ├── architecture.md
 │   ├── how-to.md
@@ -201,7 +205,8 @@ Todavía no se permite:
 | 00 — Preparación del entorno | Completada con limitaciones; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `platform/environment/` | Sí | Sí |
 | 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
 | 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
-| 03–25 | Previstas en roadmap | No | No | No | No |
+| 03 — Networking e ingreso | Playbook aprobado; unidad no generada | No | No | No | No |
+| 04–25 | Previstas en roadmap | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
 
@@ -281,6 +286,27 @@ Limitaciones activas:
 - los Secrets son únicamente de laboratorio y no representan gestión corporativa de secretos;
 - Ingress, Gateway API, DNS y TLS quedan diferidos a Unidad 03;
 - Helm y Terraform siguen sin gestionar recursos del curso.
+
+## Unidad 03 — Networking e ingreso
+
+| Campo | Estado |
+|---|---|
+| Estado | Playbook aprobado; unidad no generada |
+| Fecha de inicio | No aplica |
+| Fecha de cierre | No aplica |
+| Playbook | `playbooks/units/03-networking-ingress.md` |
+| Tutorial | No existe |
+| Laboratorio | No existe |
+| Instructor notes | No existe |
+| Summary | No existe |
+
+Alcance aprobado del playbook:
+
+- reutilizar `platform-api`, `platform-training` y `labs/02-configuration-lifecycle/solution/`;
+- conservar el Service `platform-api` como `ClusterIP`;
+- introducir DNS interno, EndpointSlice, Ingress Controller local de MicroK8s e `Ingress` HTTP;
+- tratar Gateway API como comparación conceptual salvo decisión explícita y validación real;
+- diferir TLS productivo, DNS público, LoadBalancer cloud, NetworkPolicies, Helm, Terraform, CI/CD, GitOps, observabilidad avanzada y cloud.
 
 ---
 
@@ -655,6 +681,8 @@ Validaciones no disponibles en esta sesión:
 | 39 | Hardening pedagógico global inicial de Unidades 00-02 | Completado como cambio mínimo | Tutoriales reforzados como material formativo principal; instructor notes y summaries actualizados; sin cambios en manifiestos ni scripts; el usuario lo acepta como mínimo |
 | 40 | Actualización de reglas pedagógicas de generación | Completado | El usuario acepta el hardening como cambio mínimo, registra que el nivel pedagógico sigue siendo pobre y se actualizan `playbooks/master.md` y `playbooks/unit-template.md` |
 | 41 | Acuerdo de fase pedagógica posterior para README | Completado | Se registra que el desarrollo profundo de README puede abordarse como fase posterior sin avanzar capacidades técnicas; `project/project-planning.md` actualizado |
+| 42 | Playbook de Unidad 03 | Completado con revisión pendiente | `playbooks/units/03-networking-ingress.md` creado en borrador; `project/project-state.md` actualizado |
+| 43 | Aprobación del playbook de Unidad 03 | Completado | El usuario aprueba `playbooks/units/03-networking-ingress.md`; se permite generar la Unidad 03 |
 
 ---
 
@@ -663,7 +691,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Generar el playbook de la Unidad 03 - Networking e ingreso
+Generar la Unidad 03 - Networking e ingreso
 ```
 
 ## Fuentes obligatorias
@@ -681,14 +709,14 @@ playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
 tutorial/02-configuration-lifecycle/summary.md
-playbooks/units/02-configuration-lifecycle.md
+playbooks/units/03-networking-ingress.md
 labs/02-configuration-lifecycle/solution/
 labs/02-configuration-lifecycle/validation/validate.sh
 ```
 
 ## Trabajo permitido
 
-- generar el playbook de la Unidad 03 — Networking e ingreso;
+- generar la Unidad 03 — Networking e ingreso siguiendo `playbooks/units/03-networking-ingress.md`;
 - usar `tutorial/02-configuration-lifecycle/summary.md` como entrada;
 - reutilizar `labs/02-configuration-lifecycle/solution/`;
 - mantener `platform-api` y `platform-training` como base;
