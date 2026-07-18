@@ -860,7 +860,7 @@ Validaciones no disponibles en esta sesión:
 | 46 | Estructura `student-notes.md` y notas de alumno Unidades 00-03 | Completado y aprobado | `student-notes.md` incorporado al contrato de unidad; notas profundas creadas, README enlazados, summaries actualizados y commit `b842f33` confirmado |
 | 47 | Cierre de revisión pedagógica transversal | Completado | `project-state.md` y `tutorial/03-networking-ingress/summary.md` actualizados para registrar aprobación y permitir el playbook de Unidad 04 |
 | 48 | Generación de Unidad 04 | Completado con validación funcional pendiente | Tutorial, student notes, instructor notes, summary, laboratorio, manifiestos y validación creados; dry-run cliente correcto; `hostpath-storage` pendiente por requerir `sudo` interactivo |
-| 49 | Aprobación pedagógica de Unidad 04 | Completado | El usuario aprueba la Unidad 04 el 2026-07-19; queda pendiente la validación funcional con `hostpath-storage` |
+| 49 | Aprobación pedagógica de Unidad 04 | Completado | El usuario aprueba la Unidad 04 el 2026-07-19 y confirma commit `1a588fa Generate and approve unit 04 persistence`; queda pendiente la validación funcional con `hostpath-storage` |
 
 ---
 
