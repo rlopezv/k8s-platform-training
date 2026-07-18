@@ -298,7 +298,7 @@ La unidad se considera completada cuando:
 
 ---
 
-### 4.4. Fase 4 — Unidad 1: Kubernetes
+### 4.4. Fase 4 — Unidad 1: Fundamentos Kubernetes
 
 #### Objetivo
 
@@ -309,16 +309,26 @@ Esta aplicación será reutilizada y evolucionada durante el resto del itinerari
 #### Contenido previsto
 
 * arquitectura básica de Kubernetes;
+* control plane y nodos worker;
+* `kube-apiserver`;
+* `etcd`;
+* `kube-scheduler`;
+* `kube-controller-manager`;
+* `kubelet`;
+* `kube-proxy`;
+* container runtime;
+* CRI, CNI y CSI como interfaces de plataforma;
 * recursos fundamentales;
 * namespaces;
 * Pods;
 * Deployments;
 * Services;
-* ConfigMaps;
-* Secrets;
-* probes;
-* requests y limits;
+* mapa conceptual de ConfigMaps, Secrets, probes, requests, limits, Ingress, Gateway API y almacenamiento persistente;
+* mapa conceptual de observabilidad: estado, eventos, logs, metricas, trazas y correlacion;
 * despliegue y actualización;
+* labels y selectors;
+* logs;
+* eventos;
 * diagnóstico básico.
 
 #### Artefactos esperados
@@ -358,7 +368,7 @@ Objetivo:
 Objetivo:
 
 * desplegar la aplicación en MicroK8s;
-* validar conectividad, configuración, estado y recuperación.
+* validar conectividad básica, estado, logs, eventos y recuperación.
 
 ##### Sesión 4.4 — Corrección y cierre
 
@@ -373,15 +383,15 @@ Objetivo:
 * La aplicación se despliega correctamente.
 * Los manifiestos son coherentes y reutilizables.
 * El laboratorio puede ejecutarse de principio a fin.
-* La aplicación queda preparada para su conversión a Helm.
+* La aplicación queda preparada para incorporar configuración, secretos y ciclo de vida en la Unidad 2.
 
 ---
 
-### 4.5. Fase 5 — Unidad 2: Helm
+### 4.5. Fase 5 — Unidad 2: Configuración, secretos y ciclo de vida
 
 #### Objetivo
 
-Transformar los manifiestos de Kubernetes de la Unidad 1 en un chart Helm reutilizable y configurable.
+Ampliar la aplicación de la Unidad 1 para separar configuración, tratar secretos de laboratorio y definir comportamiento operativo básico de ciclo de vida.
 
 #### Principio obligatorio
 
@@ -389,65 +399,63 @@ No se creará una nueva aplicación ni un ejemplo independiente.
 
 #### Contenido previsto
 
-* estructura de un chart;
-* plantillas;
-* valores;
-* helpers;
-* validación;
-* instalación;
-* actualización;
-* rollback;
-* empaquetado;
-* buenas prácticas.
+* ConfigMaps;
+* Secrets con valores no reales;
+* variables de entorno;
+* volúmenes de configuración;
+* liveness probes;
+* readiness probes;
+* startup probes;
+* requests y limits iniciales;
+* graceful shutdown.
 
 #### Sesiones recomendadas
 
-* Diseño de la migración a Helm.
-* Generación del chart y documentación.
-* Validación del ciclo de vida.
+* Diseño de configuración y ciclo de vida.
+* Generación de manifiestos y documentación.
+* Validación de configuración, secretos de laboratorio y probes.
 * Corrección y cierre.
 
 #### Criterio de cierre
 
-* La aplicación se despliega mediante Helm.
-* Los manifiestos originales han sido incorporados correctamente al chart.
-* Los valores permiten configurar el despliegue.
-* El chart está preparado para su consumo desde Terraform y Argo CD.
+* La aplicación se configura sin modificar la imagen.
+* Los secretos de laboratorio no contienen credenciales reales.
+* Las probes y recursos iniciales reflejan un comportamiento operativo verificable.
+* La aplicación queda preparada para networking e ingreso.
 
 ---
 
-### 4.6. Fase 6 — Unidad 3: Terraform
+### 4.6. Fase 6 — Unidad 3: Networking e ingreso
 
 #### Objetivo
 
-Incorporar Terraform al ciclo de provisión y despliegue de la plataforma.
+Exponer la aplicación de manera controlada, comprender el networking interno de Kubernetes e introducir entrada HTTP al clúster.
 
 #### Contenido previsto
 
-* estructura de configuración;
-* providers;
-* estado;
-* variables;
-* outputs;
-* módulos;
-* provider de Kubernetes;
-* provider de Helm;
-* despliegue del chart;
-* preparación para AKS y EKS.
+* ClusterIP;
+* DNS interno;
+* Service discovery;
+* port-forward;
+* Ingress;
+* Gateway API a nivel conceptual y comparativo;
+* `Gateway` y `HTTPRoute` cuando el entorno local lo permita o como artefacto diferido documentado;
+* addon `ingress` de MicroK8s cuando el playbook específico lo autorice;
+* diagnóstico de conectividad.
 
 #### Sesiones recomendadas
 
-* Diseño de la estructura Terraform.
-* Generación de configuración y laboratorio.
-* Validación de `plan`, `apply` y `destroy`.
+* Diseño de exposición de la aplicación.
+* Generación de manifiestos y documentación.
+* Validación de conectividad interna y entrada HTTP.
 * Corrección y cierre.
 
 #### Criterio de cierre
 
-* Terraform gestiona los recursos definidos para la unidad.
-* El chart existente se reutiliza.
-* El estado y las variables están documentados.
-* La estructura permite evolucionar hacia plataformas gestionadas.
+* La aplicación se expone de forma controlada.
+* La resolución DNS interna se valida.
+* El acceso HTTP al clúster queda documentado y verificado.
+* Las particularidades de MicroK8s quedan separadas de Kubernetes estándar.
 
 ---
 
@@ -458,15 +466,30 @@ La secuencia inicial prevista es:
 ```text
 00 Entorno de laboratorio
 01 Kubernetes
-02 Helm
-03 Terraform
-04 Argo CD
-05 Tekton
-06 Observabilidad
-07 Seguridad
-08 KEDA y escalado
-09 AKS
-10 EKS
+02 Configuración, secretos y ciclo de vida
+03 Networking e ingreso
+04 Persistencia y estado
+05 Imágenes, registros y entrega local
+06 Helm
+07 Terraform
+08 Tekton
+09 Argo CD
+10 Operación declarativa y promoción
+11 Prometheus
+12 Grafana
+13 Loki
+14 Tempo y OpenTelemetry
+15 OpenMetrics
+16 Seguridad de workloads
+17 Seguridad de plataforma
+18 KEDA y escalado
+19 Preparación cloud
+20 AKS
+21 EKS
+22 Multi-cloud y portabilidad
+23 Fiabilidad operativa
+24 Gobierno y costes
+25 Cierre del itinerario
 ```
 
 El orden podrá modificarse cuando exista una justificación técnica o pedagógica.

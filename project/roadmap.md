@@ -320,6 +320,8 @@ Aplicación configurable, verificable y preparada para operación básica.
 - DNS interno;
 - Ingress Controller;
 - Ingress;
+- Gateway API a nivel conceptual y comparativo;
+- `Gateway` y `HTTPRoute` cuando el entorno local lo permita o como artefacto diferido documentado;
 - TLS local cuando sea razonable;
 - reglas de enrutamiento;
 - diagnóstico de conectividad.

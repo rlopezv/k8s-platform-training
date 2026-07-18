@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Unidad 00 — Preparación del entorno |
-| Estado general | Unidad 00 completada con limitaciones documentadas |
-| Último incremento completado | Cierre de la Unidad 00 |
+| Fase actual | Unidad 01 — Fundamentos operativos y primera aplicación |
+| Estado general | Unidad 01 preparada mediante playbook aprobado |
+| Último incremento completado | Playbook de la Unidad 01 |
 | Unidad activa | Ninguna |
 | Última unidad completada | 00 — Preparación del entorno |
 | Laboratorio disponible | Sí, entorno base local |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar playbook de la Unidad 01 |
+| Siguiente incremento permitido | Generar la Unidad 01 siguiendo `playbooks/units/01-kubernetes.md` |
 
 ---
 
@@ -53,16 +53,15 @@ La **Unidad 00 — Preparación del entorno** está completada con limitaciones 
 
 Durante la siguiente fase se permitirá:
 
-- generar el playbook específico de la Unidad 01;
+- generar el contenido formativo y el laboratorio de la Unidad 01 siguiendo `playbooks/units/01-kubernetes.md`;
 - usar `tutorial/00-environment/summary.md` como fuente de continuidad;
 - mantener visibles las limitaciones Windows/WSL pendientes por equipo;
-- actualizar este documento antes de crear contenido formativo de Unidad 01.
+- definir la aplicación evolutiva inicial dentro del alcance de la Unidad 01;
+- crear el primer namespace funcional, Deployment y Service del curso;
+- actualizar este documento con el estado real al iniciar, validar y cerrar la Unidad 01.
 
-Todavía no se permite, hasta que exista playbook versionado de Unidad 01:
+Todavía no se permite:
 
-- generar contenido de la Unidad 01;
-- desplegar la aplicación evolutiva;
-- crear workloads funcionales del curso;
 - crear charts Helm;
 - crear módulos Terraform;
 - instalar Tekton;
@@ -114,7 +113,7 @@ Cerrado
 | `project/architecture.md` | Completo y aprobado | Bootstrap-02 | Arquitectura y decisiones estructurales |
 | `project/project-state.md` | Actualizado con cierre de Unidad 00 | Unit-00-Closure | Estado consolidado |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
-| `project/project-planning.md` | Completo y aprobado | Framework-04 | Planificación incremental del trabajo |
+| `project/project-planning.md` | Completo y aprobado | Unit-01-Concept-Scope | Planificación incremental del trabajo |
 | `project/how-to.md` | Completo y aprobado | Framework-04 | Mecanismo operativo de trabajo con asistentes de IA |
 | `playbooks/master.md` | Completo y aprobado | Bootstrap-05 | Reglas globales de generación |
 | `playbooks/unit-template.md` | Completo y aprobado | Bootstrap-06 | Plantilla de playbooks específicos |
@@ -122,6 +121,7 @@ Cerrado
 | `playbooks/project-state-template.md` | Completo y aprobado | Bootstrap-08 | Reglas de mantenimiento del estado |
 | `playbooks/generate-session-handoff.md` | Completo y aprobado | Framework-03 | Generación del handoff derivado de sesión |
 | `playbooks/units/00-environment.md` | Completo y aprobado | Unit-00-01 | Gobierno de la Unidad 00 |
+| `playbooks/units/01-kubernetes.md` | Completo y aprobado | Unit-01-Concept-Scope | Gobierno de la Unidad 01 |
 | `AGENTS.md` | Completo | Unit-00-01 | Guía operativa para agentes con acceso al repositorio |
 
 ---
@@ -163,7 +163,8 @@ Cerrado
 │   ├── summary-template.md
 │   ├── unit-template.md
 │   └── units/
-│       └── 00-environment.md
+│       ├── 00-environment.md
+│       └── 01-kubernetes.md
 ├── project/
 │   ├── architecture.md
 │   ├── how-to.md
@@ -199,7 +200,7 @@ Git no conserva directorios vacíos. Las rutas base previstas se mantienen actua
 | Unidad | Estado | Tutorial | Laboratorio o plataforma | Instructor notes | Summary |
 |---|---|---|---|---|---|
 | 00 — Preparación del entorno | Completada con limitaciones | Sí | Sí | Sí | Sí |
-| 01 — Fundamentos operativos y primera aplicación | Prevista | No | No | No | No |
+| 01 — Fundamentos operativos y primera aplicación | Playbook aprobado; unidad no generada | No | No | No | No |
 | 02–25 | Previstas en roadmap | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
@@ -231,6 +232,41 @@ Quedan como validaciones por equipo, especialmente al replicar el laboratorio:
 - Git.
 
 WSL2 y Ubuntu 24.04.4 LTS ya cuentan con resultados iniciales aportados. DNS hacia `snapcraft.io` resolvio correctamente durante la instalacion real de MicroK8s.
+
+## Unidad 01 — Fundamentos operativos y primera aplicación
+
+| Campo | Estado |
+|---|---|
+| Estado | Playbook aprobado; contenido formativo y laboratorio no generados |
+| Fecha de inicio | No aplica |
+| Fecha de cierre | No aplica |
+| Playbook | `playbooks/units/01-kubernetes.md` |
+| Tutorial | No existe |
+| Laboratorio | No existe |
+| Instructor notes | No existe |
+| Summary | No existe |
+
+### Alcance aprobado
+
+La Unidad 01 debe introducir la primera versión funcional de la solución evolutiva sobre MicroK8s mediante manifiestos Kubernetes declarativos.
+
+El playbook aprobado permite, durante la generación de la unidad:
+
+- explicar la arquitectura del clúster: control plane, nodos worker y flujo de reconciliacion;
+- cubrir conceptualmente `kube-apiserver`, `etcd`, `kube-scheduler`, `kube-controller-manager`, `kubelet`, `kube-proxy`, container runtime, CRI, CNI y CSI;
+- introducir conceptualmente la gestion de configuracion con ConfigMaps, Secrets, variables de entorno y volumenes de configuracion;
+- introducir conceptualmente probes, requests, limits, Ingress, Gateway API y almacenamiento persistente;
+- explicar el mapa de observabilidad: estado, eventos y logs en Unidad 01; Prometheus, Grafana, Loki, Tempo, OpenTelemetry y OpenMetrics en Unidades 11-15;
+- definir la aplicación evolutiva inicial;
+- crear `tutorial/01-kubernetes/`;
+- crear `labs/01-kubernetes/`;
+- crear un namespace funcional del curso;
+- crear manifiestos para `Deployment` y `Service`;
+- validar estado, eventos, logs, labels y selectors con `kubectl`.
+
+No se han creado todavía artefactos formativos ni recursos Kubernetes de Unidad 01.
+
+La implementacion practica de ConfigMaps, Secrets, probes, requests, limits, Ingress, Gateway API y almacenamiento persistente sigue diferida a las unidades posteriores previstas en el roadmap.
 
 ---
 
@@ -293,7 +329,7 @@ No debe asumirse que una herramienta está disponible por estar instalada manual
 
 La aplicación evolutiva todavía no ha sido definida.
 
-Antes de la Unidad 01 deberá seleccionarse una solución que permita incorporar progresivamente:
+Durante la primera sesión de generación de la Unidad 01 deberá seleccionarse una solución que permita incorporar progresivamente:
 
 - configuración;
 - secretos;
@@ -307,6 +343,8 @@ Antes de la Unidad 01 deberá seleccionarse una solución que permita incorporar
 - despliegue en AKS y EKS.
 
 No debe crearse ninguna aplicación durante la Unidad 00.
+
+El playbook `playbooks/units/01-kubernetes.md` ya define los criterios para esa selección, pero no crea todavía aplicación, imagen, manifiestos ni workloads.
 
 ---
 
@@ -355,15 +393,23 @@ No existen actualmente:
 | D-00-07 — `kubectl` como cliente operativo principal | Activa | `playbooks/units/00-environment.md` |
 | D-00-08 — Política inicial de versiones | Activa | `playbooks/units/00-environment.md` |
 
+## Decisiones específicas de la Unidad 01
+
+| Decisión | Estado | Documento fuente |
+|---|---|---|
+| D-01-01 — Manifiestos Kubernetes como artefacto primario | Activa para la generación de Unidad 01 | `playbooks/units/01-kubernetes.md` |
+| D-01-02 — Aplicación evolutiva simple, observable y portable | Activa como criterio de selección | `playbooks/units/01-kubernetes.md` |
+| D-01-03 — Namespace funcional único inicial | Activa para la generación de Unidad 01 | `playbooks/units/01-kubernetes.md` |
+| D-01-04 — Starter y solution sin duplicar laboratorios completos | Activa para la generación de Unidad 01 | `playbooks/units/01-kubernetes.md` |
+
 ---
 
 # Restricciones activas
 
-Tras el cierre de la Unidad 00 y hasta que exista un playbook versionado de Unidad 01:
+Tras generar el playbook de Unidad 01 y hasta cerrar la unidad:
 
-- no generar la aplicación evolutiva;
-- no crear contenido de la Unidad 01;
-- no crear workloads funcionales;
+- la aplicación evolutiva solo puede definirse dentro del alcance de `playbooks/units/01-kubernetes.md`;
+- los workloads funcionales solo pueden ser los recursos básicos previstos para Unidad 01;
 - no crear charts Helm;
 - no crear módulos Terraform;
 - no instalar Tekton;
@@ -404,7 +450,8 @@ Tras el cierre de la Unidad 00 y hasta que exista un playbook versionado de Unid
 | Q-005 | Uso de systemd en WSL2 objetivo | No | Validado en el entorno aportado; revisar si otro equipo difiere | Cerrada con limitacion |
 | Q-006 | Necesidad de soporte para proxy corporativo | No | Cuando el entorno lo requiera | Abierta |
 | Q-007 | Estrategia definitiva para directorios vacíos | No | Resuelta mediante `.gitkeep` hasta crear artefactos reales | Cerrada |
-| Q-008 | Aplicación evolutiva del curso | No para Unidad 00; sí para Unidad 01 | Antes de generar Unidad 01 | Abierta |
+| Q-008 | Aplicación evolutiva del curso | No para playbook de Unidad 01; sí para generar y cerrar la Unidad 01 | Primera sesión de Unidad 01, siguiendo `playbooks/units/01-kubernetes.md` | Abierta |
+| Q-009 | Nombre definitivo del namespace funcional de Unidad 01 | No para playbook; sí para manifiestos | Primera sesión de Unidad 01 | Abierta |
 
 ---
 
@@ -413,7 +460,7 @@ Tras el cierre de la Unidad 00 y hasta que exista un playbook versionado de Unid
 | ID | Descripción | Prioridad | Origen | Resolución prevista | Estado |
 |---|---|---|---|---|---|
 | TD-001 | Definir estrategia de validación automatizada del repositorio | Media | Bootstrap | Evolución del framework | Abierta |
-| TD-002 | Definir aplicación evolutiva | Alta antes de Unidad 01 | Roadmap | Antes de Unidad 01 | Abierta |
+| TD-002 | Definir aplicación evolutiva | Alta durante Unidad 01 | Roadmap y `playbooks/units/01-kubernetes.md` | Primera sesión de Unidad 01 | Abierta |
 | TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida y versiones reales registradas | Cerrada para Unidad 00 |
 | TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
 
@@ -429,6 +476,7 @@ Validaciones registradas actualmente:
 | Coherencia de rutas | Revisión estática | Rutas alineadas |
 | Orden del bootstrap | Comparación con README y estado | Completado |
 | Existencia del playbook de Unidad 00 | Revisión del repositorio | Archivo presente |
+| Existencia del playbook de Unidad 01 | Revisión del repositorio | `playbooks/units/01-kubernetes.md` presente y alineado con el estado actual |
 | Ausencia de contenido formativo prematuro | Revisión del repositorio | Sin contenido de unidades posteriores ni laboratorios funcionales |
 | Diseño inicial de Unidad 00 | Revisión del repositorio | `tutorial/00-environment/README.md`, `tutorial/00-environment/summary.md` y `platform/environment/README.md` presentes |
 | Validación Windows inicial | `platform/environment/windows/check-prerequisites.ps1` | Disponible para comprobar Windows, WSL2 y distribucion Ubuntu objetivo |
@@ -499,6 +547,8 @@ No existen todavía validaciones funcionales registradas para Windows/WSL desde 
 | 25 | Scripts Helm/Terraform | Completado | Scripts idempotentes generados; validacion funcional pendiente de ejecucion real |
 | 26 | Validacion real Helm/Terraform | Completado con este cambio | Helm `v3.21.0+ge0878d4` y Terraform `1.15.7` instalados y validados; integrada sin fallos bloqueantes |
 | 27 | Cierre de Unidad 00 | Completado con este cambio | Unidad 00 cerrada con limitaciones Windows/WSL documentadas; siguiente paso gobernado: playbook de Unidad 01 |
+| 28 | Playbook de Unidad 01 | Completado con este cambio | `playbooks/units/01-kubernetes.md` creado y `project/project-planning.md` alineado con roadmap; siguiente paso permitido: generar Unidad 01 |
+| 29 | Ajuste conceptual de Unidad 01 | Completado con este cambio | Playbook y planning ajustados para incluir arquitectura Kubernetes, componentes de control plane/nodo, CRI/CNI/CSI, gestion de configuracion, Gateway API y mapa conceptual de observabilidad |
 
 ---
 
@@ -507,7 +557,7 @@ No existen todavía validaciones funcionales registradas para Windows/WSL desde 
 El siguiente incremento principal es:
 
 ```text
-Generar playbook de la Unidad 01
+Generar la Unidad 01 siguiendo `playbooks/units/01-kubernetes.md`
 ```
 
 ## Fuentes obligatorias
@@ -523,23 +573,24 @@ playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
 tutorial/00-environment/summary.md
+playbooks/units/01-kubernetes.md
 ```
 
-Para generar contenido de Unidad 01, primero debe existir un playbook versionado en `playbooks/units/`.
+Para generar contenido de Unidad 01 se debe usar el playbook versionado existente en `playbooks/units/01-kubernetes.md`.
 
 ## Trabajo permitido
 
-- crear el playbook específico de Unidad 01 siguiendo `playbooks/unit-template.md`;
 - usar el summary cerrado de Unidad 00 como entrada;
-- definir alcance, precondiciones, salidas esperadas y restricciones de Unidad 01;
+- crear `tutorial/01-kubernetes/`;
+- crear `labs/01-kubernetes/`;
+- definir la aplicacion evolutiva inicial dentro de los criterios del playbook;
+- crear el primer namespace funcional, Deployment y Service del curso;
+- definir validaciones, diagnostico, recuperacion y continuidad de Unidad 01;
 - mantener MicroK8s, Kubernetes, `kubectl`, Helm y Terraform como baseline ya validada;
 - registrar cualquier validacion Windows/WSL adicional si el usuario la aporta.
 
 ## Trabajo todavía prohibido
 
-- crear contenido tutorial o laboratorio de Unidad 01 antes de generar su playbook;
-- crear la aplicación evolutiva;
-- desplegar workloads funcionales;
 - crear charts Helm;
 - crear módulos Terraform;
 - incorporar CI/CD, GitOps, observabilidad, seguridad avanzada o cloud.
