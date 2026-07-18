@@ -6,6 +6,23 @@ Este documento cubre la Unidad 00 completa: validacion de Windows, WSL2 y Ubuntu
 
 Helm y Terraform se instalan y validan como herramientas base. En esta unidad no se crean charts, releases, modulos, backends ni recursos.
 
+## Problema real que resuelve
+
+Antes de aprender Kubernetes hace falta eliminar una fuente habitual de ruido: no saber si un fallo viene del concepto que se esta practicando, del sistema operativo, de la virtualizacion, de la red, de permisos locales o del propio cluster.
+
+La Unidad 00 crea una estacion de trabajo local con evidencias. El objetivo no es "tener MicroK8s instalado" como fin en si mismo, sino construir una base donde las unidades posteriores puedan fallar por razones formativas y diagnosticables, no por una preparacion opaca del equipo.
+
+## Por que aparece al inicio
+
+Kubernetes es una plataforma distribuida incluso cuando se ejecuta en un unico portatil. Si se empieza desplegando una aplicacion sin entender las capas inferiores, cada error se vuelve ambiguo: puede parecer un problema de YAML cuando en realidad falta `systemd`, falla DNS, el usuario no pertenece al grupo correcto o `kubectl` apunta a otro contexto.
+
+Por eso esta unidad separa dos trabajos distintos:
+
+- preparar una plataforma local de aprendizaje;
+- desplegar aplicaciones sobre esa plataforma.
+
+La primera responsabilidad pertenece a la Unidad 00. La segunda empieza en la Unidad 01.
+
 ## Objetivo
 
 Al finalizar este bloque, el alumno debe poder justificar con evidencias que:
@@ -31,6 +48,44 @@ Windows 11
 ```
 
 La plataforma Kubernetes local se incorpora durante la misma unidad, despues de validar Ubuntu WSL.
+
+## Modelo mental de la unidad
+
+Piensa el entorno como una pila de contratos. Cada capa ofrece una capacidad a la siguiente:
+
+| Capa | Contrato que debe cumplir | Evidencia |
+|---|---|---|
+| Windows | Puede ejecutar virtualizacion y WSL2 | `wsl --status`, features Windows |
+| WSL2 | Ejecuta una distribucion Linux realista para laboratorio | `wsl --list --verbose` |
+| Ubuntu | Tiene servicios, paquetes, red y herramientas base | `systemd`, `snap`, Git, DNS |
+| MicroK8s | Proporciona una distribucion Kubernetes local | `microk8s status --wait-ready` |
+| `kubectl` | Habla con la API Kubernetes como cliente estandar | `kubectl get nodes` |
+
+Cuando una validacion falla, no conviene saltar directamente a reinstalar. Primero hay que ubicar en que capa se rompe el contrato y que capa depende de ella.
+
+## Plataforma local frente a Kubernetes estandar
+
+MicroK8s es la distribucion local elegida para el laboratorio inicial. Kubernetes, en cambio, es la API y el modelo operativo que se mantendran cuando el itinerario avance hacia plataformas gestionadas.
+
+En esta unidad son especificos del entorno local:
+
+- Windows 11 como host;
+- WSL2 como capa de virtualizacion Linux;
+- Ubuntu 24.04 LTS como distribucion objetivo;
+- instalacion de MicroK8s mediante `snap`;
+- addons propios de MicroK8s;
+- scripts de preparacion en `platform/environment/`.
+
+Son conceptos y practicas transferibles:
+
+- validar precondiciones antes de desplegar;
+- usar `kubectl` como cliente principal;
+- comprobar contexto y conectividad con la API;
+- registrar versiones reales;
+- distinguir instalacion, configuracion y validacion;
+- documentar limitaciones no verificadas.
+
+Esta separacion evita confundir "como se instala el laboratorio local" con "como funciona Kubernetes".
 
 ## Reglas de la unidad
 
@@ -182,6 +237,16 @@ Antes de instalar cada componente son esperados los avisos siguientes:
 | `terraform command not found` | Esperado antes de ejecutar `platform/environment/tools/install-terraform.sh` |
 
 Estos avisos no bloquean la validacion inicial de Ubuntu. Si aparecen fallos (`FAIL`) en WSL, Ubuntu, `snap`, DNS o espacio disponible, no continuar con MicroK8s hasta resolverlos.
+
+## Errores de razonamiento frecuentes
+
+| Error de razonamiento | Por que confunde | Mejor criterio |
+|---|---|---|
+| "Si el script existe, el entorno esta validado" | Un script versionado solo define una comprobacion; no demuestra que se haya ejecutado bien. | Registrar comando ejecutado, fecha o resultado observado. |
+| "MicroK8s es Kubernetes" | MicroK8s empaqueta Kubernetes con decisiones locales propias. | Separar API estandar de distribucion local. |
+| "Helm y Terraform instalados significan que ya se usan" | Una CLI disponible no implica que gestione recursos del curso. | Distinguir herramienta instalada de artefacto creado. |
+| "Un reset arregla cualquier problema" | Puede borrar estado local util y ocultar la causa real. | Diagnosticar capa por capa antes de limpiar. |
+| "Un WARN es irrelevante" | Algunos avisos son esperados por fase, otros anticipan bloqueo posterior. | Leer el aviso contra la fase actual. |
 
 ## 5. Troubleshooting inicial
 
@@ -462,3 +527,21 @@ platform/environment/windows/check-prerequisites.ps1
 La Unidad 00 queda lista para cierre documental con las limitaciones registradas. Antes de iniciar contenido de Unidad 01, confirmar que `tutorial/00-environment/summary.md` y `project/project-state.md` reflejan el estado final.
 
 No crear workloads, charts, modulos Terraform ni aplicacion evolutiva como parte de este cierre.
+
+## Lectura guiada
+
+### Referencias oficiales
+
+| Tema | Referencia | Que leer | Pregunta de comprobacion |
+|---|---|---|---|
+| WSL | [Microsoft Learn - Windows Subsystem for Linux](https://learn.microsoft.com/windows/wsl/) | Instalacion, versiones de WSL y comandos basicos. | Como demuestras que Ubuntu se ejecuta sobre WSL2 y no WSL1? |
+| MicroK8s | [MicroK8s documentation](https://microk8s.io/docs) | Instalacion, estado, addons y uso en estaciones locales. | Que partes del procedimiento son propias de MicroK8s? |
+| Kubernetes | [Kubernetes Concepts](https://kubernetes.io/docs/concepts/) | Vista general del modelo Kubernetes que se usara desde Unidad 01. | Que conceptos pertenecen a Kubernetes aunque cambie la distribucion? |
+| kubectl | [kubectl reference](https://kubernetes.io/docs/reference/kubectl/) | Contextos, acceso al cluster y comandos de inspeccion. | Por que `kubectl get nodes` valida algo distinto a `microk8s status`? |
+
+### Lecturas complementarias
+
+| Tema | Referencia | Uso recomendado |
+|---|---|---|
+| Ubuntu en WSL | [Ubuntu on WSL documentation](https://documentation.ubuntu.com/wsl/) | Resolver dudas especificas de Ubuntu dentro de WSL. |
+| systemd en WSL | [Microsoft Learn - systemd support](https://learn.microsoft.com/windows/wsl/systemd) | Entender por que algunos servicios Linux necesitan `systemd`. |

@@ -8,10 +8,13 @@
 | Identificador | `00-environment` |
 | Estado | Completada con limitaciones documentadas |
 | Ultima actualizacion | 2026-07-18 |
+| Actualizacion pedagogica | Hardening pedagogico global inicial aplicado el 2026-07-18 y aceptado por el usuario como cambio minimo |
 
 ## Resumen ejecutivo
 
 La Unidad 00 queda cerrada como preparacion del entorno base. Dispone de bloques documentados y scripts idempotentes para validar Windows, WSL2, Ubuntu 24.04 LTS, MicroK8s, `kubectl`, Helm y Terraform.
+
+El hardening pedagogico global inicial refuerza la unidad como explicacion de capas, contratos de validacion y separacion entre plataforma local y Kubernetes estandar. No introduce artefactos ejecutables nuevos ni cambia el estado tecnico validado. El usuario lo acepta como cambio minimo y mantiene abierta la necesidad de elevar sustancialmente el nivel pedagogico de los README.
 
 Ubuntu 24.04.4 LTS sobre WSL2 fue validada como base Linux inicial, con `snap`, Git, herramientas basicas, DNS hacia `snapcraft.io` y espacio libre correctos.
 
@@ -39,6 +42,7 @@ Helm y Terraform ya fueron instalados y validados por el usuario como herramient
 | Notas del instructor | `tutorial/00-environment/instructor-notes.md` | Creado |
 | Playbook de la unidad | `playbooks/units/00-environment.md` | Actualizado con decision `kubectl` |
 | Estado del proyecto | `project/project-state.md` | Actualizado con cierre de Unidad 00 y limitaciones documentadas |
+| Hardening pedagogico inicial | `tutorial/00-environment/README.md`, `tutorial/00-environment/instructor-notes.md` | Refuerzo de problema real, modelo mental, errores de razonamiento y lectura guiada |
 
 ## Decisiones registradas
 
@@ -168,3 +172,5 @@ platform/environment/windows/check-prerequisites.ps1
 ## Siguiente incremento recomendado
 
 Generar el playbook de la Unidad 01 antes de crear contenido formativo nuevo. La Unidad 01 no debe iniciarse desde historial de conversacion: debe gobernarse con un playbook versionado y usando este summary como fuente de continuidad.
+
+Nota de continuidad posterior: tras el hardening pedagogico global inicial del 2026-07-18, la Unidad 00 mantiene el mismo contrato tecnico de salida. Las unidades siguientes no deben inferir nuevas validaciones funcionales a partir de esta actualizacion documental. Los siguientes playbooks deben aplicar reglas pedagogicas mas exigentes que las usadas originalmente.

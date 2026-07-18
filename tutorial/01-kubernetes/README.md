@@ -8,6 +8,18 @@ Esta unidad convierte ese cluster vacio en la primera version operativa de la so
 
 Helm y Terraform seguirán instalados como herramientas base, pero no se usan para desplegar esta unidad. Primero se trabaja con YAML y `kubectl` para ver directamente que recursos crea Kubernetes y como se diagnostican.
 
+## Problema real que resuelve
+
+Kubernetes aparece cuando ejecutar contenedores uno a uno deja de ser suficiente. En una plataforma real no basta con "arrancar algo": hay que declarar cuantas instancias deben existir, donde viven sus recursos, como se sustituyen si fallan, como se les da una direccion estable y como se observa si el estado real coincide con lo pedido.
+
+La Unidad 01 introduce ese cambio de mirada. El alumno pasa de pensar en comandos imperativos sobre una maquina a razonar sobre objetos declarativos que Kubernetes mantiene mediante reconciliacion.
+
+## Por que aparece en este punto
+
+La Unidad 00 preparo la plataforma, pero todavia no habia nada propio del curso ejecutandose en ella. Esta unidad crea la primera pieza funcional porque las unidades posteriores necesitan un workload estable al que anadir configuracion, salud, red, empaquetado, automatizacion y observabilidad.
+
+Empezar con `Namespace`, `Deployment` y `Service` mantiene el alcance pequeno y permite entender las relaciones basicas antes de incorporar mas objetos.
+
 ## Como leer esta unidad
 
 No necesitas memorizar todos los componentes de Kubernetes antes de empezar. Esta unidad usa una idea central y vuelve a ella varias veces:
@@ -29,6 +41,21 @@ Cuando aparezca un nombre nuevo, intenta responder tres preguntas:
 - que comando permite observarlo.
 
 Si una tabla parece demasiado densa en una primera lectura, sigue el laboratorio y vuelve a ella despues de ver los recursos reales con `kubectl`.
+
+## Modelo mental de la unidad
+
+El laboratorio se puede resumir como una cadena de responsabilidad:
+
+```text
+Manifiesto YAML
+  -> API de Kubernetes
+    -> estado deseado persistido
+      -> controladores
+        -> Pods reales en nodos
+          -> Service que selecciona Pods listos por labels
+```
+
+La clave no es que el alumno recuerde todos los nombres, sino que pueda explicar donde mirar cuando algo no coincide. Si hay dos replicas declaradas y solo una Pod corriendo, la pregunta no es "que comando falta?", sino "que diferencia hay entre estado deseado, estado observado y eventos?".
 
 ## Objetivos
 
@@ -116,6 +143,21 @@ En un cluster hay dos planos de responsabilidad:
 
 En MicroK8s local, esas responsabilidades conviven normalmente en la misma maquina. Conceptualmente siguen siendo responsabilidades separadas, y esa separacion sera importante cuando el laboratorio evolucione hacia AKS y EKS.
 
+## Modelo declarativo y reconciliacion
+
+En un flujo imperativo, el operador decide el siguiente paso: crear un contenedor, reiniciarlo, exponer un puerto o borrar una instancia. En un flujo declarativo, el operador declara el resultado esperado y el sistema trabaja continuamente para acercarse a el.
+
+Esa diferencia cambia el diagnostico:
+
+| Pregunta | Enfoque imperativo | Enfoque declarativo de Kubernetes |
+|---|---|---|
+| Que queria conseguir? | El comando que ejecute. | El objeto almacenado en la API. |
+| Que esta pasando? | Salida inmediata del comando. | `status`, eventos y objetos generados. |
+| Quien corrige una desviacion? | El operador. | Un controlador, si existe uno responsable. |
+| Como recupero el estado? | Repito pasos manuales. | Reaplico la declaracion versionada. |
+
+El Deployment es el primer ejemplo importante. El alumno no crea ReplicaSets ni Pods manualmente porque el contrato del Deployment ya dice cuantas replicas quiere. El controlador de Deployment y el ReplicaSet se encargan de materializar ese deseo.
+
 ## Componentes principales
 
 Los componentes siguientes no son comandos que tengas que ejecutar en esta unidad. Son el mapa que explica por que los comandos del laboratorio producen cambios.
@@ -162,6 +204,27 @@ Los recursos de configuracion, salud, recursos, ingreso y almacenamiento se expl
 | CPU y memoria | `requests` y `limits` | 02 |
 | Entrada HTTP desde fuera del cluster | `Ingress` y Gateway API | 03 |
 | Persistencia | Volumenes, `PersistentVolume`, `PersistentVolumeClaim`, `StorageClass`, CSI | 04 |
+
+## Labels y selectors como contrato
+
+Los nombres ayudan a los humanos, pero muchos recursos Kubernetes se relacionan por labels y selectors. Esa relacion es deliberada: permite que un Service no dependa de un Pod concreto, porque los Pods cambian de nombre cuando se reemplazan.
+
+En esta unidad hay tres sitios que deben contar la misma historia:
+
+- el selector del Deployment decide que Pods pertenecen al conjunto gestionado;
+- las labels del template se copian a los Pods creados;
+- el selector del Service decide que Pods reciben trafico.
+
+Si esos campos se separan, Kubernetes puede estar funcionando correctamente aunque la aplicacion no reciba trafico. Un Service sin endpoints suele ser un problema de contrato, no de red.
+
+## Decisiones de diseno
+
+| Decision | Motivo | Trade-off |
+|---|---|---|
+| Usar manifiestos YAML y `kubectl` | Hace visibles las APIs base antes de abstraerlas. | Hay mas detalle manual que con Helm. |
+| Mantener un unico namespace funcional | Facilita aislamiento y limpieza del curso. | No modela todavia separacion por entornos o equipos. |
+| Usar `ClusterIP` | Permite estudiar seleccion interna sin introducir Ingress. | No hay entrada HTTP estable desde fuera del cluster. |
+| Usar una imagen HTTP simple sin privilegios | Reduce dependencias y permite validar HTTP y logs. | No representa todavia una aplicacion de negocio completa. |
 
 ## Observabilidad
 
@@ -304,6 +367,18 @@ kubectl -n platform-training describe pod -l app.kubernetes.io/name=platform-api
 ```
 
 ## Diagnostico guiado
+
+Antes de resolver un error, clasificalo:
+
+| Pregunta | Si la respuesta es no, mirar primero |
+|---|---|
+| Existe el objeto declarativo? | `kubectl get` y namespace correcto. |
+| El controlador creo objetos derivados? | ReplicaSet, Pods y eventos. |
+| Los Pods pueden arrancar? | Imagen, scheduling, eventos y `describe pod`. |
+| El Service selecciona Pods? | Labels, selector y endpoints. |
+| La aplicacion responde? | Logs y prueba HTTP con port-forward. |
+
+Evita saltar directamente a borrar recursos. En Kubernetes, borrar puede ocultar la diferencia entre estado deseado y estado observado.
 
 ### Imagen no descargable
 
@@ -453,17 +528,30 @@ El siguiente incremento incorporara ConfigMaps, Secrets de laboratorio, variable
 
 ## Referencias
 
-Estas referencias sirven para ampliar o contrastar lo explicado en la unidad. Prioriza la documentacion oficial cuando haya dudas de comportamiento.
+Estas referencias son lectura guiada. No hace falta leerlas completas antes del laboratorio; usalas para responder las preguntas indicadas y para contrastar comportamiento con fuentes primarias.
+
+### Referencias oficiales
 
 | Tema | Referencia | Uso recomendado |
 |---|---|---|
-| Conceptos generales | [Kubernetes Concepts](https://kubernetes.io/docs/concepts/) | Vista de conjunto de las abstracciones de Kubernetes. |
-| Arquitectura del cluster | [Cluster Architecture](https://kubernetes.io/docs/concepts/architecture/) | Profundizar en control plane, nodos y componentes. |
-| Componentes | [Kubernetes Components](https://kubernetes.io/docs/concepts/overview/components/) | Revisar `kube-apiserver`, `etcd`, scheduler, controllers, `kubelet`, `kube-proxy` y runtime. |
-| Nodos | [Nodes](https://kubernetes.io/docs/concepts/architecture/nodes/) | Entender como Kubernetes representa maquinas worker. |
-| Workloads | [Workloads](https://kubernetes.io/docs/concepts/workloads/) | Situar Pods, Deployments, ReplicaSets y otros controladores. |
-| Labels y selectors | [Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | Entender como Service y Deployment encuentran Pods. |
-| Labels recomendadas | [Recommended Labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/) | Justificar el uso de `app.kubernetes.io/*`. |
-| `kubectl` | [Kubectl Reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands) | Consultar comandos como `describe`, `logs`, `rollout` y `events`. |
-| Glosario | [Kubernetes Glossary](https://kubernetes.io/docs/reference/glossary/) | Resolver terminos puntuales durante la lectura. |
-| MicroK8s | [MicroK8s documentation](https://microk8s.io/docs) | Consultar detalles propios de la distribucion local usada en el laboratorio. |
+| Conceptos generales | [Kubernetes Concepts](https://kubernetes.io/docs/concepts/) | Identificar que problemas intenta resolver Kubernetes. |
+| Arquitectura del cluster | [Cluster Architecture](https://kubernetes.io/docs/concepts/architecture/) | Separar responsabilidades de control plane y nodos. |
+| Componentes | [Kubernetes Components](https://kubernetes.io/docs/concepts/overview/components/) | Relacionar `kubectl apply` con API server, scheduler, controllers y kubelet. |
+| Workloads | [Workloads](https://kubernetes.io/docs/concepts/workloads/) | Situar Pods, Deployments y ReplicaSets en la misma familia. |
+| Services | [Services, Load Balancing, and Networking](https://kubernetes.io/docs/concepts/services-networking/service/) | Explicar por que el Service selecciona Pods y no Deployments. |
+| Labels y selectors | [Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | Validar el contrato entre Deployment, Pods y Service. |
+| `kubectl` | [kubectl reference](https://kubernetes.io/docs/reference/kubectl/) | Consultar comandos de inspeccion y diagnostico. |
+
+Preguntas para la lectura:
+
+- Que parte del control plane recibe una declaracion?
+- Que objeto deberia gestionar directamente el alumno y cual deberia observar?
+- Por que cambiar labels puede romper trafico aunque los Pods esten `Running`?
+- Que senal usarias primero: estado, eventos o logs?
+
+### Referencias conceptuales y complementarias
+
+| Tema | Referencia | Uso recomendado |
+|---|---|---|
+| Glosario Kubernetes | [Kubernetes Glossary](https://kubernetes.io/docs/reference/glossary/) | Resolver terminos puntuales sin convertirlos en memorieta. |
+| MicroK8s | [MicroK8s documentation](https://microk8s.io/docs) | Consultar detalles de la distribucion local, separandolos de la API estandar. |

@@ -9,7 +9,7 @@
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
 | Estado | Completada con limitaciones |
 | Fecha de cierre o actualizacion | 2026-07-18 |
-| Revision pedagogica del usuario | Aprobada |
+| Revision pedagogica del usuario | Aprobada; hardening pedagogico global inicial aplicado posteriormente y aceptado como cambio minimo |
 
 ## Resumen ejecutivo
 
@@ -18,6 +18,8 @@ La Unidad 02 evoluciona `platform-api` desde el Deployment minimo de la Unidad 0
 La solucion final queda en `labs/02-configuration-lifecycle/solution/` e incorpora ConfigMap, Secret de laboratorio con valores ficticios, variables de entorno, volumen de configuracion, `startupProbe`, `readinessProbe`, `livenessProbe`, requests y limits iniciales.
 
 El contenido y los artefactos han sido generados, aplicados y validados funcionalmente contra el MicroK8s local. El usuario reviso y aprobo la unidad el 2026-07-18.
+
+El 2026-07-18 se aplico un hardening pedagogico global inicial sobre la Unidad 02. El tutorial refuerza ahora configuracion como contrato entre aplicacion y plataforma, diferencia entre configuracion, secreto, estado y codigo, antecedente Twelve-Factor, ciclo de vida de Pods, probes como contratos operativos, requests/limits como contrato con scheduler y nodo, limites de seguridad de Secrets y razon por la que gestores externos de secretos quedan diferidos. El usuario acepta estos cambios como minimo y mantiene abierta la necesidad de elevar sustancialmente el nivel pedagogico de los README.
 
 ## Objetivos alcanzados
 
@@ -31,6 +33,7 @@ El contenido y los artefactos han sido generados, aplicados y validados funciona
 | Configurar startup, readiness y liveness probes | Alcanzado | `startupProbe`, `readinessProbe` y `livenessProbe` en `deployment.yaml` |
 | Definir requests y limits iniciales | Alcanzado | `resources.requests` y `resources.limits` en `deployment.yaml` |
 | Documentar rollouts y ciclo de vida basico | Alcanzado | `tutorial/02-configuration-lifecycle/README.md` |
+| Reforzar el tutorial como material pedagogico principal | Alcanzado documentalmente | `tutorial/02-configuration-lifecycle/README.md`, `tutorial/02-configuration-lifecycle/instructor-notes.md` |
 | Crear validacion no destructiva | Alcanzado | `labs/02-configuration-lifecycle/validation/validate.sh` |
 | Validar funcionalmente en MicroK8s | Alcanzado | `bash labs/02-configuration-lifecycle/validation/validate.sh`: 0 fallos, 0 avisos |
 
@@ -106,6 +109,7 @@ El contenido y los artefactos han sido generados, aplicados y validados funciona
 | Componente | Ruta | Cambio realizado |
 |---|---|---|
 | Estado del proyecto | `project/project-state.md` | Registrado que la Unidad 02 fue generada, validada funcionalmente y aprobada por el usuario |
+| Hardening pedagogico inicial | `tutorial/02-configuration-lifecycle/README.md`, `tutorial/02-configuration-lifecycle/instructor-notes.md` | Refuerzo conceptual, decisiones de diseno, errores de razonamiento y lectura guiada |
 
 ## Componentes retirados
 
@@ -357,7 +361,7 @@ kubectl -n platform-training rollout status deployment/platform-api
 
 - Validacion funcional en MicroK8s ejecutada con 0 fallos y 0 avisos.
 - Revision pedagogica del usuario aprobada el 2026-07-18.
-- La deuda de hardening pedagogico global detectada tras Unidad 01 sigue abierta.
+- Hardening pedagogico global inicial aplicado el 2026-07-18 y aceptado como cambio minimo; deuda pedagogica profunda sigue abierta.
 - La gestion avanzada de secretos, cifrado en reposo, RBAC y gestores externos quedan diferidos.
 - Ingress, Gateway API, DNS y TLS quedan diferidos a Unidad 03.
 - Helm y Terraform siguen sin gestionar recursos del curso.

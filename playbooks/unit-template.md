@@ -94,6 +94,19 @@ Describir en uno o dos párrafos:
 
 La descripción no debe convertirse en contenido formativo.
 
+## Supuesto pedagógico
+
+Declarar explícitamente el nivel de partida esperado.
+
+La unidad debe escribirse para alumnos con perfil técnico que todavía no dominan el tema tratado. No asumir que conocen las abstracciones principales de la unidad salvo que aparezcan como dependencia pedagógica real y verificable de una unidad anterior.
+
+Indicar:
+
+- qué conceptos se explicarán desde cero;
+- qué conceptos se retomarán de unidades anteriores;
+- qué conceptos solo se mencionarán para continuidad y se diferirán;
+- qué errores de razonamiento deben prevenirse.
+
 ---
 
 # Resultado de aprendizaje
@@ -314,21 +327,39 @@ tutorial/NN-unit-name/README.md
 
 Debe incluir:
 
-1. contexto;
-2. objetivos;
-3. conocimientos previos;
-4. relación con la unidad anterior;
-5. estado inicial;
-6. conceptos;
-7. procedimiento;
-8. validaciones;
-9. resolución de problemas;
-10. recuperación o limpieza;
-11. conclusión;
-12. referencias oficiales y lectura recomendada;
-13. conexión con la siguiente unidad.
+1. problema real que resuelve la unidad;
+2. por qué aparece en este punto del itinerario;
+3. contexto;
+4. objetivos;
+5. conocimientos previos;
+6. relación con la unidad anterior;
+7. estado inicial;
+8. modelo mental de la unidad;
+9. conceptos explicados con profundidad progresiva;
+10. decisiones de diseño y trade-offs;
+11. procedimiento solo cuando ayude a comprender;
+12. validaciones conceptuales y técnicas;
+13. errores de razonamiento frecuentes;
+14. resolución de problemas;
+15. recuperación o limpieza;
+16. conclusión;
+17. lectura guiada con referencias oficiales, conceptuales y complementarias;
+18. conexión con la siguiente unidad.
 
 Las referencias deberán priorizar documentación oficial, especificaciones, documentación de proyecto o fuentes primarias. Cuando se usen artículos, blogs o materiales secundarios, deberán complementar y no sustituir las fuentes primarias.
+
+El tutorial no debe escribirse como una guía de laboratorio extendida. Los comandos repetitivos, secuencias completas de despliegue, recuperación operacional y validación mecánica pertenecen al README del laboratorio, salvo comandos puntuales que ayuden a observar o razonar sobre un concepto.
+
+El tutorial debe construir comprensión antes de pedir ejecución. Para cada abstracción nueva, explicar:
+
+- qué problema resuelve;
+- qué responsabilidad tiene;
+- qué no resuelve;
+- cómo se relaciona con artefactos ya conocidos;
+- qué trade-offs introduce;
+- cómo se diagnostica cuando falla.
+
+Las referencias deberán funcionar como lectura guiada. Para cada bloque de referencias, incluir preguntas que el alumno pueda responder después de leer.
 
 ## Notas del instructor
 
@@ -344,9 +375,12 @@ Debe incluir:
 - puntos de énfasis;
 - demostraciones;
 - errores frecuentes;
+- errores de razonamiento;
 - preguntas de comprobación;
 - criterios de evaluación;
 - riesgos técnicos.
+
+Las notas deben ayudar a impartir a alumnos que todavía están formando el modelo mental. Deben incluir intervenciones para reconducir confusiones conceptuales, no solo fallos de comando.
 
 ## Resumen
 
@@ -418,15 +452,21 @@ Para rutas excepcionales, sustituir `labs/NN-unit-name/` por la ruta aprobada.
 
 La unidad deberá seguir este orden conceptual:
 
-1. [problema o contexto];
-2. [concepto base];
-3. [demostración];
-4. [implementación];
-5. [validación];
-6. [fallo o diagnóstico];
-7. [consolidación].
+1. problema real;
+2. por qué este problema aparece ahora;
+3. modelo mental;
+4. conceptos base;
+5. decisiones de diseño;
+6. observación o demostración breve;
+7. implementación en laboratorio;
+8. validación;
+9. fallo o diagnóstico;
+10. consolidación;
+11. continuidad con la siguiente unidad.
 
 Explicar por qué este orden es necesario.
+
+El flujo debe evitar saltar de una definición a un comando sin explicar la necesidad que conecta ambos.
 
 ---
 

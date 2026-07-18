@@ -9,7 +9,7 @@
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
 | Estado | Completada y aprobada con limitaciones |
 | Fecha de cierre o actualizacion | 2026-07-18 |
-| Revision pedagogica del usuario | Aprobada; hardening global diferido |
+| Revision pedagogica del usuario | Aprobada; hardening pedagogico global inicial aplicado posteriormente y aceptado como cambio minimo |
 
 ## Resumen ejecutivo
 
@@ -20,6 +20,8 @@ La unidad incorpora el primer laboratorio funcional en `labs/01-kubernetes/`, co
 Las validaciones estaticas y funcionales principales se ejecutaron sobre los artefactos generados y contra el MicroK8s local. La prueba HTTP mediante `port-forward` devolvio `HTTP/1.1 200 OK`.
 
 El contenido queda generado, tecnicamente validado y aprobado por el usuario. El usuario ha observado que el nivel de entrada es exigente y que la unidad esta mas orientada a explicar el laboratorio que a proporcionar una vision amplia del tema tratado. Esta observacion se registra como deuda para una futura sesion de hardening pedagogico global, preferiblemente cuando haya varias unidades generadas y pueda revisarse la progresion completa.
+
+El 2026-07-18 se aplico un hardening pedagogico global inicial sobre la Unidad 01. El tutorial refuerza ahora el problema que resuelve Kubernetes, el modelo declarativo, reconciliacion, control plane frente a nodos, abstracciones basicas, labels/selectors, diagnostico por diferencias entre estado deseado y observado, decisiones de diseno, errores de razonamiento y lectura guiada. No se modificaron manifiestos ni scripts. El usuario acepta estos cambios como minimo y registra que el nivel pedagogico de los README sigue siendo pobre para alumnos que todavia no conocen el tema.
 
 ## Objetivos alcanzados
 
@@ -33,6 +35,7 @@ El contenido queda generado, tecnicamente validado y aprobado por el usuario. El
 | Documentar arquitectura, componentes y flujo de reconciliacion | Alcanzado | `tutorial/01-kubernetes/README.md` |
 | Documentar diagnostico y recuperacion | Alcanzado | `tutorial/01-kubernetes/README.md`, `labs/01-kubernetes/README.md` |
 | Añadir referencias para ampliar conceptos | Alcanzado | `tutorial/01-kubernetes/README.md` |
+| Reforzar el tutorial como material pedagogico principal | Alcanzado documentalmente | `tutorial/01-kubernetes/README.md`, `tutorial/01-kubernetes/instructor-notes.md` |
 | Validar funcionalmente en MicroK8s | Alcanzado | `bash labs/01-kubernetes/validation/validate.sh`: 0 fallos, 0 avisos |
 
 ## Estado inicial utilizado
@@ -103,6 +106,7 @@ El contenido queda generado, tecnicamente validado y aprobado por el usuario. El
 |---|---|---|
 | Estado del proyecto | `project/project-state.md` | Registrado cierre documental y tecnico de Unidad 01 segun validaciones disponibles |
 | Flujo de trabajo | `project/how-to.md`, `playbooks/master.md` | Separada validacion tecnica de aprobacion del usuario |
+| Hardening pedagogico inicial | `tutorial/01-kubernetes/README.md`, `tutorial/01-kubernetes/instructor-notes.md` | Refuerzo conceptual, decisiones de diseno, diagnostico razonado y lectura guiada |
 
 ## Componentes retirados
 

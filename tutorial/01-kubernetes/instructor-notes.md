@@ -6,6 +6,8 @@ La unidad debe hacer que el alumno deje de ver Kubernetes como una lista de coma
 
 El resultado practico es deliberadamente pequeño: un namespace, un Deployment y un Service. Esa sencillez permite dedicar tiempo a observar que recursos aparecen, por que aparecen y como se conectan entre si.
 
+Tras el hardening pedagogico inicial, abrir la unidad desde el problema operativo: como mantener una aplicacion disponible y direccionable cuando las instancias concretas son efimeras. El laboratorio debe servir como evidencia de ese modelo, no como una secuencia de comandos a memorizar.
+
 ## Puntos de enfasis
 
 - `kubectl apply` envia declaracion al `kube-apiserver`; no "ejecuta contenedores" directamente.
@@ -14,6 +16,9 @@ El resultado practico es deliberadamente pequeño: un namespace, un Deployment y
 - `status`, eventos y logs son observabilidad basica. No sustituye a Prometheus, Loki, Tempo ni OpenTelemetry.
 - Helm y Terraform estan instalados, pero usarlos ahora ocultaria los objetos que el alumno necesita entender.
 - MicroK8s es la distribucion local; los manifiestos de la unidad usan APIs Kubernetes estandar.
+- El hilo conductor es comparar estado deseado, estado observado y eventos.
+- Labels y selectors son un contrato de relacion, no metadatos decorativos.
+- `ClusterIP` es una decision pedagogica: permite estudiar Service sin introducir todavia entrada externa.
 
 ## Demostraciones recomendadas
 
@@ -68,12 +73,14 @@ Cambiar temporalmente la imagen a un tag inexistente, observar `ImagePullBackOff
 
 ## Preguntas de comprobacion
 
+- Que problema resuelve Kubernetes que no resuelve un comando aislado de contenedor?
 - Que componente recibe la declaracion enviada por `kubectl apply`?
 - Donde se guarda el estado deseado del cluster?
 - Que objeto mantiene el numero de replicas deseado?
 - Por que no gestionamos Pods manualmente en esta unidad?
 - Que ocurre si el selector de un Service no coincide con las labels de los Pods?
 - Que diferencia hay entre logs, eventos y estado?
+- Como distingues un fallo de reconciliacion de un fallo de seleccion del Service?
 - Que capacidades quedan diferidas a la Unidad 02?
 
 ## Criterios de evaluacion

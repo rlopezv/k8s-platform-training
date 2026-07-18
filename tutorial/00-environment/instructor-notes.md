@@ -12,6 +12,8 @@ El foco no es memorizar comandos de MicroK8s, sino aprender a separar:
 - acceso estandar mediante `kubectl`;
 - diagnostico cuando una capa inferior falla.
 
+Tras el hardening pedagogico inicial, presentar la unidad como una practica de reduccion de ambiguedad: cada validacion responde a la pregunta "que capa puedo dar por fiable antes de seguir?".
+
 ## Puntos de enfasis
 
 - `kubectl` es el cliente operativo principal del curso.
@@ -20,6 +22,9 @@ El foco no es memorizar comandos de MicroK8s, sino aprender a separar:
 - El addon inicial permitido es solo `dns`.
 - Helm y Terraform se instalan como CLI, sin charts ni modulos en esta fase.
 - La aplicacion evolutiva no se define ni se despliega durante la Unidad 00.
+- Windows, WSL2, Ubuntu y MicroK8s son capas distintas; no diagnosticar todas con el mismo comando.
+- Una validacion documentada no equivale a una validacion ejecutada.
+- Los conceptos transferibles son `kubectl`, API Kubernetes, validacion y registro de estado; la instalacion mediante `snap` es especifica del entorno local.
 
 ## Demostracion recomendada
 
@@ -70,6 +75,8 @@ Si el entorno no puede instalar MicroK8s por DNS, proxy o VPN, registrar el bloq
 
 ## Preguntas de comprobacion
 
+- Que problema pedagogico causa empezar Kubernetes sin validar antes el entorno?
+- Que contrato aporta cada capa: Windows, WSL2, Ubuntu, MicroK8s y `kubectl`?
 - Que capa esta fallando si `snapcraft.io` no resuelve?
 - Por que `kubectl` es preferible a `microk8s kubectl` para el flujo principal?
 - Que implica anadir el usuario al grupo `microk8s`?
@@ -77,6 +84,7 @@ Si el entorno no puede instalar MicroK8s por DNS, proxy o VPN, registrar el bloq
 - Que diferencia hay entre resetear MicroK8s y eliminar la distribucion WSL?
 - Por que instalar Helm no implica crear charts?
 - Por que instalar Terraform no implica crear modulos ni backends?
+- Que partes de esta unidad son especificas de MicroK8s y cuales seguiran aplicando en AKS o EKS?
 
 ## Riesgos tecnicos
 

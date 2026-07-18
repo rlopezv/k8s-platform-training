@@ -23,13 +23,13 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 03 — Networking e ingreso |
-| Estado general | Unidad 02 completada, validada técnicamente y aprobada |
-| Último incremento completado | Aprobación de la Unidad 02 |
+| Estado general | Unidad 02 completada, validada técnicamente y aprobada; hardening pedagógico global inicial aceptado como cambio mínimo |
+| Último incremento completado | Actualización de reglas pedagógicas en playbooks tras hardening mínimo |
 | Unidad activa | Ninguna |
 | Última unidad completada | 02 — Configuración, secretos y ciclo de vida |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
-| Contenido formativo generado | Sí, Unidades 00, 01 y 02 |
+| Contenido formativo generado | Sí, Unidades 00, 01 y 02 con hardening pedagógico inicial mínimo |
 | Framework de generación | Validado y congelado (Framework V1) |
 | Siguiente incremento permitido | Generar el playbook de la Unidad 03 — Networking e ingreso |
 
@@ -43,12 +43,16 @@ La Unidad 01 incorporó la primera aplicación evolutiva del curso, `platform-ap
 
 La revisión del usuario aprobó la Unidad 01. También identificó que el contenido tiene un nivel de entrada exigente y está más orientado a explicar el laboratorio que a construir una visión amplia sobre Kubernetes. Esta observación queda registrada como deuda pedagógica para una futura sesión de hardening global, preferiblemente cuando existan varias unidades y pueda revisarse la progresión completa.
 
+El 2026-07-18 se generó un hardening pedagógico global inicial sobre las Unidades 00, 01 y 02. El cambio refuerza los tutoriales como material formativo principal, separa mejor teoría y operación, añade modelos mentales, decisiones de diseño, errores de razonamiento y lectura guiada. No modifica manifiestos, scripts ni el estado funcional del clúster. El usuario aceptó estos cambios como cambios mínimos, pero indicó que el nivel pedagógico de los README sigue siendo realmente pobre para formar a personas que todavía no conocen los temas tratados.
+
+Como consecuencia, se actualizaron `playbooks/master.md` y `playbooks/unit-template.md` para exigir que futuras unidades no asuman dominio previo del tema, construyan modelo mental desde el problema real, expliquen conceptos con progresión didáctica y mantengan una separación más estricta entre tutorial formativo y laboratorio operativo.
+
 La siguiente fase de trabajo es preparar la **Unidad 03 — Networking e ingreso**. Durante esta fase se permite:
 
 - generar el playbook de la Unidad 03 — Networking e ingreso;
 - reutilizar `tutorial/02-configuration-lifecycle/summary.md` como fuente de continuidad;
 - reutilizar `labs/02-configuration-lifecycle/solution/` como estado activo de la aplicación;
-- mantener visible la deuda de hardening pedagógico global sin resolverla dentro del playbook de Unidad 03 salvo decisión explícita.
+- mantener visible cualquier ajuste pedagógico posterior sin resolverlo dentro del playbook de Unidad 03 salvo decisión explícita.
 
 Todavía no se permite:
 
@@ -69,12 +73,12 @@ Todavía no se permite:
 |---|---|---|---|
 | `README.md` | Completo y aprobado | Bootstrap-01 | Punto de entrada y visión general |
 | `project/architecture.md` | Completo y aprobado | Bootstrap-02 | Arquitectura y decisiones estructurales |
-| `project/project-state.md` | Actualizado con playbook de Unidad 02 y mejora de plantilla | Unit-02-Playbook | Estado consolidado |
+| `project/project-state.md` | Actualizado con reglas pedagógicas y deuda reforzada | Pedagogical-Hardening-Rules | Estado consolidado |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
 | `project/project-planning.md` | Completo y aprobado | Unit-01-Concept-Scope | Planificación incremental del trabajo |
 | `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
-| `playbooks/master.md` | Actualizado | Unit-01-Review-Flow | Reglas globales de generación; exige distinguir aprobación del usuario |
-| `playbooks/unit-template.md` | Actualizado | Unit-02-Template-References | Plantilla de playbooks específicos; exige referencias oficiales o fuentes primarias en tutoriales |
+| `playbooks/master.md` | Actualizado | Pedagogical-Hardening-Rules | Reglas globales de generación; exige tutoriales pedagógicos para alumnos que no dominan aún el tema |
+| `playbooks/unit-template.md` | Actualizado | Pedagogical-Hardening-Rules | Plantilla de playbooks específicos; exige problema real, modelo mental, progresión conceptual, trade-offs y lectura guiada |
 | `playbooks/summary-template.md` | Completo y aprobado | Bootstrap-07 | Contrato de continuidad |
 | `playbooks/project-state-template.md` | Completo y aprobado | Bootstrap-08 | Reglas de mantenimiento del estado |
 | `playbooks/generate-session-handoff.md` | Completo y aprobado | Framework-03 | Generación del handoff derivado de sesión |
@@ -192,16 +196,16 @@ Todavía no se permite:
 
 | Unidad | Estado | Tutorial | Laboratorio o plataforma | Instructor notes | Summary |
 |---|---|---|---|---|---|
-| 00 — Preparación del entorno | Completada con limitaciones | Sí | Sí, `platform/environment/` | Sí | Sí |
-| 01 — Fundamentos operativos y primera aplicación | Completada y aprobada con deuda pedagógica registrada | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
-| 02 — Configuración, secretos y ciclo de vida | Completada y aprobada | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
+| 00 — Preparación del entorno | Completada con limitaciones; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `platform/environment/` | Sí | Sí |
+| 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
+| 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
 | 03–25 | Previstas en roadmap | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
 
 | Campo | Estado |
 |---|---|
-| Estado | Completada y aprobada con deuda pedagógica registrada |
+| Estado | Completada y aprobada con limitaciones; hardening pedagógico inicial mínimo aceptado |
 | Fecha de inicio | 2026-07-17 |
 | Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/00-environment.md` |
@@ -219,7 +223,7 @@ Limitaciones activas:
 
 | Campo | Estado |
 |---|---|
-| Estado | Completada con limitaciones documentadas |
+| Estado | Completada con limitaciones documentadas; hardening pedagógico inicial mínimo aceptado |
 | Fecha de inicio | 2026-07-18 |
 | Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/01-kubernetes.md` |
@@ -251,7 +255,7 @@ Limitaciones al cierre de la Unidad 01:
 
 | Campo | Estado |
 |---|---|
-| Estado | Completada, validada técnicamente y aprobada |
+| Estado | Completada, validada técnicamente y aprobada; hardening pedagógico inicial mínimo aceptado |
 | Fecha de inicio | 2026-07-18 |
 | Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/02-configuration-lifecycle.md` |
@@ -513,7 +517,7 @@ No existen actualmente:
 Tras generar, validar técnicamente y aprobar la Unidad 02:
 
 - la Unidad 03 deberá reutilizar `platform-api`, `platform-training` y `labs/02-configuration-lifecycle/solution/`;
-- conservar la deuda de hardening pedagógico global para revisar progresión, visión conceptual y referencias del itinerario;
+- conservar la deuda pedagógica reforzada: los README actuales siguen siendo insuficientes como material formativo profundo para alumnos que no conocen el tema;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
 - no crear charts Helm hasta la unidad prevista;
 - no crear módulos Terraform hasta la unidad prevista;
@@ -543,7 +547,8 @@ Tras generar, validar técnicamente y aprobar la Unidad 02:
 | R-008 | Recursos insuficientes en el host | Media | Medio | Validar requisitos mínimos | Abierto |
 | R-009 | Disponibilidad futura de imagen externa | Media | Medio | Imagen versionada y pull real validado; sustituir solo con registro en summary y estado | Mitigado |
 | R-010 | Uso de `Endpoints` con advertencia de deprecación en Kubernetes 1.35 | Media | Bajo | Unidad 02 incorpora EndpointSlice como comprobación principal; mantener `Endpoints` solo como referencia histórica o fallback | Mitigado |
-| R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Media | Medio | Planificar hardening pedagógico global cuando existan varias unidades para ajustar progresión, visión conceptual y referencias | Abierto |
+| R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Alta | Alto | Hardening pedagógico global inicial aceptado solo como cambio mínimo; se requiere rediseño pedagógico profundo antes de que temas especializados sean difíciles de seguir | Abierto |
+| R-012 | Futuras unidades especializadas pueden volverse difíciles de seguir si los README siguen asumiendo conocimiento previo | Alta | Alto | Playbooks actualizados para exigir explicación desde el problema real, progresión conceptual, modelos mentales, trade-offs y lectura guiada | Abierto |
 
 ## Cuestiones abiertas
 
@@ -570,7 +575,8 @@ Tras generar, validar técnicamente y aprobar la Unidad 02:
 | TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida y versiones reales registradas | Cerrada para Unidad 00 |
 | TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
 | TD-005 | Incorporar `EndpointSlice` como observación posterior al Service clásico | Baja | Unidad 01 | Resuelto en Unidad 02 como comprobación principal de endpoints | Cerrada |
-| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 | Sesión específica cuando existan varias unidades generadas | Abierta |
+| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | Hardening inicial aceptado como mínimo; requiere rediseño pedagógico profundo de README para no presuponer conocimiento previo | Abierta |
+| TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo | `playbooks/master.md` y `playbooks/unit-template.md` actualizados con criterios pedagógicos más estrictos | Cerrada |
 
 ---
 
@@ -591,6 +597,7 @@ Tras generar, validar técnicamente y aprobar la Unidad 02:
 | HTTP local | `kubectl -n platform-training port-forward service/platform-api 18080:80` y `curl -i http://127.0.0.1:18080/` | `HTTP/1.1 200 OK`; contenido de Unidad 02 servido desde ConfigMap |
 | Revisión pedagógica Unidad 01 | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
 | Revisión pedagógica Unidad 02 | Aprobación del usuario el 2026-07-18 | Aprobada |
+| Hardening pedagógico global inicial | Revisión documental de `tutorial/00-environment/`, `tutorial/01-kubernetes/`, `tutorial/02-configuration-lifecycle/` y summaries | Aceptado por el usuario como cambio mínimo; deuda pedagógica profunda sigue abierta |
 | Ausencia de charts Helm | `find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print` | Sin resultados |
 | Ausencia de módulos Terraform | `find . -path ./.git -prune -o -type f \( -name '*.tf' -o -name '*.tfvars' \) -print` | Sin resultados |
 
@@ -643,6 +650,8 @@ Validaciones no disponibles en esta sesión:
 | 36 | Aprobación del playbook de Unidad 02 | Completado | El usuario aprueba `playbooks/units/02-configuration-lifecycle.md`; se permite generar la Unidad 02 |
 | 37 | Generación y validación técnica de Unidad 02 | Completado | Tutorial, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` evolucionada con ConfigMap, Secret ficticio, probes, resources y validación funcional en MicroK8s |
 | 38 | Aprobación de Unidad 02 | Completado | El usuario revisa y aprueba la Unidad 02; se permite generar el playbook de la Unidad 03 |
+| 39 | Hardening pedagógico global inicial de Unidades 00-02 | Completado como cambio mínimo | Tutoriales reforzados como material formativo principal; instructor notes y summaries actualizados; sin cambios en manifiestos ni scripts; el usuario lo acepta como mínimo |
+| 40 | Actualización de reglas pedagógicas de generación | Completado | El usuario acepta el hardening como cambio mínimo, registra que el nivel pedagógico sigue siendo pobre y se actualizan `playbooks/master.md` y `playbooks/unit-template.md` |
 
 ---
 
@@ -680,7 +689,7 @@ labs/02-configuration-lifecycle/validation/validate.sh
 - usar `tutorial/02-configuration-lifecycle/summary.md` como entrada;
 - reutilizar `labs/02-configuration-lifecycle/solution/`;
 - mantener `platform-api` y `platform-training` como base;
-- no resolver dentro del playbook de Unidad 03 la deuda de hardening pedagógico global salvo decisión explícita.
+- no ampliar el hardening pedagógico dentro del playbook de Unidad 03 salvo decisión explícita.
 
 ## Trabajo todavía prohibido
 
@@ -696,7 +705,7 @@ labs/02-configuration-lifecycle/validation/validate.sh
 
 Este documento deberá actualizarse:
 
-1. al generar el playbook de Unidad 02;
+1. al generar el playbook de la siguiente unidad permitida;
 2. al iniciar formalmente una nueva unidad;
 3. después de generar artefactos;
 4. después de recibir resultados reales de validación;

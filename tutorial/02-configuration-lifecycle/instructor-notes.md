@@ -13,6 +13,8 @@ El foco no esta en memorizar todos los campos posibles, sino en conectar cuatro 
 
 La sesion debe reforzar continuidad: `platform-api` sigue siendo la misma aplicacion de Unidad 01, pero su template de Pod ha evolucionado.
 
+Tras el hardening pedagogico inicial, presentar la unidad como el contrato entre aplicacion y plataforma. La aplicacion no solo necesita una imagen: tambien necesita datos, senales de salud y limites operativos que Kubernetes pueda interpretar.
+
 ## Puntos de enfasis
 
 - ConfigMap separa configuracion no sensible de la imagen.
@@ -23,6 +25,9 @@ La sesion debe reforzar continuidad: `platform-api` sigue siendo la misma aplica
 - Requests se usan para scheduling; limits para contencion.
 - `kubectl describe` y eventos suelen explicar mejor un fallo de ConfigMap, Secret o probe que una lista de Pods.
 - EndpointSlice debe preferirse para observar endpoints en Kubernetes reciente, aunque `Endpoints` todavia aparezca en comandos heredados.
+- Configuracion, secreto, estado y codigo son categorias distintas; mezclarlas lleva a malas decisiones de plataforma.
+- Twelve-Factor ayuda a explicar configuracion externa, pero Kubernetes no sustituye por si solo las politicas de seguridad y rotacion.
+- Una probe no debe expresar "el proceso existe", sino una condicion operativa util para Kubernetes.
 
 ## Demostraciones recomendadas
 
@@ -115,6 +120,7 @@ Evitar convertir esta parte en observabilidad avanzada o HPA.
 
 ## Preguntas de comprobacion
 
+- Que diferencia hay entre configuracion, secreto, estado y codigo?
 - Que tipo de dato debe ir en un ConfigMap y cual no?
 - Por que el Secret de esta unidad no debe usarse como ejemplo de gestion real de credenciales?
 - Que cambio en un Deployment provoca un rollout?
@@ -122,6 +128,7 @@ Evitar convertir esta parte en observabilidad avanzada o HPA.
 - Que diferencia hay entre startup, readiness y liveness?
 - Para que usa Kubernetes un request de CPU o memoria?
 - Que efecto tiene un limit demasiado bajo?
+- Por que los gestores externos de secretos aparecen mas adelante y no en esta unidad?
 - Que ruta debe reutilizar la Unidad 03?
 
 ## Criterios de evaluacion

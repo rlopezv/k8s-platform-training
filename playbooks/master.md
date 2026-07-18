@@ -379,6 +379,18 @@ La formación deberá priorizar:
 - portabilidad;
 - relación entre herramientas.
 
+El público objetivo no debe tratarse como si ya conociera el tema de la unidad. Puede tener perfil técnico, pero cada unidad debe construir el modelo mental desde el problema real, introducir vocabulario de forma progresiva y explicar por qué cada abstracción existe antes de pedir que se use.
+
+Un tutorial no se considera suficientemente pedagógico si solo:
+
+- enumera recursos o comandos;
+- explica el laboratorio ya construido;
+- presupone conocimiento previo no declarado;
+- presenta APIs sin contexto operativo;
+- remite a referencias externas para cubrir la base conceptual que debería explicar la unidad.
+
+Cuando el tema sea especializado, la unidad deberá dedicar más espacio a intuición, límites, comparaciones y criterios de decisión que a una secuencia mecánica de ejecución.
+
 ## Explicación antes de abstracción
 
 Las abstracciones deberán introducirse después de mostrar el problema que resuelven.
@@ -417,6 +429,46 @@ Las validaciones podrán ser:
 - métricas;
 - pruebas automatizadas;
 - comparación de estado.
+
+## Separación entre tutorial y laboratorio
+
+El tutorial del alumno debe ser el material formativo principal. Debe explicar:
+
+- el problema real que resuelve la unidad;
+- por qué aparece en ese punto del itinerario;
+- el modelo mental necesario antes del laboratorio;
+- conceptos con profundidad progresiva;
+- decisiones de diseño y trade-offs;
+- errores de razonamiento frecuentes;
+- conexión con el mundo real;
+- lectura guiada con preguntas concretas.
+
+El laboratorio debe ser la guía operativa. Debe concentrar:
+
+- comandos;
+- despliegue;
+- validación;
+- diagnóstico;
+- recuperación;
+- comportamiento al repetir operaciones.
+
+No se debe resolver la falta de explicación del tutorial aumentando comandos en el laboratorio. Si un concepto es necesario para entender una práctica, debe aparecer en el tutorial antes de la ejecución.
+
+## Lectura guiada
+
+Las referencias no deben ser una lista genérica al final de la unidad.
+
+Cada tutorial deberá distinguir, cuando aplique:
+
+- referencias oficiales o fuentes primarias;
+- referencias conceptuales;
+- lecturas complementarias.
+
+Para cada referencia relevante deberá indicarse:
+
+- qué leer;
+- por qué importa para la unidad;
+- qué pregunta debería poder responder el alumno después de leerla.
 
 ---
 
