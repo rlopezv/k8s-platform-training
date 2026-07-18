@@ -8,7 +8,7 @@ El repositorio es la fuente unica de verdad. No dependas del historial de conver
 
 ## Estado Actual
 
-Segun `project/project-state.md`, el proyecto ha completado Bootstrap, ha cerrado Framework V1 y ha completado las Unidades 00 y 01 con limitaciones documentadas. El siguiente incremento permitido es:
+Segun `project/project-state.md`, el proyecto ha completado Bootstrap, ha cerrado Framework V1 y ha completado y aprobado la Unidad 01 con deuda pedagogica registrada para una futura sesion de hardening global. El siguiente incremento permitido es:
 
 ```text
 Generar el playbook de la Unidad 02 - Configuracion, secretos y ciclo de vida
@@ -22,7 +22,8 @@ Estado verificable actual:
 - la aplicacion evolutiva inicial se llama `platform-api`;
 - el namespace funcional del curso es `platform-training`;
 - existe un Deployment `platform-api` y un Service `platform-api` definidos en `labs/01-kubernetes/solution/`;
-- la Unidad 02 debe reutilizar `tutorial/01-kubernetes/summary.md` y `labs/01-kubernetes/solution/`.
+- la Unidad 02 debe reutilizar `tutorial/01-kubernetes/summary.md` y `labs/01-kubernetes/solution/`;
+- queda registrada una deuda de hardening pedagogico global para reforzar vision conceptual, progresion didactica y referencias cuando haya varias unidades generadas.
 
 ## Lectura Obligatoria
 
@@ -77,7 +78,7 @@ No resuelvas contradicciones relevantes en silencio. Identifica la contradiccion
 
 ## Restricciones Activas
 
-Tras cerrar la Unidad 01, no debes:
+Durante la generacion del playbook de Unidad 02, no debes:
 
 - crear charts Helm;
 - crear modulos Terraform;
@@ -152,6 +153,8 @@ terraform version
 
 Nunca declares una validacion como superada si solo se reviso el contenido del archivo.
 
+La validacion tecnica ejecutada por el asistente no equivale a aprobacion del contenido formativo. La revision pedagogica y aprobacion final del contenido generado corresponde al usuario responsable del curso y debe quedar registrada cuando se produzca.
+
 ## Cierre de Sesion
 
 Un incremento terminado debe dejar suficiente contexto para que otra sesion continue sin historial de chat.
@@ -163,8 +166,9 @@ Antes de finalizar:
 3. Revisa `git status` y `git diff`.
 4. Indica archivos creados o modificados.
 5. Indica validaciones ejecutadas y pendientes.
-6. Registra limitaciones o riesgos.
-7. Sugiere un mensaje de commit.
+6. Indica si la revision/aprobacion del usuario queda pendiente o ya fue aportada.
+7. Registra limitaciones o riesgos.
+8. Sugiere un mensaje de commit.
 
 ## Handoff
 

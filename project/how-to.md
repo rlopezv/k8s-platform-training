@@ -71,6 +71,8 @@ Cada unidad debe reutilizar:
 
 Que un asistente genere un archivo no implica que el contenido esté validado.
 
+El asistente puede ejecutar validaciones técnicas, revisar coherencia documental y registrar evidencias, pero la validación final del contenido generado corresponde al usuario responsable del curso.
+
 El flujo correcto es:
 
 ```text
@@ -78,14 +80,25 @@ Generar
    ↓
 Incorporar al repositorio
    ↓
-Ejecutar o revisar
+Ejecutar validaciones técnicas
    ↓
-Registrar resultados
+Revisar coherencia documental
    ↓
 Corregir
    ↓
-Aprobar
+Revisión y aprobación del usuario
+   ↓
+Registrar estado final
 ```
+
+La aprobación del usuario debe distinguirse de:
+
+* que los archivos existan;
+* que los scripts pasen validaciones estáticas;
+* que un laboratorio se haya desplegado correctamente;
+* que el asistente considere que el contenido es coherente.
+
+Si el usuario todavía no ha revisado el contenido pedagógico, la unidad puede quedar como generada o técnicamente validada, pero no debe registrarse como aprobada por el usuario.
 
 ---
 

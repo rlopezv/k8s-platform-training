@@ -7,8 +7,9 @@
 | Unidad | 01 - Fundamentos operativos y primera aplicacion |
 | Identificador | `01-kubernetes` |
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
-| Estado | Completada con limitaciones |
+| Estado | Completada y aprobada con limitaciones |
 | Fecha de cierre o actualizacion | 2026-07-18 |
+| Revision pedagogica del usuario | Aprobada; hardening global diferido |
 
 ## Resumen ejecutivo
 
@@ -17,6 +18,8 @@ La Unidad 01 define la primera aplicacion evolutiva del curso, `platform-api`, y
 La unidad incorpora el primer laboratorio funcional en `labs/01-kubernetes/`, con rutas `starter/`, `solution/` y una validacion no destructiva. Los manifiestos de `solution/` son la base que debera reutilizar la Unidad 02 para incorporar configuracion, secretos de laboratorio, probes y recursos.
 
 Las validaciones estaticas y funcionales principales se ejecutaron sobre los artefactos generados y contra el MicroK8s local. La prueba HTTP mediante `port-forward` devolvio `HTTP/1.1 200 OK`.
+
+El contenido queda generado, tecnicamente validado y aprobado por el usuario. El usuario ha observado que el nivel de entrada es exigente y que la unidad esta mas orientada a explicar el laboratorio que a proporcionar una vision amplia del tema tratado. Esta observacion se registra como deuda para una futura sesion de hardening pedagogico global, preferiblemente cuando haya varias unidades generadas y pueda revisarse la progresion completa.
 
 ## Objetivos alcanzados
 
@@ -29,6 +32,7 @@ Las validaciones estaticas y funcionales principales se ejecutaron sobre los art
 | Crear laboratorio reutilizable | Alcanzado | `labs/01-kubernetes/README.md`, `starter/`, `solution/`, `validation/validate.sh` |
 | Documentar arquitectura, componentes y flujo de reconciliacion | Alcanzado | `tutorial/01-kubernetes/README.md` |
 | Documentar diagnostico y recuperacion | Alcanzado | `tutorial/01-kubernetes/README.md`, `labs/01-kubernetes/README.md` |
+| Añadir referencias para ampliar conceptos | Alcanzado | `tutorial/01-kubernetes/README.md` |
 | Validar funcionalmente en MicroK8s | Alcanzado | `bash labs/01-kubernetes/validation/validate.sh`: 0 fallos, 0 avisos |
 
 ## Estado inicial utilizado
@@ -98,6 +102,7 @@ Las validaciones estaticas y funcionales principales se ejecutaron sobre los art
 | Componente | Ruta | Cambio realizado |
 |---|---|---|
 | Estado del proyecto | `project/project-state.md` | Registrado cierre documental y tecnico de Unidad 01 segun validaciones disponibles |
+| Flujo de trabajo | `project/how-to.md`, `playbooks/master.md` | Separada validacion tecnica de aprobacion del usuario |
 
 ## Componentes retirados
 
@@ -269,6 +274,28 @@ Permite comprobar seleccion de Pods y conectividad sin introducir Ingress, Gatew
 
 Especifica de la unidad.
 
+## D-01-08 - Validacion pedagogica por el usuario y hardening global
+
+### Decision
+
+La IA puede generar contenido, ejecutar validaciones tecnicas y revisar coherencia documental, pero la aprobacion final del contenido formativo corresponde al usuario responsable del curso. La revision inicial del usuario identifica una deuda pedagogica: la unidad es exigente como entrada y esta demasiado enfocada en explicar el laboratorio.
+
+### Motivo
+
+La calidad pedagogica, el nivel de profundidad esperado y la adecuacion al estilo del itinerario requieren revision humana explicita. Resolver esta deuda sera mas eficaz en una sesion de hardening global cuando existan varias unidades y pueda analizarse la progresion completa.
+
+### Consecuencias
+
+- la Unidad 01 queda generada y tecnicamente validada;
+- la Unidad 01 queda aprobada por el usuario;
+- se permite continuar con el playbook de Unidad 02;
+- queda abierta una deuda de hardening pedagogico global;
+- futuras unidades deberan distinguir entre validacion tecnica, revision del usuario y aprobacion del contenido.
+
+### Ambito
+
+Registrada tambien en `project/how-to.md`, `playbooks/master.md` y `project/project-state.md`.
+
 ## Validaciones
 
 ## Validaciones ejecutadas
@@ -294,6 +321,7 @@ Especifica de la unidad.
 |---|---|---|
 | ShellCheck | `shellcheck` no esta disponible en este entorno | Ejecutar cuando la herramienta este instalada |
 | Validacion Windows/WSL desde PowerShell | Esta sesion opera desde Ubuntu WSL, no desde el host Windows | Validacion por equipo al replicar el laboratorio |
+| Hardening pedagogico global | Se difiere para revisar progresion, vision conceptual y referencias con varias unidades generadas | Sesion futura especifica |
 
 ## Limitaciones y deuda tecnica
 
@@ -302,6 +330,7 @@ Especifica de la unidad.
 | L-01-01 | La imagen externa fue descargada y ejecutada correctamente en esta validacion; sigue existiendo riesgo futuro de disponibilidad externa o rate limit | Mitigada |
 | L-01-02 | La aplicacion aun no tiene configuracion externa, secretos de laboratorio, probes ni recursos | Diferido a Unidad 02 |
 | L-01-03 | El Service es interno; no hay ingreso permanente | Diferido a Unidad 03 |
+| L-01-04 | El contenido tiene un nivel de entrada exigente y prioriza la explicacion del laboratorio sobre una vision conceptual amplia | Diferido a hardening pedagogico global |
 
 ## Elementos que debe reutilizar la Unidad 02
 
@@ -315,7 +344,7 @@ Especifica de la unidad.
 
 ## Siguiente incremento recomendado
 
-Generar el playbook de la Unidad 02 - Configuracion, secretos y ciclo de vida.
+Generar el playbook de la Unidad 02 - Configuracion, secretos y ciclo de vida, conservando la deuda de hardening pedagogico global registrada.
 
 ```text
 Generar el playbook de la Unidad 02 - Configuracion, secretos y ciclo de vida

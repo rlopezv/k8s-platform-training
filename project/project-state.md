@@ -23,8 +23,8 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 02 — Configuración, secretos y ciclo de vida |
-| Estado general | Unidad 01 completada con limitaciones documentadas |
-| Último incremento completado | Generación y validación de la Unidad 01 |
+| Estado general | Unidad 01 completada y aprobada con deuda pedagógica registrada |
+| Último incremento completado | Aprobación de la Unidad 01 |
 | Unidad activa | Ninguna |
 | Última unidad completada | 01 — Fundamentos operativos y primera aplicación |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
@@ -41,12 +41,15 @@ El proyecto ha completado la **Unidad 00 — Preparación del entorno** y la **U
 
 La Unidad 01 incorporó la primera aplicación evolutiva del curso, `platform-api`, desplegada sobre MicroK8s mediante manifiestos Kubernetes estándar. El laboratorio local ya contiene un namespace funcional, un Deployment, Pods gestionados por ReplicaSet y un Service interno.
 
+La revisión del usuario aprobó la Unidad 01. También identificó que el contenido tiene un nivel de entrada exigente y está más orientado a explicar el laboratorio que a construir una visión amplia sobre Kubernetes. Esta observación queda registrada como deuda pedagógica para una futura sesión de hardening global, preferiblemente cuando existan varias unidades y pueda revisarse la progresión completa.
+
 Durante la siguiente fase se permite:
 
 - generar el playbook de la Unidad 02;
 - reutilizar `tutorial/01-kubernetes/summary.md` como fuente de continuidad;
 - extender los manifiestos de `labs/01-kubernetes/solution/`;
-- incorporar ConfigMaps, Secrets de laboratorio, variables de entorno, volúmenes de configuración, probes y primeros requests/limits cuando el playbook de Unidad 02 lo autorice.
+- planificar ConfigMaps, Secrets de laboratorio, variables de entorno, volúmenes de configuración, probes y primeros requests/limits;
+- mantener visible la deuda de hardening pedagógico global sin resolverla dentro de Unidad 02 salvo decisión explícita.
 
 Todavía no se permite:
 
@@ -67,11 +70,11 @@ Todavía no se permite:
 |---|---|---|---|
 | `README.md` | Completo y aprobado | Bootstrap-01 | Punto de entrada y visión general |
 | `project/architecture.md` | Completo y aprobado | Bootstrap-02 | Arquitectura y decisiones estructurales |
-| `project/project-state.md` | Actualizado con cierre de Unidad 01 | Unit-01-Closure | Estado consolidado |
+| `project/project-state.md` | Actualizado con cierre técnico de Unidad 01 y revisión de flujo | Unit-01-Review-Flow | Estado consolidado |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
 | `project/project-planning.md` | Completo y aprobado | Unit-01-Concept-Scope | Planificación incremental del trabajo |
-| `project/how-to.md` | Completo y aprobado | Framework-04 | Mecanismo operativo de trabajo con asistentes de IA |
-| `playbooks/master.md` | Completo y aprobado | Bootstrap-05 | Reglas globales de generación |
+| `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
+| `playbooks/master.md` | Actualizado | Unit-01-Review-Flow | Reglas globales de generación; exige distinguir aprobación del usuario |
 | `playbooks/unit-template.md` | Completo y aprobado | Bootstrap-06 | Plantilla de playbooks específicos |
 | `playbooks/summary-template.md` | Completo y aprobado | Bootstrap-07 | Contrato de continuidad |
 | `playbooks/project-state-template.md` | Completo y aprobado | Bootstrap-08 | Reglas de mantenimiento del estado |
@@ -169,7 +172,7 @@ Todavía no se permite:
 | Unidad | Estado | Tutorial | Laboratorio o plataforma | Instructor notes | Summary |
 |---|---|---|---|---|---|
 | 00 — Preparación del entorno | Completada con limitaciones | Sí | Sí, `platform/environment/` | Sí | Sí |
-| 01 — Fundamentos operativos y primera aplicación | Completada con limitaciones | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
+| 01 — Fundamentos operativos y primera aplicación | Completada y aprobada con deuda pedagógica registrada | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
 | 02 — Configuración, secretos y ciclo de vida | Pendiente de playbook | No | No | No | No |
 | 03–25 | Previstas en roadmap | No | No | No | No |
 
@@ -177,7 +180,7 @@ Todavía no se permite:
 
 | Campo | Estado |
 |---|---|
-| Estado | Completada con limitaciones documentadas |
+| Estado | Completada y aprobada con deuda pedagógica registrada |
 | Fecha de inicio | 2026-07-17 |
 | Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/00-environment.md` |
@@ -221,6 +224,7 @@ Limitaciones activas:
 - `kubectl get endpoints` funciona para la práctica, pero Kubernetes `v1.35.6` muestra advertencia de deprecación de `Endpoints` en favor de `EndpointSlice`;
 - ShellCheck no está disponible en este entorno para validar scripts;
 - Windows/WSL desde PowerShell sigue pendiente de validación por equipo.
+- el usuario aprobó la unidad y considera que el nivel de entrada es exigente y que el contenido está más orientado a explicar el laboratorio que a proporcionar una visión amplia del tema; se difiere a una sesión de hardening pedagógico global.
 
 ---
 
@@ -429,14 +433,16 @@ No existen actualmente:
 | D-01-05 — Nombre y alcance de la aplicación evolutiva | Activa | `tutorial/01-kubernetes/summary.md` | Las unidades posteriores deben extender `platform-api` |
 | D-01-06 — Imagen HTTP inicial versionada | Activa | `tutorial/01-kubernetes/summary.md` | `nginxinc/nginx-unprivileged:1.27.4-alpine` |
 | D-01-07 — Service interno como primera exposición | Activa | `tutorial/01-kubernetes/summary.md` | `ClusterIP` y validación con port-forward |
+| D-01-08 — Aprobación de contenido por el usuario | Activa | `project/how-to.md`, `playbooks/master.md`, `tutorial/01-kubernetes/summary.md` | La IA valida técnicamente; el usuario aprueba el contenido formativo |
 
 ---
 
 # Restricciones activas
 
-Tras cerrar la Unidad 01:
+Tras generar la Unidad 01:
 
 - la Unidad 02 debe reutilizar `platform-api`, `platform-training` y `labs/01-kubernetes/solution/`;
+- conservar la deuda de hardening pedagógico global para revisar progresión, visión conceptual y referencias del itinerario;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
 - no crear charts Helm hasta la unidad prevista;
 - no crear módulos Terraform hasta la unidad prevista;
@@ -466,6 +472,7 @@ Tras cerrar la Unidad 01:
 | R-008 | Recursos insuficientes en el host | Media | Medio | Validar requisitos mínimos | Abierto |
 | R-009 | Disponibilidad futura de imagen externa | Media | Medio | Imagen versionada y pull real validado; sustituir solo con registro en summary y estado | Mitigado |
 | R-010 | Uso de `Endpoints` con advertencia de deprecación en Kubernetes 1.35 | Media | Bajo | Mantener para explicar Service en Unidad 01; evaluar `EndpointSlice` en una unidad posterior | Abierto |
+| R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Media | Medio | Planificar hardening pedagógico global cuando existan varias unidades para ajustar progresión, visión conceptual y referencias | Abierto |
 
 ## Cuestiones abiertas
 
@@ -492,6 +499,7 @@ Tras cerrar la Unidad 01:
 | TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida y versiones reales registradas | Cerrada para Unidad 00 |
 | TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
 | TD-005 | Incorporar `EndpointSlice` como observación posterior al Service clásico | Baja | Unidad 01 | Unidad 03 o unidad de networking | Abierta |
+| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 | Sesión específica cuando existan varias unidades generadas | Abierta |
 
 ---
 
@@ -507,6 +515,7 @@ Tras cerrar la Unidad 01:
 | Estado de la aplicación | `bash labs/01-kubernetes/validation/validate.sh` | 0 fallos; Deployment 2/2; Pods Running; Service con endpoints; logs legibles |
 | Inventario de aplicación | `kubectl -n platform-training get deploy,rs,pods,svc,endpoints` | Recursos de `platform-api` visibles |
 | HTTP local | `kubectl -n platform-training port-forward service/platform-api 8080:80` y `curl -i http://127.0.0.1:8080/` | `HTTP/1.1 200 OK` |
+| Revisión pedagógica | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
 | Ausencia de charts Helm | `find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print` | Sin resultados |
 | Ausencia de módulos Terraform | `find . -path ./.git -prune -o -type f \( -name '*.tf' -o -name '*.tfvars' \) -print` | Sin resultados |
 
@@ -551,6 +560,9 @@ Validaciones no disponibles en esta sesión:
 | 28 | Playbook de Unidad 01 | Completado | `playbooks/units/01-kubernetes.md` creado y planning alineado |
 | 29 | Ajuste conceptual de Unidad 01 | Completado | Playbook ampliado con arquitectura, CRI/CNI/CSI, configuración, Gateway API y mapa de observabilidad |
 | 30 | Generación y validación de Unidad 01 | Completado con limitaciones | Tutorial, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` desplegada y validada en MicroK8s |
+| 31 | Ajuste de flujo de revisión y referencias de Unidad 01 | Completado con limitaciones | Flujo actualizado para distinguir validación técnica y aprobación del usuario; README de Unidad 01 ampliado con guía inicial y referencias oficiales |
+| 32 | Registro de deuda de hardening pedagógico global | Completado | Observación del usuario registrada: Unidad 01 tiene entrada exigente y enfoque demasiado centrado en laboratorio; revisión pedagógica profunda diferida |
+| 33 | Aprobación de Unidad 01 | Completado | El usuario aprueba la Unidad 01 y se permite continuar con el playbook de Unidad 02 |
 
 ---
 
@@ -585,7 +597,8 @@ tutorial/01-kubernetes/summary.md
 - usar `tutorial/01-kubernetes/summary.md` como entrada;
 - reutilizar `labs/01-kubernetes/solution/`;
 - planificar ConfigMaps, Secrets de laboratorio, variables de entorno, volúmenes de configuración, probes, requests y limits;
-- mantener `platform-api` y `platform-training` como base.
+- mantener `platform-api` y `platform-training` como base;
+- no resolver dentro del playbook de Unidad 02 la deuda de hardening pedagógico global salvo decisión explícita.
 
 ## Trabajo todavía prohibido
 

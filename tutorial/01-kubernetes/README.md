@@ -8,6 +8,28 @@ Esta unidad convierte ese cluster vacio en la primera version operativa de la so
 
 Helm y Terraform seguirán instalados como herramientas base, pero no se usan para desplegar esta unidad. Primero se trabaja con YAML y `kubectl` para ver directamente que recursos crea Kubernetes y como se diagnostican.
 
+## Como leer esta unidad
+
+No necesitas memorizar todos los componentes de Kubernetes antes de empezar. Esta unidad usa una idea central y vuelve a ella varias veces:
+
+```text
+Declaro lo que quiero
+   ↓
+Kubernetes lo guarda como estado deseado
+   ↓
+Sus controladores intentan hacerlo realidad
+   ↓
+Yo observo el estado real y diagnostico diferencias
+```
+
+Cuando aparezca un nombre nuevo, intenta responder tres preguntas:
+
+- que responsabilidad tiene;
+- que otro componente o recurso toca;
+- que comando permite observarlo.
+
+Si una tabla parece demasiado densa en una primera lectura, sigue el laboratorio y vuelve a ella despues de ver los recursos reales con `kubectl`.
+
 ## Objetivos
 
 Al finalizar la unidad podras:
@@ -72,7 +94,18 @@ El punto de partida verificable es:
 
 ## Arquitectura del cluster
 
-Kubernetes funciona como un sistema de reconciliacion. El usuario declara un estado deseado mediante objetos. El cluster compara continuamente ese deseo con el estado real y ejecuta cambios hasta aproximarlos.
+Kubernetes funciona como un sistema de reconciliacion. Esto significa que no le damos una lista cerrada de pasos tipo "arranca este contenedor y termina"; le entregamos objetos que describen el estado deseado.
+
+Por ejemplo, un Deployment dira: "quiero dos replicas de esta aplicacion usando esta imagen". Kubernetes guarda esa declaracion y sus controladores trabajan para que el estado real se parezca a ella. Si un Pod desaparece, el sistema intenta crear otro. Si cambias la imagen del Deployment, inicia un rollout para acercarse al nuevo estado deseado.
+
+En esta unidad interesa distinguir cuatro ideas:
+
+| Idea | Explicacion corta | Ejemplo en la unidad |
+|---|---|---|
+| Estado deseado | Lo que escribes en YAML y aplicas con `kubectl apply`. | `replicas: 2` en el Deployment. |
+| Estado observado | Lo que el cluster informa en cada momento. | `kubectl -n platform-training get pods`. |
+| Reconciliacion | Trabajo continuo para acercar lo observado a lo deseado. | Crear Pods hasta tener dos replicas. |
+| Diagnostico | Comparar deseo, estado y eventos para explicar una diferencia. | Un Service sin endpoints por selector incorrecto. |
 
 En un cluster hay dos planos de responsabilidad:
 
@@ -84,6 +117,8 @@ En un cluster hay dos planos de responsabilidad:
 En MicroK8s local, esas responsabilidades conviven normalmente en la misma maquina. Conceptualmente siguen siendo responsabilidades separadas, y esa separacion sera importante cuando el laboratorio evolucione hacia AKS y EKS.
 
 ## Componentes principales
+
+Los componentes siguientes no son comandos que tengas que ejecutar en esta unidad. Son el mapa que explica por que los comandos del laboratorio producen cambios.
 
 | Componente | Papel operativo |
 |---|---|
@@ -106,6 +141,8 @@ Interfaces relacionadas:
 En esta unidad no se instala ni sustituye CRI, CNI ni CSI. Solo se ubican en el mapa mental de operacion.
 
 ## Mapa de objetos
+
+Un objeto Kubernetes es un documento enviado a la API del cluster. Algunos objetos representan cosas que quieres gestionar directamente, como un Deployment o un Service. Otros aparecen como consecuencia de esa gestion, como ReplicaSets y Pods.
 
 | Objeto | Uso en esta unidad |
 |---|---|
@@ -201,6 +238,22 @@ kubectl -n platform-training get endpoints platform-api
 ```
 
 El Service no crea Pods. Selecciona Pods existentes mediante labels. Si el selector no coincide, el Service existe pero no tendra endpoints.
+
+Antes de avanzar, merece la pena hacer esta lectura cruzada:
+
+```bash
+kubectl -n platform-training get deployment platform-api -o yaml
+kubectl -n platform-training get service platform-api -o yaml
+kubectl -n platform-training get pods --show-labels
+```
+
+Busca la misma pareja de labels en tres sitios:
+
+- `spec.selector.matchLabels` del Deployment;
+- `metadata.labels` de la plantilla del Pod;
+- `spec.selector` del Service.
+
+Esa relacion es la que une la declaracion de alto nivel con los Pods reales y con la red interna.
 
 ## Validaciones
 
@@ -397,3 +450,20 @@ Al cerrar la unidad deben existir:
 La Unidad 02 reutilizara `platform-api`, el namespace `platform-training` y los manifiestos de `labs/01-kubernetes/solution/`.
 
 El siguiente incremento incorporara ConfigMaps, Secrets de laboratorio, variables de entorno, volumenes de configuracion, probes y primeras decisiones de recursos sin cambiar de aplicacion ni introducir Helm todavia.
+
+## Referencias
+
+Estas referencias sirven para ampliar o contrastar lo explicado en la unidad. Prioriza la documentacion oficial cuando haya dudas de comportamiento.
+
+| Tema | Referencia | Uso recomendado |
+|---|---|---|
+| Conceptos generales | [Kubernetes Concepts](https://kubernetes.io/docs/concepts/) | Vista de conjunto de las abstracciones de Kubernetes. |
+| Arquitectura del cluster | [Cluster Architecture](https://kubernetes.io/docs/concepts/architecture/) | Profundizar en control plane, nodos y componentes. |
+| Componentes | [Kubernetes Components](https://kubernetes.io/docs/concepts/overview/components/) | Revisar `kube-apiserver`, `etcd`, scheduler, controllers, `kubelet`, `kube-proxy` y runtime. |
+| Nodos | [Nodes](https://kubernetes.io/docs/concepts/architecture/nodes/) | Entender como Kubernetes representa maquinas worker. |
+| Workloads | [Workloads](https://kubernetes.io/docs/concepts/workloads/) | Situar Pods, Deployments, ReplicaSets y otros controladores. |
+| Labels y selectors | [Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) | Entender como Service y Deployment encuentran Pods. |
+| Labels recomendadas | [Recommended Labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/) | Justificar el uso de `app.kubernetes.io/*`. |
+| `kubectl` | [Kubectl Reference](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands) | Consultar comandos como `describe`, `logs`, `rollout` y `events`. |
+| Glosario | [Kubernetes Glossary](https://kubernetes.io/docs/reference/glossary/) | Resolver terminos puntuales durante la lectura. |
+| MicroK8s | [MicroK8s documentation](https://microk8s.io/docs) | Consultar detalles propios de la distribucion local usada en el laboratorio. |

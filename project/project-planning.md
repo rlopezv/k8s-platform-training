@@ -602,7 +602,7 @@ Debe comprobarse que:
 
 El siguiente incremento recomendado vigente se registra en `project/project-state.md`, que debe prevalecer sobre esta sección cuando el itinerario avance.
 
-Tras completar la Unidad 01, el siguiente incremento recomendado es generar el playbook de la **Unidad 02 — Configuración, secretos y ciclo de vida**.
+Tras generar y validar tecnicamente la Unidad 01, el siguiente incremento recomendado es generar el playbook de la **Unidad 02 — Configuración, secretos y ciclo de vida**.
 
 Esa sesión debería centrarse en:
 
@@ -610,4 +610,4 @@ Esa sesión debería centrarse en:
 2. reutilizar `labs/01-kubernetes/solution/`;
 3. definir el alcance exacto de ConfigMaps, Secrets de laboratorio, probes y recursos;
 4. mantener `platform-api` y `platform-training` como base evolutiva;
-5. evitar Helm, Terraform, CI/CD, GitOps, observabilidad avanzada y cloud hasta sus unidades previstas.
+5. conservar como deuda una futura sesión de hardening pedagógico global cuando haya varias unidades generadas.

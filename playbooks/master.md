@@ -228,6 +228,15 @@ La IA deberá revisar:
 - compatibilidad con el estado registrado;
 - continuidad con la siguiente unidad.
 
+Esta revisión no equivale a aprobación del contenido formativo. La IA puede declarar validaciones técnicas ejecutadas y coherencia revisada, pero la validación pedagógica y la aprobación final del contenido generado corresponden al usuario responsable del curso.
+
+Cuando el usuario no haya revisado el contenido, el `summary.md` y `project/project-state.md` deberán distinguir entre:
+
+- contenido generado;
+- validación técnica o funcional ejecutada;
+- revisión pedagógica del usuario pendiente;
+- contenido aprobado por el usuario.
+
 ## Paso 7 — Cerrar el incremento
 
 La respuesta final deberá indicar:
@@ -236,6 +245,7 @@ La respuesta final deberá indicar:
 - propósito del incremento;
 - validaciones realizadas o pendientes;
 - riesgos o limitaciones;
+- estado de revisión o aprobación por parte del usuario;
 - commit propuesto.
 
 No deberá afirmar que una validación fue ejecutada si únicamente fue documentada o revisada estáticamente.
