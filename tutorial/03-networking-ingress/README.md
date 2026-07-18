@@ -1,5 +1,46 @@
 # Unidad 03 - Networking e ingreso
 
+## Guia pedagogica de la unidad
+
+Esta unidad trata sobre como viaja una peticion hasta una aplicacion dentro de Kubernetes.
+
+En la Unidad 02 `platform-api` ya tenia configuracion, salud y recursos. Ahora el problema cambia: la aplicacion existe y esta lista, pero sigue encerrada detras de una red interna. Para convertirla en una aplicacion consumible hace falta entender varias capas, no solo crear un objeto `Ingress`.
+
+La Unidad 03 cubre:
+
+- por que las IP de Pod son efimeras y no son un contrato para clientes;
+- como un Service da estabilidad interna sin exponer necesariamente al exterior;
+- como EndpointSlice muestra los backends reales que el Service puede usar;
+- que DNS interno existe dentro del cluster y que no equivale al DNS del host;
+- que diferencia hay entre un Ingress Controller y un recurso `Ingress`;
+- como se decide una ruta HTTP por host, path y backend;
+- como diagnosticar una peticion fallida por capas;
+- por que Gateway API aparece como evolucion conceptual, pero no como laboratorio principal.
+
+El laboratorio usa Traefik porque es el controlador que proporciona el addon Ingress de MicroK8s `v1.35`. Eso no convierte Traefik en el tema principal. El tema principal es la cadena de responsabilidades que cualquier implementacion de ingreso debe resolver.
+
+## Mapa de aprendizaje
+
+| Capa | Responsabilidad | Pregunta de diagnostico |
+|---|---|---|
+| Pod | Ejecutar el contenedor de `platform-api` | Hay instancias `Ready`? |
+| Service | Dar un punto estable interno | El selector coincide con las labels de los Pods? |
+| EndpointSlice | Registrar backends listos del Service | Hay direcciones de Pod disponibles? |
+| DNS interno | Resolver nombres de Service dentro del cluster | El nombre completo del Service resuelve desde un Pod? |
+| Ingress Controller | Aceptar trafico y configurar el proxy real | Hay controlador instalado y listo? |
+| Ingress | Declarar reglas HTTP de host, path y backend | La regla apunta al Service y puerto correctos? |
+| Cliente local | Enviar la peticion al punto de entrada correcto | La cabecera `Host` coincide con la regla? |
+
+## Pregunta central
+
+La pregunta de la unidad es:
+
+```text
+Que debe ocurrir, capa por capa, para que una peticion HTTP externa termine en un Pod listo de platform-api?
+```
+
+Si el alumno puede responderla, no confundira un Service con un Ingress, un nombre local con DNS interno, ni una regla YAML con el controlador que la ejecuta.
+
 ## Problema real
 
 En la Unidad 02 `platform-api` ya era un workload mas serio: tenia configuracion externa, Secret de laboratorio, probes, requests, limits y un Service interno. Pero seguia habiendo una frontera importante: la aplicacion solo era comoda de consumir desde dentro del cluster o mediante `kubectl port-forward`.

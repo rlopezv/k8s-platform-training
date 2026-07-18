@@ -1,5 +1,39 @@
 # Unidad 00 - Preparacion del entorno
 
+## Guia pedagogica de la unidad
+
+Esta unidad no ensena Kubernetes todavia. Ensena algo anterior y muy importante: como construir un entorno de aprendizaje confiable.
+
+En muchos equipos, los primeros problemas con Kubernetes no vienen de Kubernetes. Vienen de una instalacion incompleta, de WSL mal configurado, de una terminal que no ha cargado permisos, de DNS bloqueado por una VPN, de un `kubectl` apuntando a otro cluster o de una herramienta instalada pero no validada. Si esos problemas se mezclan con los conceptos del curso, el alumno aprende a probar comandos al azar en vez de razonar.
+
+Por eso esta unidad cubre la base operativa del itinerario:
+
+- que significa trabajar sobre Windows, WSL2 y Ubuntu;
+- por que MicroK8s es una distribucion local de Kubernetes, no "todo Kubernetes";
+- que papel cumple `kubectl` como cliente principal;
+- por que Helm y Terraform se instalan ahora pero no se usan todavia;
+- que diferencia hay entre instalar, configurar, validar y registrar evidencia;
+- como decidir si un fallo pertenece al host, a Linux, a MicroK8s, a la red o a una herramienta.
+
+El laboratorio ejecutable esta en `platform/environment/`. Este README debe leerse como el capitulo que explica por que se hacen esas comprobaciones y que aprende el alumno al interpretarlas.
+
+## Mapa de aprendizaje
+
+| Bloque | Que cubre | Que debe poder explicar el alumno |
+|---|---|---|
+| Host Windows | Requisitos minimos para ejecutar WSL2 | Por que Kubernetes local depende de virtualizacion y soporte del host |
+| WSL2 | Capa Linux integrada en Windows | Por que el laboratorio se ejecuta dentro de Ubuntu y no directamente en PowerShell |
+| Ubuntu | Sistema donde correran scripts, snaps y herramientas | Que senales muestran que Linux esta preparado para operar servicios |
+| MicroK8s | Distribucion Kubernetes local | Que partes son especificas de MicroK8s y cuales son API Kubernetes estandar |
+| `kubectl` | Cliente operativo del curso | Por que validar `kubectl get nodes` prueba acceso a la API del cluster |
+| Helm y Terraform | Herramientas futuras | Por que instalar una CLI no significa que ya gestione recursos del curso |
+
+## Que no intenta ensenar esta unidad
+
+Esta unidad no intenta que el alumno despliegue aplicaciones, disene manifests, entienda Deployments, exponga Services ni use Helm o Terraform de forma practica. Eso seria demasiado pronto.
+
+El objetivo es que, cuando en la Unidad 01 aparezca el primer workload, el alumno pueda decir: "el cluster esta disponible, el cliente habla con la API, el nodo esta Ready y las herramientas base responden". Esa frase parece sencilla, pero evita horas de diagnostico confuso.
+
 ## Estado de este documento
 
 Este documento cubre la Unidad 00 completa: validacion de Windows, WSL2 y Ubuntu 24.04 LTS, continuidad del trabajo desde VS Code conectado a WSL, preparacion de MicroK8s con `kubectl`, e instalacion de Helm y Terraform como herramientas CLI.

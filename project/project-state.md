@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Unidad 04 — Persistencia y estado |
-| Estado general | Unidad 03 generada y validada técnicamente; revisión pedagógica del usuario pendiente |
-| Último incremento completado | Generación y validación técnica de la Unidad 03 — Networking e ingreso |
-| Unidad activa | 04 — Persistencia y estado, playbook no generado |
+| Fase actual | Refuerzo pedagógico transversal de Unidades 00-03 |
+| Estado general | README de Unidades 00-03 reforzados pedagogicamente; revisión del usuario pendiente |
+| Último incremento completado | Refuerzo pedagógico de README de Unidades 00-03 sin cambios técnicos |
+| Unidad activa | Revisión pedagógica transversal de Unidades 00-03 |
 | Última unidad completada | 03 — Networking e ingreso |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02 y 03 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar el playbook de la Unidad 04 — Persistencia y estado |
+| Siguiente incremento permitido | Revisar y aprobar el refuerzo pedagógico de README de Unidades 00-03 |
 
 ---
 
@@ -47,21 +47,24 @@ El 2026-07-18 se generó un hardening pedagógico global inicial sobre las Unida
 
 Como consecuencia, se actualizaron `playbooks/master.md` y `playbooks/unit-template.md` para exigir que futuras unidades no asuman dominio previo del tema, construyan modelo mental desde el problema real, expliquen conceptos con progresión didáctica y mantengan una separación más estricta entre tutorial formativo y laboratorio operativo.
 
-El usuario y el proyecto acuerdan que el nivel pedagógico deseado puede abordarse en una fase posterior dedicada específicamente a desarrollar los `README.md` como soporte formativo profundo. Esta fase no debe avanzar capacidades técnicas ni sustituir laboratorios; debe ampliar teoría, modelos mentales, ejemplos conceptuales, razonamiento, lectura guiada y progresión didáctica. La deuda queda abierta y no bloquea por sí sola la revisión del playbook de Unidad 03 ni la generación posterior de la unidad cuando el playbook sea aprobado.
+El usuario y el proyecto acuerdan que el nivel pedagógico deseado puede abordarse en una fase posterior dedicada específicamente a desarrollar los `README.md` como soporte formativo profundo. Esta fase no debe avanzar capacidades técnicas ni sustituir laboratorios; debe ampliar teoría, modelos mentales, ejemplos conceptuales, razonamiento, lectura guiada y progresión didáctica.
 
 La Unidad 03 generó el acceso HTTP local para `platform-api` mediante un recurso `Ingress` y el addon Ingress de MicroK8s. La validación técnica se ejecutó contra el MicroK8s local con 0 fallos y 0 avisos. La revisión pedagógica final del usuario queda pendiente.
 
+El 2026-07-18 se inicio esta fase pedagogica transversal sobre `tutorial/00-environment/README.md`, `tutorial/01-kubernetes/README.md`, `tutorial/02-configuration-lifecycle/README.md` y `tutorial/03-networking-ingress/README.md`. El incremento añade una guia pedagogica inicial, mapas de aprendizaje, preguntas centrales y separacion mas explicita entre capitulo formativo y laboratorio. No modifica manifiestos, scripts ni estado del cluster.
+
 Durante esta fase se permite:
 
-- generar el playbook de la Unidad 04 — Persistencia y estado;
+- revisar y ajustar el refuerzo pedagogico de los README de Unidades 00-03;
 - reutilizar `tutorial/03-networking-ingress/summary.md` como fuente de continuidad;
 - reutilizar `labs/03-networking-ingress/solution/` como estado activo de la aplicación;
-- mantener visible cualquier ajuste pedagógico posterior sin resolverlo dentro del playbook de Unidad 03 salvo decisión explícita.
+- mantener congeladas las capacidades tecnicas ya validadas.
 
 Todavía no se permite:
 
 - crear charts Helm;
 - crear módulos Terraform;
+- generar el playbook de la Unidad 04 antes de cerrar la revisión pedagógica transversal;
 - instalar Tekton;
 - instalar Argo CD;
 - desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
@@ -662,7 +665,7 @@ Tras generar y validar técnicamente la Unidad 03:
 | TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida y versiones reales registradas | Cerrada para Unidad 00 |
 | TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
 | TD-005 | Incorporar `EndpointSlice` como observación posterior al Service clásico | Baja | Unidad 01 | Resuelto en Unidad 02 como comprobación principal de endpoints | Cerrada |
-| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | Hardening inicial aceptado como mínimo; acordada como posible fase posterior centrada en desarrollar README sin avanzar capacidad técnica | Abierta |
+| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | Refuerzo inicial de README de Unidades 00-03 generado; pendiente revisión del usuario y posible desarrollo pedagogico mas profundo | Abierta |
 | TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo | `playbooks/master.md` y `playbooks/unit-template.md` actualizados con criterios pedagógicos más estrictos | Cerrada |
 
 ---
@@ -691,6 +694,7 @@ Tras generar y validar técnicamente la Unidad 03:
 | Revisión pedagógica Unidad 02 | Aprobación del usuario el 2026-07-18 | Aprobada |
 | Revisión pedagógica Unidad 03 | Pendiente de revisión del usuario | Pendiente |
 | Hardening pedagógico global inicial | Revisión documental de `tutorial/00-environment/`, `tutorial/01-kubernetes/`, `tutorial/02-configuration-lifecycle/` y summaries | Aceptado por el usuario como cambio mínimo; deuda pedagógica profunda sigue abierta |
+| Refuerzo pedagógico README Unidades 00-03 | Revisión documental de `tutorial/00-environment/README.md`, `tutorial/01-kubernetes/README.md`, `tutorial/02-configuration-lifecycle/README.md` y `tutorial/03-networking-ingress/README.md` | Guías pedagógicas, mapas de aprendizaje y preguntas centrales añadidas; revisión del usuario pendiente |
 | Ausencia de charts Helm | `find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print` | Sin resultados |
 | Ausencia de módulos Terraform | `find . -path ./.git -prune -o -type f \( -name '*.tf' -o -name '*.tfvars' \) -print` | Sin resultados |
 
@@ -749,6 +753,7 @@ Validaciones no disponibles en esta sesión:
 | 42 | Playbook de Unidad 03 | Completado con revisión pendiente | `playbooks/units/03-networking-ingress.md` creado en borrador; `project/project-state.md` actualizado |
 | 43 | Aprobación del playbook de Unidad 03 | Completado | El usuario aprueba `playbooks/units/03-networking-ingress.md`; se permite generar la Unidad 03 |
 | 44 | Generación y validación técnica de Unidad 03 | Completado con revisión pedagógica pendiente | Tutorial, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` expuesta por Ingress HTTP local y validada en MicroK8s |
+| 45 | Refuerzo pedagógico README Unidades 00-03 | Completado con revisión pendiente | Se añaden guías pedagógicas, mapas de aprendizaje y preguntas centrales sin modificar laboratorios ni capacidades técnicas |
 
 ---
 
@@ -757,7 +762,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Generar el playbook de la Unidad 04 - Persistencia y estado
+Revisar y aprobar el refuerzo pedagogico de README de Unidades 00-03
 ```
 
 ## Fuentes obligatorias
@@ -774,25 +779,26 @@ project/how-to.md
 playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
-tutorial/03-networking-ingress/summary.md
-labs/03-networking-ingress/solution/
-labs/03-networking-ingress/validation/validate.sh
+tutorial/00-environment/README.md
+tutorial/01-kubernetes/README.md
+tutorial/02-configuration-lifecycle/README.md
+tutorial/03-networking-ingress/README.md
+project/project-state.md
 ```
 
 ## Trabajo permitido
 
-- generar el playbook de la Unidad 04 — Persistencia y estado;
-- usar `tutorial/03-networking-ingress/summary.md` como entrada;
-- reutilizar `labs/03-networking-ingress/solution/`;
-- mantener `platform-api` y `platform-training` como base;
-- no ampliar el hardening pedagógico dentro del playbook de Unidad 04 salvo decisión explícita;
-- permitir que una fase posterior específica desarrolle en profundidad los `README.md` sin crear nuevas capacidades técnicas.
+- revisar, corregir o ampliar el refuerzo pedagogico de los README de Unidades 00-03;
+- mantener la separacion entre tutorial formativo y laboratorio operativo;
+- conservar `platform-api`, `platform-training` y `labs/03-networking-ingress/solution/` como estado tecnico validado;
+- no crear nuevas capacidades tecnicas durante esta fase.
 
 ## Trabajo todavía prohibido
 
 - crear charts Helm;
 - crear módulos Terraform;
 - generar la Unidad 04 antes de aprobar su playbook;
+- generar el playbook de Unidad 04 antes de cerrar esta revision pedagogica transversal;
 - incorporar CI/CD, GitOps, observabilidad avanzada, seguridad avanzada o cloud;
 - sustituir MicroK8s por otra plataforma local;
 - sustituir la aplicación evolutiva sin decisión documentada.

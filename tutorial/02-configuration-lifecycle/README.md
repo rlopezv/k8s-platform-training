@@ -1,5 +1,48 @@
 # Unidad 02 - Configuracion, secretos y ciclo de vida
 
+## Guia pedagogica de la unidad
+
+Esta unidad trata sobre el contrato entre una aplicacion y la plataforma que la ejecuta.
+
+En la Unidad 01 Kubernetes ya podia mantener dos Pods y darles un Service interno. Eso demuestra que el workload existe, pero todavia dice muy poco sobre como debe operar. Una plataforma necesita mas informacion para tomar buenas decisiones: que datos recibe la aplicacion, que valores no deben tratarse como configuracion publica, cuando una instancia esta lista para recibir trafico, cuando debe reiniciarse y cuantos recursos necesita para ser planificada.
+
+La Unidad 02 cubre esa capa de madurez:
+
+- configuracion externa mediante ConfigMap;
+- valores sensibles simulados mediante Secret de laboratorio;
+- inyeccion de datos por variables de entorno y volumen;
+- probes como lenguaje de salud entre kubelet y contenedor;
+- readiness como condicion para entrar o salir de EndpointSlice;
+- requests y limits como primer contrato de capacidad;
+- rollouts cuando cambia el template de Pod;
+- recuperacion declarativa sin resetear el cluster.
+
+El laboratorio muestra todos esos conceptos en `platform-api`, pero el objetivo no es aprender "un YAML mas largo". El objetivo es entender que un Pod no deberia ser una caja negra. Debe declarar sus necesidades y sus senales para que Kubernetes pueda operarlo.
+
+## Mapa de aprendizaje
+
+| Concepto | Pregunta que responde | Error que evita |
+|---|---|---|
+| ConfigMap | Que datos no sensibles cambian por despliegue? | Reconstruir imagenes por cada cambio de configuracion |
+| Secret | Que datos no deberian tratarse como texto publico? | Versionar credenciales reales o imprimirlas para diagnosticar |
+| Variables de entorno | Que valores necesita el proceso al arrancar? | Ocultar configuracion dentro de la imagen |
+| Volumen de configuracion | Que archivo debe montar Kubernetes en el contenedor? | Confundir configuracion montada con estado persistente |
+| Startup probe | La aplicacion ha terminado de arrancar? | Reiniciar demasiado pronto aplicaciones lentas |
+| Readiness probe | Esta instancia debe recibir trafico? | Enviar peticiones a Pods que aun no estan preparados |
+| Liveness probe | El contenedor debe reiniciarse? | Dejar vivo un proceso bloqueado sin recuperacion local |
+| Requests | Que reserva minima necesita el scheduler? | Planificar sin declarar necesidades |
+| Limits | Que consumo maximo se permite al contenedor? | Dejar consumo sin ningun limite en el nodo |
+
+## Pregunta central
+
+La pregunta de la unidad es:
+
+```text
+Que debe declarar un workload para que Kubernetes pueda configurarlo, observar su salud y tomar decisiones basicas de ejecucion?
+```
+
+Si el alumno puede responderla, la Unidad 03 puede centrarse en red e ingreso sin tener que corregir primero una aplicacion muda, sin salud y sin limites.
+
 ## Contexto
 
 La Unidad 01 dejo una primera version de `platform-api`: un Deployment con dos replicas y un Service interno en el namespace `platform-training`. Ese estado ya permite comprobar que Kubernetes crea Pods, mantiene replicas y expone una direccion estable dentro del cluster.

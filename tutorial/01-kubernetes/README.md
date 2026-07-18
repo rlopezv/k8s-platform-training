@@ -1,5 +1,45 @@
 # Unidad 01 - Fundamentos operativos y primera aplicacion
 
+## Guia pedagogica de la unidad
+
+Esta unidad es el primer contacto real con Kubernetes como sistema de operacion de aplicaciones. No busca que el alumno memorice una lista de objetos, sino que cambie de modelo mental.
+
+Antes de Kubernetes, muchas operaciones se piensan como acciones directas: arrancar un proceso, abrir un puerto, copiar un fichero, reiniciar un servicio. Kubernetes introduce otra forma de trabajar: declaras objetos en una API y un conjunto de controladores intenta mantener el estado real cerca del estado deseado.
+
+La unidad cubre esa transicion:
+
+- de ejecutar un contenedor a declarar un workload;
+- de pensar en una maquina a pensar en un cluster;
+- de mirar un proceso a observar objetos, estado y eventos;
+- de usar nombres manuales a usar labels y selectors;
+- de acceder a un Pod concreto a usar un Service estable;
+- de "ha fallado el comando" a "que parte de la reconciliacion no coincide?".
+
+El laboratorio despliega `platform-api`, pero la aplicacion es un vehiculo. Lo importante es entender las responsabilidades que aparecen por primera vez: `Namespace`, `Deployment`, `ReplicaSet`, `Pod`, `Service`, labels, selectors, eventos y logs.
+
+## Mapa de aprendizaje
+
+| Concepto | Problema que resuelve | Limite en esta unidad |
+|---|---|---|
+| Cluster | Ejecutar workloads como sistema coordinado | Solo se usa un nodo local en MicroK8s |
+| API Kubernetes | Guardar y exponer estado deseado y observado | No se profundiza en autenticacion ni autorizacion |
+| Deployment | Mantener replicas de una aplicacion | No se configuran probes ni recursos hasta Unidad 02 |
+| Pod | Ejecutar uno o mas contenedores juntos | No se gestionan Pods manualmente |
+| ReplicaSet | Mantener numero de Pods para un Deployment | Se observa como objeto derivado |
+| Service | Dar entrada estable interna hacia Pods seleccionados | No expone la aplicacion fuera del cluster |
+| Labels y selectors | Relacionar recursos sin depender de nombres efimeros | Todavia no hay politicas ni segmentacion avanzada |
+| Eventos y logs | Explicar estado y fallos basicos | No hay observabilidad centralizada |
+
+## Pregunta central
+
+La pregunta de la unidad no es "como despliego nginx?". La pregunta es:
+
+```text
+Como convierte Kubernetes una declaracion versionada en Pods reales y en un punto de acceso interno estable?
+```
+
+Si el alumno puede responder esa pregunta con `platform-api`, esta preparado para que la Unidad 02 anada configuracion, salud y recursos sobre la misma base.
+
 ## Contexto
 
 La Unidad 00 dejo preparado un entorno local con Ubuntu 24.04 LTS sobre WSL2, MicroK8s, Kubernetes, `kubectl`, Helm y Terraform. Hasta este punto el cluster existe, pero el curso no tiene todavia una aplicacion, un namespace funcional ni workloads propios.
