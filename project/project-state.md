@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Unidad 02 — Configuración, secretos y ciclo de vida |
-| Estado general | Playbook de Unidad 02 generado, pendiente de revisión y aprobación |
-| Último incremento completado | Generación del playbook de la Unidad 02 |
+| Estado general | Playbook de Unidad 02 aprobado; preparado para generar la unidad |
+| Último incremento completado | Aprobación del playbook de la Unidad 02 |
 | Unidad activa | Ninguna |
 | Última unidad completada | 01 — Fundamentos operativos y primera aplicación |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00 y 01 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Revisar y aprobar el playbook de la Unidad 02; después generar la Unidad 02 |
+| Siguiente incremento permitido | Generar la Unidad 02 — Configuración, secretos y ciclo de vida |
 
 ---
 
@@ -45,8 +45,7 @@ La revisión del usuario aprobó la Unidad 01. También identificó que el conte
 
 Durante la siguiente fase se permite:
 
-- revisar y aprobar el playbook de la Unidad 02;
-- generar la Unidad 02 cuando el playbook sea aprobado;
+- generar la Unidad 02 segun el playbook aprobado;
 - reutilizar `tutorial/01-kubernetes/summary.md` como fuente de continuidad;
 - extender los manifiestos de `labs/01-kubernetes/solution/`;
 - planificar ConfigMaps, Secrets de laboratorio, variables de entorno, volúmenes de configuración, probes y primeros requests/limits;
@@ -82,7 +81,7 @@ Todavía no se permite:
 | `playbooks/generate-session-handoff.md` | Completo y aprobado | Framework-03 | Generación del handoff derivado de sesión |
 | `playbooks/units/00-environment.md` | Completo y aprobado | Unit-00-01 | Gobierno de la Unidad 00 |
 | `playbooks/units/01-kubernetes.md` | Completo y aprobado | Unit-01-Concept-Scope | Gobierno de la Unidad 01 |
-| `playbooks/units/02-configuration-lifecycle.md` | Generado, pendiente de revisión y aprobación | Unit-02-Playbook | Gobierno de la Unidad 02 |
+| `playbooks/units/02-configuration-lifecycle.md` | Completo y aprobado | Unit-02-Playbook-Approval | Gobierno de la Unidad 02 |
 | `AGENTS.md` | Completo | Unit-00-01 | Guía operativa para agentes con acceso al repositorio |
 
 ---
@@ -176,7 +175,7 @@ Todavía no se permite:
 |---|---|---|---|---|---|
 | 00 — Preparación del entorno | Completada con limitaciones | Sí | Sí, `platform/environment/` | Sí | Sí |
 | 01 — Fundamentos operativos y primera aplicación | Completada y aprobada con deuda pedagógica registrada | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
-| 02 — Configuración, secretos y ciclo de vida | Playbook generado, pendiente de revisión y aprobación | No | No | No | No |
+| 02 — Configuración, secretos y ciclo de vida | Playbook aprobado, pendiente de generación | No | No | No | No |
 | 03–25 | Previstas en roadmap | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
@@ -233,7 +232,7 @@ Limitaciones activas:
 
 | Campo | Estado |
 |---|---|
-| Estado | Playbook generado, pendiente de revisión y aprobación |
+| Estado | Playbook aprobado, pendiente de generación |
 | Fecha de inicio | No aplica |
 | Fecha de cierre | No aplica |
 | Playbook | `playbooks/units/02-configuration-lifecycle.md` |
@@ -254,7 +253,7 @@ Capacidades previstas por el playbook:
 Limitaciones activas:
 
 - la Unidad 02 todavía no está generada;
-- el playbook queda pendiente de revisión y aprobación por el usuario;
+- el playbook fue aprobado por el usuario;
 - no existen todavía artefactos en `tutorial/02-configuration-lifecycle/` ni `labs/02-configuration-lifecycle/`;
 - no se han creado ConfigMaps, Secrets, probes, requests ni limits en el laboratorio.
 
@@ -597,6 +596,7 @@ Validaciones no disponibles en esta sesión:
 | 33 | Aprobación de Unidad 01 | Completado | El usuario aprueba la Unidad 01 y se permite continuar con el playbook de Unidad 02 |
 | 34 | Playbook de Unidad 02 | Completado con revisión pendiente | `playbooks/units/02-configuration-lifecycle.md` creado; `project/project-state.md` actualizado |
 | 35 | Mejora de plantilla de unidades | Completado | `playbooks/unit-template.md` actualizado para exigir referencias oficiales o fuentes primarias en tutoriales; playbook de Unidad 02 alineado |
+| 36 | Aprobación del playbook de Unidad 02 | Completado | El usuario aprueba `playbooks/units/02-configuration-lifecycle.md`; se permite generar la Unidad 02 |
 
 ---
 
@@ -605,7 +605,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Revisar y aprobar el playbook de la Unidad 02; despues generar la Unidad 02 - Configuracion, secretos y ciclo de vida
+Generar la Unidad 02 - Configuracion, secretos y ciclo de vida
 ```
 
 ## Fuentes obligatorias
@@ -628,8 +628,7 @@ playbooks/units/02-configuration-lifecycle.md
 
 ## Trabajo permitido
 
-- revisar y aprobar `playbooks/units/02-configuration-lifecycle.md`;
-- generar la Unidad 02 cuando el playbook este aprobado;
+- generar la Unidad 02 segun `playbooks/units/02-configuration-lifecycle.md`;
 - usar `tutorial/01-kubernetes/summary.md` como entrada;
 - reutilizar `labs/01-kubernetes/solution/`;
 - crear `tutorial/02-configuration-lifecycle/` y `labs/02-configuration-lifecycle/` segun el playbook aprobado;

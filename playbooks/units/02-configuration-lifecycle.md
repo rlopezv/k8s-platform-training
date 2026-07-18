@@ -23,7 +23,7 @@ Fase 2 - Fundamentos Kubernetes
 ### Estado del playbook
 
 ```text
-En revision
+Aprobado para iniciar la generacion de la Unidad 02
 ```
 
 ### Propietario logico
@@ -1032,7 +1032,7 @@ Antes de aprobar este documento:
 ## Motivo de la ultima revision
 
 ```text
-Creacion inicial del playbook especifico de la Unidad 02 y auditoria de consistencia contra la plantilla base.
+Playbook aprobado por el usuario para iniciar la generacion de la Unidad 02.
 ```
 
 ## Documentos afectados por cambios futuros
