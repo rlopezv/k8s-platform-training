@@ -97,6 +97,7 @@ El 2026-07-18 se aplico un hardening pedagogico global inicial sobre la Unidad 0
 | Componente | Ruta | Responsabilidad |
 |---|---|---|
 | Tutorial Unidad 02 | `tutorial/02-configuration-lifecycle/README.md` | Guia conceptual y practica del alumno |
+| Student notes Unidad 02 | `tutorial/02-configuration-lifecycle/student-notes.md` | Material pedagogico profundo sobre ConfigMap, Secret, variables, volumenes, probes, requests, limits, rollouts y EndpointSlice |
 | Instructor notes | `tutorial/02-configuration-lifecycle/instructor-notes.md` | Guia de imparticion y evaluacion |
 | Summary Unidad 02 | `tutorial/02-configuration-lifecycle/summary.md` | Contrato de continuidad |
 | Laboratorio Unidad 02 | `labs/02-configuration-lifecycle/README.md` | Referencia operativa |
@@ -120,6 +121,7 @@ Ninguno.
 ```text
 tutorial/02-configuration-lifecycle/
 ├── README.md
+├── student-notes.md
 ├── instructor-notes.md
 └── summary.md
 

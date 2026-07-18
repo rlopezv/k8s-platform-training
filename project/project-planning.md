@@ -218,6 +218,7 @@ Construir, documentar y validar el entorno base sobre el que se ejecutarán toda
 ```text
 tutorial/00-environment/
 ├── README.md
+├── student-notes.md
 ├── instructor-notes.md
 └── summary.md
 
@@ -336,6 +337,7 @@ Esta aplicación será reutilizada y evolucionada durante el resto del itinerari
 ```text
 tutorial/01-kubernetes/
 ├── README.md
+├── student-notes.md
 ├── instructor-notes.md
 └── summary.md
 
@@ -580,9 +582,15 @@ Se utiliza para:
 
 ### 7.6. Sesión de desarrollo pedagógico profundo
 
-Se utiliza cuando una o varias unidades ya tienen contenido técnico, laboratorio y validaciones suficientes, pero sus `README.md` todavía no ofrecen soporte formativo adecuado para alumnos que no dominan el tema.
+Se utiliza cuando una o varias unidades ya tienen contenido técnico, laboratorio y validaciones suficientes, pero el material dirigido al alumno todavía no ofrece soporte formativo adecuado para personas que no dominan el tema.
 
-Esta sesión no debe crear nuevas capacidades técnicas ni avanzar el roadmap funcional. Su objetivo es desarrollar el contenido del tutorial como material docente principal:
+Esta sesión no debe crear nuevas capacidades técnicas ni avanzar el roadmap funcional. Su objetivo es desarrollar el material pedagógico de la unidad, separando responsabilidades:
+
+* `README.md` como puerta de entrada, mapa de aprendizaje y orientación;
+* `student-notes.md` como explicación profunda de conceptos, modelos mentales, relaciones y errores frecuentes;
+* `labs/<unidad>/README.md` como guía operativa del laboratorio.
+
+El contenido profundo debe:
 
 * explicar desde cero los conceptos esenciales de la unidad;
 * construir el modelo mental antes del laboratorio;
@@ -590,8 +598,7 @@ Esta sesión no debe crear nuevas capacidades técnicas ni avanzar el roadmap fu
 * ampliar ejemplos conceptuales sin crear laboratorios paralelos;
 * explicar trade-offs y límites de las decisiones tomadas;
 * añadir errores de razonamiento y preguntas de comprobación;
-* transformar referencias en lectura guiada;
-* mantener el README del laboratorio como guía operativa.
+* transformar referencias en lectura guiada.
 
 Puede planificarse como fase posterior cuando convenga avanzar primero en varias unidades técnicas y revisar después la progresión completa del itinerario.
 
@@ -619,12 +626,12 @@ Debe comprobarse que:
 
 El siguiente incremento recomendado vigente se registra en `project/project-state.md`, que debe prevalecer sobre esta sección cuando el itinerario avance.
 
-Tras generar, validar técnicamente y aprobar la Unidad 02, el siguiente incremento recomendado es generar el playbook de la **Unidad 03 — Networking e ingreso**.
+Tras generar y validar técnicamente la Unidad 03, el siguiente incremento recomendado es revisar y aprobar el refuerzo pedagógico transversal de las Unidades 00-03, especialmente los nuevos `student-notes.md`.
 
 Esa sesión debería centrarse en:
 
-1. leer `tutorial/02-configuration-lifecycle/summary.md`;
-2. reutilizar `labs/02-configuration-lifecycle/solution/`;
-3. definir el alcance exacto de networking, Service discovery, Ingress y Gateway API según el playbook aprobado;
-4. mantener `platform-api` y `platform-training` como base evolutiva;
-5. conservar como deuda una futura fase o sesión de desarrollo pedagógico profundo de los README, sin bloquear el avance técnico salvo decisión explícita.
+1. leer `tutorial/03-networking-ingress/summary.md`;
+2. revisar `tutorial/00-environment/student-notes.md`, `tutorial/01-kubernetes/student-notes.md`, `tutorial/02-configuration-lifecycle/student-notes.md` y `tutorial/03-networking-ingress/student-notes.md`;
+3. comprobar que los README actúan como entrada y no como laboratorio extendido;
+4. mantener `platform-api`, `platform-training` y `labs/03-networking-ingress/solution/` como base técnica congelada;
+5. no avanzar a Unidad 04 hasta cerrar esta revisión pedagógica transversal o registrar una decisión explícita.

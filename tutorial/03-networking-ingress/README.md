@@ -19,6 +19,8 @@ La Unidad 03 cubre:
 
 El laboratorio usa Traefik porque es el controlador que proporciona el addon Ingress de MicroK8s `v1.35`. Eso no convierte Traefik en el tema principal. El tema principal es la cadena de responsabilidades que cualquier implementacion de ingreso debe resolver.
 
+Para estudiar con mas detalle Pod IP, Service, EndpointSlice, DNS interno, Ingress Controller, `Ingress`, host HTTP y Gateway API, usa `tutorial/03-networking-ingress/student-notes.md`.
+
 ## Mapa de aprendizaje
 
 | Capa | Responsabilidad | Pregunta de diagnostico |

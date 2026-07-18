@@ -190,6 +190,7 @@ Cada unidad deberá generar obligatoriamente:
 
 ```text
 tutorial/<unidad>/README.md
+tutorial/<unidad>/student-notes.md
 tutorial/<unidad>/instructor-notes.md
 tutorial/<unidad>/summary.md
 ```
@@ -262,28 +263,53 @@ Ruta:
 tutorial/<unidad>/README.md
 ```
 
-Debe incluir como mínimo:
+Debe actuar como puerta de entrada de la unidad. Debe incluir como mínimo:
 
 - contexto;
 - objetivos;
 - conocimientos previos;
 - relación con la unidad anterior;
 - arquitectura o estado inicial;
-- conceptos;
-- procedimiento;
-- validaciones;
-- resultados esperados;
-- problemas frecuentes;
-- limpieza o recuperación cuando proceda;
+- mapa de aprendizaje;
+- conceptos cubiertos a nivel introductorio;
+- referencia clara a `student-notes.md` para el desarrollo pedagógico profundo;
+- referencia clara al README del laboratorio para los pasos operativos;
 - conclusión;
 - conexión con la siguiente unidad.
 
-El contenido deberá diferenciar claramente:
+No debe convertirse en una guía de laboratorio extendida ni en el lugar principal para desarrollar todos los conceptos desde cero. Los comandos repetitivos, secuencias completas de despliegue, recuperación operacional y validación mecánica pertenecen al README del laboratorio.
+
+## Notas del alumno
+
+Ruta:
+
+```text
+tutorial/<unidad>/student-notes.md
+```
+
+Debe ser el material formativo profundo de la unidad. Su responsabilidad es construir el modelo mental del alumno y explicar desde cero toda abstracción nueva que la unidad utilice.
+
+No se debe asumir que un alumno sabe qué es un Pod, Deployment, Service, ConfigMap, Secret, Ingress, volumen o cualquier otro concepto solo porque el laboratorio lo usa.
+
+Para cada concepto relevante, debe cubrir:
+
+- qué problema resuelve;
+- qué es y qué no es;
+- qué responsabilidad tiene;
+- cómo se relaciona con conceptos anteriores;
+- qué objeto, campo, comando o señal permite observarlo;
+- qué errores de razonamiento son frecuentes;
+- qué queda fuera de alcance y por qué se difiere.
+
+Debe diferenciar claramente:
 
 - explicación conceptual;
-- instrucciones ejecutables;
-- resultados esperados;
+- ejemplos mínimos de observación;
+- analogías o modelos mentales;
+- límites y trade-offs;
 - notas específicas de plataforma.
+
+Las instrucciones ejecutables completas pertenecen al README del laboratorio. `student-notes.md` puede incluir comandos puntuales solo cuando ayuden a observar o razonar sobre un concepto.
 
 ## Laboratorio
 

@@ -317,13 +317,18 @@ Como mínimo contendrá:
 ```text
 tutorial/<unidad>/
 ├── README.md
+├── student-notes.md
 ├── instructor-notes.md
 └── summary.md
 ```
 
 ### `README.md`
 
-Contenido principal de la unidad para el alumno.
+Puerta de entrada de la unidad para el alumno: contexto, objetivos, mapa de aprendizaje, alcance, relación con unidades anteriores y orientación para usar el material.
+
+### `student-notes.md`
+
+Material pedagógico profundo de la unidad. Explica desde cero los conceptos, modelos mentales, relaciones, errores frecuentes, límites y preguntas de comprobación que el alumno necesita para no limitarse a ejecutar laboratorios.
 
 ### `instructor-notes.md`
 

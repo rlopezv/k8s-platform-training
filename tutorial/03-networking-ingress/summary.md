@@ -89,6 +89,7 @@ Gateway API queda documentada como comparacion conceptual. El addon Ingress de M
 | Componente | Ruta | Responsabilidad |
 |---|---|---|
 | Tutorial Unidad 03 | `tutorial/03-networking-ingress/README.md` | Guia conceptual del alumno |
+| Student notes Unidad 03 | `tutorial/03-networking-ingress/student-notes.md` | Material pedagogico profundo sobre Pod IP, Service, EndpointSlice, DNS interno, Ingress Controller, Ingress, host HTTP y Gateway API conceptual |
 | Instructor notes | `tutorial/03-networking-ingress/instructor-notes.md` | Guia de imparticion y evaluacion |
 | Summary Unidad 03 | `tutorial/03-networking-ingress/summary.md` | Contrato de continuidad |
 | Laboratorio Unidad 03 | `labs/03-networking-ingress/README.md` | Referencia operativa |
@@ -113,6 +114,7 @@ Ninguno.
 ```text
 tutorial/03-networking-ingress/
 ├── README.md
+├── student-notes.md
 ├── instructor-notes.md
 └── summary.md
 

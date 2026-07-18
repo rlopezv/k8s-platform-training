@@ -191,9 +191,9 @@ Utilizar una tabla:
 
 ## Artefactos por unidad
 
-| Unidad | Tutorial | Laboratorio | Instructor notes | Summary | Estado |
-|---|---|---|---|---|---|
-| NN — Nombre | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial | [estado] |
+| Unidad | Tutorial | Student notes | Laboratorio | Instructor notes | Summary | Estado |
+|---|---|---|---|---|---|---|
+| NN — Nombre | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial | [estado] |
 
 ## Artefactos principales existentes
 
@@ -221,7 +221,9 @@ Para cada unidad iniciada o completada registrar:
 | Fecha de cierre | YYYY-MM-DD o No aplica |
 | Playbook | `[ruta]` |
 | Tutorial | `[ruta]` |
+| Student notes | `[ruta]` |
 | Laboratorio | `[ruta]` |
+| Instructor notes | `[ruta]` |
 | Summary | `[ruta]` |
 
 ### Capacidades incorporadas

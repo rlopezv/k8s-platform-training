@@ -17,6 +17,8 @@ Por eso esta unidad cubre la base operativa del itinerario:
 
 El laboratorio ejecutable esta en `platform/environment/`. Este README debe leerse como el capitulo que explica por que se hacen esas comprobaciones y que aprende el alumno al interpretarlas.
 
+Para estudiar los conceptos con mas profundidad antes o despues del laboratorio, usa `tutorial/00-environment/student-notes.md`.
+
 ## Mapa de aprendizaje
 
 | Bloque | Que cubre | Que debe poder explicar el alumno |

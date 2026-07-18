@@ -325,7 +325,7 @@ Ruta:
 tutorial/NN-unit-name/README.md
 ```
 
-Debe incluir:
+Debe actuar como puerta de entrada de la unidad. Debe incluir:
 
 1. problema real que resuelve la unidad;
 2. por qué aparece en este punto del itinerario;
@@ -334,30 +334,52 @@ Debe incluir:
 5. conocimientos previos;
 6. relación con la unidad anterior;
 7. estado inicial;
-8. modelo mental de la unidad;
-9. conceptos explicados con profundidad progresiva;
-10. decisiones de diseño y trade-offs;
-11. procedimiento solo cuando ayude a comprender;
-12. validaciones conceptuales y técnicas;
-13. errores de razonamiento frecuentes;
-14. resolución de problemas;
-15. recuperación o limpieza;
-16. conclusión;
-17. lectura guiada con referencias oficiales, conceptuales y complementarias;
-18. conexión con la siguiente unidad.
+8. mapa de aprendizaje;
+9. conceptos cubiertos a nivel introductorio;
+10. cómo usar `student-notes.md`;
+11. cómo usar el README del laboratorio;
+12. decisiones de diseño principales;
+13. conclusión;
+14. lectura guiada con referencias oficiales, conceptuales y complementarias;
+15. conexión con la siguiente unidad.
 
 Las referencias deberán priorizar documentación oficial, especificaciones, documentación de proyecto o fuentes primarias. Cuando se usen artículos, blogs o materiales secundarios, deberán complementar y no sustituir las fuentes primarias.
 
 El tutorial no debe escribirse como una guía de laboratorio extendida. Los comandos repetitivos, secuencias completas de despliegue, recuperación operacional y validación mecánica pertenecen al README del laboratorio, salvo comandos puntuales que ayuden a observar o razonar sobre un concepto.
 
-El tutorial debe construir comprensión antes de pedir ejecución. Para cada abstracción nueva, explicar:
+## Notas del alumno
+
+Ruta:
+
+```text
+tutorial/NN-unit-name/student-notes.md
+```
+
+Debe ser el material pedagógico profundo de la unidad. Debe construir comprensión antes de pedir ejecución. Para cada abstracción nueva o central, explicar:
 
 - qué problema resuelve;
+- qué es;
+- qué no es;
 - qué responsabilidad tiene;
+- cómo se representa en los artefactos de la unidad;
 - qué no resuelve;
 - cómo se relaciona con artefactos ya conocidos;
 - qué trade-offs introduce;
 - cómo se diagnostica cuando falla.
+
+Debe incluir:
+
+1. modelo mental amplio de la unidad;
+2. glosario razonado de conceptos;
+3. explicación progresiva de cada concepto central;
+4. relaciones entre conceptos;
+5. ejemplos conceptuales mínimos;
+6. lectura guiada de los manifiestos o scripts relevantes;
+7. errores de razonamiento frecuentes;
+8. preguntas de comprobación;
+9. límites de alcance y continuidad.
+
+No debe duplicar el README del laboratorio. Puede incluir comandos puntuales de observación, pero no secuencias operativas completas.
 
 Las referencias deberán funcionar como lectura guiada. Para cada bloque de referencias, incluir preguntas que el alumno pueda responder después de leer.
 
@@ -629,6 +651,7 @@ La IA sí puede:
 La unidad se considerará completada cuando:
 
 - [ ] exista `tutorial/NN-unit-name/README.md`;
+- [ ] exista `tutorial/NN-unit-name/student-notes.md`;
 - [ ] exista `tutorial/NN-unit-name/instructor-notes.md`;
 - [ ] exista `tutorial/NN-unit-name/summary.md`;
 - [ ] existan los artefactos ejecutables previstos;

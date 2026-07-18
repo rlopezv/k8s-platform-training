@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Refuerzo pedagógico transversal de Unidades 00-03 |
-| Estado general | README de Unidades 00-03 reforzados pedagogicamente; revisión del usuario pendiente |
-| Último incremento completado | Refuerzo pedagógico de README de Unidades 00-03 sin cambios técnicos |
+| Estado general | `student-notes.md` creados para Unidades 00-03 y enlazados desde los README; revisión del usuario pendiente |
+| Último incremento completado | Creación de notas pedagógicas profundas de alumno para Unidades 00-03 sin cambios técnicos |
 | Unidad activa | Revisión pedagógica transversal de Unidades 00-03 |
 | Última unidad completada | 03 — Networking e ingreso |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02 y 03 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Revisar y aprobar el refuerzo pedagógico de README de Unidades 00-03 |
+| Siguiente incremento permitido | Revisar y aprobar `student-notes.md` de Unidades 00-03 y el nuevo contrato pedagógico |
 
 ---
 
@@ -47,15 +47,17 @@ El 2026-07-18 se generó un hardening pedagógico global inicial sobre las Unida
 
 Como consecuencia, se actualizaron `playbooks/master.md` y `playbooks/unit-template.md` para exigir que futuras unidades no asuman dominio previo del tema, construyan modelo mental desde el problema real, expliquen conceptos con progresión didáctica y mantengan una separación más estricta entre tutorial formativo y laboratorio operativo.
 
-El usuario y el proyecto acuerdan que el nivel pedagógico deseado puede abordarse en una fase posterior dedicada específicamente a desarrollar los `README.md` como soporte formativo profundo. Esta fase no debe avanzar capacidades técnicas ni sustituir laboratorios; debe ampliar teoría, modelos mentales, ejemplos conceptuales, razonamiento, lectura guiada y progresión didáctica.
+El usuario y el proyecto acuerdan que el nivel pedagógico deseado no debe resolverse cargando indefinidamente los `README.md`. A partir de este incremento, cada unidad debe separar el `README.md` como puerta de entrada y `student-notes.md` como material pedagógico profundo. Esta fase no debe avanzar capacidades técnicas ni sustituir laboratorios; debe ampliar teoría, modelos mentales, ejemplos conceptuales, razonamiento, lectura guiada y progresión didáctica.
 
 La Unidad 03 generó el acceso HTTP local para `platform-api` mediante un recurso `Ingress` y el addon Ingress de MicroK8s. La validación técnica se ejecutó contra el MicroK8s local con 0 fallos y 0 avisos. La revisión pedagógica final del usuario queda pendiente.
 
 El 2026-07-18 se inicio esta fase pedagogica transversal sobre `tutorial/00-environment/README.md`, `tutorial/01-kubernetes/README.md`, `tutorial/02-configuration-lifecycle/README.md` y `tutorial/03-networking-ingress/README.md`. El incremento añade una guia pedagogica inicial, mapas de aprendizaje, preguntas centrales y separacion mas explicita entre capitulo formativo y laboratorio. No modifica manifiestos, scripts ni estado del cluster.
 
+El 2026-07-19 se incorpora `student-notes.md` como artefacto pedagógico estructural de cada unidad. Se crean notas del alumno para las Unidades 00, 01, 02 y 03, con explicaciones desde cero de los conceptos principales, modelos mentales, relaciones entre recursos, errores frecuentes, preguntas de comprobación y continuidad con unidades posteriores. Los README quedan enlazados a estas notas y conservan su función de entrada y orientación. No se modifican manifiestos, scripts, laboratorios ni estado del clúster.
+
 Durante esta fase se permite:
 
-- revisar y ajustar el refuerzo pedagogico de los README de Unidades 00-03;
+- revisar y ajustar los `student-notes.md` y los enlaces desde README de Unidades 00-03;
 - reutilizar `tutorial/03-networking-ingress/summary.md` como fuente de continuidad;
 - reutilizar `labs/03-networking-ingress/solution/` como estado activo de la aplicación;
 - mantener congeladas las capacidades tecnicas ya validadas.
@@ -78,16 +80,16 @@ Todavía no se permite:
 
 | Artefacto | Estado | Última modificación relevante | Responsabilidad |
 |---|---|---|---|
-| `README.md` | Completo y aprobado | Bootstrap-01 | Punto de entrada y visión general |
-| `project/architecture.md` | Completo y aprobado | Bootstrap-02 | Arquitectura y decisiones estructurales |
-| `project/project-state.md` | Actualizado con reglas pedagógicas y deuda reforzada | Pedagogical-Hardening-Rules | Estado consolidado |
+| `README.md` | Actualizado | Student-Notes-Structure | Punto de entrada y visión general; refleja `student-notes.md` como artefacto por unidad |
+| `project/architecture.md` | Actualizado | Student-Notes-Structure | Arquitectura y decisiones estructurales; separa README y notas profundas del alumno |
+| `project/project-state.md` | Actualizado con estructura `student-notes.md` | Student-Notes-Structure | Estado consolidado |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
-| `project/project-planning.md` | Actualizado | Pedagogical-Deepening-Phase | Planificación incremental del trabajo; incluye sesiones de desarrollo pedagógico profundo |
+| `project/project-planning.md` | Actualizado | Student-Notes-Structure | Planificación incremental del trabajo; incluye sesiones de desarrollo pedagógico profundo |
 | `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
-| `playbooks/master.md` | Actualizado | Pedagogical-Hardening-Rules | Reglas globales de generación; exige tutoriales pedagógicos para alumnos que no dominan aún el tema |
-| `playbooks/unit-template.md` | Actualizado | Pedagogical-Hardening-Rules | Plantilla de playbooks específicos; exige problema real, modelo mental, progresión conceptual, trade-offs y lectura guiada |
-| `playbooks/summary-template.md` | Completo y aprobado | Bootstrap-07 | Contrato de continuidad |
-| `playbooks/project-state-template.md` | Completo y aprobado | Bootstrap-08 | Reglas de mantenimiento del estado |
+| `playbooks/master.md` | Actualizado | Student-Notes-Structure | Reglas globales de generación; exige `student-notes.md` como material pedagógico profundo |
+| `playbooks/unit-template.md` | Actualizado | Student-Notes-Structure | Plantilla de playbooks específicos; exige notas del alumno por unidad |
+| `playbooks/summary-template.md` | Actualizado | Student-Notes-Structure | Contrato de continuidad; registra `student-notes.md` |
+| `playbooks/project-state-template.md` | Actualizado | Student-Notes-Structure | Reglas de mantenimiento del estado; registra `student-notes.md` |
 | `playbooks/generate-session-handoff.md` | Completo y aprobado | Framework-03 | Generación del handoff derivado de sesión |
 | `playbooks/units/00-environment.md` | Completo y aprobado | Unit-00-01 | Gobierno de la Unidad 00 |
 | `playbooks/units/01-kubernetes.md` | Completo y aprobado | Unit-01-Concept-Scope | Gobierno de la Unidad 01 |
@@ -195,18 +197,22 @@ Todavía no se permite:
     ├── 00-environment/
     │   ├── instructor-notes.md
     │   ├── README.md
+    │   ├── student-notes.md
     │   └── summary.md
     ├── 01-kubernetes/
     │   ├── instructor-notes.md
     │   ├── README.md
+    │   ├── student-notes.md
     │   └── summary.md
     ├── 02-configuration-lifecycle/
     │   ├── instructor-notes.md
     │   ├── README.md
+    │   ├── student-notes.md
     │   └── summary.md
     └── 03-networking-ingress/
         ├── instructor-notes.md
         ├── README.md
+        ├── student-notes.md
         └── summary.md
 ```
 
@@ -219,19 +225,19 @@ Todavía no se permite:
 | `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base |
 | `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02 y 03 |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
-| `tutorial/` | Unidades 00, 01, 02 y 03 generadas | Documentación de alumno, instructor notes y summaries |
+| `tutorial/` | Unidades 00, 01, 02 y 03 generadas | README de entrada, `student-notes.md`, instructor notes y summaries |
 
 ---
 
 # Estado de las unidades
 
-| Unidad | Estado | Tutorial | Laboratorio o plataforma | Instructor notes | Summary |
-|---|---|---|---|---|---|
-| 00 — Preparación del entorno | Completada con limitaciones; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `platform/environment/` | Sí | Sí |
-| 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
-| 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; hardening pedagógico inicial mínimo aceptado | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
-| 03 — Networking e ingreso | Completada con validación técnica; revisión pedagógica pendiente | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
-| 04–25 | Previstas en roadmap | No | No | No | No |
+| Unidad | Estado | Tutorial | Student notes | Laboratorio o plataforma | Instructor notes | Summary |
+|---|---|---|---|---|---|---|
+| 00 — Preparación del entorno | Completada con limitaciones; `student-notes.md` pendiente de revisión | Sí | Sí | Sí, `platform/environment/` | Sí | Sí |
+| 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; `student-notes.md` pendiente de revisión | Sí | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
+| 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; `student-notes.md` pendiente de revisión | Sí | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
+| 03 — Networking e ingreso | Completada con validación técnica; revisión pedagógica pendiente | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
+| 04–25 | Previstas en roadmap | No | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
 
@@ -242,6 +248,7 @@ Todavía no se permite:
 | Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/00-environment.md` |
 | Tutorial | `tutorial/00-environment/README.md` |
+| Student notes | `tutorial/00-environment/student-notes.md` |
 | Artefactos ejecutables | `platform/environment/` |
 | Instructor notes | `tutorial/00-environment/instructor-notes.md` |
 | Summary | `tutorial/00-environment/summary.md` |
@@ -260,6 +267,7 @@ Limitaciones activas:
 | Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/01-kubernetes.md` |
 | Tutorial | `tutorial/01-kubernetes/README.md` |
+| Student notes | `tutorial/01-kubernetes/student-notes.md` |
 | Laboratorio | `labs/01-kubernetes/` |
 | Instructor notes | `tutorial/01-kubernetes/instructor-notes.md` |
 | Summary | `tutorial/01-kubernetes/summary.md` |
@@ -292,6 +300,7 @@ Limitaciones al cierre de la Unidad 01:
 | Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/02-configuration-lifecycle.md` |
 | Tutorial | `tutorial/02-configuration-lifecycle/README.md` |
+| Student notes | `tutorial/02-configuration-lifecycle/student-notes.md` |
 | Laboratorio | `labs/02-configuration-lifecycle/` |
 | Instructor notes | `tutorial/02-configuration-lifecycle/instructor-notes.md` |
 | Summary | `tutorial/02-configuration-lifecycle/summary.md` |
@@ -321,6 +330,7 @@ Limitaciones activas:
 | Fecha de cierre | 2026-07-18 |
 | Playbook | `playbooks/units/03-networking-ingress.md` |
 | Tutorial | `tutorial/03-networking-ingress/README.md` |
+| Student notes | `tutorial/03-networking-ingress/student-notes.md` |
 | Laboratorio | `labs/03-networking-ingress/` |
 | Instructor notes | `tutorial/03-networking-ingress/instructor-notes.md` |
 | Summary | `tutorial/03-networking-ingress/summary.md` |
@@ -637,8 +647,8 @@ Tras generar y validar técnicamente la Unidad 03:
 | R-008 | Recursos insuficientes en el host | Media | Medio | Validar requisitos mínimos | Abierto |
 | R-009 | Disponibilidad futura de imagen externa | Media | Medio | Imagen versionada y pull real validado; sustituir solo con registro en summary y estado | Mitigado |
 | R-010 | Uso de `Endpoints` con advertencia de deprecación en Kubernetes 1.35 | Media | Bajo | Unidad 02 incorpora EndpointSlice como comprobación principal; mantener `Endpoints` solo como referencia histórica o fallback | Mitigado |
-| R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Alta | Alto | Hardening pedagógico global inicial aceptado solo como cambio mínimo; se acuerda una fase posterior posible de desarrollo profundo de README | Abierto |
-| R-012 | Futuras unidades especializadas pueden volverse difíciles de seguir si los README siguen asumiendo conocimiento previo | Alta | Alto | Playbooks actualizados y `project-planning.md` incorpora sesión de desarrollo pedagógico profundo | Abierto |
+| R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Alta | Alto | `student-notes.md` creado para Unidades 00-03; pendiente revisión pedagógica del usuario | Abierto |
+| R-012 | Futuras unidades especializadas pueden volverse difíciles de seguir si los materiales siguen asumiendo conocimiento previo | Alta | Alto | Playbooks y plantillas actualizados para exigir `student-notes.md` en futuras unidades | Abierto |
 
 ## Cuestiones abiertas
 
@@ -665,7 +675,7 @@ Tras generar y validar técnicamente la Unidad 03:
 | TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida y versiones reales registradas | Cerrada para Unidad 00 |
 | TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
 | TD-005 | Incorporar `EndpointSlice` como observación posterior al Service clásico | Baja | Unidad 01 | Resuelto en Unidad 02 como comprobación principal de endpoints | Cerrada |
-| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | Refuerzo inicial de README de Unidades 00-03 generado; pendiente revisión del usuario y posible desarrollo pedagogico mas profundo | Abierta |
+| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | `student-notes.md` incorporado como artefacto estructural y creado para Unidades 00-03; pendiente revisión del usuario | Abierta |
 | TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo | `playbooks/master.md` y `playbooks/unit-template.md` actualizados con criterios pedagógicos más estrictos | Cerrada |
 
 ---
@@ -695,6 +705,7 @@ Tras generar y validar técnicamente la Unidad 03:
 | Revisión pedagógica Unidad 03 | Pendiente de revisión del usuario | Pendiente |
 | Hardening pedagógico global inicial | Revisión documental de `tutorial/00-environment/`, `tutorial/01-kubernetes/`, `tutorial/02-configuration-lifecycle/` y summaries | Aceptado por el usuario como cambio mínimo; deuda pedagógica profunda sigue abierta |
 | Refuerzo pedagógico README Unidades 00-03 | Revisión documental de `tutorial/00-environment/README.md`, `tutorial/01-kubernetes/README.md`, `tutorial/02-configuration-lifecycle/README.md` y `tutorial/03-networking-ingress/README.md` | Guías pedagógicas, mapas de aprendizaje y preguntas centrales añadidas; revisión del usuario pendiente |
+| Student notes Unidades 00-03 | Revisión documental de `tutorial/00-environment/student-notes.md`, `tutorial/01-kubernetes/student-notes.md`, `tutorial/02-configuration-lifecycle/student-notes.md` y `tutorial/03-networking-ingress/student-notes.md` | Notas pedagógicas profundas creadas y enlazadas desde los README; revisión del usuario pendiente |
 | Ausencia de charts Helm | `find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print` | Sin resultados |
 | Ausencia de módulos Terraform | `find . -path ./.git -prune -o -type f \( -name '*.tf' -o -name '*.tfvars' \) -print` | Sin resultados |
 
@@ -754,6 +765,7 @@ Validaciones no disponibles en esta sesión:
 | 43 | Aprobación del playbook de Unidad 03 | Completado | El usuario aprueba `playbooks/units/03-networking-ingress.md`; se permite generar la Unidad 03 |
 | 44 | Generación y validación técnica de Unidad 03 | Completado con revisión pedagógica pendiente | Tutorial, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` expuesta por Ingress HTTP local y validada en MicroK8s |
 | 45 | Refuerzo pedagógico README Unidades 00-03 | Completado con revisión pendiente | Se añaden guías pedagógicas, mapas de aprendizaje y preguntas centrales sin modificar laboratorios ni capacidades técnicas |
+| 46 | Estructura `student-notes.md` y notas de alumno Unidades 00-03 | Completado con revisión pendiente | `student-notes.md` incorporado al contrato de unidad; notas profundas creadas, README enlazados y summaries actualizados sin modificar capacidades técnicas |
 
 ---
 
@@ -762,7 +774,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Revisar y aprobar el refuerzo pedagogico de README de Unidades 00-03
+Revisar y aprobar `student-notes.md` de Unidades 00-03 y el nuevo contrato pedagogico
 ```
 
 ## Fuentes obligatorias
@@ -780,15 +792,20 @@ playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
 tutorial/00-environment/README.md
+tutorial/00-environment/student-notes.md
 tutorial/01-kubernetes/README.md
+tutorial/01-kubernetes/student-notes.md
 tutorial/02-configuration-lifecycle/README.md
+tutorial/02-configuration-lifecycle/student-notes.md
 tutorial/03-networking-ingress/README.md
+tutorial/03-networking-ingress/student-notes.md
 project/project-state.md
 ```
 
 ## Trabajo permitido
 
-- revisar, corregir o ampliar el refuerzo pedagogico de los README de Unidades 00-03;
+- revisar, corregir o ampliar los `student-notes.md` de Unidades 00-03;
+- ajustar los README solo cuando sea necesario para orientar mejor hacia las notas del alumno;
 - mantener la separacion entre tutorial formativo y laboratorio operativo;
 - conservar `platform-api`, `platform-training` y `labs/03-networking-ingress/solution/` como estado tecnico validado;
 - no crear nuevas capacidades tecnicas durante esta fase.

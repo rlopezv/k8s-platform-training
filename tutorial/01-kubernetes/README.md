@@ -17,6 +17,8 @@ La unidad cubre esa transicion:
 
 El laboratorio despliega `platform-api`, pero la aplicacion es un vehiculo. Lo importante es entender las responsabilidades que aparecen por primera vez: `Namespace`, `Deployment`, `ReplicaSet`, `Pod`, `Service`, labels, selectors, eventos y logs.
 
+Para estudiar esos conceptos desde cero, especialmente `Pod`, Deployment, ReplicaSet, Service, labels y reconciliacion, usa `tutorial/01-kubernetes/student-notes.md`.
+
 ## Mapa de aprendizaje
 
 | Concepto | Problema que resuelve | Limite en esta unidad |

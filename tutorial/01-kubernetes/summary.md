@@ -93,6 +93,7 @@ El 2026-07-18 se aplico un hardening pedagogico global inicial sobre la Unidad 0
 | Componente | Ruta | Responsabilidad |
 |---|---|---|
 | Tutorial Unidad 01 | `tutorial/01-kubernetes/README.md` | Guia conceptual y practica del alumno |
+| Student notes Unidad 01 | `tutorial/01-kubernetes/student-notes.md` | Material pedagogico profundo sobre cluster, API, Namespace, Pod, Deployment, ReplicaSet, Service, labels, selectors y reconciliacion |
 | Instructor notes | `tutorial/01-kubernetes/instructor-notes.md` | Guia de imparticion y evaluacion |
 | Summary Unidad 01 | `tutorial/01-kubernetes/summary.md` | Contrato de continuidad |
 | Laboratorio Unidad 01 | `labs/01-kubernetes/README.md` | Referencia operativa |
@@ -117,6 +118,7 @@ Ninguno.
 ```text
 tutorial/01-kubernetes/
 ├── README.md
+├── student-notes.md
 ├── instructor-notes.md
 └── summary.md
 

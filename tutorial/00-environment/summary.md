@@ -43,6 +43,7 @@ Helm y Terraform ya fueron instalados y validados por el usuario como herramient
 | Playbook de la unidad | `playbooks/units/00-environment.md` | Actualizado con decision `kubectl` |
 | Estado del proyecto | `project/project-state.md` | Actualizado con cierre de Unidad 00 y limitaciones documentadas |
 | Hardening pedagogico inicial | `tutorial/00-environment/README.md`, `tutorial/00-environment/instructor-notes.md` | Refuerzo de problema real, modelo mental, errores de razonamiento y lectura guiada |
+| Notas del alumno | `tutorial/00-environment/student-notes.md` | Creado como material pedagogico profundo sobre capas del entorno, contratos, evidencias y errores conceptuales |
 
 ## Decisiones registradas
 

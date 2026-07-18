@@ -173,6 +173,7 @@ Incluir únicamente los archivos y directorios relevantes creados o modificados 
 ```text
 tutorial/NN-unit-name/
 ├── README.md
+├── student-notes.md
 ├── instructor-notes.md
 └── summary.md
 
@@ -479,6 +480,7 @@ Una diferencia no autorizada impide marcar la unidad como completada.
 | Entregable | Ruta | Estado |
 |---|---|---|
 | Tutorial | `tutorial/NN-unit-name/README.md` | Completo/Parcial/No creado |
+| Student notes | `tutorial/NN-unit-name/student-notes.md` | Completo/Parcial/No creado |
 | Instructor notes | `tutorial/NN-unit-name/instructor-notes.md` | Completo/Parcial/No creado |
 | Summary | `tutorial/NN-unit-name/summary.md` | Completo/Parcial |
 | Laboratorio | `[ruta]` | Completo/Parcial/No creado |

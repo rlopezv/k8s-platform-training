@@ -231,6 +231,7 @@ La estructura exacta será definida por los playbooks, pero cada unidad deberá 
 ```text
 tutorial/<unidad>/
 ├── README.md
+├── student-notes.md
 ├── instructor-notes.md
 └── summary.md
 
