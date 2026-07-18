@@ -325,7 +325,10 @@ Debe incluir:
 9. resolución de problemas;
 10. recuperación o limpieza;
 11. conclusión;
-12. conexión con la siguiente unidad.
+12. referencias oficiales y lectura recomendada;
+13. conexión con la siguiente unidad.
+
+Las referencias deberán priorizar documentación oficial, especificaciones, documentación de proyecto o fuentes primarias. Cuando se usen artículos, blogs o materiales secundarios, deberán complementar y no sustituir las fuentes primarias.
 
 ## Notas del instructor
 
@@ -595,6 +598,7 @@ La unidad se considerará completada cuando:
 - [ ] las validaciones no ejecutadas estén declaradas;
 - [ ] no existan secretos reales;
 - [ ] se reutilicen los artefactos anteriores;
+- [ ] el tutorial incluya referencias oficiales o fuentes primarias relevantes;
 - [ ] `project/project-state.md` esté actualizado;
 - [ ] el resultado prepare la siguiente unidad;
 - [ ] no existan contradicciones abiertas.
@@ -650,6 +654,7 @@ El `summary.md` deberá destacar:
 - artefactos modificados;
 - comandos de validación principales;
 - decisiones específicas;
+- referencias principales utilizadas;
 - dependencias nuevas;
 - limitaciones;
 - deuda técnica;
