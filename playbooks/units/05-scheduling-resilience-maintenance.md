@@ -23,7 +23,7 @@ Fase 2 - Fundamentos Kubernetes
 ### Estado del playbook
 
 ```text
-En revision
+Aprobado
 ```
 
 ### Propietario logico
@@ -1057,6 +1057,5 @@ El `summary.md` debera destacar:
 |---|---|
 | Fecha de creacion | 2026-07-19 |
 | Ultima revision | 2026-07-19 |
-| Estado | En revision |
-| Siguiente accion esperada | Revision y aprobacion del usuario antes de generar la Unidad 05 |
-
+| Estado | Aprobado |
+| Siguiente accion esperada | Generar la Unidad 05 |
