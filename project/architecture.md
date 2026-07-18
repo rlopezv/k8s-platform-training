@@ -776,9 +776,7 @@ La arquitectura del repositorio incluye actualmente:
 - generación de handoffs;
 - soporte para sesiones con y sin acceso al workspace.
 
-El siguiente incremento arquitectónicamente permitido es la Unidad 00 — Preparación del entorno.
-
-No debe iniciarse contenido de la Unidad 01 ni de unidades posteriores hasta completar y cerrar la Unidad 00.
+El primer incremento arquitectónicamente permitido tras cerrar el framework fue la Unidad 00 — Preparación del entorno. Esa condición histórica ya se cumplió. El siguiente incremento operativo vigente debe consultarse en `project/project-state.md`.
 
 El Framework V1 ya ha validado:
 

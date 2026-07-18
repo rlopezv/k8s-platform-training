@@ -359,10 +359,11 @@ El repositorio dispone de:
 - roadmap;
 - playbook maestro;
 - plantillas comunes;
-- playbook de la Unidad 0;
+- playbooks de las Unidades 00 y 01;
+- contenido y laboratorios de las Unidades 00 y 01;
 - procedimiento de generación de handoffs.
 
-El siguiente incremento recomendado es la **Unidad 00 — Preparación del entorno**, definida en `playbooks/units/00-environment.md`.
+El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es generar el playbook de la **Unidad 02 — Configuración, secretos y ciclo de vida**.
 
 El Framework V1 ya ha validado:
 
@@ -372,7 +373,7 @@ El Framework V1 ya ha validado:
 - la preparación del playbook de la Unidad 00;
 - el funcionamiento del framework sin depender del historial de conversación.
 
-No se generará contenido de la Unidad 01 ni de unidades posteriores hasta completar y cerrar la Unidad 00.
+No se generará contenido de una unidad posterior hasta completar y cerrar su unidad precedente y aprobar el playbook específico que la gobierna.
 
 ## Criterios de finalización del framework de generación
 

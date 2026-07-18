@@ -8,20 +8,21 @@ El repositorio es la fuente unica de verdad. No dependas del historial de conver
 
 ## Estado Actual
 
-Segun `project/project-state.md`, el proyecto ha completado Bootstrap y ha cerrado Framework V1. El siguiente incremento permitido es:
+Segun `project/project-state.md`, el proyecto ha completado Bootstrap, ha cerrado Framework V1 y ha completado las Unidades 00 y 01 con limitaciones documentadas. El siguiente incremento permitido es:
 
 ```text
-Generar la Unidad 00 - 00-environment
+Generar el playbook de la Unidad 02 - Configuracion, secretos y ciclo de vida
 ```
 
 Estado verificable actual:
 
-- no se ha generado ninguna unidad formativa;
-- no hay plataforma local desplegada por artefactos del repositorio;
-- no existen workloads Kubernetes del curso;
-- no se ha definido la aplicacion evolutiva;
-- `tutorial/`, `labs/`, `platform/` y `assets/` son rutas previstas por la arquitectura, pero Git puede no conservarlas si estan vacias;
-- la Unidad 00 debe crear contenido en `tutorial/00-environment/` y artefactos ejecutables en `platform/environment/`.
+- la Unidad 00 existe en `tutorial/00-environment/` y `platform/environment/`;
+- la Unidad 01 existe en `tutorial/01-kubernetes/` y `labs/01-kubernetes/`;
+- MicroK8s, Kubernetes, `kubectl`, Helm y Terraform estan validados en el entorno local registrado;
+- la aplicacion evolutiva inicial se llama `platform-api`;
+- el namespace funcional del curso es `platform-training`;
+- existe un Deployment `platform-api` y un Service `platform-api` definidos en `labs/01-kubernetes/solution/`;
+- la Unidad 02 debe reutilizar `tutorial/01-kubernetes/summary.md` y `labs/01-kubernetes/solution/`.
 
 ## Lectura Obligatoria
 
@@ -76,46 +77,36 @@ No resuelvas contradicciones relevantes en silencio. Identifica la contradiccion
 
 ## Restricciones Activas
 
-Durante la generacion de la Unidad 00, no debes:
+Tras cerrar la Unidad 01, no debes:
 
-- generar contenido de la Unidad 01;
-- definir o desplegar la aplicacion evolutiva;
-- crear workloads funcionales del curso;
 - crear charts Helm;
 - crear modulos Terraform;
 - instalar o configurar Tekton, Argo CD, Prometheus, Grafana, Loki, Tempo, OpenTelemetry, KEDA, AKS o EKS;
+- sustituir `platform-api` por otra aplicacion sin decision documentada;
+- crear namespaces funcionales alternativos sin justificacion;
 - asumir versiones de herramientas sin validarlas;
 - afirmar que Windows, WSL2, Ubuntu, MicroK8s, Helm o Terraform han sido validados si no se han ejecutado pruebas reales o el usuario no ha aportado resultados;
 - guardar credenciales reales, tokens, kubeconfigs, claves privadas, credenciales de proxy, certificados o secretos corporativos;
 - introducir Minikube, kind o Docker Desktop Kubernetes como plataforma paralela.
 
-La Unidad 00 si puede:
+La Unidad 02, cuando exista su playbook aprobado, si podra:
 
-- crear scripts idempotentes;
-- crear procedimientos de validacion estatica y funcional;
-- documentar validaciones manuales;
-- preparar comprobaciones de Windows, WSL2, Ubuntu, MicroK8s, Helm, Terraform y Git;
-- documentar diagnostico y recuperacion;
+- extender los manifiestos de `labs/01-kubernetes/solution/`;
+- incorporar ConfigMaps, Secrets de laboratorio, variables de entorno, volumenes de configuracion, probes y primeros requests/limits;
+- actualizar `tutorial/02-.../summary.md`;
 - actualizar `project/project-state.md` con estado real y verificable.
 
-## Salidas Esperadas de la Unidad 00
+## Salidas Esperadas de la Unidad 02
 
-La Unidad 00 debe producir:
+La estructura exacta de la Unidad 02 debera gobernarse por su playbook especifico. Como minimo, una unidad debe producir:
 
 ```text
-tutorial/00-environment/README.md
-tutorial/00-environment/instructor-notes.md
-tutorial/00-environment/summary.md
-platform/environment/README.md
-platform/environment/windows/
-platform/environment/linux/
-platform/environment/microk8s/
-platform/environment/tools/
-platform/environment/validation/
+tutorial/<unidad>/README.md
+tutorial/<unidad>/instructor-notes.md
+tutorial/<unidad>/summary.md
+labs/<unidad>/
 project/project-state.md
 ```
-
-La estructura ejecutable exacta la gobierna `playbooks/units/00-environment.md`.
 
 No crees scripts vacios ni placeholders sin comportamiento util.
 

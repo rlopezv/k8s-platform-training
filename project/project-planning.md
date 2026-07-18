@@ -600,12 +600,14 @@ Debe comprobarse que:
 
 ## 9. Próximo trabajo recomendado
 
-Tras completar Bootstrap y cerrar Framework V1, el siguiente incremento recomendado es la **Unidad 00 — Preparación del entorno**.
+El siguiente incremento recomendado vigente se registra en `project/project-state.md`, que debe prevalecer sobre esta sección cuando el itinerario avance.
 
-La primera sesión de la Unidad 00 debería centrarse en:
+Tras completar la Unidad 01, el siguiente incremento recomendado es generar el playbook de la **Unidad 02 — Configuración, secretos y ciclo de vida**.
 
-1. revisar `playbooks/units/00-environment.md`;
-2. definir versiones objetivo y requisitos mínimos;
-3. decidir los addons mínimos de MicroK8s;
-4. diseñar la estructura concreta de scripts en `platform/environment/`;
-5. preparar el primer incremento de documentación y validaciones sin generar contenido de la Unidad 01.
+Esa sesión debería centrarse en:
+
+1. leer `tutorial/01-kubernetes/summary.md`;
+2. reutilizar `labs/01-kubernetes/solution/`;
+3. definir el alcance exacto de ConfigMaps, Secrets de laboratorio, probes y recursos;
+4. mantener `platform-api` y `platform-training` como base evolutiva;
+5. evitar Helm, Terraform, CI/CD, GitOps, observabilidad avanzada y cloud hasta sus unidades previstas.
