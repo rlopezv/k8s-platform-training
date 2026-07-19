@@ -630,14 +630,15 @@ Debe comprobarse que:
 
 El siguiente incremento recomendado vigente se registra en `project/project-state.md`, que debe prevalecer sobre esta sección cuando el itinerario avance.
 
-Tras aprobar pedagógicamente las guías del alumno de las Unidades 01-05 y alinear los playbooks y documentos de proyecto con la estructura real de `student-notes.md`, el siguiente incremento recomendado es generar el playbook de la Unidad 06 — Empaquetado con Helm.
+Tras aprobar pedagógicamente las guías del alumno de las Unidades 01-05, alinear los playbooks y documentos de proyecto con la estructura real de `student-notes.md` y generar `playbooks/units/06-helm-packaging.md`, el siguiente incremento recomendado es revisar y aprobar el playbook de la Unidad 06 — Empaquetado con Helm.
 
 Esa sesión debería centrarse en:
 
 1. revisar `playbooks/master.md`;
 2. revisar `playbooks/unit-template.md`;
-3. leer `tutorial/05-scheduling-resilience-maintenance/summary.md`;
-4. inspeccionar `labs/05-scheduling-resilience-maintenance/solution/`;
-5. revisar en `project/roadmap.md` el alcance previsto de Helm;
-6. reevaluar la decision de version de Helm antes de crear charts;
-7. crear solo el playbook de Unidad 06, sin generar todavia charts ni contenido de laboratorio.
+3. revisar `playbooks/units/06-helm-packaging.md`;
+4. leer `tutorial/05-scheduling-resilience-maintenance/summary.md`;
+5. inspeccionar `labs/05-scheduling-resilience-maintenance/solution/`;
+6. revisar en `project/roadmap.md` el alcance previsto de Helm;
+7. reevaluar la decision de version de Helm antes de crear charts;
+8. aprobar o ajustar el playbook de Unidad 06, sin generar todavia charts ni contenido de laboratorio.

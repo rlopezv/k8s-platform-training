@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Preparado para iniciar Unidad 06 |
+| Fase actual | Unidad 06 en preparacion |
 | Estado general | Unidades 00-05 completadas; Unidades 01-05 con `student-notes.md` reestructuradas como guias de aprendizaje y aprobadas pedagogicamente |
-| Último incremento completado | Alineacion de playbooks y documentos de `project/` con la estructura aprobada de `student-notes.md` |
-| Unidad activa | Ninguna unidad tecnica activa |
+| Último incremento completado | Playbook de Unidad 06 generado en revision con `student-reference.md` avanzado definido como entregable |
+| Unidad activa | 06 — Empaquetado con Helm, playbook en revision |
 | Última unidad completada | 05 — Scheduling, resiliencia y mantenimiento, generada, validada funcionalmente y aprobada pedagogicamente en sus guias del alumno |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04 y 05 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar el playbook de la Unidad 06 — Empaquetado con Helm |
+| Siguiente incremento permitido | Revisar y aprobar el playbook de la Unidad 06 — Empaquetado con Helm |
 
 ---
 
@@ -65,17 +65,21 @@ La validacion funcional de Unidad 05 se ejecuto correctamente en MicroK8s con 0 
 
 El 2026-07-19 se reestructuraron `tutorial/01-kubernetes/student-notes.md`, `tutorial/02-configuration-lifecycle/student-notes.md`, `tutorial/03-networking-ingress/student-notes.md`, `tutorial/04-persistence-state/student-notes.md` y `tutorial/05-scheduling-resilience-maintenance/student-notes.md` como guías de aprendizaje con una estructura común: propósito, alcance académico, representación de componentes, construcción de laboratorio, relaciones, comportamiento al aplicar artefactos, comprobación, diagnóstico de cuatro fallos típicos, continuidad y fuentes de referencia. El usuario aprobó este contenido y pidió adaptar playbooks y documentos de `project/` a la estructura generada.
 
-La alineacion documental posterior a la aprobacion de `student-notes.md` actualizo el contrato de `student-notes.md` en los documentos de gobierno y playbooks. A partir de este estado se permite:
+La alineacion documental posterior a la aprobacion de `student-notes.md` actualizo el contrato de `student-notes.md` en los documentos de gobierno y playbooks.
 
-- generar el playbook de la Unidad 06 — Empaquetado con Helm;
+El 2026-07-19 se genero `playbooks/units/06-helm-packaging.md` como playbook de la Unidad 06. El playbook queda en revision y define Helm como mecanismo de empaquetado de `platform-api`, reutilizando `labs/05-scheduling-resilience-maintenance/solution/`. Tambien incorpora `tutorial/06-helm-packaging/student-reference.md` como entregable obligatorio para cubrir arquitectura avanzada de plantillas, jerarquia de valores, control de flujo, helpers y frontera conceptual con Terraform. Terraform queda diferido como ejecucion a la Unidad 07.
+
+A partir de este estado se permite:
+
+- revisar y aprobar `playbooks/units/06-helm-packaging.md`;
+- tras aprobacion del playbook, generar la Unidad 06 — Empaquetado con Helm;
 - reutilizar `tutorial/05-scheduling-resilience-maintenance/summary.md`;
 - inspeccionar `labs/05-scheduling-resilience-maintenance/solution/` como base tecnica validada;
-- revisar la decision pendiente de version de Helm antes de crear charts;
-- mantener sin cambios los manifiestos y laboratorios salvo que el playbook de Unidad 06 justifique ajustes.
+- revisar la decision pendiente de version de Helm antes de crear charts.
 
 Todavía no se permite:
 
-- crear charts Helm;
+- crear charts Helm sin aprobacion previa del playbook de Unidad 06;
 - crear módulos Terraform;
 - instalar Tekton;
 - instalar Argo CD;
@@ -107,6 +111,7 @@ Todavía no se permite:
 | `playbooks/units/03-networking-ingress.md` | Completo y aprobado | Unit-03-Playbook-Approval | Gobierno de la Unidad 03 |
 | `playbooks/units/04-persistence-state.md` | Completo y aprobado por instrucción de generación | Unit-04-Generation | Gobierno de la Unidad 04 |
 | `playbooks/units/05-scheduling-resilience-maintenance.md` | Completo y aprobado | Unit-05-Playbook-Approval | Gobierno de la Unidad 05 |
+| `playbooks/units/06-helm-packaging.md` | Generado en revision | Unit-06-Playbook-Draft | Gobierno de la Unidad 06; incluye `student-reference.md` como entregable requerido |
 | `AGENTS.md` | Completo | Unit-00-01 | Guía operativa para agentes con acceso al repositorio |
 
 ---
@@ -288,7 +293,7 @@ Todavía no se permite:
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Materializado con Unidades 01, 02, 03, 04 y 05 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/`, `04-persistence-state/` y `05-scheduling-resilience-maintenance/` |
 | `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base |
-| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03, 04 y 05 |
+| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03, 04, 05 y 06 |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
 | `tutorial/` | Unidades 00, 01, 02, 03, 04 y 05 generadas | README de entrada, `student-notes.md`, instructor notes y summaries |
 
@@ -304,7 +309,8 @@ Todavía no se permite:
 | 03 — Networking e ingreso | Completada, validada técnicamente y aprobada | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
 | 04 — Persistencia y estado | Completada, validada funcionalmente y aprobada | Sí | Sí | Sí, `labs/04-persistence-state/` | Sí | Sí |
 | 05 — Scheduling, resiliencia y mantenimiento | Completada, validada funcionalmente y aprobada pedagogicamente en sus guias del alumno | Sí | Sí | Sí, `labs/05-scheduling-resilience-maintenance/` | Sí | Sí |
-| 06–25 | Previstas en roadmap | No | No | No | No | No |
+| 06 — Empaquetado con Helm | Playbook generado en revision; unidad pendiente de generacion | No | No | No | No | No |
+| 07–25 | Previstas en roadmap | No | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
 
@@ -484,6 +490,34 @@ Limitaciones activas:
 - el PDB no protege ante fallos involuntarios de nodo, proceso o almacenamiento;
 - no se automatiza `kubectl drain`, modificacion de taints ni borrado de PVC;
 - Helm, Terraform, CI/CD, GitOps, observabilidad avanzada, autoscaling y cloud siguen diferidos.
+
+## Unidad 06 — Empaquetado con Helm
+
+| Campo | Estado |
+|---|---|
+| Estado | Playbook generado en revision; unidad pendiente de generacion |
+| Fecha de inicio | 2026-07-19 |
+| Fecha de cierre | Pendiente |
+| Playbook | `playbooks/units/06-helm-packaging.md` |
+| Tutorial | Pendiente |
+| Student notes | Pendiente |
+| Student reference | Pendiente; requerido como `tutorial/06-helm-packaging/student-reference.md` |
+| Laboratorio | Pendiente |
+| Instructor notes | Pendiente |
+| Summary | Pendiente |
+
+Alcance definido por el playbook:
+
+- empaquetar `platform-api` con Helm reutilizando `labs/05-scheduling-resilience-maintenance/solution/`;
+- crear un chart local con templates, values, helpers, linting, instalacion, upgrade y rollback;
+- incorporar `student-reference.md` sobre arquitectura avanzada de plantillas y gestion de variables en Helm;
+- tratar `helm_release`, `templatefile()` y `set_sensitive` como continuidad conceptual hacia Unidad 07, no como ejecucion de Terraform en esta unidad.
+
+Limitaciones activas:
+
+- el playbook requiere revision y aprobacion del usuario antes de generar charts, tutorial o laboratorio de Unidad 06;
+- no existen charts Helm ni releases Helm del curso en este estado;
+- no existen modulos Terraform del curso.
 
 ---
 
@@ -789,18 +823,28 @@ No existen actualmente:
 | D-05-05 — Mantenimiento seguro, no destruccion del entorno | Activa | `playbooks/units/05-scheduling-resilience-maintenance.md` | Evitar automatizar `drain`, reset de MicroK8s o borrado de PVC |
 | D-05-06 — Laboratorio acumulativo con ruta propia | Activa | `playbooks/units/05-scheduling-resilience-maintenance.md` | `labs/05-scheduling-resilience-maintenance/solution/` sera la base prevista para Unidad 06 |
 
+## Decisiones específicas de la Unidad 06
+
+| Decisión | Estado | Documento fuente | Impacto actual |
+|---|---|---|---|
+| D-06-01 — Helm empaqueta `platform-api` | Propuesta en revision | `playbooks/units/06-helm-packaging.md` | La Unidad 06 debe convertir la solucion acumulada en chart sin crear aplicacion alternativa |
+| D-06-02 — Parametrizacion con criterio | Propuesta en revision | `playbooks/units/06-helm-packaging.md` | No todos los campos deben convertirse en valores configurables |
+| D-06-03 — `student-reference.md` avanzado | Propuesta en revision | `playbooks/units/06-helm-packaging.md` | La unidad debe incluir una referencia tecnica sobre templates, valores, helpers y frontera con Terraform |
+| D-06-04 — Terraform queda diferido como ejecucion | Propuesta en revision | `playbooks/units/06-helm-packaging.md` | `helm_release`, `templatefile()` y `set_sensitive` pueden explicarse como continuidad, pero no ejecutarse en Unidad 06 |
+| D-06-05 — Renderizado antes de instalacion | Propuesta en revision | `playbooks/units/06-helm-packaging.md` | El alumno debe inspeccionar YAML renderizado antes de instalar un release |
+
 ---
 
 # Restricciones activas
 
-Tras generar y validar funcionalmente la Unidad 05 y aprobar las guias del alumno 01-05:
+Tras generar y validar funcionalmente la Unidad 05, aprobar las guias del alumno 01-05 y generar el playbook de Unidad 06 en revision:
 
 - la Unidad 05 conserva `platform-api`, `platform-training` y la evolucion acumulativa desde `labs/04-persistence-state/solution/`;
 - `labs/05-scheduling-resilience-maintenance/solution/` es la base tecnica validada prevista para Unidad 06;
-- no se debe generar la Unidad 06 ni crear Helm charts hasta cerrar la alineacion documental de playbooks y documentos de `project/` con la estructura aprobada de `student-notes.md`;
+- no se debe generar la Unidad 06 ni crear Helm charts hasta aprobar `playbooks/units/06-helm-packaging.md`;
 - conservar la separación pedagógica reforzada: los README actúan como entrada, `student-notes.md` como guía de aprendizaje y los README de laboratorio como guía operativa;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
-- no crear charts Helm hasta la unidad prevista;
+- no crear charts Helm hasta aprobar el playbook de Unidad 06;
 - no crear módulos Terraform hasta la unidad prevista;
 - no crear recursos Gateway API como eje operativo salvo decisión explícita posterior;
 - no introducir TLS productivo, DNS público, LoadBalancer cloud ni NetworkPolicies antes de su unidad prevista;
@@ -969,6 +1013,7 @@ Validaciones no disponibles en esta sesión:
 | 53 | Generación y validación funcional de Unidad 05 | Completado | Tutorial, student notes, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` evolucionada con scheduling seguro, `RollingUpdate`, PDB y validación funcional en MicroK8s |
 | 54 | Reestructuración y aprobación de `student-notes.md` Unidades 01-05 | Completado y aprobado | Guías de aprendizaje reestructuradas con capa académica, construcción aplicada, relaciones, comprobación, diagnóstico de fallos típicos, continuidad y fuentes; aprobación del usuario el 2026-07-19 |
 | 55 | Alineación de playbooks y documentos de `project/` con guías del alumno | Completado | `project/architecture.md`, `project/project-planning.md`, `project/project-state.md`, `playbooks/master.md`, `playbooks/unit-template.md` y playbooks específicos 04-05 ajustados al nuevo contrato |
+| 56 | Playbook de Unidad 06 | Generado en revision | `playbooks/units/06-helm-packaging.md` creado; incorpora `student-reference.md` avanzado como entregable requerido y difiere Terraform ejecutable a Unidad 07 |
 
 ---
 
@@ -977,7 +1022,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Generar el playbook de la Unidad 06 - Empaquetado con Helm
+Revisar y aprobar el playbook de la Unidad 06 - Empaquetado con Helm
 ```
 
 ## Fuentes obligatorias
@@ -989,6 +1034,7 @@ playbooks/master.md
 project/project-state.md
 playbooks/master.md
 playbooks/unit-template.md
+playbooks/units/06-helm-packaging.md
 tutorial/05-scheduling-resilience-maintenance/summary.md
 tutorial/05-scheduling-resilience-maintenance/student-notes.md
 labs/05-scheduling-resilience-maintenance/solution/
@@ -998,8 +1044,8 @@ project/project-state.md
 
 ## Trabajo permitido
 
-- generar `playbooks/units/06-helm.md` o el identificador aprobado por roadmap;
-- definir alcance, supuestos pedagogicos, entregables, restricciones y criterios de aceptacion de Unidad 06;
+- revisar y aprobar `playbooks/units/06-helm-packaging.md`;
+- ajustar alcance, supuestos pedagogicos, entregables, restricciones y criterios de aceptacion de Unidad 06 si la revision lo requiere;
 - reevaluar la version de Helm antes de crear charts;
 - no crear charts Helm ni modificar laboratorios hasta que el playbook quede aprobado.
 

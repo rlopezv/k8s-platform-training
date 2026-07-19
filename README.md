@@ -360,11 +360,11 @@ El repositorio dispone de:
 - roadmap;
 - playbook maestro;
 - plantillas comunes;
-- playbooks de las Unidades 00, 01, 02, 03, 04 y 05;
+- playbooks de las Unidades 00, 01, 02, 03, 04, 05 y 06;
 - contenido y laboratorios de las Unidades 00, 01, 02, 03, 04 y 05;
 - procedimiento de generación de handoffs.
 
-El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es revisar y aprobar pedagogicamente la **Unidad 05 — Scheduling, resiliencia y mantenimiento**.
+El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es revisar y aprobar el playbook de la **Unidad 06 — Empaquetado con Helm**.
 
 El Framework V1 ya ha validado:
 
