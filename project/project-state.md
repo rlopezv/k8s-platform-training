@@ -22,22 +22,22 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Generación de la Unidad 05 |
-| Estado general | Unidades 00-04 completadas, validadas funcionalmente y aprobadas; Unidad 05 generada y validada funcionalmente con revision pedagogica pendiente |
-| Último incremento completado | Generacion y validacion funcional de la Unidad 05 |
-| Unidad activa | 05 — Scheduling, resiliencia y mantenimiento, revision pedagogica pendiente |
-| Última unidad completada | 05 — Scheduling, resiliencia y mantenimiento, completada con revision pedagogica pendiente |
+| Fase actual | Preparado para iniciar Unidad 06 |
+| Estado general | Unidades 00-05 completadas; Unidades 01-05 con `student-notes.md` reestructuradas como guias de aprendizaje y aprobadas pedagogicamente |
+| Último incremento completado | Alineacion de playbooks y documentos de `project/` con la estructura aprobada de `student-notes.md` |
+| Unidad activa | Ninguna unidad tecnica activa |
+| Última unidad completada | 05 — Scheduling, resiliencia y mantenimiento, generada, validada funcionalmente y aprobada pedagogicamente en sus guias del alumno |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04 y 05 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Revision pedagogica y aprobacion de la Unidad 05 |
+| Siguiente incremento permitido | Generar el playbook de la Unidad 06 — Empaquetado con Helm |
 
 ---
 
 # Fase actual
 
-El proyecto ha completado la **Unidad 00 — Preparación del entorno**, la **Unidad 01 — Fundamentos operativos y primera aplicación**, la **Unidad 02 — Configuración, secretos y ciclo de vida**, la **Unidad 03 — Networking e ingreso** y la **Unidad 04 — Persistencia y estado**. La Unidad 04 ha sido aprobada por el usuario y validada funcionalmente el 2026-07-19. La **Unidad 05 — Scheduling, resiliencia y mantenimiento** ha sido generada y validada funcionalmente el 2026-07-19; queda pendiente la revision pedagogica y aprobacion final del usuario.
+El proyecto ha completado la **Unidad 00 — Preparación del entorno**, la **Unidad 01 — Fundamentos operativos y primera aplicación**, la **Unidad 02 — Configuración, secretos y ciclo de vida**, la **Unidad 03 — Networking e ingreso**, la **Unidad 04 — Persistencia y estado** y la **Unidad 05 — Scheduling, resiliencia y mantenimiento**. La Unidad 04 fue aprobada por el usuario y validada funcionalmente el 2026-07-19. La Unidad 05 fue generada y validada funcionalmente el 2026-07-19.
 
 La Unidad 01 incorporó la primera aplicación evolutiva del curso, `platform-api`, desplegada sobre MicroK8s mediante manifiestos Kubernetes estándar. El laboratorio local ya contiene un namespace funcional, un Deployment, Pods gestionados por ReplicaSet y un Service interno.
 
@@ -47,7 +47,7 @@ El 2026-07-18 se generó un hardening pedagógico global inicial sobre las Unida
 
 Como consecuencia, se actualizaron `playbooks/master.md` y `playbooks/unit-template.md` para exigir que futuras unidades no asuman dominio previo del tema, construyan modelo mental desde el problema real, expliquen conceptos con progresión didáctica y mantengan una separación más estricta entre tutorial formativo y laboratorio operativo.
 
-El usuario y el proyecto acuerdan que el nivel pedagógico deseado no debe resolverse cargando indefinidamente los `README.md`. A partir de este incremento, cada unidad debe separar el `README.md` como puerta de entrada y `student-notes.md` como material pedagógico profundo. Esta fase no debe avanzar capacidades técnicas ni sustituir laboratorios; debe ampliar teoría, modelos mentales, ejemplos conceptuales, razonamiento, lectura guiada y progresión didáctica.
+El usuario y el proyecto acuerdan que el nivel pedagógico deseado no debe resolverse cargando indefinidamente los `README.md`. Cada unidad debe separar el `README.md` como puerta de entrada y `student-notes.md` como guía de aprendizaje académica y aplicada. Esta guía debe explicar qué se va a cubrir, qué representa cada componente, qué se construye, cómo se relacionan las piezas, qué ocurre al aplicar los artefactos, cómo comprobar resultados, cómo diagnosticar fallos típicos, qué recordar para la unidad siguiente y qué fuentes consultar.
 
 La Unidad 03 generó el acceso HTTP local para `platform-api` mediante un recurso `Ingress` y el addon Ingress de MicroK8s. La validación técnica se ejecutó contra el MicroK8s local con 0 fallos y 0 avisos. La revisión pedagógica final fue aprobada por el usuario el 2026-07-19 junto con el refuerzo `student-notes.md`.
 
@@ -63,15 +63,15 @@ El 2026-07-19 se generó la Unidad 05. La unidad reutiliza `tutorial/04-persiste
 
 La validacion funcional de Unidad 05 se ejecuto correctamente en MicroK8s con 0 fallos y 0 avisos. El PDB mostro `minAvailable: 1` y `disruptionsAllowed: 1`, los Pods quedaron asignados al nodo `gmktecg2`, el Service mantuvo EndpointSlices con endpoints, el Ingress sirvio contenido de Unidad 05 y la eliminacion controlada de un Pod fue recuperada por el Deployment.
 
-Durante la revision de la Unidad 05 se permite:
+El 2026-07-19 se reestructuraron `tutorial/01-kubernetes/student-notes.md`, `tutorial/02-configuration-lifecycle/student-notes.md`, `tutorial/03-networking-ingress/student-notes.md`, `tutorial/04-persistence-state/student-notes.md` y `tutorial/05-scheduling-resilience-maintenance/student-notes.md` como guías de aprendizaje con una estructura común: propósito, alcance académico, representación de componentes, construcción de laboratorio, relaciones, comportamiento al aplicar artefactos, comprobación, diagnóstico de cuatro fallos típicos, continuidad y fuentes de referencia. El usuario aprobó este contenido y pidió adaptar playbooks y documentos de `project/` a la estructura generada.
 
-- revisar `tutorial/05-scheduling-resilience-maintenance/README.md`;
-- revisar `tutorial/05-scheduling-resilience-maintenance/student-notes.md`;
-- revisar `tutorial/05-scheduling-resilience-maintenance/instructor-notes.md`;
-- revisar `tutorial/05-scheduling-resilience-maintenance/summary.md`;
-- revisar `labs/05-scheduling-resilience-maintenance/`;
-- corregir contenido o artefactos de Unidad 05 manteniendo el alcance aprobado;
-- registrar la aprobacion pedagogica del usuario cuando se produzca.
+La alineacion documental posterior a la aprobacion de `student-notes.md` actualizo el contrato de `student-notes.md` en los documentos de gobierno y playbooks. A partir de este estado se permite:
+
+- generar el playbook de la Unidad 06 — Empaquetado con Helm;
+- reutilizar `tutorial/05-scheduling-resilience-maintenance/summary.md`;
+- inspeccionar `labs/05-scheduling-resilience-maintenance/solution/` como base tecnica validada;
+- revisar la decision pendiente de version de Helm antes de crear charts;
+- mantener sin cambios los manifiestos y laboratorios salvo que el playbook de Unidad 06 justifique ajustes.
 
 Todavía no se permite:
 
@@ -90,16 +90,16 @@ Todavía no se permite:
 
 | Artefacto | Estado | Última modificación relevante | Responsabilidad |
 |---|---|---|---|
-| `README.md` | Actualizado | Student-Notes-Structure | Punto de entrada y visión general; refleja `student-notes.md` como artefacto por unidad |
-| `project/architecture.md` | Actualizado | Student-Notes-Structure | Arquitectura y decisiones estructurales; separa README y notas profundas del alumno |
-| `project/project-state.md` | Actualizado con estructura `student-notes.md` | Student-Notes-Structure | Estado consolidado |
+| `README.md` | Actualizado | Student-Notes-Learning-Guide | Punto de entrada y visión general; refleja `student-notes.md` como artefacto por unidad |
+| `project/architecture.md` | Actualizado | Student-Notes-Learning-Guide | Arquitectura y decisiones estructurales; separa README y guías de aprendizaje del alumno |
+| `project/project-state.md` | Actualizado con estructura `student-notes.md` | Student-Notes-Learning-Guide | Estado consolidado |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
-| `project/project-planning.md` | Actualizado | Student-Notes-Structure | Planificación incremental del trabajo; incluye sesiones de desarrollo pedagógico profundo |
+| `project/project-planning.md` | Actualizado | Student-Notes-Learning-Guide | Planificación incremental del trabajo; incluye sesiones de desarrollo pedagógico de guías del alumno |
 | `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
-| `playbooks/master.md` | Actualizado | Student-Notes-Structure | Reglas globales de generación; exige `student-notes.md` como material pedagógico profundo |
-| `playbooks/unit-template.md` | Actualizado | Student-Notes-Structure | Plantilla de playbooks específicos; exige notas del alumno por unidad |
-| `playbooks/summary-template.md` | Actualizado | Student-Notes-Structure | Contrato de continuidad; registra `student-notes.md` |
-| `playbooks/project-state-template.md` | Actualizado | Student-Notes-Structure | Reglas de mantenimiento del estado; registra `student-notes.md` |
+| `playbooks/master.md` | Actualizado | Student-Notes-Learning-Guide | Reglas globales de generación; exige `student-notes.md` como guía de aprendizaje académica y aplicada |
+| `playbooks/unit-template.md` | Actualizado | Student-Notes-Learning-Guide | Plantilla de playbooks específicos; exige guía del alumno por unidad |
+| `playbooks/summary-template.md` | Actualizado | Student-Notes-Structure | Contrato de continuidad; registra `student-notes.md` como artefacto por unidad |
+| `playbooks/project-state-template.md` | Actualizado | Student-Notes-Structure | Reglas de mantenimiento del estado; registra `student-notes.md` como artefacto por unidad |
 | `playbooks/generate-session-handoff.md` | Completo y aprobado | Framework-03 | Generación del handoff derivado de sesión |
 | `playbooks/units/00-environment.md` | Completo y aprobado | Unit-00-01 | Gobierno de la Unidad 00 |
 | `playbooks/units/01-kubernetes.md` | Completo y aprobado | Unit-01-Concept-Scope | Gobierno de la Unidad 01 |
@@ -303,7 +303,7 @@ Todavía no se permite:
 | 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
 | 03 — Networking e ingreso | Completada, validada técnicamente y aprobada | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
 | 04 — Persistencia y estado | Completada, validada funcionalmente y aprobada | Sí | Sí | Sí, `labs/04-persistence-state/` | Sí | Sí |
-| 05 — Scheduling, resiliencia y mantenimiento | Generada y validada funcionalmente; revision pedagogica pendiente | Sí | Sí | Sí, `labs/05-scheduling-resilience-maintenance/` | Sí | Sí |
+| 05 — Scheduling, resiliencia y mantenimiento | Completada, validada funcionalmente y aprobada pedagogicamente en sus guias del alumno | Sí | Sí | Sí, `labs/05-scheduling-resilience-maintenance/` | Sí | Sí |
 | 06–25 | Previstas en roadmap | No | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
@@ -457,7 +457,7 @@ Limitaciones activas:
 
 | Campo | Estado |
 |---|---|
-| Estado | Generada y validada funcionalmente; revision pedagogica pendiente |
+| Estado | Completada, validada funcionalmente y aprobada pedagogicamente en sus guias del alumno |
 | Fecha de inicio | 2026-07-19 |
 | Fecha de cierre | 2026-07-19 |
 | Playbook | `playbooks/units/05-scheduling-resilience-maintenance.md` |
@@ -479,7 +479,6 @@ Capacidades incorporadas:
 
 Limitaciones activas:
 
-- la revision pedagogica final del usuario queda pendiente;
 - el cluster validado tiene un solo nodo `gmktecg2`; la unidad no demuestra alta disponibilidad multi-nodo;
 - `hostpath-storage` y el PVC local siguen siendo especificos de MicroK8s;
 - el PDB no protege ante fallos involuntarios de nodo, proceso o almacenamiento;
@@ -567,7 +566,7 @@ Limitaciones activas:
 |---|---|
 | Nombre | `platform-api` |
 | Propósito | Servicio HTTP mínimo para evolucionar configuración, red, salud, observabilidad, seguridad, escalado y despliegue cloud |
-| Versión actual | Unidad 05 validada funcionalmente; revision pedagogica pendiente |
+| Versión actual | Unidad 05 validada funcionalmente; guias del alumno 01-05 aprobadas pedagogicamente |
 | Repositorio o ruta | `labs/05-scheduling-resilience-maintenance/solution/` |
 
 ## Componentes
@@ -794,13 +793,12 @@ No existen actualmente:
 
 # Restricciones activas
 
-Tras generar y validar funcionalmente la Unidad 05:
+Tras generar y validar funcionalmente la Unidad 05 y aprobar las guias del alumno 01-05:
 
 - la Unidad 05 conserva `platform-api`, `platform-training` y la evolucion acumulativa desde `labs/04-persistence-state/solution/`;
 - `labs/05-scheduling-resilience-maintenance/solution/` es la base tecnica validada prevista para Unidad 06;
-- la revision pedagogica y aprobacion final de Unidad 05 siguen pendientes;
-- no se debe generar la Unidad 06 ni crear Helm charts hasta que la Unidad 05 sea revisada y aprobada;
-- conservar la deuda pedagógica reforzada: los README actuales siguen siendo insuficientes como material formativo profundo para alumnos que no conocen el tema;
+- no se debe generar la Unidad 06 ni crear Helm charts hasta cerrar la alineacion documental de playbooks y documentos de `project/` con la estructura aprobada de `student-notes.md`;
+- conservar la separación pedagógica reforzada: los README actúan como entrada, `student-notes.md` como guía de aprendizaje y los README de laboratorio como guía operativa;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
 - no crear charts Helm hasta la unidad prevista;
 - no crear módulos Terraform hasta la unidad prevista;
@@ -833,8 +831,8 @@ Tras generar y validar funcionalmente la Unidad 05:
 | R-008 | Recursos insuficientes en el host | Media | Medio | Validar requisitos mínimos | Abierto |
 | R-009 | Disponibilidad futura de imagen externa | Media | Medio | Imagen versionada y pull real validado; sustituir solo con registro en summary y estado | Mitigado |
 | R-010 | Uso de `Endpoints` con advertencia de deprecación en Kubernetes 1.35 | Media | Bajo | Unidad 02 incorpora EndpointSlice como comprobación principal; mantener `Endpoints` solo como referencia histórica o fallback | Mitigado |
-| R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Alta | Alto | `student-notes.md` creado, aprobado y comiteado para Unidades 00-03; mantener el criterio en futuras unidades | Mitigado |
-| R-012 | Futuras unidades especializadas pueden volverse difíciles de seguir si los materiales siguen asumiendo conocimiento previo | Media | Alto | Playbooks y plantillas actualizados para exigir `student-notes.md` en futuras unidades | Mitigado |
+| R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Alta | Alto | `student-notes.md` de Unidades 01-05 reestructurado como guia de aprendizaje con capa academica, desarrollo aplicado, diagnostico y fuentes; aprobado por el usuario | Mitigado |
+| R-012 | Futuras unidades especializadas pueden volverse difíciles de seguir si los materiales siguen asumiendo conocimiento previo | Media | Alto | Playbooks y plantillas actualizados para exigir `student-notes.md` como guia de aprendizaje academica y aplicada | Mitigado |
 
 ## Cuestiones abiertas
 
@@ -861,8 +859,8 @@ Tras generar y validar funcionalmente la Unidad 05:
 | TD-003 | Definir política de versiones de herramientas | Alta | Unidad 00 | Política inicial definida y versiones reales registradas | Cerrada para Unidad 00 |
 | TD-004 | Decidir tratamiento de directorios vacíos | Baja | Bootstrap | Resuelto mediante `.gitkeep` | Cerrada |
 | TD-005 | Incorporar `EndpointSlice` como observación posterior al Service clásico | Baja | Unidad 01 | Resuelto en Unidad 02 como comprobación principal de endpoints | Cerrada |
-| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | `student-notes.md` incorporado como artefacto estructural, creado para Unidades 00-03 y aprobado por el usuario | Cerrada para Unidades 00-03; aplicar en futuras unidades |
-| TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo | `playbooks/master.md` y `playbooks/unit-template.md` actualizados con criterios pedagógicos más estrictos | Cerrada |
+| TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | `student-notes.md` de Unidades 01-05 reestructurado y aprobado como guia de aprendizaje; Unidad 00 conserva su formato previo aprobado | Cerrada para Unidades 01-05; aplicar criterio en futuras unidades |
+| TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo y revisión de `student-notes.md` | `playbooks/master.md` y `playbooks/unit-template.md` actualizados para describir guías de aprendizaje academicas y aplicadas, evitando estructuras enciclopédicas por defecto | Cerrada |
 
 ---
 
@@ -895,13 +893,13 @@ Tras generar y validar funcionalmente la Unidad 05:
 | Sintaxis cliente de Unidad 05 | `kubectl apply --dry-run=client -f labs/05-scheduling-resilience-maintenance/solution/` | Manifiestos aceptados por el cliente |
 | Despliegue Unidad 05 | `kubectl apply -f labs/05-scheduling-resilience-maintenance/solution/` | Namespace, ConfigMap, Secret, PVC, PDB, Deployment, Service e Ingress aplicados |
 | Estado de scheduling y resiliencia Unidad 05 | `bash labs/05-scheduling-resilience-maintenance/validation/validate.sh` | 0 fallos, 0 avisos; Deployment, PDB, Pods asignados, Service, EndpointSlice, Ingress, PVC, HTTP, recreacion de Pod y rollout history validados |
-| Revisión pedagógica Unidad 05 | Pendiente de revisión del usuario | Pendiente |
+| Revisión pedagógica `student-notes.md` Unidades 01-05 | Aprobación del usuario el 2026-07-19 tras reestructuración como guías de aprendizaje | Aprobada |
 | Revisión pedagógica Unidad 01 | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
 | Revisión pedagógica Unidad 02 | Aprobación del usuario el 2026-07-18 | Aprobada |
 | Revisión pedagógica Unidad 03 | Aprobación del usuario el 2026-07-19 junto con el refuerzo `student-notes.md` | Aprobada |
 | Hardening pedagógico global inicial | Revisión documental de `tutorial/00-environment/`, `tutorial/01-kubernetes/`, `tutorial/02-configuration-lifecycle/` y summaries | Aceptado por el usuario como cambio mínimo; deuda pedagógica profunda sigue abierta |
 | Refuerzo pedagógico README Unidades 00-03 | Revisión documental de `tutorial/00-environment/README.md`, `tutorial/01-kubernetes/README.md`, `tutorial/02-configuration-lifecycle/README.md` y `tutorial/03-networking-ingress/README.md` | Guías pedagógicas, mapas de aprendizaje y preguntas centrales añadidas; aprobado por el usuario |
-| Student notes Unidades 00-03 | Revisión documental de `tutorial/00-environment/student-notes.md`, `tutorial/01-kubernetes/student-notes.md`, `tutorial/02-configuration-lifecycle/student-notes.md` y `tutorial/03-networking-ingress/student-notes.md` | Notas pedagógicas profundas creadas, enlazadas desde los README, aprobadas por el usuario y comiteadas en `b842f33` |
+| Student notes Unidades 00-03 | Revisión documental de `tutorial/00-environment/student-notes.md`, `tutorial/01-kubernetes/student-notes.md`, `tutorial/02-configuration-lifecycle/student-notes.md` y `tutorial/03-networking-ingress/student-notes.md` | Notas pedagógicas creadas, enlazadas desde los README, aprobadas por el usuario y comiteadas en `b842f33`; Unidades 01-03 reestructuradas posteriormente como guías de aprendizaje |
 | Ausencia de charts Helm | `find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print` | Sin resultados |
 | Ausencia de módulos Terraform | `find . -path ./.git -prune -o -type f \( -name '*.tf' -o -name '*.tfvars' \) -print` | Sin resultados |
 
@@ -961,14 +959,16 @@ Validaciones no disponibles en esta sesión:
 | 43 | Aprobación del playbook de Unidad 03 | Completado | El usuario aprueba `playbooks/units/03-networking-ingress.md`; se permite generar la Unidad 03 |
 | 44 | Generación y validación técnica de Unidad 03 | Completado y aprobado | Tutorial, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` expuesta por Ingress HTTP local, validada en MicroK8s y aprobada pedagógicamente |
 | 45 | Refuerzo pedagógico README Unidades 00-03 | Completado y aprobado | Se añaden guías pedagógicas, mapas de aprendizaje y preguntas centrales sin modificar laboratorios ni capacidades técnicas |
-| 46 | Estructura `student-notes.md` y notas de alumno Unidades 00-03 | Completado y aprobado | `student-notes.md` incorporado al contrato de unidad; notas profundas creadas, README enlazados, summaries actualizados y commit `b842f33` confirmado |
+| 46 | Estructura `student-notes.md` y notas de alumno Unidades 00-03 | Completado y aprobado | `student-notes.md` incorporado al contrato de unidad; notas de alumno creadas, README enlazados, summaries actualizados y commit `b842f33` confirmado |
 | 47 | Cierre de revisión pedagógica transversal | Completado | `project-state.md` y `tutorial/03-networking-ingress/summary.md` actualizados para registrar aprobación y permitir el playbook de Unidad 04 |
 | 48 | Generación de Unidad 04 | Completado | Tutorial, student notes, instructor notes, summary, laboratorio, manifiestos y validación creados; dry-run cliente correcto |
 | 49 | Aprobación pedagógica de Unidad 04 | Completado | El usuario aprueba la Unidad 04 el 2026-07-19 y confirma commit `1a588fa Generate and approve unit 04 persistence` |
 | 50 | Validación funcional de Unidad 04 | Completado | `hostpath-storage` habilitado; PVC `platform-api-data` `Bound`; `bash labs/04-persistence-state/validation/validate.sh` con 0 fallos y 0 avisos |
 | 51 | Playbook de Unidad 05 | Completado | `playbooks/units/05-scheduling-resilience-maintenance.md` creado; `project/project-state.md` actualizado |
 | 52 | Aprobación del playbook de Unidad 05 | Completado | El usuario aprueba el playbook de Unidad 05 el 2026-07-19 y confirma commit `361b2df Generate unit 05 scheduling playbook` |
-| 53 | Generación y validación funcional de Unidad 05 | Completado con revisión pedagógica pendiente | Tutorial, student notes, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` evolucionada con scheduling seguro, `RollingUpdate`, PDB y validación funcional en MicroK8s |
+| 53 | Generación y validación funcional de Unidad 05 | Completado | Tutorial, student notes, instructor notes, summary, laboratorio, manifiestos y validación creados; `platform-api` evolucionada con scheduling seguro, `RollingUpdate`, PDB y validación funcional en MicroK8s |
+| 54 | Reestructuración y aprobación de `student-notes.md` Unidades 01-05 | Completado y aprobado | Guías de aprendizaje reestructuradas con capa académica, construcción aplicada, relaciones, comprobación, diagnóstico de fallos típicos, continuidad y fuentes; aprobación del usuario el 2026-07-19 |
+| 55 | Alineación de playbooks y documentos de `project/` con guías del alumno | Completado | `project/architecture.md`, `project/project-planning.md`, `project/project-state.md`, `playbooks/master.md`, `playbooks/unit-template.md` y playbooks específicos 04-05 ajustados al nuevo contrato |
 
 ---
 
@@ -977,7 +977,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Revisar y aprobar pedagogicamente la Unidad 05 - Scheduling, resiliencia y mantenimiento
+Generar el playbook de la Unidad 06 - Empaquetado con Helm
 ```
 
 ## Fuentes obligatorias
@@ -987,23 +987,21 @@ La sesión deberá leer:
 ```text
 playbooks/master.md
 project/project-state.md
-playbooks/units/05-scheduling-resilience-maintenance.md
-tutorial/05-scheduling-resilience-maintenance/README.md
-tutorial/05-scheduling-resilience-maintenance/student-notes.md
-tutorial/05-scheduling-resilience-maintenance/instructor-notes.md
+playbooks/master.md
+playbooks/unit-template.md
 tutorial/05-scheduling-resilience-maintenance/summary.md
-labs/05-scheduling-resilience-maintenance/README.md
+tutorial/05-scheduling-resilience-maintenance/student-notes.md
 labs/05-scheduling-resilience-maintenance/solution/
-labs/05-scheduling-resilience-maintenance/validation/validate.sh
+project/roadmap.md
+project/project-state.md
 ```
 
 ## Trabajo permitido
 
-- revisar contenido pedagogico de la Unidad 05;
-- corregir `tutorial/05-scheduling-resilience-maintenance/` si la revision detecta lagunas;
-- corregir `labs/05-scheduling-resilience-maintenance/` si la revision detecta errores operativos;
-- registrar aprobacion pedagogica del usuario cuando se produzca;
-- mantener `labs/05-scheduling-resilience-maintenance/solution/` como base tecnica validada para Unidad 06.
+- generar `playbooks/units/06-helm.md` o el identificador aprobado por roadmap;
+- definir alcance, supuestos pedagogicos, entregables, restricciones y criterios de aceptacion de Unidad 06;
+- reevaluar la version de Helm antes de crear charts;
+- no crear charts Helm ni modificar laboratorios hasta que el playbook quede aprobado.
 
 ## Trabajo todavía prohibido
 

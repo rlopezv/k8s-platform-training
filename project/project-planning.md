@@ -580,25 +580,29 @@ Se utiliza para:
 * realizar el commit;
 * preparar el siguiente handoff.
 
-### 7.6. Sesión de desarrollo pedagógico profundo
+### 7.6. Sesión de desarrollo pedagógico de guías del alumno
 
 Se utiliza cuando una o varias unidades ya tienen contenido técnico, laboratorio y validaciones suficientes, pero el material dirigido al alumno todavía no ofrece soporte formativo adecuado para personas que no dominan el tema.
 
 Esta sesión no debe crear nuevas capacidades técnicas ni avanzar el roadmap funcional. Su objetivo es desarrollar el material pedagógico de la unidad, separando responsabilidades:
 
 * `README.md` como puerta de entrada, mapa de aprendizaje y orientación;
-* `student-notes.md` como explicación profunda de conceptos, modelos mentales, relaciones y errores frecuentes;
+* `student-notes.md` como guía de aprendizaje con estructura académica y aplicada;
 * `labs/<unidad>/README.md` como guía operativa del laboratorio.
 
-El contenido profundo debe:
+La guía del alumno debe:
 
-* explicar desde cero los conceptos esenciales de la unidad;
-* construir el modelo mental antes del laboratorio;
-* añadir contexto profesional y conexión con problemas reales;
-* ampliar ejemplos conceptuales sin crear laboratorios paralelos;
-* explicar trade-offs y límites de las decisiones tomadas;
-* añadir errores de razonamiento y preguntas de comprobación;
-* transformar referencias en lectura guiada.
+* presentar qué se va a cubrir;
+* explicar qué representa cada componente antes de ligarlo al laboratorio;
+* describir qué se va a construir;
+* mostrar cómo se relacionan las piezas;
+* explicar qué ocurre al aplicar los artefactos;
+* indicar cómo comprobar que funciona;
+* incluir diagnóstico de fallos típicos;
+* conectar con la unidad siguiente;
+* cerrar con fuentes de referencia oficiales o primarias.
+
+Debe evitar estructuras excesivamente densas para el alumno, como catálogos extensos de invariantes, glosarios razonados obligatorios, anexos largos o matrices que sustituyan a una progresión didáctica clara.
 
 Puede planificarse como fase posterior cuando convenga avanzar primero en varias unidades técnicas y revisar después la progresión completa del itinerario.
 
@@ -626,13 +630,14 @@ Debe comprobarse que:
 
 El siguiente incremento recomendado vigente se registra en `project/project-state.md`, que debe prevalecer sobre esta sección cuando el itinerario avance.
 
-Tras generar y validar funcionalmente la Unidad 05, el siguiente incremento recomendado es revisar y aprobar pedagogicamente la Unidad 05.
+Tras aprobar pedagógicamente las guías del alumno de las Unidades 01-05 y alinear los playbooks y documentos de proyecto con la estructura real de `student-notes.md`, el siguiente incremento recomendado es generar el playbook de la Unidad 06 — Empaquetado con Helm.
 
 Esa sesión debería centrarse en:
 
-1. leer `tutorial/05-scheduling-resilience-maintenance/summary.md`;
-2. revisar `tutorial/05-scheduling-resilience-maintenance/README.md`, `student-notes.md` e `instructor-notes.md`;
-3. revisar `labs/05-scheduling-resilience-maintenance/README.md` y los manifiestos de `solution/`;
-4. comprobar que el README actua como entrada y que `student-notes.md` contiene el desarrollo pedagogico profundo;
-5. mantener `platform-api`, `platform-training` y `labs/05-scheduling-resilience-maintenance/solution/` como base tecnica validada;
-6. no avanzar a Unidad 06 hasta cerrar esta revision pedagogica o registrar una decision explicita.
+1. revisar `playbooks/master.md`;
+2. revisar `playbooks/unit-template.md`;
+3. leer `tutorial/05-scheduling-resilience-maintenance/summary.md`;
+4. inspeccionar `labs/05-scheduling-resilience-maintenance/solution/`;
+5. revisar en `project/roadmap.md` el alcance previsto de Helm;
+6. reevaluar la decision de version de Helm antes de crear charts;
+7. crear solo el playbook de Unidad 06, sin generar todavia charts ni contenido de laboratorio.

@@ -272,7 +272,7 @@ Debe actuar como puerta de entrada de la unidad. Debe incluir como mínimo:
 - arquitectura o estado inicial;
 - mapa de aprendizaje;
 - conceptos cubiertos a nivel introductorio;
-- referencia clara a `student-notes.md` para el desarrollo pedagógico profundo;
+- referencia clara a `student-notes.md` como guía de aprendizaje de la unidad;
 - referencia clara al README del laboratorio para los pasos operativos;
 - conclusión;
 - conexión con la siguiente unidad.
@@ -287,27 +287,32 @@ Ruta:
 tutorial/<unidad>/student-notes.md
 ```
 
-Debe ser el material formativo profundo de la unidad. Su responsabilidad es construir el modelo mental del alumno y explicar desde cero toda abstracción nueva que la unidad utilice.
+Debe ser la guía de aprendizaje de la unidad. Su responsabilidad es construir comprensión antes del laboratorio, explicar qué representa cada componente y conectar esa comprensión con los artefactos reales.
 
 No se debe asumir que un alumno sabe qué es un Pod, Deployment, Service, ConfigMap, Secret, Ingress, volumen o cualquier otro concepto solo porque el laboratorio lo usa.
 
-Para cada concepto relevante, debe cubrir:
+Debe seguir una progresión clara, equivalente a:
 
-- qué problema resuelve;
-- qué es y qué no es;
-- qué responsabilidad tiene;
-- cómo se relaciona con conceptos anteriores;
-- qué objeto, campo, comando o señal permite observarlo;
-- qué errores de razonamiento son frecuentes;
-- qué queda fuera de alcance y por qué se difiere.
+- propósito de las notas;
+- qué se va a cubrir;
+- qué representa cada componente desde un punto de vista académico;
+- qué se va a construir en la unidad;
+- cómo se relacionan las piezas;
+- qué ocurre al aplicar los manifiestos, scripts o artefactos;
+- cómo comprobar que funciona;
+- cómo diagnosticar los fallos típicos de la unidad;
+- qué debe recordarse para la unidad siguiente;
+- fuentes de referencia oficiales o primarias.
 
 Debe diferenciar claramente:
 
 - explicación conceptual;
-- ejemplos mínimos de observación;
-- analogías o modelos mentales;
+- aplicación concreta en el laboratorio;
+- ejemplos mínimos de observación o comprobación;
 - límites y trade-offs;
 - notas específicas de plataforma.
+
+No debe convertirse en una enciclopedia, catálogo de invariantes, glosario extenso o colección de anexos. Si se usan tablas o matrices, deben servir a una progresión didáctica clara y no sustituirla.
 
 Las instrucciones ejecutables completas pertenecen al README del laboratorio. `student-notes.md` puede incluir comandos puntuales solo cuando ayuden a observar o razonar sobre un concepto.
 

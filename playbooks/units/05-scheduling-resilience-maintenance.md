@@ -352,7 +352,7 @@ Si la Unidad 04 no esta aplicada, la unidad puede documentar la recuperacion apl
 | Componente | Responsabilidad | Ubicacion prevista |
 |---|---|---|
 | Tutorial de la Unidad 05 | Guiar conceptos de scheduling, resiliencia y mantenimiento | `tutorial/05-scheduling-resilience-maintenance/README.md` |
-| Student notes | Material pedagogico profundo sobre colocacion, disponibilidad y mantenimiento | `tutorial/05-scheduling-resilience-maintenance/student-notes.md` |
+| Student notes | Guia de aprendizaje sobre scheduling, resiliencia, mantenimiento, diagnostico y continuidad | `tutorial/05-scheduling-resilience-maintenance/student-notes.md` |
 | Notas del instructor | Facilitar imparticion, simulaciones y evaluacion | `tutorial/05-scheduling-resilience-maintenance/instructor-notes.md` |
 | Summary | Registrar continuidad tecnica y pedagogica | `tutorial/05-scheduling-resilience-maintenance/summary.md` |
 | Laboratorio | Contener instrucciones y artefactos declarativos | `labs/05-scheduling-resilience-maintenance/README.md` |
@@ -553,17 +553,18 @@ Ruta:
 tutorial/05-scheduling-resilience-maintenance/student-notes.md
 ```
 
-Debe ser el material pedagogico profundo de la unidad. Debe construir comprension antes de pedir ejecucion. Debe incluir:
+Debe ser la guia de aprendizaje de la unidad. Debe construir comprension antes de pedir ejecucion y seguir una estructura equivalente a:
 
-- modelo mental de scheduler, nodos, capacidad, restricciones y disponibilidad;
-- glosario razonado de scheduler, node labels, `nodeSelector`, affinity, anti-affinity, taints, tolerations, PDB, eviction, rollout, rollback, Job y CronJob;
-- diferencia entre recuperacion automatica de Pods y disponibilidad real;
-- relacion entre replicas, Service, EndpointSlice, probes y rollout;
-- relacion entre PVC local y restricciones de colocacion;
-- lectura guiada de los manifiestos de Unidad 05;
-- errores de razonamiento frecuentes;
-- preguntas de comprobacion;
-- limites de alcance y continuidad.
+- proposito;
+- que se va a cubrir;
+- que representa cada componente de scheduling, resiliencia y mantenimiento;
+- que se va a construir;
+- como se relacionan scheduler, nodos, constraints, rollout, readiness, PDB y PVC local;
+- que ocurre al aplicar los manifiestos;
+- como comprobar que funciona;
+- como diagnosticar fallos tipicos;
+- que debe recordarse para la Unidad 06;
+- fuentes de referencia oficiales.
 
 No debe duplicar el README del laboratorio. Puede incluir comandos puntuales de observacion, pero no secuencias operativas completas.
 

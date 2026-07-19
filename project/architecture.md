@@ -328,7 +328,9 @@ Puerta de entrada de la unidad para el alumno: contexto, objetivos, mapa de apre
 
 ### `student-notes.md`
 
-Material pedagógico profundo de la unidad. Explica desde cero los conceptos, modelos mentales, relaciones, errores frecuentes, límites y preguntas de comprobación que el alumno necesita para no limitarse a ejecutar laboratorios.
+Guía de aprendizaje de la unidad. Explica qué se va a cubrir, qué representa académicamente cada componente, qué se construye en el laboratorio, cómo se relacionan las piezas, qué ocurre al aplicar los artefactos, cómo comprobar el resultado, cómo diagnosticar fallos típicos, qué debe recordarse para la unidad siguiente y qué fuentes oficiales consultar.
+
+No debe convertirse en una enciclopedia interna ni en una referencia densa de invariantes, glosarios y anexos. Su función es dar estructura académica y utilidad práctica al alumno antes y durante el laboratorio.
 
 ### `instructor-notes.md`
 

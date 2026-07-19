@@ -339,7 +339,7 @@ Si la Unidad 03 no esta aplicada, la unidad puede documentar la recuperacion apl
 | Componente | Responsabilidad | Ubicacion prevista |
 |---|---|---|
 | Tutorial de la Unidad 04 | Guiar conceptos de persistencia, estado y recuperacion basica | `tutorial/04-persistence-state/README.md` |
-| Student notes | Material pedagogico profundo sobre almacenamiento en Kubernetes | `tutorial/04-persistence-state/student-notes.md` |
+| Student notes | Guia de aprendizaje sobre componentes de almacenamiento, persistencia aplicada, diagnostico y continuidad | `tutorial/04-persistence-state/student-notes.md` |
 | Notas del instructor | Facilitar imparticion, demostraciones y evaluacion | `tutorial/04-persistence-state/instructor-notes.md` |
 | Summary | Registrar continuidad tecnica y pedagogica | `tutorial/04-persistence-state/summary.md` |
 | Laboratorio | Contener instrucciones y artefactos declarativos | `labs/04-persistence-state/README.md` |
@@ -544,18 +544,18 @@ Ruta:
 tutorial/04-persistence-state/student-notes.md
 ```
 
-Debe ser el material pedagogico profundo de la unidad. Debe construir comprension antes de pedir ejecucion. Debe incluir:
+Debe ser la guia de aprendizaje de la unidad. Debe construir comprension antes de pedir ejecucion y seguir una estructura equivalente a:
 
-- modelo mental de datos efimeros y persistentes;
-- glosario razonado de `Volume`, `emptyDir`, `PersistentVolume`, `PersistentVolumeClaim`, `StorageClass`, access modes, reclaim policy y mount;
-- diferencia entre configuracion, secreto y dato persistente;
-- relacion entre PVC y Pod;
-- relacion entre StorageClass y proveedor de almacenamiento;
-- particularidades de replicas y volumenes;
-- lectura guiada de los manifiestos de Unidad 04;
-- errores de razonamiento frecuentes;
-- preguntas de comprobacion;
-- limites de alcance y continuidad.
+- proposito;
+- que se va a cubrir;
+- que representa cada componente de almacenamiento;
+- que se va a construir;
+- como se relacionan `StorageClass`, PVC, PV, `volume`, `volumeMount` y aplicacion;
+- que ocurre al aplicar los manifiestos;
+- como comprobar que funciona;
+- como diagnosticar fallos tipicos;
+- que debe recordarse para la Unidad 05;
+- fuentes de referencia oficiales.
 
 No debe duplicar el README del laboratorio. Puede incluir comandos puntuales de observacion, pero no secuencias operativas completas.
 

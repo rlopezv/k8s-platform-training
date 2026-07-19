@@ -355,33 +355,33 @@ Ruta:
 tutorial/NN-unit-name/student-notes.md
 ```
 
-Debe ser el material pedagógico profundo de la unidad. Debe construir comprensión antes de pedir ejecución. Para cada abstracción nueva o central, explicar:
+Debe ser la guía de aprendizaje de la unidad. Debe construir comprensión antes de pedir ejecución, separando primero qué representa cada componente y después cómo se usa en los artefactos reales de la unidad.
 
+Debe incluir una estructura equivalente a:
+
+1. propósito;
+2. qué se va a cubrir;
+3. qué representa cada componente;
+4. qué se va a construir;
+5. cómo se relacionan las piezas;
+6. qué ocurre al aplicar los manifiestos, scripts o artefactos;
+7. cómo comprobar que funciona;
+8. cómo diagnosticar los fallos típicos;
+9. qué debe recordarse para la unidad siguiente;
+10. fuentes de referencia oficiales o primarias.
+
+Para cada componente central, explicar de forma sintética:
+
+- qué representa;
 - qué problema resuelve;
-- qué es;
 - qué no es;
-- qué responsabilidad tiene;
-- cómo se representa en los artefactos de la unidad;
-- qué no resuelve;
-- cómo se relaciona con artefactos ya conocidos;
-- qué trade-offs introduce;
-- cómo se diagnostica cuando falla.
+- cómo aparece o se observa en la unidad.
 
-Debe incluir:
-
-1. modelo mental amplio de la unidad;
-2. glosario razonado de conceptos;
-3. explicación progresiva de cada concepto central;
-4. relaciones entre conceptos;
-5. ejemplos conceptuales mínimos;
-6. lectura guiada de los manifiestos o scripts relevantes;
-7. errores de razonamiento frecuentes;
-8. preguntas de comprobación;
-9. límites de alcance y continuidad.
+No debe convertirse en una enciclopedia ni exigir por defecto glosarios extensos, invariantes numerados, anexos largos o matrices densas. Esos recursos solo deben usarse si hacen más clara la progresión de aprendizaje.
 
 No debe duplicar el README del laboratorio. Puede incluir comandos puntuales de observación, pero no secuencias operativas completas.
 
-Las referencias deberán funcionar como lectura guiada. Para cada bloque de referencias, incluir preguntas que el alumno pueda responder después de leer.
+Las referencias deberán priorizar documentación oficial, especificaciones o fuentes primarias, indicando qué leer y para qué sirve dentro de la unidad.
 
 ## Notas del instructor
 

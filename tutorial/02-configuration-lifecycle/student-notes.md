@@ -1,207 +1,245 @@
 # Student notes - Unidad 02
 
-## Proposito de estas notas
+## Proposito
 
-Estas notas explican que significa hacer que un workload sea configurable y operable. El laboratorio muestra los manifiestos; aqui se explica el modelo mental.
+Estas notas explican como una aplicacion Kubernetes deja de ser solo un contenedor en marcha y empieza a ser un workload configurable, observable y gobernado por ciclo de vida. El laboratorio extiende `platform-api`; estas notas explican que representa cada pieza antes de ver como se usa.
 
-La Unidad 02 no trata de escribir mas YAML. Trata de declarar que necesita la aplicacion para arrancar, recibir trafico, recuperarse y compartir recursos con otros workloads.
-
-## Modelo mental
-
-Un Deployment minimo puede crear Pods, pero Kubernetes necesita mas informacion para operarlos bien:
+La idea central es:
 
 ```text
-Que datos recibe?
-Cuando esta lista?
-Cuando debe reiniciarse?
-Cuantos recursos necesita?
-Que Pods pueden recibir trafico?
+La imagen contiene el software.
+El Deployment declara como debe ejecutarse.
+ConfigMaps, Secrets, probes y resources describen lo que necesita para operar.
 ```
 
-La Unidad 02 responde esas preguntas con ConfigMap, Secret, probes, requests y limits.
+## Que se va a cubrir
 
-## Configuracion
+| Bloque | Que aporta | Nivel en esta unidad |
+|---|---|---|
+| Configuracion externa | Separar valores modificables de la imagen | Practico |
+| ConfigMap | Guardar configuracion no sensible | Practico |
+| Secret | Representar datos sensibles de laboratorio | Practico, con limites explicitos |
+| Variables de entorno | Inyectar valores al proceso al arrancar | Practico |
+| Volumen de configuracion | Entregar ficheros desde un ConfigMap | Practico |
+| Probes | Declarar arranque, disponibilidad y salud | Practico |
+| Requests y limits | Declarar necesidades y fronteras de CPU/memoria | Practico |
+| Rollout | Observar cambios del template del Pod | Practico |
+| Eventos y logs | Diagnosticar configuracion, salud y recursos | Practico |
 
-Configuracion es informacion que modifica el comportamiento de la aplicacion sin cambiar su imagen.
+No se cubren Ingress, DNS externo, persistencia real, Helm, Terraform, observabilidad avanzada ni gestion productiva de secretos. Todo eso aparece mas adelante.
 
-Ejemplos:
+## Que representa cada componente
 
-- entorno (`APP_ENV`);
-- nivel de logs (`LOG_LEVEL`);
-- mensaje o contenido de laboratorio;
-- URL de una dependencia no sensible;
-- flags de una funcionalidad.
+### Componentes de configuracion y datos
 
-La configuracion no deberia obligar a reconstruir la imagen. Si cada entorno necesita una imagen distinta para cambiar valores, la frontera entre build y operacion queda borrosa.
+| Componente | Que representa | Que problema resuelve | Que no es |
+|---|---|---|---|
+| ConfigMap | Configuracion no sensible almacenada como objeto Kubernetes | Permite cambiar valores o ficheros sin reconstruir la imagen | No es almacenamiento persistente ni lugar para secretos |
+| Secret | Datos sensibles o credenciales representados como objeto Kubernetes | Separa secretos de la imagen y del manifiesto principal del Deployment | No es seguridad completa por si mismo; no deben guardarse valores reales en el repo |
+| Variable de entorno | Valor entregado al proceso al arrancar | Permite que la aplicacion lea configuracion simple | No se actualiza dentro de un proceso ya arrancado |
+| Volumen de ConfigMap | Ficheros proyectados dentro del contenedor | Permite entregar configuracion como archivo | No conserva datos escritos por la aplicacion |
+| `stringData` | Forma legible de declarar datos de un Secret en laboratorio | Evita escribir base64 manualmente | No cambia la obligacion de no versionar secretos reales |
 
-## ConfigMap
+### Componentes de salud y recursos
 
-Un `ConfigMap` almacena datos no sensibles como claves y valores. Kubernetes puede entregarlos a un Pod como variables de entorno o como archivos montados.
+| Componente | Que representa | Que problema resuelve | Que no es |
+|---|---|---|---|
+| `startupProbe` | Comprobacion de arranque inicial | Da tiempo a una aplicacion lenta antes de aplicar otras probes | No decide trafico estable por si sola |
+| `readinessProbe` | Comprobacion de disponibilidad para recibir trafico | Evita enviar peticiones a Pods que aun no estan listos | No reinicia contenedores |
+| `livenessProbe` | Comprobacion de que el contenedor sigue vivo | Permite reiniciar un contenedor bloqueado | No debe comprobar dependencias externas fragiles |
+| `requests` | Recursos minimos que el scheduler reserva conceptualmente | Ayuda a decidir si un Pod cabe en un nodo | No limita el consumo maximo |
+| `limits` | Frontera maxima de consumo | Evita que un contenedor consuma sin limite | No garantiza rendimiento |
+| Rollout | Transicion controlada entre versiones del template | Permite reemplazar Pods cuando cambia la declaracion | No ocurre por cualquier cambio del cluster |
 
-Que resuelve:
-
-- separar configuracion no sensible de la imagen;
-- versionar parametros de laboratorio;
-- permitir que el Deployment declare de donde obtiene sus valores.
-
-Que no resuelve:
-
-- no protege secretos;
-- no reinicia automaticamente Pods de forma trazable por cualquier cambio;
-- no valida que el contenido tenga sentido para la aplicacion.
-
-En esta unidad, el ConfigMap tambien contiene un `index.html` para que el alumno vea un efecto observable sin reconstruir la imagen.
-
-## Secret
-
-Un `Secret` almacena datos que Kubernetes trata como sensibles en su API. En esta unidad se usa solo con valores ficticios.
-
-Es importante ser preciso: un Secret no significa automaticamente "seguridad completa". Segun configuracion del cluster, politicas de acceso y cifrado, puede requerir controles adicionales.
-
-Que resuelve en esta unidad:
-
-- practicar como un Pod referencia datos no publicos;
-- separar conceptualmente valores sensibles de ConfigMap;
-- evitar imprimir valores en validaciones.
-
-Que no resuelve todavia:
-
-- rotacion;
-- integracion con vault externo;
-- cifrado corporativo;
-- politicas RBAC avanzadas;
-- auditoria de acceso a secretos.
-
-## Variables de entorno
-
-Una variable de entorno entrega un valor al proceso cuando arranca. Es comoda para parametros simples, pero no es ideal para todo.
-
-Ventajas:
-
-- facil de leer por muchas aplicaciones;
-- simple de declarar;
-- buena para valores pequeños.
-
-Limites:
-
-- normalmente requiere reiniciar el proceso para cambiar;
-- puede aparecer en diagnosticos si no se cuida;
-- no sirve bien para archivos estructurados grandes.
-
-## Volumen de configuracion
-
-Un volumen desde ConfigMap permite montar datos como archivos dentro del Pod.
-
-En esta unidad se monta `index.html` para que nginx sirva contenido definido fuera de la imagen.
-
-Esto no es persistencia. Si el Pod escribe datos propios y se destruye, esos datos no quedan preservados por usar un ConfigMap. La persistencia se estudiara en Unidad 04 con volumenes persistentes.
-
-## Probes
-
-Las probes son preguntas que el kubelet hace al contenedor.
-
-No son observabilidad avanzada. Son señales locales de salud que Kubernetes usa para tomar decisiones inmediatas.
-
-### Startup probe
-
-Pregunta:
+Una forma corta de recordarlo:
 
 ```text
-La aplicacion ya termino de arrancar?
+ConfigMap y Secret entregan datos.
+Probes deciden trafico y reinicio.
+Requests hablan con el scheduler.
+Limits hablan con el nodo y el runtime.
+Rollout reemplaza Pods cuando cambia el template.
 ```
 
-Sirve para proteger aplicaciones que tardan en iniciar. Mientras startup falla, liveness no mata el contenedor por impaciencia.
+## Que vas a construir
 
-### Readiness probe
+Extenderas el `Deployment` de `platform-api` que venia de la Unidad 01.
 
-Pregunta:
-
-```text
-Esta instancia puede recibir trafico?
-```
-
-Si readiness falla, el Pod puede seguir `Running`, pero deja de ser candidato para recibir trafico del Service. Esto afecta a EndpointSlice.
-
-Readiness no reinicia el contenedor. Solo cambia su disponibilidad para trafico.
-
-### Liveness probe
-
-Pregunta:
-
-```text
-El contenedor sigue sano o debe reiniciarse?
-```
-
-Si liveness falla repetidamente, el kubelet reinicia el contenedor.
-
-Error frecuente: usar liveness para comprobar dependencias externas. Si una base de datos externa falla, reiniciar todos los contenedores puede empeorar el incidente.
-
-## Requests y limits
-
-Los recursos son otro contrato entre Pod y plataforma.
-
-`requests` indican lo que el Pod solicita para ser planificado. El scheduler los usa para decidir si un nodo puede alojarlo.
-
-`limits` indican el maximo permitido. El nodo y el runtime aplican esa frontera.
-
-No son lo mismo:
-
-| Campo | Pregunta |
+| Elemento | Valor o cambio |
 |---|---|
-| request CPU | Cuanta CPU deberia reservarse para planificar? |
-| limit CPU | Hasta donde se permite consumir CPU? |
-| request memory | Cuanta memoria minima se reserva al planificar? |
-| limit memory | A partir de que consumo de memoria se puede terminar el contenedor? |
+| ConfigMap | `platform-api-config` |
+| Secret de laboratorio | `platform-api-secret` |
+| Variables de entorno | `APP_ENV`, `LOG_LEVEL`, `FEATURE_GREETING`, `LAB_CLIENT_ID`, `LAB_API_TOKEN` |
+| Fichero configurado | `index.html` montado desde ConfigMap |
+| Probes | `startupProbe`, `readinessProbe`, `livenessProbe` HTTP sobre `/` |
+| Recursos | `requests` de `25m` CPU y `64Mi`; `limits` de `100m` CPU y `128Mi` |
+| Terminacion | `terminationGracePeriodSeconds: 20` |
 
-Un request demasiado alto puede dejar Pods en `Pending`. Un limit demasiado bajo puede provocar terminaciones por memoria o throttling.
+El resultado sigue siendo la misma aplicacion, el mismo namespace y el mismo Service interno. La diferencia es que ahora el Pod declara de forma explicita como recibe configuracion, como expone salud y con que recursos opera.
 
-## Rollout
+## Como se relacionan
 
-Un rollout ocurre cuando cambia el template de Pod de un Deployment.
-
-Cambiar una variable de entorno en el Deployment cambia `.spec.template`, por tanto Kubernetes crea una nueva revision y nuevos Pods.
-
-Cambiar solo el contenido de un ConfigMap no siempre produce un rollout del Deployment. La plataforma puede actualizar archivos montados con cierta demora, pero si quieres trazabilidad operativa normalmente fuerzas o declaras un cambio visible.
-
-## Relacion con Service y EndpointSlice
-
-La Unidad 01 explico que el Service selecciona Pods. La Unidad 02 añade un matiz: no todos los Pods seleccionados deben recibir trafico.
-
-El Service debe encontrar Pods que:
-
-- coinciden por labels;
-- existen;
-- estan listos segun readiness.
-
-EndpointSlice muestra esos destinos. Si readiness falla, puede desaparecer la direccion del Pod de EndpointSlice aunque el Pod siga vivo.
-
-## Errores de razonamiento frecuentes
-
-| Error | Correccion |
-|---|---|
-| "ConfigMap sirve para cualquier dato externo" | Solo para datos no sensibles. |
-| "Secret significa dato seguro en cualquier circunstancia" | Secret requiere controles adicionales y aqui solo usa valores ficticios. |
-| "Running significa listo para trafico" | Readiness decide si recibe trafico. |
-| "Liveness arregla cualquier fallo" | Liveness reinicia; no diagnostica ni corrige causas externas. |
-| "Requests y limits son metricas" | Son declaracion de recursos, no observacion de consumo real. |
-| "Un volumen de ConfigMap es persistencia" | Es configuracion montada, no almacenamiento persistente de datos de aplicacion. |
-
-## Preguntas de comprobacion
-
-- Que dato pondrias en ConfigMap y cual nunca deberias poner ahi?
-- Por que un Pod puede estar `Running` pero no recibir trafico?
-- Que probe afecta a EndpointSlice?
-- Que diferencia hay entre reiniciar un contenedor y retirarlo del trafico?
-- Por que requests hablan con el scheduler y limits con el nodo/runtime?
-- Que cambio crea un nuevo ReplicaSet y cual puede no hacerlo?
-
-## Continuidad
-
-La Unidad 03 parte de un workload que ya declara configuracion, salud y recursos. Eso permite estudiar red e ingreso con una base sana:
+La Unidad 02 modifica el template del Pod dentro del Deployment:
 
 ```text
-Pod configurable y observable
-  -> Service con endpoints listos
-    -> DNS interno
-      -> Ingress
+ConfigMap ----\
+Secret --------\
+Probes ---------> Deployment.spec.template -> ReplicaSet -> Pods
+Resources -----/
 ```
+
+El Service sigue seleccionando Pods por labels, pero ahora hay una condicion adicional:
+
+```text
+Service selecciona Pods por labels
+EndpointSlice solo incluye destinos que estan listos
+readinessProbe influye en esa disponibilidad
+```
+
+Por eso un Pod puede estar `Running` y aun asi no recibir trafico: ejecutarse no es lo mismo que estar listo.
+
+## Que ocurre cuando aplicas los manifiestos
+
+Cuando aplicas ConfigMap o Secret, creas objetos de datos. Cuando aplicas el Deployment, su template referencia esos objetos y Kubernetes crea Pods que los consumen.
+
+Flujo mental:
+
+```text
+1. La API guarda ConfigMap y Secret.
+2. La API guarda el Deployment actualizado.
+3. Como cambia el template, el Deployment inicia un rollout.
+4. Se crea un ReplicaSet nuevo.
+5. Los Pods nuevos arrancan con variables, volumen, probes y resources.
+6. La startup probe protege el arranque.
+7. La readiness probe decide si entran en endpoints.
+8. La liveness probe puede reiniciar contenedores bloqueados.
+9. Requests influyen en scheduling; limits en consumo durante ejecucion.
+```
+
+No todos los cambios tienen el mismo efecto. Cambiar el template del Deployment provoca rollout. Cambiar solo el contenido de un ConfigMap puede no recrear Pods automaticamente; depende de como se consuma y de si reaplicas o reinicias el workload.
+
+## Como comprobar que funciona
+
+Comprueba que existen los objetos nuevos:
+
+```bash
+kubectl -n platform-training get configmap platform-api-config
+kubectl -n platform-training get secret platform-api-secret
+```
+
+Comprueba el rollout:
+
+```bash
+kubectl -n platform-training rollout status deployment/platform-api
+```
+
+Comprueba que las probes y recursos estan declarados:
+
+```bash
+kubectl -n platform-training describe deployment platform-api
+```
+
+Comprueba Pods y endpoints:
+
+```bash
+kubectl -n platform-training get pods
+kubectl -n platform-training get endpoints platform-api
+```
+
+Comprueba logs:
+
+```bash
+kubectl -n platform-training logs deployment/platform-api --tail=50
+```
+
+La validacion automatizada de la unidad es:
+
+```bash
+bash labs/02-configuration-lifecycle/validation/validate.sh
+```
+
+## Como diagnosticar los 4 fallos tipicos
+
+### 1. El Pod no arranca por configuracion ausente
+
+Sintoma: Pods en error o eventos indicando que falta una clave de ConfigMap o Secret.
+
+Comprueba:
+
+```bash
+kubectl -n platform-training describe pod -l app.kubernetes.io/name=platform-api
+kubectl -n platform-training get configmap platform-api-config -o yaml
+kubectl -n platform-training get secret platform-api-secret -o yaml
+```
+
+Idea clave: el template referencia nombres y claves. Si el objeto o la clave no existen, el Pod no puede construirse correctamente.
+
+### 2. Cambio el ConfigMap y no veo el cambio
+
+Sintoma: el objeto ConfigMap cambio, pero la aplicacion sigue mostrando contenido anterior.
+
+Comprueba:
+
+```bash
+kubectl -n platform-training get configmap platform-api-config -o yaml
+kubectl -n platform-training rollout status deployment/platform-api
+kubectl -n platform-training get pods
+```
+
+Idea clave: una variable de entorno queda fijada al arrancar el proceso. Un fichero montado puede actualizarse, pero la aplicacion tiene que leerlo de nuevo. Si quieres recrear Pods, cambia el template o reinicia el Deployment de forma controlada.
+
+### 3. El Service no tiene endpoints aunque hay Pods
+
+Sintoma: Pods `Running`, pero endpoints vacios.
+
+Comprueba:
+
+```bash
+kubectl -n platform-training get pods
+kubectl -n platform-training describe pod -l app.kubernetes.io/name=platform-api
+kubectl -n platform-training get endpoints platform-api
+```
+
+Idea clave: readiness decide si un Pod esta listo para trafico. `Running` solo indica que el contenedor existe.
+
+### 4. El Pod queda `Pending` o el contenedor muere por recursos
+
+Sintoma: Pod pendiente, eventos de scheduling, `OOMKilled` o aplicacion lenta.
+
+Comprueba:
+
+```bash
+kubectl -n platform-training describe pod -l app.kubernetes.io/name=platform-api
+kubectl -n platform-training get events --sort-by=.lastTimestamp
+```
+
+Idea clave: `requests` influyen antes de arrancar, durante scheduling. `limits` actuan durante ejecucion. CPU suele degradar; memoria puede terminar el contenedor.
+
+## Que debes recordar para la Unidad 03
+
+La Unidad 03 introducira entrada HTTP estable desde fuera del cluster. Para entenderla necesitas conservar tres ideas de esta unidad:
+
+| Idea | Por que importa despues |
+|---|---|
+| Readiness decide trafico | Ingress solo podra enviar trafico util si el Service tiene destinos listos |
+| Service sigue siendo interno | Ingress no reemplaza al Service; lo usa como backend |
+| Configuracion y probes viven en el template | Cambios relevantes siguen provocando rollouts |
+
+Resumen:
+
+```text
+Deployment configura Pods.
+Readiness decide si esos Pods entran en endpoints.
+Ingress, en la Unidad 03, dependera de esa cadena.
+```
+
+## Fuentes de referencia
+
+| Fuente | Que leer | Para que sirve |
+|---|---|---|
+| [Kubernetes - Configuration](https://kubernetes.io/docs/concepts/configuration/) | ConfigMaps, Secrets y resources | Ubicar los mecanismos de configuracion |
+| [Kubernetes - ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/) | Uso de ConfigMaps en Pods | Entender configuracion no sensible |
+| [Kubernetes - Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) | Tipos y consumo de Secrets | Entender limites de seguridad |
+| [Kubernetes - Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) | Probes HTTP y comportamiento | Distinguir arranque, disponibilidad y salud |
+| [Kubernetes - Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) | Requests y limits | Entender scheduling y consumo |
+| [Kubernetes - Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) | Rollouts y ReplicaSets | Relacionar cambios de template con Pods nuevos |

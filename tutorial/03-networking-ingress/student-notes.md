@@ -1,200 +1,229 @@
 # Student notes - Unidad 03
 
-## Proposito de estas notas
+## Proposito
 
-Estas notas explican como llega una peticion HTTP hasta `platform-api`. El laboratorio crea y valida un `Ingress`; este documento explica la cadena de red que hace que eso tenga sentido.
+Estas notas explican como una peticion HTTP llega hasta `platform-api`. El laboratorio crea un `Ingress`; estas notas explican la arquitectura de red que hace que ese objeto tenga sentido.
 
-La idea mas importante: la entrada HTTP no es un objeto aislado. Es una secuencia de responsabilidades.
+La idea central es:
 
-## Modelo mental
+```text
+Un Pod tiene red efimera.
+Un Service da estabilidad interna.
+Un Ingress Controller ejecuta reglas de entrada HTTP.
+Un recurso Ingress declara esas reglas.
+```
 
-Una peticion hacia `platform-api` atraviesa varias capas:
+## Que se va a cubrir
+
+| Bloque | Que aporta | Nivel en esta unidad |
+|---|---|---|
+| Red de Pods | Entender por que las IPs de Pods no son contrato estable | Conceptual |
+| Service `ClusterIP` | Acceso interno estable hacia Pods | Practico heredado |
+| EndpointSlice | Evidencia de destinos listos | Practico |
+| DNS interno | Descubrimiento de Services dentro del cluster | Practico |
+| Ingress Controller | Componente real que recibe HTTP | Practico en MicroK8s |
+| Ingress | Regla declarativa de host/path hacia Service | Practico |
+| Host HTTP | Seleccion de regla por cabecera `Host` | Practico |
+| Gateway API | Comparacion conceptual y camino futuro | Conceptual |
+
+No se cubren TLS productivo, DNS publico, certificados, LoadBalancer cloud, NetworkPolicies, service mesh ni Gateway API aplicada.
+
+## Que representa cada componente
+
+| Componente | Que representa | Que problema resuelve | Que no es |
+|---|---|---|---|
+| Red de Pods | Comunicacion entre Pods dentro del cluster | Permite que los workloads se comuniquen con IPs asignadas por Kubernetes | No ofrece identidades estables para clientes |
+| Service | Identidad estable de red dentro del cluster | Evita depender de IPs efimeras de Pods | No publica por si solo una aplicacion hacia fuera |
+| ClusterIP | Tipo de Service interno | Da una IP virtual accesible desde el cluster | No es una IP para usuarios externos |
+| EndpointSlice | Lista de destinos reales y listos de un Service | Permite observar que Pods recibiran trafico | No se configura manualmente en esta unidad |
+| DNS interno | Resolucion de nombres de Services dentro del cluster | Permite usar nombres como `platform-api.platform-training.svc.cluster.local` | No es DNS publico ni resuelve automaticamente desde tu navegador |
+| Ingress Controller | Proxy o componente que recibe trafico HTTP y aplica reglas | Convierte objetos Ingress en comportamiento real | No aparece solo por crear un Ingress |
+| Ingress | Recurso declarativo con reglas HTTP | Expresa host, path y Service backend | No es el proxy que recibe conexiones |
+| IngressClass | Seleccion del controlador que debe atender un Ingress | Evita ambiguedad cuando hay varios controladores | No enruta trafico por si misma |
+| Host HTTP | Cabecera usada para elegir una regla | Permite enrutar varios nombres por el mismo punto de entrada | No es necesariamente DNS real |
+| Gateway API | Modelo mas moderno y expresivo para entrada y routing | Separa mejor infraestructura y reglas de aplicacion | No sustituye al Ingress en este laboratorio |
+
+Frase clave:
+
+```text
+Ingress declara la regla; el Ingress Controller la ejecuta.
+```
+
+## Que vas a construir
+
+La unidad conserva `platform-api`, su ConfigMap, Secret, probes, resources y Service interno. Añade un recurso `Ingress`.
+
+| Elemento | Valor |
+|---|---|
+| Service backend | `service/platform-api` |
+| Tipo de Service | `ClusterIP` |
+| Ingress | `ingress/platform-api` |
+| IngressClass | `public` |
+| Host de laboratorio | `platform-api.local` |
+| Path | `/` con `pathType: Prefix` |
+| Backend | Service `platform-api`, puerto `80` |
+
+En MicroK8s, el laboratorio depende del addon de Ingress. Esa es una pieza de plataforma local: los conceptos son Kubernetes, pero la forma concreta de habilitar el controlador depende de la distribucion.
+
+## Como se relacionan
+
+La cadena de trafico es:
 
 ```text
 Cliente local
-  -> punto de entrada del controlador
-    -> Ingress Controller
-      -> regla Ingress
-        -> Service
+  -> Ingress Controller
+      lee Ingress
+      -> Service platform-api
           -> EndpointSlice
-            -> Pod Ready
-              -> contenedor
+              -> Pod Ready
+                  -> contenedor
 ```
 
-Si falla HTTP, no sabemos aun donde esta el problema. Puede estar en el cliente, el host, el controlador, la regla, el Service, las labels, readiness o el contenedor.
-
-## Red de Pods
-
-Cada Pod recibe una direccion IP dentro del cluster. Esa IP permite comunicacion entre Pods, pero no es un contrato estable para usuarios ni para otros componentes.
-
-Por que no debe usarse como contrato:
-
-- cambia cuando el Pod se recrea;
-- identifica una instancia, no una aplicacion;
-- no expresa readiness;
-- no sobrevive a rollouts.
-
-La IP de Pod sirve para diagnostico, no como interfaz publica de la aplicacion.
-
-## Service
-
-El Service resuelve el problema de estabilidad interna. Publica un nombre y un puerto estables para un conjunto de Pods seleccionados por labels.
-
-En esta unidad el Service sigue siendo:
+Y la cadena declarativa es:
 
 ```text
-service/platform-api
-type: ClusterIP
+Ingress
+  host: platform-api.local
+  path: /
+  backend: service/platform-api:80
 ```
 
-`ClusterIP` significa que el Service es interno al cluster. No esta pensado para usuarios externos.
+El Ingress no apunta a Pods. Apunta a un Service. El Service, a su vez, encuentra Pods por labels y readiness. Por eso el diagnostico de Ingress empieza siempre por abajo: Pods, Service, EndpointSlice, controlador, regla y cliente.
 
-El Service no sustituye a Ingress. Ingress usa el Service como backend.
+## Que ocurre cuando aplicas los manifiestos
 
-## EndpointSlice
-
-EndpointSlice representa los destinos reales que hay detras de un Service.
-
-Si el Service selecciona dos Pods listos, EndpointSlice contiene sus direcciones. Si los Pods no estan Ready, no deberian aparecer como destinos listos para trafico.
-
-EndpointSlice ayuda a responder:
+Flujo mental:
 
 ```text
-El Service tiene backends reales ahora mismo?
+1. Deployment, ConfigMap, Secret y Service mantienen la aplicacion sana.
+2. EndpointSlice refleja los Pods listos detras del Service.
+3. El recurso Ingress se guarda en la API.
+4. El Ingress Controller observa ese Ingress.
+5. El controlador configura su routing HTTP.
+6. Una peticion con Host: platform-api.local llega al controlador.
+7. El controlador reenvia al Service platform-api.
+8. El Service distribuye hacia Pods listos.
 ```
 
-Es una evidencia mejor que mirar solo si el Service existe. Un Service puede existir y no tener ningun destino util.
+Crear un Ingress sin controlador activo no abre trafico. El objeto puede existir perfectamente en la API y no tener ningun efecto observable desde fuera.
 
-## DNS interno de Kubernetes
+## Como comprobar que funciona
 
-Kubernetes publica nombres DNS para Services dentro del cluster.
-
-Para esta unidad:
-
-```text
-platform-api.platform-training.svc.cluster.local
-```
-
-Ese nombre significa:
-
-- `platform-api`: nombre del Service;
-- `platform-training`: namespace;
-- `svc`: familia de Services;
-- `cluster.local`: dominio interno del cluster.
-
-No es DNS publico. No tiene por que resolver desde Windows ni desde Ubuntu WSL. Se prueba desde un Pod porque pertenece a la red interna del cluster.
-
-## Ingress Controller
-
-Un Ingress Controller es el componente que acepta trafico y configura un proxy real segun reglas de Ingress.
-
-Kubernetes por si solo define la API `Ingress`, pero no trae necesariamente un controlador funcionando. Por eso un cluster puede aceptar un objeto `Ingress` y aun asi no enrutar trafico.
-
-En MicroK8s `v1.35`, el addon `ingress` despliega Traefik. En otros clusters podria usarse otro controlador.
-
-Lo importante no es Traefik como producto, sino esta idea:
-
-```text
-Ingress es la declaracion.
-Ingress Controller es quien la ejecuta.
-```
-
-## Ingress
-
-Un recurso `Ingress` declara reglas HTTP o HTTPS.
-
-En esta unidad la regla dice:
-
-```text
-Si la peticion usa host platform-api.local
-y path /
-entonces enviar al Service platform-api puerto 80.
-```
-
-El Ingress no apunta a Pods directamente. Apunta al Service. El Service y EndpointSlice resuelven que Pods estan disponibles.
-
-## Host HTTP
-
-HTTP permite que una peticion incluya una cabecera `Host`. Los controladores de Ingress usan esa cabecera para decidir que regla aplica.
-
-Por eso la prueba usa:
+Comprueba que la aplicacion sigue sana:
 
 ```bash
-curl -H 'Host: platform-api.local' http://127.0.0.1/
+kubectl -n platform-training get deploy,pods,svc,endpoints
 ```
 
-`127.0.0.1` es el destino de red local de la prueba. `platform-api.local` es el host HTTP que debe coincidir con la regla.
+Comprueba EndpointSlice:
 
-Si haces curl sin la cabecera correcta, puedes recibir 404 o backend por defecto aunque la aplicacion este sana.
+```bash
+kubectl -n platform-training get endpointslice
+```
 
-## Gateway API
+Comprueba el Ingress:
 
-Gateway API es una evolucion del modelo de entrada de Kubernetes. Separa responsabilidades de forma mas rica que Ingress y usa recursos como `GatewayClass`, `Gateway` y `HTTPRoute`.
+```bash
+kubectl -n platform-training get ingress platform-api
+kubectl -n platform-training describe ingress platform-api
+```
 
-En esta unidad no se usa como laboratorio principal porque añadiria otra API y otro conjunto de decisiones antes de consolidar Ingress.
+Comprueba el controlador de Ingress de MicroK8s:
 
-El addon de MicroK8s puede instalar CRDs de Gateway API como parte de su implementacion, pero el curso no crea recursos Gateway API todavia.
+```bash
+kubectl get pods -n ingress
+```
 
-## Diagnostico por capas
+Prueba HTTP con host de laboratorio:
 
-Cuando HTTP falla, recorre la cadena:
+```bash
+curl -i -H 'Host: platform-api.local' http://127.0.0.1/
+```
 
-| Capa | Pregunta |
-|---|---|
-| Pod | Hay Pods `Ready`? |
-| Deployment | El rollout termino? |
-| Service | El selector coincide con labels de Pods? |
-| EndpointSlice | Hay direcciones de backend? |
-| DNS interno | El nombre del Service resuelve desde un Pod? |
-| Controlador | Hay Ingress Controller activo? |
-| Ingress | Host, path y backend son correctos? |
-| Cliente | La cabecera `Host` coincide? |
-
-Este orden evita culpar al Ingress de problemas que empezaron antes.
-
-## Seguridad basica
-
-Exponer una aplicacion por Ingress cambia el perimetro de acceso. Aunque sea local, ya no estas usando solo `port-forward` para diagnostico.
-
-Esta unidad no enseña todavia:
-
-- TLS productivo;
-- certificados publicos;
-- autenticacion;
-- autorizacion;
-- WAF;
-- NetworkPolicies;
-- service mesh;
-- DNS publico;
-- LoadBalancer cloud.
-
-Por tanto, el laboratorio demuestra entrada HTTP, no seguridad productiva.
-
-## Errores de razonamiento frecuentes
-
-| Error | Correccion |
-|---|---|
-| "Ingress abre trafico por si solo" | Necesita un controlador instalado y listo. |
-| "Service e Ingress son lo mismo" | Service da estabilidad interna; Ingress declara entrada HTTP. |
-| "DNS interno es `/etc/hosts`" | DNS del cluster resuelve desde Pods; `/etc/hosts` afecta al cliente local. |
-| "Un 404 significa Pod caido" | Puede ser host o path que no coinciden. |
-| "La IP del Pod sirve como endpoint estable" | Es efimera y no expresa la aplicacion completa. |
-
-## Preguntas de comprobacion
-
-- Por que el Ingress apunta a un Service y no a un Pod?
-- Que demuestra EndpointSlice que no demuestra solo `kubectl get service`?
-- Que diferencia hay entre resolver `platform-api.local` desde el host y resolver el Service desde un Pod?
-- Que componente ejecuta realmente la regla de Ingress?
-- Por que Gateway API se menciona pero no se usa como laboratorio principal?
-
-## Continuidad
-
-La Unidad 04 podra estudiar persistencia con una aplicacion ya accesible y diagnosticable por red:
+Resultado esperado:
 
 ```text
-Deployment sano
-  -> Service con endpoints
-    -> Ingress HTTP local
-      -> futura incorporacion de estado persistente
+HTTP/1.1 200 OK
 ```
+
+La validacion automatizada de la unidad es:
+
+```bash
+bash labs/03-networking-ingress/validation/validate.sh
+```
+
+## Como diagnosticar los 4 fallos tipicos
+
+### 1. El Ingress existe pero no responde
+
+Comprueba:
+
+```bash
+kubectl -n platform-training get ingress platform-api
+kubectl get pods -n ingress
+```
+
+Idea clave: el Ingress es una regla. Necesitas un Ingress Controller activo que la lea.
+
+### 2. Recibes 404
+
+Comprueba:
+
+```bash
+kubectl -n platform-training describe ingress platform-api
+curl -i http://127.0.0.1/
+curl -i -H 'Host: platform-api.local' http://127.0.0.1/
+```
+
+Idea clave: la regla se elige por `Host` y path. Si la cabecera no coincide, puedes llegar al controlador pero no a la regla correcta.
+
+### 3. Recibes 502 o 503
+
+Comprueba:
+
+```bash
+kubectl -n platform-training get svc platform-api
+kubectl -n platform-training get endpoints platform-api
+kubectl -n platform-training get pods
+```
+
+Idea clave: el controlador puede estar funcionando, pero el Service no tener destinos listos.
+
+### 4. El DNS funciona en un sitio y no en otro
+
+Comprueba:
+
+```bash
+kubectl -n platform-training get svc platform-api
+```
+
+Idea clave: el DNS interno de Kubernetes sirve para Pods dentro del cluster. `platform-api.local` en este laboratorio es un host HTTP controlado para pruebas locales, no DNS publico productivo.
+
+## Que debes recordar para la Unidad 04
+
+La Unidad 04 introduce persistencia. Necesita una aplicacion ya accesible y diagnosticable.
+
+| Idea | Por que importa despues |
+|---|---|
+| Los Pods siguen siendo efimeros | La persistencia aparece porque recrear Pods borra datos escritos en su filesystem |
+| Service e Ingress no guardan estado | Solo enrutan; no conservan datos |
+| EndpointSlice muestra destinos listos | Seguira siendo una evidencia de salud durante cambios |
+
+Resumen:
+
+```text
+Ingress resuelve entrada HTTP.
+No resuelve persistencia.
+La aplicacion sigue necesitando una forma de conservar datos fuera del Pod.
+```
+
+## Fuentes de referencia
+
+| Fuente | Que leer | Para que sirve |
+|---|---|---|
+| [Kubernetes - Services](https://kubernetes.io/docs/concepts/services-networking/service/) | Service y tipos de Service | Distinguir Service interno de entrada externa |
+| [Kubernetes - EndpointSlices](https://kubernetes.io/docs/concepts/services-networking/endpoint-slices/) | EndpointSlice | Entender destinos reales de un Service |
+| [Kubernetes - DNS for Services and Pods](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/) | DNS interno | Separar DNS de cluster y DNS externo |
+| [Kubernetes - Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) | Recurso Ingress | Entender reglas host/path/backend |
+| [Kubernetes - Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) | Controladores de Ingress | Entender por que el controlador es imprescindible |
+| [Gateway API](https://gateway-api.sigs.k8s.io/) | Vision general | Comparar el modelo futuro con Ingress |

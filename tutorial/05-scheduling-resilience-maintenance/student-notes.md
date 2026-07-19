@@ -1,332 +1,249 @@
 # Student notes - Unidad 05
 
-## Proposito de estas notas
+## Proposito
 
-Estas notas explican como pensar sobre scheduling, resiliencia y mantenimiento antes de editar YAML.
+Estas notas explican como Kubernetes decide donde ejecutar Pods y como una aplicacion se comporta durante cambios, fallos controlados e interrupciones voluntarias. La unidad parte de `platform-api` ya configurada, expuesta y con persistencia local de laboratorio.
 
-La idea mas importante: Kubernetes puede recrear Pods, pero no puede eliminar las restricciones fisicas y operativas del cluster.
-
-## La palabra "disponible" necesita contexto
-
-En Kubernetes se puede hablar de disponibilidad en varias capas:
-
-| Capa | Pregunta |
-|---|---|
-| Deployment | Hay replicas disponibles segun el controlador? |
-| Pod | El contenedor esta arrancado y Ready? |
-| Service | Hay EndpointSlices con endpoints listos? |
-| Ingress | Llega trafico HTTP al Service? |
-| Nodo | Existe capacidad real para ejecutar el Pod? |
-| Almacenamiento | El volumen puede montarse donde hace falta? |
-
-Decir "hay dos replicas" solo responde una parte. Si las dos estan en el mismo nodo, el fallo de ese nodo afecta a las dos. Si una replica no pasa readiness, no debe entrar en endpoints. Si el PVC depende de almacenamiento local, no todos los nodos son equivalentes.
-
-## Scheduler
-
-El scheduler observa Pods que todavia no tienen nodo asignado y decide donde colocarlos.
-
-Un Pod recien creado puede estar `Pending` por motivos distintos:
-
-- todavia no fue asignado;
-- no hay nodo con labels compatibles;
-- faltan CPU o memoria segun requests;
-- hay taints que el Pod no tolera;
-- hay restricciones de afinidad imposibles;
-- el volumen requerido no puede satisfacerse.
-
-El scheduler no arranca contenedores. Solo escribe una decision de asignacion. Despues el kubelet del nodo intenta materializar el Pod.
-
-Modelo simple:
+La idea central es:
 
 ```text
-Pod sin nodeName
-  -> scheduler filtra nodos candidatos
-  -> scheduler puntua preferencias
-  -> Pod queda asignado a un nodo
-  -> kubelet arranca contenedores
+Kubernetes puede recrear Pods.
+Pero no puede ignorar capacidad, nodos, politicas, probes ni almacenamiento.
+La resiliencia depende de todas esas restricciones a la vez.
 ```
 
-La evidencia basica esta en:
+## Que se va a cubrir
+
+| Bloque | Que aporta | Nivel en esta unidad |
+|---|---|---|
+| Scheduler | Decision de ubicacion de Pods | Conceptual y observado |
+| Node labels | Datos usados para seleccionar nodos | Practico |
+| `nodeSelector` | Restriccion simple de ubicacion | Practico |
+| Node affinity | Preferencias o requisitos mas expresivos | Conceptual/practico ligero |
+| Pod anti-affinity | Intentar separar replicas | Practico como preferencia |
+| Taints y tolerations | Rechazo desde el nodo y permiso desde el Pod | Conceptual |
+| Requests | Capacidad necesaria para planificar | Retomado |
+| PVC local | Restriccion de ubicacion por datos | Retomado |
+| RollingUpdate | Cambio progresivo de Pods | Practico |
+| PodDisruptionBudget | Limite ante interrupciones voluntarias | Practico |
+| Rollback | Vuelta a una revision anterior del Deployment | Practico |
+
+No se cubren alta disponibilidad real multi-nodo, autoscaling, KEDA, blue/green, canary, chaos engineering, mantenimiento productivo de nodos, AKS ni EKS.
+
+## Que representa cada componente
+
+### Scheduling
+
+| Componente | Que representa | Que problema resuelve | Que no es |
+|---|---|---|---|
+| Scheduler | Decisor de ubicacion de Pods pendientes | Elige nodos candidatos segun recursos y restricciones | No ejecuta los contenedores |
+| Node | Maquina o instancia donde pueden ejecutarse Pods | Aporta CPU, memoria, red y almacenamiento local | No es intercambiable si contiene datos locales relevantes |
+| Node label | Metadato del nodo | Permite seleccionar o preferir nodos | No prueba capacidad ni salud por si solo |
+| `nodeSelector` | Filtro estricto basado en labels | Fuerza que un Pod solo pueda ir a nodos con ciertas labels | No expresa preferencias ni alternativas |
+| Node affinity | Reglas de ubicacion mas expresivas | Permite requisitos y preferencias | No mueve Pods ya arrancados en esta unidad |
+| Pod anti-affinity | Regla para separar Pods entre dominios | Reduce concentracion de replicas | No crea nodos donde no existen |
+| Taint | Rechazo declarado desde un nodo | Evita que cualquier Pod entre salvo tolerancia | No atrae Pods |
+| Toleration | Permiso del Pod para aceptar un taint | Permite entrar a nodos que rechazan por defecto | No obliga al scheduler a elegir ese nodo |
+
+### Resiliencia y mantenimiento
+
+| Componente | Que representa | Que problema resuelve | Que no es |
+|---|---|---|---|
+| Replica | Copia deseada de un Pod | Permite reemplazo y reparto potencial | No garantiza alta disponibilidad si todas caen en el mismo nodo |
+| Readiness | Elegibilidad para trafico | Evita enviar peticiones a Pods no listos | No evita que el Pod exista |
+| RollingUpdate | Estrategia de reemplazo gradual | Controla cuantos Pods nuevos y viejos conviven | No arregla una configuracion rota |
+| `maxUnavailable` | Cuantos Pods pueden faltar durante rollout | Limita perdida temporal de capacidad | No protege ante caidas involuntarias |
+| `maxSurge` | Cuantos Pods extra pueden crearse durante rollout | Permite avanzar sin bajar tanto la capacidad | No crea recursos si el cluster no tiene capacidad |
+| `minReadySeconds` | Tiempo minimo que un Pod debe estar listo | Evita aceptar disponibilidad demasiado pronto | No prueba la aplicacion en profundidad |
+| PodDisruptionBudget | Politica ante interrupciones voluntarias | Limita cuantos Pods pueden desalojarse por mantenimiento | No evita fallos de nodo ni caidas inesperadas |
+| Rollback | Cambio del Deployment a una revision previa | Recupera un template anterior | No modifica el repositorio ni arregla causas externas |
+
+Frase clave:
+
+```text
+Scheduling decide donde puede vivir un Pod.
+Resiliencia decide que ocurre cuando cambia o se interrumpe.
+```
+
+## Que vas a construir
+
+La unidad conserva configuracion, Secret ficticio, probes, resources, Service, Ingress y PVC. Añade restricciones y politicas de operacion.
+
+| Elemento | Valor o cambio |
+|---|---|
+| Replicas | `2` |
+| Estrategia | `RollingUpdate` |
+| `maxUnavailable` | `1` |
+| `maxSurge` | `1` |
+| `minReadySeconds` | `5` |
+| `revisionHistoryLimit` | `5` |
+| `nodeSelector` | `kubernetes.io/os: linux` |
+| Node affinity | Preferida sobre nodos con `kubernetes.io/hostname` |
+| Pod anti-affinity | Preferida para separar replicas por hostname |
+| PDB | `poddisruptionbudget/platform-api` |
+| `minAvailable` del PDB | `1` |
+
+En un cluster local de un solo nodo, algunas decisiones solo pueden observarse parcialmente. Eso es parte del aprendizaje: declarar anti-affinity no crea mas nodos.
+
+## Como se relacionan
+
+Hay dos preguntas distintas:
+
+```text
+1. Donde puede arrancar este Pod?
+2. Que ocurre mientras cambio o mantengo la aplicacion?
+```
+
+La primera la responde el scheduler:
+
+```text
+Pod pendiente
+  + requests
+  + nodeSelector / affinity
+  + taints y tolerations
+  + volumenes
+  -> nodo elegido o Pod Pending
+```
+
+La segunda la responden Deployment, probes, Service, EndpointSlice y PDB:
+
+```text
+Deployment RollingUpdate
+  crea Pods nuevos
+  espera readiness
+  mantiene endpoints utiles
+  respeta estrategia
+
+PDB
+  limita interrupciones voluntarias
+```
+
+No mezcles las dos preguntas. Un Pod `Pending` es un problema de ubicacion. Un rollout que no avanza suele ser un problema de readiness, capacidad o template nuevo.
+
+## Que ocurre cuando aplicas los manifiestos
+
+Flujo mental:
+
+```text
+1. El Deployment actualizado cambia su estrategia y su template.
+2. Kubernetes inicia un rollout si el template cambia.
+3. El scheduler evalua los Pods nuevos.
+4. Node selector, affinity, requests y PVC condicionan nodos candidatos.
+5. Los Pods arrancan y deben pasar probes.
+6. Readiness decide si entran en endpoints.
+7. RollingUpdate controla cuantos Pods pueden faltar o sobrar.
+8. El PDB queda disponible para limitar interrupciones voluntarias.
+```
+
+Con un solo nodo, el laboratorio puede demostrar recuperacion de Pods y comportamiento de rollout, pero no alta disponibilidad real ante perdida del nodo.
+
+## Como comprobar que funciona
+
+Comprueba rollout y Pods:
 
 ```bash
+kubectl -n platform-training rollout status deployment/platform-api
 kubectl -n platform-training get pods -o wide
+```
+
+Comprueba estrategia:
+
+```bash
+kubectl -n platform-training describe deployment platform-api
+```
+
+Comprueba PDB:
+
+```bash
+kubectl -n platform-training get pdb platform-api
+kubectl -n platform-training describe pdb platform-api
+```
+
+Comprueba endpoints:
+
+```bash
+kubectl -n platform-training get endpoints platform-api
+```
+
+La validacion automatizada de la unidad es:
+
+```bash
+bash labs/05-scheduling-resilience-maintenance/validation/validate.sh
+```
+
+## Como diagnosticar los 4 fallos tipicos
+
+### 1. Un Pod queda `Pending`
+
+Comprueba:
+
+```bash
 kubectl -n platform-training describe pod <pod>
+kubectl get nodes --show-labels
 kubectl -n platform-training get events --sort-by=.lastTimestamp
 ```
 
-## Node labels
+Idea clave: mira scheduling, no logs. Si el Pod no arranco, la aplicacion aun no ha tenido oportunidad de fallar.
 
-Los nodos tienen labels. Algunas describen propiedades estandar, como sistema operativo, arquitectura o hostname. Otras pueden ser propias de la plataforma.
+### 2. El rollout no avanza
 
-Ejemplo:
+Comprueba:
 
 ```bash
-kubectl get nodes --show-labels
-```
-
-Un label usado en scheduling se convierte en contrato. Si escribes un `nodeSelector` para una label que no existe, el Pod puede quedar `Pending`.
-
-## `nodeSelector`
-
-`nodeSelector` es una condicion estricta y simple:
-
-```text
-Este Pod solo puede ejecutarse en nodos que tengan estas labels con estos valores.
-```
-
-En la solucion:
-
-```yaml
-nodeSelector:
-  kubernetes.io/os: linux
-```
-
-Es seguro para el laboratorio porque los nodos Kubernetes que ejecutan contenedores Linux declaran esa label. Sigue siendo una restriccion: si ningun nodo la cumple, el Pod no se programa.
-
-## Node affinity
-
-Node affinity permite expresar reglas mas ricas que `nodeSelector`.
-
-Puede funcionar como:
-
-- requisito obligatorio: `requiredDuringSchedulingIgnoredDuringExecution`;
-- preferencia: `preferredDuringSchedulingIgnoredDuringExecution`.
-
-La parte "IgnoredDuringExecution" significa que la regla se evalua para programar el Pod, pero si las labels cambian despues, Kubernetes no expulsa automaticamente el Pod ya ejecutandose solo por esa diferencia.
-
-La solucion usa preferencia, no requisito, para favorecer nodos con hostname sin bloquear el laboratorio.
-
-## Pod anti-affinity
-
-Pod anti-affinity expresa una preferencia o requisito sobre la relacion entre Pods.
-
-La pregunta es:
-
-```text
-Quiero evitar que replicas equivalentes caigan en el mismo dominio de fallo?
-```
-
-El dominio de fallo puede ser un nodo, una zona o una region, segun `topologyKey`.
-
-En la solucion:
-
-```text
-topologyKey: kubernetes.io/hostname
-```
-
-Eso significa "si puedes, separa replicas por nodo". Es preferida porque MicroK8s local suele tener un solo nodo. Si fuera obligatoria, una de las dos replicas podria quedar `Pending`.
-
-## Taints y tolerations
-
-Los taints viven en los nodos y funcionan como rechazo:
-
-```text
-Este nodo no acepta ciertos Pods salvo que los toleren.
-```
-
-Las tolerations viven en los Pods y dicen:
-
-```text
-Este Pod acepta ese rechazo.
-```
-
-Un error frecuente es creer que una toleration selecciona un nodo. No lo hace. Solo permite que el Pod pueda entrar en un nodo que de otro modo lo rechazaria. Para atraer Pods hacia nodos concretos se usan labels, affinity u otros mecanismos.
-
-En esta unidad no se deja un taint como estado final porque modificar nodos afecta a otros workloads del cluster local. El laboratorio lo trata como demostracion conceptual y manual.
-
-## Requests, capacidad y scheduling
-
-Los `requests` de CPU y memoria son promesas de capacidad minima. El scheduler los usa para decidir si un nodo puede alojar el Pod.
-
-Si pides demasiado, el Pod puede quedar `Pending` aunque la imagen sea correcta y el YAML tenga sintaxis valida.
-
-En `platform-api` los requests siguen siendo conservadores:
-
-```text
-cpu: 25m
-memory: 64Mi
-```
-
-Esto reduce el riesgo de bloquear el laboratorio local por recursos.
-
-## PVC local y colocacion
-
-La Unidad 04 introdujo `platform-api-data` con `microk8s-hostpath`.
-
-Esto tiene una consecuencia importante: el dato esta asociado al almacenamiento local del nodo. En un cluster de un nodo no se ve como problema porque todos los Pods acaban en el mismo sitio. En un cluster real, el tipo de volumen, access mode, provisionador y zona pueden condicionar donde puede arrancar un Pod.
-
-Por eso la unidad evita prometer resiliencia multi-nodo. Primero se aprende el modelo; mas adelante se estudiaran plataformas gestionadas y storage cloud.
-
-## Fallo involuntario e interrupcion voluntaria
-
-No todos los eventos son iguales.
-
-| Tipo | Ejemplo | Que significa |
-|---|---|---|
-| Fallo involuntario | Proceso muere, Pod desaparece, nodo falla | Algo se rompio o desaparecio |
-| Interrupcion voluntaria | Eviction por mantenimiento, drain, actualizacion controlada | La plataforma intenta cambiar algo de forma gobernada |
-
-Un Deployment reacciona a muchos fallos creando Pods nuevos. Eso no garantiza que el usuario no note impacto.
-
-Un PDB solo interviene en interrupciones voluntarias que pasan por la API de eviction. No evita que un nodo se apague ni que un proceso falle.
-
-## PodDisruptionBudget
-
-Un `PodDisruptionBudget` declara cuanta disponibilidad minima debe respetarse durante interrupciones voluntarias.
-
-En la solucion:
-
-```yaml
-minAvailable: 1
-```
-
-Con dos replicas, esto comunica:
-
-```text
-Durante una interrupcion voluntaria, intenta mantener al menos una replica disponible.
-```
-
-No significa:
-
-- "nunca habra downtime";
-- "los nodos no fallaran";
-- "el almacenamiento esta replicado";
-- "puedo drenar un cluster de un nodo sin consecuencias";
-- "el PDB arregla probes o readiness".
-
-## Deployment, ReplicaSet y rollout
-
-Un Deployment controla ReplicaSets. En una actualizacion crea un ReplicaSet nuevo y reduce el anterior gradualmente.
-
-La estrategia `RollingUpdate` decide cuanta capacidad puede faltar o sobrar durante el cambio:
-
-```text
-maxUnavailable: 1
-maxSurge: 1
-```
-
-Con dos replicas:
-
-- puede haber como maximo una replica no disponible durante el rollout;
-- puede crearse una replica extra temporal para facilitar el reemplazo;
-- el Service solo deberia enviar trafico a Pods Ready.
-
-`revisionHistoryLimit: 5` conserva historial suficiente para rollback sin acumular indefinidamente ReplicaSets antiguos.
-
-`minReadySeconds: 5` evita declarar disponible un Pod inmediatamente despues de readiness.
-
-## Readiness, EndpointSlice, Service e Ingress
-
-La ruta del trafico depende de varias piezas:
-
-```text
-Ingress
-  -> Service
-    -> EndpointSlice
-      -> Pods Ready
-```
-
-Si un Pod existe pero no esta Ready, no debe aparecer como endpoint util. Por eso durante un rollout no basta con mirar `kubectl get pods`; tambien conviene observar:
-
-```bash
-kubectl -n platform-training get endpointslice -l kubernetes.io/service-name=platform-api
+kubectl -n platform-training rollout status deployment/platform-api
 kubectl -n platform-training describe deployment platform-api
-kubectl -n platform-training rollout status deployment/platform-api
+kubectl -n platform-training get pods
 ```
 
-## Rollback
+Idea clave: el Deployment espera Pods nuevos disponibles. Si readiness falla o el cluster no puede crear Pods nuevos, el rollout se bloquea.
 
-Rollback no es magia. Kubernetes vuelve a una revision anterior del Deployment.
+### 3. Las replicas no se distribuyen
 
-Comandos utiles:
+Comprueba:
 
 ```bash
-kubectl -n platform-training rollout history deployment/platform-api
-kubectl -n platform-training rollout undo deployment/platform-api
-kubectl -n platform-training rollout status deployment/platform-api
+kubectl -n platform-training get pods -o wide
+kubectl get nodes
 ```
 
-Despues de un rollback en laboratorio, reaplicar la solucion versionada ayuda a volver al estado esperado por el repo:
+Idea clave: con un solo nodo no hay distribucion posible. La anti-affinity preferida expresa una intencion, no crea topologia.
+
+### 4. El PDB no evita un fallo
+
+Comprueba:
 
 ```bash
-kubectl apply -f labs/05-scheduling-resilience-maintenance/solution/
+kubectl -n platform-training describe pdb platform-api
+kubectl -n platform-training get pods
 ```
 
-## Lectura de los manifiestos de Unidad 05
+Idea clave: un PDB protege frente a interrupciones voluntarias, como un eviction durante mantenimiento. No evita que un nodo falle ni que un contenedor muera.
 
-La solucion final esta en:
+## Que debes recordar para la Unidad 06
+
+La Unidad 06 introducira Helm. Antes de empaquetar manifiestos, necesitas tener claro que ya contienen decisiones operativas.
+
+| Idea | Por que importa despues |
+|---|---|
+| Los manifiestos ya expresan politica | Helm no debe ocultar que significan strategy, affinity o PDB |
+| Scheduling y resiliencia dependen del entorno | Los valores empaquetados deben ser parametrizables con cuidado |
+| El laboratorio local no demuestra HA real | No se debe vender una plantilla local como arquitectura productiva |
+
+Resumen:
 
 ```text
-labs/05-scheduling-resilience-maintenance/solution/
+Helm empaquetara decisiones.
+No debe convertirlas en magia.
+Primero hay que entender que representa cada campo.
 ```
 
-Cambios clave:
+## Fuentes de referencia
 
-| Archivo | Que observar |
-|---|---|
-| `deployment.yaml` | `strategy`, `revisionHistoryLimit`, `minReadySeconds`, `nodeSelector`, affinity y anti-affinity preferida |
-| `pdb.yaml` | `minAvailable: 1` y selector de `platform-api` |
-| `configmap.yaml` | Texto visible de Unidad 05 sin informacion sensible |
-| `pvc.yaml` | PVC heredado con `microk8s-hostpath` |
-| `service.yaml` | `ClusterIP` y selector conservados |
-| `ingress.yaml` | Host `platform-api.local` conservado |
-
-## Diagnostico por capas
-
-Cuando algo falla, usar este orden:
-
-| Capa | Pregunta |
-|---|---|
-| Contexto | Estoy en el cluster correcto? |
-| Nodo | Hay nodos `Ready`? |
-| Labels | El selector o affinity coincide con algun nodo? |
-| Taints | El nodo rechaza este Pod? |
-| Recursos | Requests caben en algun nodo? |
-| PVC | El volumen esta `Bound` y puede montarse? |
-| Pod | Esta asignado, arrancado y Ready? |
-| Deployment | El rollout progresa? |
-| EndpointSlice | Hay endpoints listos? |
-| Service/Ingress | El trafico llega al backend correcto? |
-
-Este orden evita confundir un fallo de scheduling con un fallo HTTP.
-
-## Errores frecuentes
-
-| Error | Correccion |
-|---|---|
-| "Dos replicas son alta disponibilidad" | Solo si estan distribuidas y la plataforma soporta el fallo esperado. |
-| "Anti-affinity obligatoria mejora siempre" | Puede dejar replicas `Pending` si no hay nodos suficientes. |
-| "Una toleration elige nodo" | Solo permite tolerar un rechazo; no atrae el Pod. |
-| "PDB evita caidas" | Solo limita interrupciones voluntarias compatibles. |
-| "Running equivale a recibir trafico" | El Service usa readiness para endpoints. |
-| "Rollback arregla cualquier cosa" | Vuelve a una revision; no corrige PVC, nodos ni capacidad. |
-| "hostpath local demuestra resiliencia cloud" | Solo demuestra persistencia local de laboratorio. |
-
-## Preguntas de comprobacion
-
-- Que diferencia hay entre `nodeSelector` y node affinity?
-- Por que la anti-affinity final es preferida y no obligatoria?
-- Que protege exactamente un PDB?
-- Que ocurre si todas las replicas dependen de un unico nodo?
-- Por que un Pod puede estar `Running` y aun asi no recibir trafico?
-- Que comandos usarias para diagnosticar un rollout bloqueado?
-- Que aporta `maxUnavailable: 1` cuando hay dos replicas?
-- Por que el PVC local limita las conclusiones de resiliencia?
-
-## Continuidad
-
-La Unidad 06 podra introducir Helm con una base mas madura:
-
-```text
-Namespace
-ConfigMap
-Secret ficticio
-PVC
-Deployment con strategy y scheduling seguro
-PDB
-Service
-Ingress
-validacion no destructiva
-```
-
-Antes de empaquetar, el alumno ya habra visto que los manifiestos no solo "crean recursos": tambien expresan decisiones operativas.
+| Fuente | Que leer | Para que sirve |
+|---|---|---|
+| [Kubernetes - Assigning Pods to Nodes](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/) | nodeSelector, affinity y anti-affinity | Entender restricciones de ubicacion |
+| [Kubernetes - Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) | Rechazo y tolerancia | Separar permiso de atraccion |
+| [Kubernetes - Resource Management](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) | Requests y limits | Relacionar recursos con scheduling |
+| [Kubernetes - Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) | RollingUpdate y rollback | Entender cambios controlados |
+| [Kubernetes - Pod Disruption Budgets](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) | Interrupciones voluntarias y PDB | Entender que protege un PDB |
+| [Kubernetes - Safely Drain a Node](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/) | Drain y mantenimiento | Relacionar mantenimiento con evictions |
