@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Unidad 06 generada y validada funcionalmente; revision pedagogica pendiente |
-| Estado general | Unidades 00-05 completadas; Unidad 06 generada con chart Helm local, release desplegado y rollback validado |
-| Último incremento completado | Unidad 06 — Empaquetado con Helm generada, instalada, validada funcionalmente y documentada |
-| Unidad activa | 06 — Empaquetado con Helm, revision pedagogica pendiente |
-| Última unidad completada | 05 — Scheduling, resiliencia y mantenimiento, generada, validada funcionalmente y aprobada pedagogicamente en sus guias del alumno |
+| Fase actual | Unidad 06 completada y aprobada; Unidad 07 pendiente de playbook |
+| Estado general | Unidades 00-06 completadas; Unidad 06 generada, validada funcionalmente y aprobada pedagogicamente |
+| Último incremento completado | Aprobacion pedagogica de la Unidad 06 — Empaquetado con Helm |
+| Unidad activa | Ninguna; siguiente unidad pendiente de playbook |
+| Última unidad completada | 06 — Empaquetado con Helm, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05 y 06 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Revisar y aprobar pedagogicamente la Unidad 06; despues preparar el playbook de Unidad 07 |
+| Siguiente incremento permitido | Generar el playbook de la Unidad 07 |
 
 ---
 
@@ -69,12 +69,12 @@ La alineacion documental posterior a la aprobacion de `student-notes.md` actuali
 
 El 2026-07-19 se genero `playbooks/units/06-helm-packaging.md` como playbook de la Unidad 06. El playbook fue usado para generar la unidad por instruccion del usuario y define Helm como mecanismo de empaquetado de `platform-api`, reutilizando `labs/05-scheduling-resilience-maintenance/solution/`. Tambien incorpora `tutorial/06-helm-packaging/student-reference.md` como entregable obligatorio para cubrir arquitectura avanzada de plantillas, jerarquia de valores, control de flujo, helpers y frontera conceptual con Terraform. Terraform queda diferido como ejecucion a la Unidad 07.
 
-El 2026-07-19 se genero la Unidad 06 por instruccion del usuario. La unidad crea `tutorial/06-helm-packaging/`, `labs/06-helm-packaging/`, un chart Helm local en `labs/06-helm-packaging/chart/platform-api/`, `student-reference.md`, un script de adopcion de recursos heredados y `labs/06-helm-packaging/validation/validate.sh`. La generacion conserva `platform-api`, namespace `platform-training`, PVC `platform-api-data`, Service, Ingress, PDB, rollout, probes, resources y scheduling seguro. Se ejecutaron validaciones estaticas, renderizado, dry-run cliente, adopcion de metadatos Helm, instalacion real del release `platform-api-local`, upgrade temporal, rollback real y validacion funcional final con 0 fallos y 0 avisos. La aprobacion pedagogica del usuario queda pendiente.
+El 2026-07-19 se genero la Unidad 06 por instruccion del usuario. La unidad crea `tutorial/06-helm-packaging/`, `labs/06-helm-packaging/`, un chart Helm local en `labs/06-helm-packaging/chart/platform-api/`, `student-reference.md`, un script de adopcion de recursos heredados y `labs/06-helm-packaging/validation/validate.sh`. La generacion conserva `platform-api`, namespace `platform-training`, PVC `platform-api-data`, Service, Ingress, PDB, rollout, probes, resources y scheduling seguro. Se ejecutaron validaciones estaticas, renderizado, dry-run cliente, adopcion de metadatos Helm, instalacion real del release `platform-api-local`, upgrade temporal, rollback real y validacion funcional final con 0 fallos y 0 avisos. El usuario aprobo pedagogicamente la Unidad 06 el 2026-07-19.
 
 A partir de este estado se permite:
 
-- revisar y aprobar pedagogicamente la Unidad 06;
-- preparar la Unidad 07 a partir de `tutorial/06-helm-packaging/summary.md` cuando la Unidad 06 quede cerrada.
+- generar el playbook de la Unidad 07 a partir de `tutorial/06-helm-packaging/summary.md`;
+- conservar `labs/06-helm-packaging/chart/platform-api/` como base tecnica para Terraform.
 
 Todavía no se permite:
 
@@ -307,7 +307,7 @@ Todavía no se permite:
 | 03 — Networking e ingreso | Completada, validada técnicamente y aprobada | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
 | 04 — Persistencia y estado | Completada, validada funcionalmente y aprobada | Sí | Sí | Sí, `labs/04-persistence-state/` | Sí | Sí |
 | 05 — Scheduling, resiliencia y mantenimiento | Completada, validada funcionalmente y aprobada pedagogicamente en sus guias del alumno | Sí | Sí | Sí, `labs/05-scheduling-resilience-maintenance/` | Sí | Sí |
-| 06 — Empaquetado con Helm | Generada y validada funcionalmente; aprobacion pedagogica pendiente | Sí | Sí | Sí, `labs/06-helm-packaging/` | Sí | Sí |
+| 06 — Empaquetado con Helm | Completada, validada funcionalmente y aprobada pedagogicamente | Sí | Sí | Sí, `labs/06-helm-packaging/` | Sí | Sí |
 | 07–25 | Previstas en roadmap | No | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
@@ -493,7 +493,7 @@ Limitaciones activas:
 
 | Campo | Estado |
 |---|---|
-| Estado | Generada y validada funcionalmente; aprobacion pedagogica pendiente |
+| Estado | Completada, validada funcionalmente y aprobada pedagogicamente |
 | Fecha de inicio | 2026-07-19 |
 | Fecha de cierre | 2026-07-19 |
 | Playbook | `playbooks/units/06-helm-packaging.md` |
@@ -515,7 +515,6 @@ Capacidades incorporadas:
 
 Limitaciones activas:
 
-- la revision pedagogica del usuario queda pendiente;
 - puede requerirse atencion a ownership de recursos si se migra un estado aplicado previamente con `kubectl` a Helm;
 - no existen modulos Terraform del curso.
 
@@ -839,11 +838,10 @@ No existen actualmente:
 
 # Restricciones activas
 
-Tras generar la Unidad 06 con chart Helm local, release desplegado y rollback validado:
+Tras generar, validar funcionalmente y aprobar pedagogicamente la Unidad 06:
 
 - la Unidad 06 conserva `platform-api`, `platform-training` y la evolucion acumulativa desde `labs/05-scheduling-resilience-maintenance/solution/`;
 - `labs/06-helm-packaging/chart/platform-api/` es el chart local previsto como base para Unidad 07;
-- la revision pedagogica del usuario queda pendiente;
 - conservar la separación pedagógica reforzada: los README actúan como entrada, `student-notes.md` como guía de aprendizaje y los README de laboratorio como guía operativa;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
 - no crear módulos Terraform hasta la unidad prevista;
@@ -947,6 +945,7 @@ Tras generar la Unidad 06 con chart Helm local, release desplegado y rollback va
 | Instalacion Helm Unidad 06 | `helm upgrade --install platform-api-local labs/06-helm-packaging/chart/platform-api --namespace platform-training --create-namespace -f labs/06-helm-packaging/chart/platform-api/values-local.yaml` | Release instalado en revision 1 |
 | Rollback Helm Unidad 06 | Upgrade temporal a revision 2 con `replicaCount=1` y `helm rollback platform-api-local 1 --namespace platform-training` | Rollback correcto; revision 3 desplegada |
 | Validacion funcional Unidad 06 | `bash labs/06-helm-packaging/validation/validate.sh` tras rollback | 0 fallos, 0 avisos; release deployed, 2 Pods Ready, Service, EndpointSlice, Ingress, PVC, PDB y HTTP validados |
+| Revision pedagogica Unidad 06 | Aprobacion del usuario el 2026-07-19 | Aprobada |
 | Revisión pedagógica `student-notes.md` Unidades 01-05 | Aprobación del usuario el 2026-07-19 tras reestructuración como guías de aprendizaje | Aprobada |
 | Revisión pedagógica Unidad 01 | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
 | Revisión pedagógica Unidad 02 | Aprobación del usuario el 2026-07-18 | Aprobada |
@@ -1024,7 +1023,7 @@ Validaciones no disponibles en esta sesión:
 | 54 | Reestructuración y aprobación de `student-notes.md` Unidades 01-05 | Completado y aprobado | Guías de aprendizaje reestructuradas con capa académica, construcción aplicada, relaciones, comprobación, diagnóstico de fallos típicos, continuidad y fuentes; aprobación del usuario el 2026-07-19 |
 | 55 | Alineación de playbooks y documentos de `project/` con guías del alumno | Completado | `project/architecture.md`, `project/project-planning.md`, `project/project-state.md`, `playbooks/master.md`, `playbooks/unit-template.md` y playbooks específicos 04-05 ajustados al nuevo contrato |
 | 56 | Playbook de Unidad 06 | Aprobado por instruccion de generacion | `playbooks/units/06-helm-packaging.md` creado; incorpora `student-reference.md` avanzado como entregable requerido y difiere Terraform ejecutable a Unidad 07 |
-| 57 | Generacion y validacion funcional de Unidad 06 | Completado con revision pedagogica pendiente | Tutorial, student notes, student reference, instructor notes, summary, laboratorio, chart Helm local, script de adopcion y validacion creados; release `platform-api-local` instalado, rollback validado y validacion final con 0 fallos, 0 avisos |
+| 57 | Generacion, validacion funcional y aprobacion de Unidad 06 | Completado y aprobado | Tutorial, student notes, student reference, instructor notes, summary, laboratorio, chart Helm local, script de adopcion y validacion creados; release `platform-api-local` instalado, rollback validado, validacion final con 0 fallos, 0 avisos y aprobacion pedagogica del usuario |
 
 ---
 
@@ -1033,7 +1032,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Revisar y aprobar pedagogicamente la Unidad 06 - Empaquetado con Helm
+Generar el playbook de la Unidad 07
 ```
 
 ## Fuentes obligatorias
@@ -1056,12 +1055,9 @@ project/roadmap.md
 
 ## Trabajo permitido
 
-- ejecutar `helm upgrade --install platform-api-local labs/06-helm-packaging/chart/platform-api --namespace platform-training --create-namespace -f labs/06-helm-packaging/chart/platform-api/values-local.yaml`;
-- ejecutar `bash labs/06-helm-packaging/validation/validate.sh`;
-- validar `helm history` y `helm rollback`;
-- revisar y aprobar pedagogicamente la Unidad 06;
-- corregir artefactos de Unidad 06 si la revision lo requiere;
-- tras cierre funcional y pedagogico, preparar el playbook de Unidad 07.
+- generar el playbook especifico de la Unidad 07;
+- definir el alcance de Terraform sobre el chart Helm existente;
+- conservar Helm como empaquetado y diferenciarlo de Terraform como automatizacion de instalacion.
 
 ## Trabajo todavía prohibido
 

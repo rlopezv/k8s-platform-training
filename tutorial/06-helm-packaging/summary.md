@@ -7,9 +7,9 @@
 | Unidad | 06 - Empaquetado con Helm |
 | Identificador | `06-helm-packaging` |
 | Fase del roadmap | Fase 3 - Empaquetado e infraestructura como codigo |
-| Estado | Completada y validada funcionalmente con revision pedagogica pendiente |
+| Estado | Completada, validada funcionalmente y aprobada pedagogicamente |
 | Fecha de cierre o actualizacion | 2026-07-19 |
-| Revision pedagogica del usuario | Pendiente |
+| Revision pedagogica del usuario | Aprobada el 2026-07-19 |
 
 ## Resumen ejecutivo
 
@@ -253,7 +253,10 @@ El laboratorio exige `helm template` y dry-run antes de `helm upgrade --install`
 ## Validaciones pendientes
 
 - `shellcheck` queda pendiente si no esta disponible en el entorno.
-- Revision pedagogica y aprobacion final del usuario quedan pendientes.
+
+## Aprobacion del usuario
+
+El usuario aprobo pedagogicamente la Unidad 06 el 2026-07-19.
 
 ## Limitaciones activas
 
