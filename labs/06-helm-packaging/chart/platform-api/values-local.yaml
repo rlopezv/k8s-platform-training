@@ -1,0 +1,17 @@
+namespace:
+  name: platform-training
+
+ingress:
+  host: platform-api.local
+
+config:
+  appEnv: lab
+  logLevel: info
+  featureGreeting: helm-packaging-local
+
+persistence:
+  storageClassName: microk8s-hostpath
+
+secret:
+  labClientId: lab-client-id-not-real
+  labApiToken: lab-token-not-real

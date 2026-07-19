@@ -1,0 +1,117 @@
+nameOverride: ""
+fullnameOverride: platform-api
+
+namespace:
+  create: true
+  name: platform-training
+
+training:
+  unit: "06"
+
+replicaCount: 2
+
+image:
+  repository: nginxinc/nginx-unprivileged
+  tag: 1.27.4-alpine
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: http
+
+ingress:
+  enabled: true
+  className: public
+  host: platform-api.local
+  path: /
+  pathType: Prefix
+
+config:
+  appEnv: lab
+  logLevel: info
+  featureGreeting: helm-packaging
+  indexHtml: |
+    <!doctype html>
+    <html lang="es">
+    <head>
+      <meta charset="utf-8">
+      <title>platform-api</title>
+    </head>
+    <body>
+      <h1>platform-api</h1>
+      <p>Unidad 06: empaquetado con Helm.</p>
+      <p>La aplicacion conserva configuracion, Secret ficticio, persistencia, scheduling, rollout, Service, Ingress y PDB.</p>
+      <p>El dato persistente del laboratorio se sirve desde /persistent/message.txt cuando existe.</p>
+    </body>
+    </html>
+
+secret:
+  create: true
+  labClientId: lab-client-id-not-real
+  labApiToken: lab-token-not-real
+
+persistence:
+  enabled: true
+  claimName: platform-api-data
+  storageClassName: microk8s-hostpath
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+  mountPath: /usr/share/nginx/html/persistent
+
+pdb:
+  enabled: true
+  minAvailable: 1
+
+rollout:
+  revisionHistoryLimit: 5
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    maxUnavailable: 1
+    maxSurge: 1
+
+scheduling:
+  nodeSelector:
+    kubernetes.io/os: linux
+  nodeAffinity:
+    enabled: true
+    weight: 50
+    key: kubernetes.io/hostname
+    operator: Exists
+  podAntiAffinity:
+    enabled: true
+    weight: 100
+    topologyKey: kubernetes.io/hostname
+
+podSecurityContext:
+  fsGroup: 101
+  fsGroupChangePolicy: OnRootMismatch
+
+container:
+  port: 8080
+  terminationGracePeriodSeconds: 20
+
+probes:
+  startup:
+    failureThreshold: 12
+    periodSeconds: 5
+  readiness:
+    initialDelaySeconds: 3
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+  liveness:
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    timeoutSeconds: 2
+    failureThreshold: 3
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi

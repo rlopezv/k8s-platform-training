@@ -1,0 +1,9 @@
+{{- if .Values.namespace.create }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "platform-api.namespace" . }}
+  labels:
+    app.kubernetes.io/part-of: k8s-platform-training
+    training.k8s-platform.io/unit: {{ .Values.training.unit | quote }}
+{{- end }}

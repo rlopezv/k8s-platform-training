@@ -23,7 +23,7 @@ Fase 3 - Empaquetado e infraestructura como codigo
 ### Estado del playbook
 
 ```text
-En revision
+Aprobado por instruccion de generacion
 ```
 
 ### Propietario logico

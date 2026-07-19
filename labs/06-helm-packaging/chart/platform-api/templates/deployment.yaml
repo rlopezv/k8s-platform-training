@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "platform-api.fullname" . }}
+  namespace: {{ include "platform-api.namespace" . }}
+  labels:
+{{- include "platform-api.componentLabels" (dict "root" . "component" "web") | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.rollout.revisionHistoryLimit }}
+  minReadySeconds: {{ .Values.rollout.minReadySeconds }}
+  strategy:
+    type: {{ .Values.rollout.strategy.type }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.rollout.strategy.maxUnavailable }}
+      maxSurge: {{ .Values.rollout.strategy.maxSurge }}
+  selector:
+    matchLabels:
+{{- include "platform-api.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+{{- include "platform-api.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: web
+        app.kubernetes.io/part-of: k8s-platform-training
+        training.k8s-platform.io/unit: {{ .Values.training.unit | quote }}
+    spec:
+      securityContext:
+{{- toYaml .Values.podSecurityContext | nindent 8 }}
+      nodeSelector:
+{{- toYaml .Values.scheduling.nodeSelector | nindent 8 }}
+      affinity:
+{{- if .Values.scheduling.nodeAffinity.enabled }}
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: {{ .Values.scheduling.nodeAffinity.weight }}
+              preference:
+                matchExpressions:
+                  - key: {{ .Values.scheduling.nodeAffinity.key }}
+                    operator: {{ .Values.scheduling.nodeAffinity.operator }}
+{{- end }}
+{{- if .Values.scheduling.podAntiAffinity.enabled }}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: {{ .Values.scheduling.podAntiAffinity.weight }}
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+{{- include "platform-api.selectorLabels" . | nindent 20 }}
+                topologyKey: {{ .Values.scheduling.podAntiAffinity.topologyKey }}
+{{- end }}
+      terminationGracePeriodSeconds: {{ .Values.container.terminationGracePeriodSeconds }}
+      containers:
+        - name: {{ include "platform-api.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.container.port }}
+          env:
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "platform-api.configMapName" . }}
+                  key: APP_ENV
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "platform-api.configMapName" . }}
+                  key: LOG_LEVEL
+            - name: FEATURE_GREETING
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "platform-api.configMapName" . }}
+                  key: FEATURE_GREETING
+            - name: LAB_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform-api.secretName" . }}
+                  key: LAB_CLIENT_ID
+            - name: LAB_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform-api.secretName" . }}
+                  key: LAB_API_TOKEN
+          volumeMounts:
+            - name: platform-api-content
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+              readOnly: true
+{{- if .Values.persistence.enabled }}
+            - name: platform-api-data
+              mountPath: {{ .Values.persistence.mountPath }}
+{{- end }}
+          startupProbe:
+            httpGet:
+              path: /
+              port: http
+{{- toYaml .Values.probes.startup | nindent 12 }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+{{- toYaml .Values.probes.readiness | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+{{- toYaml .Values.probes.liveness | nindent 12 }}
+          resources:
+{{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: platform-api-content
+          configMap:
+            name: {{ include "platform-api.configMapName" . }}
+            items:
+              - key: index.html
+                path: index.html
+{{- if .Values.persistence.enabled }}
+        - name: platform-api-data
+          persistentVolumeClaim:
+            claimName: {{ include "platform-api.pvcName" . }}
+{{- end }}

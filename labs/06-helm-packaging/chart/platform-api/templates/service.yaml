@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "platform-api.fullname" . }}
+  namespace: {{ include "platform-api.namespace" . }}
+  labels:
+{{- include "platform-api.componentLabels" (dict "root" . "component" "web") | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+{{- include "platform-api.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
