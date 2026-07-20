@@ -417,6 +417,12 @@ El estado deberá reflejar únicamente hechos verificables.
 
 # Reglas pedagógicas
 
+## Reglas de redacción
+
+La prosa formativa deberá escribirse en español con ortografía completa: tildes, signos de apertura cuando correspondan, puntuación cuidada y frases comprensibles.
+
+Los nombres de código, comandos, rutas, APIs, recursos Kubernetes, campos de manifiestos, identificadores, nombres de herramientas y valores literales deberán conservarse tal cual aparezcan en su contexto técnico. No deberán traducirse, castellanizarse ni corregirse ortográficamente si eso cambia el identificador real.
+
 ## Orientación profesional
 
 El público objetivo son ingenieros de plataforma.
