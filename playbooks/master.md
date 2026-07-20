@@ -316,6 +316,29 @@ No debe convertirse en una enciclopedia, catálogo de invariantes, glosario exte
 
 Las instrucciones ejecutables completas pertenecen al README del laboratorio. `student-notes.md` puede incluir comandos puntuales solo cuando ayuden a observar o razonar sobre un concepto.
 
+## Referencia del alumno
+
+Ruta opcional:
+
+```text
+tutorial/<unidad>/student-reference.md
+```
+
+Se utilizará cuando `student-notes.md` no deba crecer más, pero la unidad necesite una capa de referencia para ofrecer visión general, profundidad técnica o contexto de herramientas habituales que no encajan en el flujo principal.
+
+`student-reference.md` deberá:
+
+- completar, no sustituir, a `student-notes.md`;
+- profundizar en conceptos, mecanismos, APIs, herramientas, decisiones, límites y variantes;
+- incluir contenido relevante aunque no se implemente en el laboratorio, dejando claro qué es conceptual, qué es práctica habitual y qué se ejecuta en el curso;
+- evitar convertirse en requisito previo oculto para seguir la unidad;
+- enlazarse desde `README.md` y `student-notes.md` cuando exista;
+- mantener relación clara con el tema de la unidad y con la visión global del itinerario.
+
+El tutorial y `student-notes.md` proporcionan la base necesaria para seguir la unidad. `student-reference.md` puede ampliar hacia la visión general de Kubernetes, herramientas habituales y prácticas profesionales aunque esa amplitud no se materialice todavía en artefactos ejecutables.
+
+No todas las unidades necesitan `student-reference.md`.
+
 ## Laboratorio
 
 Ruta normal:
@@ -500,6 +523,23 @@ Para cada referencia relevante deberá indicarse:
 - qué leer;
 - por qué importa para la unidad;
 - qué pregunta debería poder responder el alumno después de leerla.
+
+## Lagunas de contenido
+
+Cuando durante una revisión aparezca una capacidad importante que no encaje en la unidad actual, no se debe resolver ampliando sin control el README.
+
+La laguna deberá registrarse de forma breve en:
+
+```text
+project/content-gap-register.md
+```
+
+El registro debe indicar:
+
+- laguna;
+- impacto formativo;
+- unidad o bloque donde encajaría;
+- decisión pendiente.
 
 ---
 

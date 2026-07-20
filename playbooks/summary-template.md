@@ -451,6 +451,23 @@ Las limitaciones deben ser concretas y verificables.
 
 Escribir `Ninguna` cuando no exista deuda técnica identificada.
 
+## Lagunas de contenido
+
+Registrar aquí solo lagunas detectadas durante la unidad que deban alimentar `project/content-gap-register.md`.
+
+Una laguna puede corresponder a:
+
+- visión general de Kubernetes o del ecosistema;
+- profundidad de referencia que no cabe en `student-notes.md`;
+- una herramienta habitual no cubierta por el laboratorio;
+- una capacidad que quizá requiera unidad propia o ajuste de roadmap.
+
+| Laguna | Impacto | Encaje previsto |
+|---|---|---|
+| [laguna] | [impacto] | [unidad o bloque] |
+
+Escribir `Ninguna` cuando no se identifiquen lagunas.
+
 ---
 
 # Problemas encontrados y resolución
@@ -481,6 +498,7 @@ Una diferencia no autorizada impide marcar la unidad como completada.
 |---|---|---|
 | Tutorial | `tutorial/NN-unit-name/README.md` | Completo/Parcial/No creado |
 | Student notes | `tutorial/NN-unit-name/student-notes.md` | Completo/Parcial/No creado |
+| Student reference | `tutorial/NN-unit-name/student-reference.md` o No aplica | Completo/Parcial/No creado/No aplica |
 | Instructor notes | `tutorial/NN-unit-name/instructor-notes.md` | Completo/Parcial/No creado |
 | Summary | `tutorial/NN-unit-name/summary.md` | Completo/Parcial |
 | Laboratorio | `[ruta]` | Completo/Parcial/No creado |

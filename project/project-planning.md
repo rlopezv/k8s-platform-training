@@ -614,10 +614,9 @@ Esta sesión no es una unidad formativa numerada. No debe crear capacidades téc
 
 Debe producir, como mínimo:
 
-* criterios didácticos reforzados para `README.md`, `student-notes.md`, `student-reference.md` cuando exista, laboratorio, instructor notes y summary;
-* matriz de revisión pedagógica aplicable a unidades ya generadas;
-* reglas para detectar lagunas conceptuales, saltos de dificultad y conceptos asumidos sin explicación;
-* criterios para decidir cuándo una laguna se corrige en `README.md`, `student-notes.md`, `student-reference.md`, laboratorio o instructor notes;
+* reglas ligeras para usar `student-reference.md` cuando `student-notes.md` necesite apoyo de referencia, visión general o profundidad técnica sin crecer indefinidamente;
+* registro de lagunas de contenido aplicable a unidades ya generadas y futuras;
+* criterios simples para decidir si una laguna se corrige en una unidad existente, en `student-reference.md`, en una unidad nueva o en el roadmap;
 * actualización de `project/project-state.md` con la pausa del roadmap funcional y el siguiente incremento permitido.
 
 La sesión debe preservar la separación entre:
@@ -633,11 +632,11 @@ Se utiliza después de ajustar el framework didáctico, para revisar unidades ya
 La revisión debe comprobar, como mínimo:
 
 * si la unidad explica el problema antes de introducir la herramienta;
-* si explicita el modelo mental que soporta el laboratorio;
+* si explicita el modelo mental que soporta la unidad y su lugar dentro de Kubernetes o del ecosistema de herramientas;
 * si identifica los conceptos nuevos y los retoma desde cero cuando proceda;
 * si conecta con unidades anteriores y posteriores;
 * si distingue teoría, práctica, diagnóstico y límites;
-* si el laboratorio está apoyado por una explicación conceptual suficiente;
+* si el laboratorio está apoyado por una explicación conceptual suficiente y si las lagunas de visión general quedan cubiertas por `student-reference.md` o registradas para el roadmap;
 * si las fuentes de referencia están guiadas por preguntas concretas;
 * si existen saltos de dificultad para alumnos que todavía no dominan el tema.
 
@@ -669,13 +668,13 @@ El siguiente incremento recomendado vigente se registra en `project/project-stat
 
 Tras completar, validar funcionalmente y aprobar pedagógicamente la Unidad 07, el siguiente incremento recomendado es reabrir el framework como **Framework V2 — Refuerzo didáctico y revisión pedagógica transversal**.
 
-Esa sesión debería centrarse en:
+Esa sesión debe mantenerse deliberadamente ligera y centrarse en:
 
 1. revisar `playbooks/master.md`;
 2. revisar `playbooks/unit-template.md`;
 3. revisar `playbooks/summary-template.md`;
 4. revisar `playbooks/project-state-template.md`;
 5. revisar `project/architecture.md` si el contrato de artefactos pedagógicos necesita elevarse a decisión estructural;
-6. definir una matriz de revisión didáctica para las Unidades 00-07;
-7. registrar en `project/project-state.md` que la Unidad 08 queda pausada hasta cerrar la reapertura didáctica;
-8. preparar la revisión transversal de contenido generado sin instalar Tekton ni crear recursos de Unidad 08.
+6. crear o actualizar `project/content-gap-register.md`;
+7. registrar en `project/project-state.md` que la Unidad 08 queda pausada hasta decidir el tratamiento de las lagunas bloqueantes;
+8. decidir si hace falta una unidad de contenedores, imagen y registro antes de instalar Tekton o crear recursos de Unidad 08.

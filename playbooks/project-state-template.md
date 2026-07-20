@@ -191,9 +191,9 @@ Utilizar una tabla:
 
 ## Artefactos por unidad
 
-| Unidad | Tutorial | Student notes | Laboratorio | Instructor notes | Summary | Estado |
-|---|---|---|---|---|---|---|
-| NN — Nombre | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial | [estado] |
+| Unidad | Tutorial | Student notes | Student reference | Laboratorio | Instructor notes | Summary | Estado |
+|---|---|---|---|---|---|---|---|
+| NN — Nombre | Sí/No/Parcial | Sí/No/Parcial | Sí/No/No aplica | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial | [estado] |
 
 ## Artefactos principales existentes
 
@@ -503,6 +503,14 @@ Reglas:
 | TD-NNN | [deuda] | Baja/Media/Alta | [unidad] | [unidad o acción] | Abierta/En progreso/Cerrada |
 
 La deuda técnica debe representar trabajo necesario, no ideas opcionales.
+
+## Lagunas de contenido
+
+Cuando exista `project/content-gap-register.md`, registrar su estado de forma compacta:
+
+| Registro | Estado | Siguiente acción |
+|---|---|---|
+| `project/content-gap-register.md` | [estado] | [acción] |
 
 ---
 

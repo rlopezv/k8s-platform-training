@@ -23,15 +23,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Framework V2 didactico abierto tras Unidad 07 |
-| Estado general | Unidades 00-07 completadas; Unidad 08 pausada hasta cerrar revision didactica transversal |
-| Último incremento completado | Registro de reapertura del framework didactico y pausa de Unidad 08 |
-| Unidad activa | Ninguna; sesion transversal Framework V2 didactico activa |
+| Estado general | Unidades 00-07 completadas; Framework V2 didactico simplificado; lagunas de contenido registradas |
+| Último incremento completado | Framework V2 didactico simplificado y registro de lagunas creado |
+| Unidad activa | Ninguna; decision de roadmap pendiente antes de Unidad 08 |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
-| Framework de generación | Framework V1 validado; Framework V2 didactico abierto para refuerzo pedagogico |
-| Siguiente incremento permitido | Ajustar framework didactico y preparar revision transversal de Unidades 00-07 |
+| Framework de generación | Framework V1 validado; Framework V2 didactico simplificado para `student-reference.md`, vision general y lagunas |
+| Siguiente incremento permitido | Decidir tratamiento de `GAP-001` en `project/content-gap-register.md` antes de generar Unidad 08 |
 
 ---
 
@@ -77,8 +77,8 @@ Durante la validacion funcional de Unidad 07, Terraform descargo los providers `
 
 A partir de este estado se permite:
 
-- ajustar el framework didactico como Framework V2;
-- definir una matriz de revision pedagogica transversal para las Unidades 00-07;
+- revisar `project/content-gap-register.md` y decidir ajustes de roadmap antes de Unidad 08;
+- crear o reforzar `student-reference.md` en unidades donde falte vision general, contexto de herramientas habituales o profundidad de referencia;
 - revisar contenido generado de Unidades 00-07 sin cambiar capacidades tecnicas salvo contradiccion real;
 - conservar `labs/07-local-terraform-automation/terraform/` como base tecnica para CI/CD.
 
@@ -100,14 +100,15 @@ Todavía no se permite:
 |---|---|---|---|
 | `README.md` | Actualizado | Student-Notes-Learning-Guide | Punto de entrada y visión general; refleja `student-notes.md` como artefacto por unidad |
 | `project/architecture.md` | Actualizado | Student-Notes-Learning-Guide | Arquitectura y decisiones estructurales; separa README y guías de aprendizaje del alumno |
-| `project/project-state.md` | Actualizado con estructura `student-notes.md` | Student-Notes-Learning-Guide | Estado consolidado |
+| `project/project-state.md` | Actualizado | Framework-V2-Didactic-Review | Estado consolidado; registra lagunas y siguiente decision de roadmap |
+| `project/content-gap-register.md` | Creado | Framework-V2-Didactic-Review | Registro ligero de lagunas de contenido y posibles encajes en el itinerario |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
 | `project/project-planning.md` | Actualizado | Framework-V2-Didactic-Review | Planificación incremental del trabajo; incluye sesiones de reapertura de framework didactico y revisión transversal |
 | `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
-| `playbooks/master.md` | Actualizado | Student-Notes-Learning-Guide | Reglas globales de generación; exige `student-notes.md` como guía de aprendizaje académica y aplicada |
-| `playbooks/unit-template.md` | Actualizado | Student-Notes-Learning-Guide | Plantilla de playbooks específicos; exige guía del alumno por unidad |
-| `playbooks/summary-template.md` | Actualizado | Student-Notes-Structure | Contrato de continuidad; registra `student-notes.md` como artefacto por unidad |
-| `playbooks/project-state-template.md` | Actualizado | Student-Notes-Structure | Reglas de mantenimiento del estado; registra `student-notes.md` como artefacto por unidad |
+| `playbooks/master.md` | Actualizado | Framework-V2-Didactic-Review | Reglas globales; incorpora `student-reference.md` opcional para vision general/profundidad y registro de lagunas |
+| `playbooks/unit-template.md` | Actualizado | Framework-V2-Didactic-Review | Plantilla de playbooks específicos; declara `student-reference.md` como opcional |
+| `playbooks/summary-template.md` | Actualizado | Framework-V2-Didactic-Review | Contrato de continuidad; registra `student-reference.md` y lagunas de contenido |
+| `playbooks/project-state-template.md` | Actualizado | Framework-V2-Didactic-Review | Reglas de mantenimiento del estado; incorpora registro compacto de lagunas |
 | `playbooks/generate-session-handoff.md` | Completo y aprobado | Framework-03 | Generación del handoff derivado de sesión |
 | `playbooks/units/00-environment.md` | Completo y aprobado | Unit-00-01 | Gobierno de la Unidad 00 |
 | `playbooks/units/01-kubernetes.md` | Completo y aprobado | Unit-01-Concept-Scope | Gobierno de la Unidad 01 |
@@ -250,9 +251,12 @@ Todavía no se permite:
 │       ├── 02-configuration-lifecycle.md
 │       ├── 03-networking-ingress.md
 │       ├── 04-persistence-state.md
-│       └── 05-scheduling-resilience-maintenance.md
+│       ├── 05-scheduling-resilience-maintenance.md
+│       ├── 06-helm-packaging.md
+│       └── 07-local-terraform-automation.md
 ├── project/
 │   ├── architecture.md
+│   ├── content-gap-register.md
 │   ├── how-to.md
 │   ├── project-planning.md
 │   ├── project-state.md
@@ -298,25 +302,25 @@ Todavía no se permite:
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Materializado con Unidades 01, 02, 03, 04, 05, 06 y 07 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/`, `04-persistence-state/`, `05-scheduling-resilience-maintenance/`, `06-helm-packaging/` y `07-local-terraform-automation/` |
 | `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base |
-| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03, 04, 05 y 06 |
-| `project/` | Operativo | Arquitectura, estado y roadmap |
+| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
+| `project/` | Operativo | Arquitectura, estado, roadmap y registro de lagunas de contenido |
 | `tutorial/` | Unidades 00, 01, 02, 03, 04, 05, 06 y 07 generadas | README de entrada, `student-notes.md`, instructor notes y summaries; Unidades 06 y 07 anaden `student-reference.md` |
 
 ---
 
 # Estado de las unidades
 
-| Unidad | Estado | Tutorial | Student notes | Laboratorio o plataforma | Instructor notes | Summary |
-|---|---|---|---|---|---|---|
-| 00 — Preparación del entorno | Completada con limitaciones; `student-notes.md` aprobado | Sí | Sí | Sí, `platform/environment/` | Sí | Sí |
-| 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
-| 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
-| 03 — Networking e ingreso | Completada, validada técnicamente y aprobada | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
-| 04 — Persistencia y estado | Completada, validada funcionalmente y aprobada | Sí | Sí | Sí, `labs/04-persistence-state/` | Sí | Sí |
-| 05 — Scheduling, resiliencia y mantenimiento | Completada, validada funcionalmente y aprobada pedagogicamente en sus guias del alumno | Sí | Sí | Sí, `labs/05-scheduling-resilience-maintenance/` | Sí | Sí |
-| 06 — Empaquetado con Helm | Completada, validada funcionalmente y aprobada pedagogicamente | Sí | Sí | Sí, `labs/06-helm-packaging/` | Sí | Sí |
-| 07 — Automatizacion local con Terraform | Completada, validada funcionalmente y aprobada pedagogicamente | Sí | Sí | Sí, `labs/07-local-terraform-automation/` | Sí | Sí |
-| 08–25 | Previstas en roadmap | No | No | No | No | No |
+| Unidad | Estado | Tutorial | Student notes | Student reference | Laboratorio o plataforma | Instructor notes | Summary |
+|---|---|---|---|---|---|---|---|
+| 00 — Preparación del entorno | Completada con limitaciones; `student-notes.md` aprobado | Sí | Sí | No aplica | Sí, `platform/environment/` | Sí | Sí |
+| 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | No aplica | Sí, `labs/01-kubernetes/` | Sí | Sí |
+| 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | No aplica | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
+| 03 — Networking e ingreso | Completada, validada técnicamente y aprobada | Sí | Sí | No aplica | Sí, `labs/03-networking-ingress/` | Sí | Sí |
+| 04 — Persistencia y estado | Completada, validada funcionalmente y aprobada | Sí | Sí | No aplica | Sí, `labs/04-persistence-state/` | Sí | Sí |
+| 05 — Scheduling, resiliencia y mantenimiento | Completada, validada funcionalmente y aprobada pedagogicamente en sus guias del alumno | Sí | Sí | No aplica | Sí, `labs/05-scheduling-resilience-maintenance/` | Sí | Sí |
+| 06 — Empaquetado con Helm | Completada, validada funcionalmente y aprobada pedagogicamente | Sí | Sí | Sí | Sí, `labs/06-helm-packaging/` | Sí | Sí |
+| 07 — Automatizacion local con Terraform | Completada, validada funcionalmente y aprobada pedagogicamente | Sí | Sí | Sí | Sí, `labs/07-local-terraform-automation/` | Sí | Sí |
+| 08–25 | Previstas en roadmap | No | No | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
 
@@ -964,7 +968,14 @@ Tras generar y validar funcionalmente la Unidad 07:
 | TD-005 | Incorporar `EndpointSlice` como observación posterior al Service clásico | Baja | Unidad 01 | Resuelto en Unidad 02 como comprobación principal de endpoints | Cerrada |
 | TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | `student-notes.md` de Unidades 01-05 reestructurado y aprobado como guia de aprendizaje; Unidad 00 conserva su formato previo aprobado | Cerrada para Unidades 01-05; aplicar criterio en futuras unidades |
 | TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo y revisión de `student-notes.md` | `playbooks/master.md` y `playbooks/unit-template.md` actualizados para describir guías de aprendizaje academicas y aplicadas, evitando estructuras enciclopédicas por defecto | Cerrada |
-| TD-008 | Reabrir Framework V2 para reforzar contrato didactico y revisar lagunas de Unidades 00-07 | Alta | Feedback del usuario tras aprobar Unidad 07 | Ajustar framework, crear matriz de revision didactica y revisar contenido generado antes de Unidad 08 | Abierta |
+| TD-008 | Reabrir Framework V2 para reforzar contrato didactico y revisar lagunas de Unidades 00-07 | Alta | Feedback del usuario tras aprobar Unidad 07 | Framework simplificado; `student-reference.md` queda como recurso opcional y las lagunas se registran en `project/content-gap-register.md` | Cerrada |
+| TD-009 | Decidir si falta una unidad de contenedores, imagen y registro antes de Tekton | Alta | `project/content-gap-register.md` `GAP-001` | Revisar roadmap antes de generar Unidad 08 | Abierta |
+
+## Lagunas de contenido
+
+| Registro | Estado | Siguiente acción |
+|---|---|---|
+| `project/content-gap-register.md` | Creado con 9 lagunas abiertas | Decidir `GAP-001` antes de generar Unidad 08 y revisar posibles ajustes del roadmap |
 
 ---
 
@@ -1101,7 +1112,8 @@ Validaciones no disponibles en esta sesión:
 | 57 | Generacion, validacion funcional y aprobacion de Unidad 06 | Completado y aprobado | Tutorial, student notes, student reference, instructor notes, summary, laboratorio, chart Helm local, script de adopcion y validacion creados; release `platform-api-local` instalado, rollback validado, validacion final con 0 fallos, 0 avisos y aprobacion pedagogica del usuario |
 | 58 | Playbook de Unidad 07 | Completado y aprobado | `playbooks/units/07-local-terraform-automation.md` creado y aprobado por el usuario el 2026-07-20; define Terraform como automatizacion local del release Helm de `platform-api` e incorpora `student-reference.md` avanzado sobre arquitectura Terraform |
 | 59 | Generacion, validacion funcional y aprobacion de Unidad 07 | Completado y aprobado | Tutorial, student notes, student reference, instructor notes, summary, laboratorio, proyecto Terraform local y validacion creados; release importado a Terraform, apply ejecutado con 0 destrucciones, validaciones finales con 0 fallos, 0 avisos y aprobacion pedagogica del usuario |
-| 60 | Apertura Framework V2 didactico | En progreso | `project/project-planning.md` y `project/project-state.md` registran la pausa de Unidad 08 y el inicio de ajuste didactico transversal |
+| 60 | Apertura Framework V2 didactico | Completado | `project/project-planning.md` y `project/project-state.md` registran la pausa de Unidad 08 y el inicio de ajuste didactico transversal |
+| 61 | Simplificacion Framework V2 y registro de lagunas | Completado | Playbooks base ajustados de forma ligera para `student-reference.md` como referencia amplia; `project/content-gap-register.md` registra lagunas de contenedores, secretos, TLS, workloads, progressive delivery, multi-tenancy, ciclo de vida, coste y desacoplamiento de MicroK8s |
 
 ---
 
@@ -1110,7 +1122,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Ajustar Framework V2 didactico y preparar revision transversal de Unidades 00-07
+Decidir tratamiento de GAP-001 antes de generar Unidad 08
 ```
 
 ## Fuentes obligatorias
@@ -1120,6 +1132,7 @@ La sesión deberá leer:
 ```text
 playbooks/master.md
 project/project-state.md
+project/content-gap-register.md
 playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
@@ -1146,10 +1159,10 @@ project/roadmap.md
 
 ## Trabajo permitido
 
-- ajustar `playbooks/master.md`, `playbooks/unit-template.md`, `playbooks/summary-template.md` y `playbooks/project-state-template.md` para reforzar criterios didacticos;
-- actualizar `project/architecture.md` si el contrato didactico requiere decision estructural;
-- crear una matriz de revision pedagogica transversal para Unidades 00-07;
-- iniciar la revision de contenido generado sin cambiar el estado tecnico del laboratorio.
+- decidir si se introduce una unidad de contenedores, imagen y registro antes de Tekton;
+- actualizar `project/roadmap.md` y `project/project-planning.md` si cambia la secuencia;
+- actualizar playbooks afectados si se crea una nueva unidad o se refuerza una existente;
+- crear `student-reference.md` en unidades existentes cuando una laguna se resuelva como referencia conceptual o panoramica, sin cambiar capacidades tecnicas del laboratorio.
 
 ## Trabajo todavía prohibido
 

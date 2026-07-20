@@ -383,6 +383,32 @@ No debe duplicar el README del laboratorio. Puede incluir comandos puntuales de 
 
 Las referencias deberán priorizar documentación oficial, especificaciones o fuentes primarias, indicando qué leer y para qué sirve dentro de la unidad.
 
+## Referencia del alumno
+
+Ruta opcional:
+
+```text
+tutorial/NN-unit-name/student-reference.md
+```
+
+Crear este archivo cuando la unidad requiera una capa de referencia más profunda o más panorámica que `student-notes.md`.
+
+Si se incluye, declarar:
+
+- qué laguna de profundidad cubre;
+- qué partes de `student-notes.md` amplía;
+- qué relación tiene con el tema de la unidad, el ecosistema Kubernetes o las herramientas habituales;
+- qué contenido es conceptual o de referencia aunque no se ejecute en el laboratorio;
+- qué queda fuera para unidades posteriores.
+
+No usar `student-reference.md` como una segunda guía de laboratorio. Su función es aportar visión general, profundidad técnica y contexto profesional que ayuden a comprender el itinerario completo.
+
+Si no aplica, escribir:
+
+```text
+No aplica.
+```
+
 ## Notas del instructor
 
 Ruta:
@@ -654,6 +680,7 @@ La unidad se considerará completada cuando:
 - [ ] exista `tutorial/NN-unit-name/student-notes.md`;
 - [ ] exista `tutorial/NN-unit-name/instructor-notes.md`;
 - [ ] exista `tutorial/NN-unit-name/summary.md`;
+- [ ] `student-reference.md` exista o esté declarado como no aplicable;
 - [ ] existan los artefactos ejecutables previstos;
 - [ ] las rutas documentadas coincidan con el repositorio;
 - [ ] las validaciones estén definidas;
