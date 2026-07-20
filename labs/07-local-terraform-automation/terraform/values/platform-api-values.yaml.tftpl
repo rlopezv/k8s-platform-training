@@ -1,0 +1,18 @@
+namespace:
+  name: ${namespace}
+
+ingress:
+  host: ${ingress_host}
+
+replicaCount: ${replica_count}
+
+config:
+  appEnv: lab
+  logLevel: info
+  featureGreeting: ${feature_greeting}
+
+persistence:
+  storageClassName: ${storage_class_name}
+
+secret:
+  labClientId: ${lab_client_id}

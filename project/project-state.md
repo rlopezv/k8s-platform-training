@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Unidad 06 completada y aprobada; playbook de Unidad 07 aprobado |
-| Estado general | Unidades 00-06 completadas; Unidad 07 pendiente de generacion |
-| Último incremento completado | Aprobacion del playbook de la Unidad 07 — Automatizacion local con Terraform |
-| Unidad activa | Ninguna; Unidad 07 pendiente de generacion |
-| Última unidad completada | 06 — Empaquetado con Helm, generada, validada funcionalmente y aprobada pedagogicamente |
+| Fase actual | Unidad 07 generada y validada funcionalmente; revision pedagogica pendiente |
+| Estado general | Unidades 00-06 completadas y aprobadas; Unidad 07 generada y validada funcionalmente |
+| Último incremento completado | Generacion, import, apply y validacion funcional de la Unidad 07 — Automatizacion local con Terraform |
+| Unidad activa | 07 — Automatizacion local con Terraform; pendiente de revision pedagogica del usuario |
+| Última unidad completada | 07 — Automatizacion local con Terraform, generada y validada funcionalmente; aprobacion pedagogica pendiente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
-| Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05 y 06 |
+| Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar la Unidad 07 |
+| Siguiente incremento permitido | Revisar y aprobar pedagogicamente la Unidad 07; despues generar el playbook de la Unidad 08 |
 
 ---
 
@@ -71,14 +71,18 @@ El 2026-07-19 se genero `playbooks/units/06-helm-packaging.md` como playbook de 
 
 El 2026-07-19 se genero la Unidad 06 por instruccion del usuario. La unidad crea `tutorial/06-helm-packaging/`, `labs/06-helm-packaging/`, un chart Helm local en `labs/06-helm-packaging/chart/platform-api/`, `student-reference.md`, un script de adopcion de recursos heredados y `labs/06-helm-packaging/validation/validate.sh`. La generacion conserva `platform-api`, namespace `platform-training`, PVC `platform-api-data`, Service, Ingress, PDB, rollout, probes, resources y scheduling seguro. Se ejecutaron validaciones estaticas, renderizado, dry-run cliente, adopcion de metadatos Helm, instalacion real del release `platform-api-local`, upgrade temporal, rollback real y validacion funcional final con 0 fallos y 0 avisos. El usuario aprobo pedagogicamente la Unidad 06 el 2026-07-19.
 
+El 2026-07-20 se genero la Unidad 07 por instruccion del usuario. La unidad crea `tutorial/07-local-terraform-automation/`, `labs/07-local-terraform-automation/`, un proyecto Terraform local en `labs/07-local-terraform-automation/terraform/`, `student-reference.md` avanzado y `labs/07-local-terraform-automation/validation/validate.sh`. La unidad reutiliza el chart Helm de Unidad 06 y declara `helm_release.platform_api` para gestionar el release `platform-api-local` en `platform-training`.
+
+Durante la validacion funcional de Unidad 07, Terraform descargo los providers `hashicorp/helm` `2.17.0` y `hashicorp/kubernetes` `2.38.0`, genero `.terraform.lock.hcl`, importo el release existente mediante `terraform import helm_release.platform_api platform-training/platform-api-local`, ejecuto `terraform apply` con resultado `0 added, 1 changed, 0 destroyed` y dejo `helm_release.platform_api` en el state local no versionado. La validacion de Unidad 07 finalizo con 0 fallos y 0 avisos. La validacion heredada de Unidad 06 tambien finalizo con 0 fallos y 0 avisos; `platform-api-local` quedo `deployed` en revision 4.
+
 A partir de este estado se permite:
 
-- generar la Unidad 07 a partir de `tutorial/06-helm-packaging/summary.md` y `playbooks/units/07-local-terraform-automation.md`;
-- conservar `labs/06-helm-packaging/chart/platform-api/` como base tecnica para Terraform.
+- revisar y aprobar pedagogicamente la Unidad 07;
+- generar el playbook de la Unidad 08 cuando la Unidad 07 quede aprobada;
+- conservar `labs/07-local-terraform-automation/terraform/` como base tecnica para CI/CD.
 
 Todavía no se permite:
 
-- crear Terraform solo dentro del alcance definido por el playbook de Unidad 07 cuando se genere la unidad;
 - instalar Tekton;
 - instalar Argo CD;
 - desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
@@ -290,11 +294,11 @@ Todavía no se permite:
 | Directorio | Estado | Contenido actual |
 |---|---|---|
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
-| `labs/` | Materializado con Unidades 01, 02, 03, 04, 05 y 06 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/`, `04-persistence-state/`, `05-scheduling-resilience-maintenance/` y `06-helm-packaging/` |
+| `labs/` | Materializado con Unidades 01, 02, 03, 04, 05, 06 y 07 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/`, `04-persistence-state/`, `05-scheduling-resilience-maintenance/`, `06-helm-packaging/` y `07-local-terraform-automation/` |
 | `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base |
 | `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03, 04, 05 y 06 |
 | `project/` | Operativo | Arquitectura, estado y roadmap |
-| `tutorial/` | Unidades 00, 01, 02, 03, 04, 05 y 06 generadas | README de entrada, `student-notes.md`, instructor notes y summaries; Unidad 06 anade `student-reference.md` |
+| `tutorial/` | Unidades 00, 01, 02, 03, 04, 05, 06 y 07 generadas | README de entrada, `student-notes.md`, instructor notes y summaries; Unidades 06 y 07 anaden `student-reference.md` |
 
 ---
 
@@ -309,7 +313,8 @@ Todavía no se permite:
 | 04 — Persistencia y estado | Completada, validada funcionalmente y aprobada | Sí | Sí | Sí, `labs/04-persistence-state/` | Sí | Sí |
 | 05 — Scheduling, resiliencia y mantenimiento | Completada, validada funcionalmente y aprobada pedagogicamente en sus guias del alumno | Sí | Sí | Sí, `labs/05-scheduling-resilience-maintenance/` | Sí | Sí |
 | 06 — Empaquetado con Helm | Completada, validada funcionalmente y aprobada pedagogicamente | Sí | Sí | Sí, `labs/06-helm-packaging/` | Sí | Sí |
-| 07–25 | Previstas en roadmap | No | No | No | No | No |
+| 07 — Automatizacion local con Terraform | Generada y validada funcionalmente; aprobacion pedagogica pendiente | Sí | Sí | Sí, `labs/07-local-terraform-automation/` | Sí | Sí |
+| 08–25 | Previstas en roadmap | No | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
 
@@ -517,7 +522,40 @@ Capacidades incorporadas:
 Limitaciones activas:
 
 - puede requerirse atencion a ownership de recursos si se migra un estado aplicado previamente con `kubectl` a Helm;
-- no existen modulos Terraform del curso.
+- el release Helm ahora esta gestionado por Terraform desde Unidad 07.
+
+## Unidad 07 — Automatizacion local con Terraform
+
+| Campo | Estado |
+|---|---|
+| Estado | Generada y validada funcionalmente; aprobacion pedagogica pendiente |
+| Fecha de inicio | 2026-07-20 |
+| Fecha de cierre | No aplica |
+| Playbook | `playbooks/units/07-local-terraform-automation.md` |
+| Tutorial | `tutorial/07-local-terraform-automation/README.md` |
+| Student notes | `tutorial/07-local-terraform-automation/student-notes.md` |
+| Student reference | `tutorial/07-local-terraform-automation/student-reference.md` |
+| Laboratorio | `labs/07-local-terraform-automation/` |
+| Instructor notes | `tutorial/07-local-terraform-automation/instructor-notes.md` |
+| Summary | `tutorial/07-local-terraform-automation/summary.md` |
+
+Capacidades incorporadas:
+
+- proyecto Terraform local para gestionar `helm_release.platform_api`;
+- providers Helm y Kubernetes inicializados;
+- `.terraform.lock.hcl` versionable con providers `hashicorp/helm` `2.17.0` y `hashicorp/kubernetes` `2.38.0`;
+- variables tipadas, validaciones, `terraform.tfvars.example`, `templatefile()` y outputs no sensibles;
+- import del release existente `platform-training/platform-api-local`;
+- apply funcional con `0 added, 1 changed, 0 destroyed`;
+- validacion automatizada de Terraform, Helm y Kubernetes;
+- referencia avanzada de Terraform sobre state, variables, expresiones, modulos e integracion Kubernetes/Helm.
+
+Limitaciones activas:
+
+- la aprobacion pedagogica del usuario queda pendiente;
+- backend local y state local no versionado;
+- `terraform destroy` no fue ejecutado y no debe usarse como limpieza normal;
+- no se crearon backends remotos, modulos cloud, Tekton, Argo CD, observabilidad avanzada, AKS ni EKS.
 
 ---
 
@@ -580,7 +618,7 @@ Limitaciones activas:
 | Git | Validado en Ubuntu WSL | `/usr/bin/git` | `platform/environment/linux/check-prerequisites.sh` | Unidad 00 |
 | kubectl | Instalado y operativo contra MicroK8s | `v1.35.6` | `kubectl version --client`, `kubectl get nodes` | Unidad 00 |
 | Helm | Instalado y validado como CLI; Unidad 06 crea el primer chart local del curso | `v3.21.0+ge0878d4` | `platform/environment/tools/validate-tools.sh`, `helm version --short`, `helm lint` | Unidad 00; chart en Unidad 06 |
-| Terraform | Instalado y validado como CLI; no gestiona recursos del curso | `1.15.7` | `platform/environment/tools/validate-tools.sh` | Unidad 00 |
+| Terraform | Instalado y validado como CLI; gestiona el release Helm local desde Unidad 07 | `1.15.7`; providers Helm `2.17.0` y Kubernetes `2.38.0` | `platform/environment/tools/validate-tools.sh`, `terraform init`, `terraform validate`, `terraform state list` | Unidad 00; gestion de release en Unidad 07 |
 | Argo CD | No incorporado | No aplica | No aplica | Unidad 09 |
 | Tekton | No incorporado | No aplica | No aplica | Unidad 08 |
 | Prometheus | No incorporado | No aplica | No aplica | Unidad 11 |
@@ -600,8 +638,8 @@ Limitaciones activas:
 |---|---|
 | Nombre | `platform-api` |
 | Propósito | Servicio HTTP mínimo para evolucionar configuración, red, salud, observabilidad, seguridad, escalado y despliegue cloud |
-| Versión actual | Unidad 06 desplegada como release Helm local `platform-api-local`; validacion funcional y rollback completados |
-| Repositorio o ruta | `labs/06-helm-packaging/chart/platform-api/` |
+| Versión actual | Unidad 07 desplegada como release Helm local `platform-api-local` gestionado por Terraform; validacion funcional completada |
+| Repositorio o ruta | `labs/06-helm-packaging/chart/platform-api/` y `labs/07-local-terraform-automation/terraform/` |
 
 ## Componentes
 
@@ -633,12 +671,12 @@ Limitaciones activas:
 - scheduling seguro con `nodeSelector` Linux, node affinity preferida y pod anti-affinity preferida;
 - PDB `platform-api` con `minAvailable: 1`;
 - recuperacion validada tras eliminacion controlada de un Pod;
-- empaquetado Helm local generado y renderizado para Unidad 06.
+- empaquetado Helm local generado y renderizado para Unidad 06;
+- release Helm local gestionado por Terraform desde Unidad 07.
 
 ## Capacidades todavía no incorporadas
 
 - Gateway API operativa como artefacto del curso;
-- gestión Terraform;
 - CI/CD, GitOps, observabilidad avanzada, seguridad avanzada, KEDA, AKS y EKS.
 
 ---
@@ -682,16 +720,20 @@ Limitaciones activas:
 ## Helm
 
 - Existe el primer chart Helm local del curso en `labs/06-helm-packaging/chart/platform-api/`.
-- El release de laboratorio `platform-api-local` esta desplegado en namespace `platform-training`.
-- La validacion funcional final se ejecuto tras rollback con 0 fallos y 0 avisos.
+- El release de laboratorio `platform-api-local` esta desplegado en namespace `platform-training` y queda gestionado por Terraform desde Unidad 07.
+- La validacion funcional heredada de Unidad 06 se ejecuto tras apply de Unidad 07 con 0 fallos y 0 avisos.
 - El addon Ingress de MicroK8s despliega Traefik mediante Helm como componente de plataforma local, no como artefacto gestionado por el curso.
 - Helm permanece como CLI validada desde Unidad 00.
 
 ## Terraform
 
-- No existen módulos Terraform.
-- No existen backends ni estados Terraform del curso.
-- Terraform permanece como CLI validada desde Unidad 00.
+- Existe un proyecto Terraform local en `labs/07-local-terraform-automation/terraform/`.
+- El recurso `helm_release.platform_api` gestiona el release Helm `platform-api-local`.
+- El release existente fue importado con `terraform import helm_release.platform_api platform-training/platform-api-local`.
+- El apply funcional de Unidad 07 completo `0 added, 1 changed, 0 destroyed`.
+- El state local existe como artefacto de ejecucion no versionado; `.terraform/`, `terraform.tfstate`, `terraform.tfvars` locales y planes binarios estan ignorados por Git.
+- `.terraform.lock.hcl` queda versionable para fijar providers.
+- No existen módulos Terraform cloud ni backends remotos del curso.
 
 ---
 
@@ -835,17 +877,32 @@ No existen actualmente:
 | D-06-04 — Terraform queda diferido como ejecucion | Activa | `playbooks/units/06-helm-packaging.md` y `tutorial/06-helm-packaging/summary.md` | `helm_release`, `templatefile()` y `set_sensitive` se explican como continuidad, pero no se ejecutan en Unidad 06 |
 | D-06-05 — Renderizado antes de instalacion | Activa | `playbooks/units/06-helm-packaging.md` y `labs/06-helm-packaging/README.md` | El alumno debe inspeccionar YAML renderizado antes de instalar un release |
 
+## Decisiones específicas de la Unidad 07
+
+| Decisión | Estado | Documento fuente | Impacto actual |
+|---|---|---|---|
+| D-07-01 — Terraform orquesta el release Helm existente | Activa | `playbooks/units/07-local-terraform-automation.md` y `tutorial/07-local-terraform-automation/summary.md` | `helm_release.platform_api` gestiona `platform-api-local`; no se reescriben templates Kubernetes |
+| D-07-02 — Backend local para laboratorio | Activa | `playbooks/units/07-local-terraform-automation.md` | El state local es artefacto de ejecucion no versionado; backends remotos quedan diferidos |
+| D-07-03 — Variables tipadas antes de multi-entorno complejo | Activa | `playbooks/units/07-local-terraform-automation.md` y `variables.tf` | La unidad usa defaults, validaciones y `terraform.tfvars.example` sin crear promocion formal |
+| D-07-04 — Secrets solo ficticios y advertencia sobre state | Activa | `playbooks/units/07-local-terraform-automation.md` y `terraform/.gitignore` | No se introducen secretos reales; `set_sensitive` no sustituye proteccion de state |
+| D-07-05 — Plan antes de apply | Activa | `playbooks/units/07-local-terraform-automation.md` y `labs/07-local-terraform-automation/README.md` | El apply se ejecuto tras plan sin destrucciones |
+| D-07-06 — Sin modulo local ejecutable inicial | Activa | `tutorial/07-local-terraform-automation/summary.md` | El proyecto Terraform queda plano para favorecer trazabilidad pedagogica |
+
 ---
 
 # Restricciones activas
 
-Tras generar, validar funcionalmente y aprobar pedagogicamente la Unidad 06:
+Tras generar y validar funcionalmente la Unidad 07:
 
 - la Unidad 06 conserva `platform-api`, `platform-training` y la evolucion acumulativa desde `labs/05-scheduling-resilience-maintenance/solution/`;
-- `labs/06-helm-packaging/chart/platform-api/` es el chart local previsto como base para Unidad 07;
+- `labs/06-helm-packaging/chart/platform-api/` sigue siendo el chart local de aplicacion;
+- `labs/07-local-terraform-automation/terraform/` gestiona el release Helm local mediante Terraform;
 - conservar la separación pedagógica reforzada: los README actúan como entrada, `student-notes.md` como guía de aprendizaje y los README de laboratorio como guía operativa;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
-- no crear Terraform fuera del alcance del playbook de Unidad 07; la unidad podra crear automatizacion local sobre el chart Helm cuando sea generada por instruccion del usuario;
+- no crear Terraform fuera del alcance ya definido por Unidad 07;
+- no configurar backends remotos, modulos cloud, cuentas cloud, IAM, VPC, VNet, AKS ni EKS antes de sus unidades previstas;
+- no versionar `terraform.tfstate`, `.terraform/`, `terraform.tfvars` locales, planes binarios, kubeconfigs, tokens ni secretos reales;
+- no ejecutar `terraform destroy` como limpieza normal;
 - no crear recursos Gateway API como eje operativo salvo decisión explícita posterior;
 - no introducir TLS productivo, DNS público, LoadBalancer cloud ni NetworkPolicies antes de su unidad prevista;
 - no presentar `hostpath-storage` como almacenamiento productivo ni cloud;
@@ -947,6 +1004,20 @@ Tras generar, validar funcionalmente y aprobar pedagogicamente la Unidad 06:
 | Rollback Helm Unidad 06 | Upgrade temporal a revision 2 con `replicaCount=1` y `helm rollback platform-api-local 1 --namespace platform-training` | Rollback correcto; revision 3 desplegada |
 | Validacion funcional Unidad 06 | `bash labs/06-helm-packaging/validation/validate.sh` tras rollback | 0 fallos, 0 avisos; release deployed, 2 Pods Ready, Service, EndpointSlice, Ingress, PVC, PDB y HTTP validados |
 | Revision pedagogica Unidad 06 | Aprobacion del usuario el 2026-07-19 | Aprobada |
+| Sintaxis Bash Unidad 07 | `bash -n labs/07-local-terraform-automation/validation/validate.sh` | 0 |
+| Terraform fmt Unidad 07 | `terraform -chdir=labs/07-local-terraform-automation/terraform fmt -check -recursive` | 0 |
+| Terraform init Unidad 07 | `terraform -chdir=labs/07-local-terraform-automation/terraform init` | Providers instalados: `hashicorp/helm` `2.17.0`, `hashicorp/kubernetes` `2.38.0`; `.terraform.lock.hcl` creado |
+| Terraform validate Unidad 07 | `terraform -chdir=labs/07-local-terraform-automation/terraform validate` | `Success! The configuration is valid.` |
+| Terraform plan Unidad 07 antes de import | `terraform -chdir=labs/07-local-terraform-automation/terraform plan -var-file=terraform.tfvars.example` | `1 to add, 0 to change, 0 to destroy`; evidencio release existente fuera de state |
+| Terraform import Unidad 07 | `terraform -chdir=labs/07-local-terraform-automation/terraform import -var-file=terraform.tfvars.example helm_release.platform_api platform-training/platform-api-local` | Import correcto; `helm_release.platform_api` queda en state local |
+| Terraform plan Unidad 07 tras import | `terraform -chdir=labs/07-local-terraform-automation/terraform plan -var-file=terraform.tfvars.example` | `0 to add, 1 to change, 0 to destroy` |
+| Terraform apply Unidad 07 | `terraform -chdir=labs/07-local-terraform-automation/terraform apply -var-file=terraform.tfvars.example -auto-approve` | `0 added, 1 changed, 0 destroyed`; outputs no sensibles generados |
+| Terraform plan final Unidad 07 | `terraform -chdir=labs/07-local-terraform-automation/terraform plan -var-file=terraform.tfvars.example` | `No changes. Your infrastructure matches the configuration.` |
+| Terraform state Unidad 07 | `terraform -chdir=labs/07-local-terraform-automation/terraform state list` | `data.kubernetes_namespace.platform_training` y `helm_release.platform_api` |
+| Terraform output Unidad 07 | `terraform -chdir=labs/07-local-terraform-automation/terraform output` | `release_status = "deployed"`, `release_namespace = "platform-training"` |
+| Validacion funcional Unidad 07 | `bash labs/07-local-terraform-automation/validation/validate.sh` | 0 fallos, 0 avisos; Terraform, Helm release, Deployment, Service, Ingress, PVC, PDB y secret scan validados |
+| Validacion heredada tras Unidad 07 | `bash labs/06-helm-packaging/validation/validate.sh` | 0 fallos, 0 avisos; `platform-api-local` revision 4 `deployed` |
+| Revision pedagogica Unidad 07 | Pendiente del usuario | Pendiente |
 | Revisión pedagógica `student-notes.md` Unidades 01-05 | Aprobación del usuario el 2026-07-19 tras reestructuración como guías de aprendizaje | Aprobada |
 | Revisión pedagógica Unidad 01 | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
 | Revisión pedagógica Unidad 02 | Aprobación del usuario el 2026-07-18 | Aprobada |
@@ -955,7 +1026,7 @@ Tras generar, validar funcionalmente y aprobar pedagogicamente la Unidad 06:
 | Refuerzo pedagógico README Unidades 00-03 | Revisión documental de `tutorial/00-environment/README.md`, `tutorial/01-kubernetes/README.md`, `tutorial/02-configuration-lifecycle/README.md` y `tutorial/03-networking-ingress/README.md` | Guías pedagógicas, mapas de aprendizaje y preguntas centrales añadidas; aprobado por el usuario |
 | Student notes Unidades 00-03 | Revisión documental de `tutorial/00-environment/student-notes.md`, `tutorial/01-kubernetes/student-notes.md`, `tutorial/02-configuration-lifecycle/student-notes.md` y `tutorial/03-networking-ingress/student-notes.md` | Notas pedagógicas creadas, enlazadas desde los README, aprobadas por el usuario y comiteadas en `b842f33`; Unidades 01-03 reestructuradas posteriormente como guías de aprendizaje |
 | Chart Helm Unidad 06 | `find labs/06-helm-packaging -type f -name 'Chart.yaml' -print` | `labs/06-helm-packaging/chart/platform-api/Chart.yaml` |
-| Ausencia de módulos Terraform | `find . -path ./.git -prune -o -type f \( -name '*.tf' -o -name '*.tfvars' \) -print` | Sin resultados |
+| Proyecto Terraform Unidad 07 | `find labs/07-local-terraform-automation/terraform -maxdepth 2 -type f -print` | Configuracion Terraform local, `.terraform.lock.hcl`, plantilla de values y `.gitignore` presentes |
 
 Validaciones no disponibles en esta sesión:
 
@@ -1026,6 +1097,7 @@ Validaciones no disponibles en esta sesión:
 | 56 | Playbook de Unidad 06 | Aprobado por instruccion de generacion | `playbooks/units/06-helm-packaging.md` creado; incorpora `student-reference.md` avanzado como entregable requerido y difiere Terraform ejecutable a Unidad 07 |
 | 57 | Generacion, validacion funcional y aprobacion de Unidad 06 | Completado y aprobado | Tutorial, student notes, student reference, instructor notes, summary, laboratorio, chart Helm local, script de adopcion y validacion creados; release `platform-api-local` instalado, rollback validado, validacion final con 0 fallos, 0 avisos y aprobacion pedagogica del usuario |
 | 58 | Playbook de Unidad 07 | Completado y aprobado | `playbooks/units/07-local-terraform-automation.md` creado y aprobado por el usuario el 2026-07-20; define Terraform como automatizacion local del release Helm de `platform-api` e incorpora `student-reference.md` avanzado sobre arquitectura Terraform |
+| 59 | Generacion y validacion funcional de Unidad 07 | Completado con aprobacion pedagogica pendiente | Tutorial, student notes, student reference, instructor notes, summary, laboratorio, proyecto Terraform local y validacion creados; release importado a Terraform, apply ejecutado con 0 destrucciones y validaciones finales con 0 fallos, 0 avisos |
 
 ---
 
@@ -1034,7 +1106,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Generar la Unidad 07
+Revisar y aprobar pedagogicamente la Unidad 07
 ```
 
 ## Fuentes obligatorias
@@ -1045,25 +1117,26 @@ La sesión deberá leer:
 playbooks/master.md
 project/project-state.md
 playbooks/unit-template.md
-playbooks/units/06-helm-packaging.md
-tutorial/06-helm-packaging/summary.md
-tutorial/06-helm-packaging/student-notes.md
-tutorial/06-helm-packaging/student-reference.md
-labs/06-helm-packaging/README.md
-labs/06-helm-packaging/chart/platform-api/
-labs/06-helm-packaging/validation/validate.sh
+playbooks/units/07-local-terraform-automation.md
+tutorial/07-local-terraform-automation/README.md
+tutorial/07-local-terraform-automation/student-notes.md
+tutorial/07-local-terraform-automation/student-reference.md
+tutorial/07-local-terraform-automation/summary.md
+labs/07-local-terraform-automation/README.md
+labs/07-local-terraform-automation/terraform/
+labs/07-local-terraform-automation/validation/validate.sh
 project/roadmap.md
 ```
 
 ## Trabajo permitido
 
-- generar la Unidad 07;
-- aplicar el alcance de Terraform definido sobre el chart Helm existente;
-- conservar Helm como empaquetado y diferenciarlo de Terraform como automatizacion de instalacion.
+- revisar pedagogicamente la Unidad 07;
+- registrar aprobacion o correcciones de la Unidad 07;
+- generar el playbook de la Unidad 08 cuando la Unidad 07 quede aprobada.
 
 ## Trabajo todavía prohibido
 
-- crear Terraform fuera del alcance de Unidad 07;
+- crear Terraform cloud o backends remotos fuera del alcance futuro aprobado;
 - incorporar CI/CD, GitOps, observabilidad avanzada, seguridad avanzada o cloud;
 - sustituir MicroK8s por otra plataforma local;
 - sustituir la aplicación evolutiva sin decisión documentada.

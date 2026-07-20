@@ -1,0 +1,11 @@
+kubeconfig_path    = "~/.kube/config"
+kube_context       = "microk8s"
+release_name       = "platform-api-local"
+namespace          = "platform-training"
+chart_path         = "../../06-helm-packaging/chart/platform-api"
+ingress_host       = "platform-api.local"
+replica_count      = 2
+feature_greeting   = "terraform-local"
+storage_class_name = "microk8s-hostpath"
+lab_client_id      = "lab-client-id-not-real"
+lab_api_token      = "lab-token-not-real"
