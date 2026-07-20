@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Unidad 07 completada, validada funcionalmente y aprobada pedagogicamente |
-| Estado general | Unidades 00-07 completadas; Unidad 08 pendiente de playbook |
-| Último incremento completado | Aprobacion pedagogica de la Unidad 07 — Automatizacion local con Terraform |
-| Unidad activa | Ninguna; Unidad 08 pendiente de playbook |
+| Fase actual | Framework V2 didactico abierto tras Unidad 07 |
+| Estado general | Unidades 00-07 completadas; Unidad 08 pausada hasta cerrar revision didactica transversal |
+| Último incremento completado | Registro de reapertura del framework didactico y pausa de Unidad 08 |
+| Unidad activa | Ninguna; sesion transversal Framework V2 didactico activa |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
-| Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar el playbook de la Unidad 08 — CI/CD con Tekton |
+| Framework de generación | Framework V1 validado; Framework V2 didactico abierto para refuerzo pedagogico |
+| Siguiente incremento permitido | Ajustar framework didactico y preparar revision transversal de Unidades 00-07 |
 
 ---
 
@@ -77,12 +77,15 @@ Durante la validacion funcional de Unidad 07, Terraform descargo los providers `
 
 A partir de este estado se permite:
 
-- generar el playbook de la Unidad 08;
+- ajustar el framework didactico como Framework V2;
+- definir una matriz de revision pedagogica transversal para las Unidades 00-07;
+- revisar contenido generado de Unidades 00-07 sin cambiar capacidades tecnicas salvo contradiccion real;
 - conservar `labs/07-local-terraform-automation/terraform/` como base tecnica para CI/CD.
 
 Todavía no se permite:
 
 - instalar Tekton;
+- generar el playbook de la Unidad 08 hasta cerrar la reapertura didactica o registrar una decision explicita;
 - instalar Argo CD;
 - desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
 - introducir KEDA;
@@ -99,7 +102,7 @@ Todavía no se permite:
 | `project/architecture.md` | Actualizado | Student-Notes-Learning-Guide | Arquitectura y decisiones estructurales; separa README y guías de aprendizaje del alumno |
 | `project/project-state.md` | Actualizado con estructura `student-notes.md` | Student-Notes-Learning-Guide | Estado consolidado |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
-| `project/project-planning.md` | Actualizado | Student-Notes-Learning-Guide | Planificación incremental del trabajo; incluye sesiones de desarrollo pedagógico de guías del alumno |
+| `project/project-planning.md` | Actualizado | Framework-V2-Didactic-Review | Planificación incremental del trabajo; incluye sesiones de reapertura de framework didactico y revisión transversal |
 | `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
 | `playbooks/master.md` | Actualizado | Student-Notes-Learning-Guide | Reglas globales de generación; exige `student-notes.md` como guía de aprendizaje académica y aplicada |
 | `playbooks/unit-template.md` | Actualizado | Student-Notes-Learning-Guide | Plantilla de playbooks específicos; exige guía del alumno por unidad |
@@ -961,6 +964,7 @@ Tras generar y validar funcionalmente la Unidad 07:
 | TD-005 | Incorporar `EndpointSlice` como observación posterior al Service clásico | Baja | Unidad 01 | Resuelto en Unidad 02 como comprobación principal de endpoints | Cerrada |
 | TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | `student-notes.md` de Unidades 01-05 reestructurado y aprobado como guia de aprendizaje; Unidad 00 conserva su formato previo aprobado | Cerrada para Unidades 01-05; aplicar criterio en futuras unidades |
 | TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo y revisión de `student-notes.md` | `playbooks/master.md` y `playbooks/unit-template.md` actualizados para describir guías de aprendizaje academicas y aplicadas, evitando estructuras enciclopédicas por defecto | Cerrada |
+| TD-008 | Reabrir Framework V2 para reforzar contrato didactico y revisar lagunas de Unidades 00-07 | Alta | Feedback del usuario tras aprobar Unidad 07 | Ajustar framework, crear matriz de revision didactica y revisar contenido generado antes de Unidad 08 | Abierta |
 
 ---
 
@@ -1097,6 +1101,7 @@ Validaciones no disponibles en esta sesión:
 | 57 | Generacion, validacion funcional y aprobacion de Unidad 06 | Completado y aprobado | Tutorial, student notes, student reference, instructor notes, summary, laboratorio, chart Helm local, script de adopcion y validacion creados; release `platform-api-local` instalado, rollback validado, validacion final con 0 fallos, 0 avisos y aprobacion pedagogica del usuario |
 | 58 | Playbook de Unidad 07 | Completado y aprobado | `playbooks/units/07-local-terraform-automation.md` creado y aprobado por el usuario el 2026-07-20; define Terraform como automatizacion local del release Helm de `platform-api` e incorpora `student-reference.md` avanzado sobre arquitectura Terraform |
 | 59 | Generacion, validacion funcional y aprobacion de Unidad 07 | Completado y aprobado | Tutorial, student notes, student reference, instructor notes, summary, laboratorio, proyecto Terraform local y validacion creados; release importado a Terraform, apply ejecutado con 0 destrucciones, validaciones finales con 0 fallos, 0 avisos y aprobacion pedagogica del usuario |
+| 60 | Apertura Framework V2 didactico | En progreso | `project/project-planning.md` y `project/project-state.md` registran la pausa de Unidad 08 y el inicio de ajuste didactico transversal |
 
 ---
 
@@ -1105,7 +1110,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Generar el playbook de la Unidad 08 - CI/CD con Tekton
+Ajustar Framework V2 didactico y preparar revision transversal de Unidades 00-07
 ```
 
 ## Fuentes obligatorias
@@ -1116,24 +1121,40 @@ La sesión deberá leer:
 playbooks/master.md
 project/project-state.md
 playbooks/unit-template.md
+playbooks/summary-template.md
+playbooks/project-state-template.md
+project/project-planning.md
+project/architecture.md
+playbooks/units/00-environment.md
+playbooks/units/01-kubernetes.md
+playbooks/units/02-configuration-lifecycle.md
+playbooks/units/03-networking-ingress.md
+playbooks/units/04-persistence-state.md
+playbooks/units/05-scheduling-resilience-maintenance.md
+playbooks/units/06-helm-packaging.md
 playbooks/units/07-local-terraform-automation.md
-tutorial/07-local-terraform-automation/summary.md
-tutorial/07-local-terraform-automation/student-notes.md
-tutorial/07-local-terraform-automation/student-reference.md
-labs/07-local-terraform-automation/README.md
-labs/07-local-terraform-automation/terraform/
-labs/07-local-terraform-automation/validation/validate.sh
+tutorial/00-environment/
+tutorial/01-kubernetes/
+tutorial/02-configuration-lifecycle/
+tutorial/03-networking-ingress/
+tutorial/04-persistence-state/
+tutorial/05-scheduling-resilience-maintenance/
+tutorial/06-helm-packaging/
+tutorial/07-local-terraform-automation/
 project/roadmap.md
 ```
 
 ## Trabajo permitido
 
-- generar el playbook de la Unidad 08;
-- definir el alcance de CI/CD con Tekton sin instalar ni generar recursos Tekton hasta que el playbook quede aprobado;
-- conservar Helm como empaquetado y Terraform como automatizacion declarativa del release.
+- ajustar `playbooks/master.md`, `playbooks/unit-template.md`, `playbooks/summary-template.md` y `playbooks/project-state-template.md` para reforzar criterios didacticos;
+- actualizar `project/architecture.md` si el contrato didactico requiere decision estructural;
+- crear una matriz de revision pedagogica transversal para Unidades 00-07;
+- iniciar la revision de contenido generado sin cambiar el estado tecnico del laboratorio.
 
 ## Trabajo todavía prohibido
 
+- generar el playbook de Unidad 08 antes de cerrar o pausar explicitamente Framework V2 didactico;
+- instalar Tekton o crear recursos Tekton;
 - crear Terraform cloud o backends remotos fuera del alcance futuro aprobado;
 - incorporar CI/CD, GitOps, observabilidad avanzada, seguridad avanzada o cloud;
 - sustituir MicroK8s por otra plataforma local;

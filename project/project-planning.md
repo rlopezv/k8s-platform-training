@@ -606,6 +606,43 @@ Debe evitar estructuras excesivamente densas para el alumno, como catálogos ext
 
 Puede planificarse como fase posterior cuando convenga avanzar primero en varias unidades técnicas y revisar después la progresión completa del itinerario.
 
+### 7.7. Sesión de reapertura de framework didáctico
+
+Se utiliza cuando el contenido generado revela que las reglas del framework necesitan evolucionar para mejorar la calidad formativa del itinerario antes de seguir incorporando herramientas nuevas.
+
+Esta sesión no es una unidad formativa numerada. No debe crear capacidades técnicas nuevas, instalar herramientas, modificar el estado funcional del clúster ni avanzar el roadmap operativo. Su objetivo es ajustar el contrato de generación para que futuras unidades y revisiones transversales mantengan una didáctica consistente.
+
+Debe producir, como mínimo:
+
+* criterios didácticos reforzados para `README.md`, `student-notes.md`, `student-reference.md` cuando exista, laboratorio, instructor notes y summary;
+* matriz de revisión pedagógica aplicable a unidades ya generadas;
+* reglas para detectar lagunas conceptuales, saltos de dificultad y conceptos asumidos sin explicación;
+* criterios para decidir cuándo una laguna se corrige en `README.md`, `student-notes.md`, `student-reference.md`, laboratorio o instructor notes;
+* actualización de `project/project-state.md` con la pausa del roadmap funcional y el siguiente incremento permitido.
+
+La sesión debe preservar la separación entre:
+
+* framework pedagógico;
+* revisión documental de unidades existentes;
+* generación de nuevas unidades técnicas.
+
+### 7.8. Sesión de revisión didáctica transversal
+
+Se utiliza después de ajustar el framework didáctico, para revisar unidades ya generadas contra los nuevos criterios.
+
+La revisión debe comprobar, como mínimo:
+
+* si la unidad explica el problema antes de introducir la herramienta;
+* si explicita el modelo mental que soporta el laboratorio;
+* si identifica los conceptos nuevos y los retoma desde cero cuando proceda;
+* si conecta con unidades anteriores y posteriores;
+* si distingue teoría, práctica, diagnóstico y límites;
+* si el laboratorio está apoyado por una explicación conceptual suficiente;
+* si las fuentes de referencia están guiadas por preguntas concretas;
+* si existen saltos de dificultad para alumnos que todavía no dominan el tema.
+
+La revisión de contenido generado debe tratarse como incremento documental y pedagógico. Solo debe modificar artefactos técnicos cuando detecte una contradicción real entre explicación, laboratorio y estado validado.
+
 ---
 
 ## 8. Criterios generales de cierre
@@ -630,15 +667,15 @@ Debe comprobarse que:
 
 El siguiente incremento recomendado vigente se registra en `project/project-state.md`, que debe prevalecer sobre esta sección cuando el itinerario avance.
 
-Tras aprobar pedagógicamente las guías del alumno de las Unidades 01-05, alinear los playbooks y documentos de proyecto con la estructura real de `student-notes.md` y generar `playbooks/units/06-helm-packaging.md`, el siguiente incremento recomendado es revisar y aprobar el playbook de la Unidad 06 — Empaquetado con Helm.
+Tras completar, validar funcionalmente y aprobar pedagógicamente la Unidad 07, el siguiente incremento recomendado es reabrir el framework como **Framework V2 — Refuerzo didáctico y revisión pedagógica transversal**.
 
 Esa sesión debería centrarse en:
 
 1. revisar `playbooks/master.md`;
 2. revisar `playbooks/unit-template.md`;
-3. revisar `playbooks/units/06-helm-packaging.md`;
-4. leer `tutorial/05-scheduling-resilience-maintenance/summary.md`;
-5. inspeccionar `labs/05-scheduling-resilience-maintenance/solution/`;
-6. revisar en `project/roadmap.md` el alcance previsto de Helm;
-7. reevaluar la decision de version de Helm antes de crear charts;
-8. aprobar o ajustar el playbook de Unidad 06, sin generar todavia charts ni contenido de laboratorio.
+3. revisar `playbooks/summary-template.md`;
+4. revisar `playbooks/project-state-template.md`;
+5. revisar `project/architecture.md` si el contrato de artefactos pedagógicos necesita elevarse a decisión estructural;
+6. definir una matriz de revisión didáctica para las Unidades 00-07;
+7. registrar en `project/project-state.md` que la Unidad 08 queda pausada hasta cerrar la reapertura didáctica;
+8. preparar la revisión transversal de contenido generado sin instalar Tekton ni crear recursos de Unidad 08.
