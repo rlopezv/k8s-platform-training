@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Unidad 06 completada y aprobada; Unidad 07 pendiente de playbook |
-| Estado general | Unidades 00-06 completadas; Unidad 06 generada, validada funcionalmente y aprobada pedagogicamente |
-| Último incremento completado | Aprobacion pedagogica de la Unidad 06 — Empaquetado con Helm |
-| Unidad activa | Ninguna; siguiente unidad pendiente de playbook |
+| Fase actual | Unidad 06 completada y aprobada; playbook de Unidad 07 aprobado |
+| Estado general | Unidades 00-06 completadas; Unidad 07 pendiente de generacion |
+| Último incremento completado | Aprobacion del playbook de la Unidad 07 — Automatizacion local con Terraform |
+| Unidad activa | Ninguna; Unidad 07 pendiente de generacion |
 | Última unidad completada | 06 — Empaquetado con Helm, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05 y 06 |
 | Framework de generación | Validado y congelado (Framework V1) |
-| Siguiente incremento permitido | Generar el playbook de la Unidad 07 |
+| Siguiente incremento permitido | Generar la Unidad 07 |
 
 ---
 
@@ -73,12 +73,12 @@ El 2026-07-19 se genero la Unidad 06 por instruccion del usuario. La unidad crea
 
 A partir de este estado se permite:
 
-- generar el playbook de la Unidad 07 a partir de `tutorial/06-helm-packaging/summary.md`;
+- generar la Unidad 07 a partir de `tutorial/06-helm-packaging/summary.md` y `playbooks/units/07-local-terraform-automation.md`;
 - conservar `labs/06-helm-packaging/chart/platform-api/` como base tecnica para Terraform.
 
 Todavía no se permite:
 
-- crear módulos Terraform;
+- crear Terraform solo dentro del alcance definido por el playbook de Unidad 07 cuando se genere la unidad;
 - instalar Tekton;
 - instalar Argo CD;
 - desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
@@ -110,6 +110,7 @@ Todavía no se permite:
 | `playbooks/units/04-persistence-state.md` | Completo y aprobado por instrucción de generación | Unit-04-Generation | Gobierno de la Unidad 04 |
 | `playbooks/units/05-scheduling-resilience-maintenance.md` | Completo y aprobado | Unit-05-Playbook-Approval | Gobierno de la Unidad 05 |
 | `playbooks/units/06-helm-packaging.md` | Usado para generar Unidad 06 por instruccion del usuario | Unit-06-Generation | Gobierno de la Unidad 06; incluye `student-reference.md` como entregable requerido |
+| `playbooks/units/07-local-terraform-automation.md` | Completo y aprobado | Unit-07-Playbook-Approval | Gobierno de la Unidad 07; incluye `student-reference.md` de arquitectura avanzada de Terraform |
 | `AGENTS.md` | Completo | Unit-00-01 | Guía operativa para agentes con acceso al repositorio |
 
 ---
@@ -844,7 +845,7 @@ Tras generar, validar funcionalmente y aprobar pedagogicamente la Unidad 06:
 - `labs/06-helm-packaging/chart/platform-api/` es el chart local previsto como base para Unidad 07;
 - conservar la separación pedagógica reforzada: los README actúan como entrada, `student-notes.md` como guía de aprendizaje y los README de laboratorio como guía operativa;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
-- no crear módulos Terraform hasta la unidad prevista;
+- no crear Terraform fuera del alcance del playbook de Unidad 07; la unidad podra crear automatizacion local sobre el chart Helm cuando sea generada por instruccion del usuario;
 - no crear recursos Gateway API como eje operativo salvo decisión explícita posterior;
 - no introducir TLS productivo, DNS público, LoadBalancer cloud ni NetworkPolicies antes de su unidad prevista;
 - no presentar `hostpath-storage` como almacenamiento productivo ni cloud;
@@ -1024,6 +1025,7 @@ Validaciones no disponibles en esta sesión:
 | 55 | Alineación de playbooks y documentos de `project/` con guías del alumno | Completado | `project/architecture.md`, `project/project-planning.md`, `project/project-state.md`, `playbooks/master.md`, `playbooks/unit-template.md` y playbooks específicos 04-05 ajustados al nuevo contrato |
 | 56 | Playbook de Unidad 06 | Aprobado por instruccion de generacion | `playbooks/units/06-helm-packaging.md` creado; incorpora `student-reference.md` avanzado como entregable requerido y difiere Terraform ejecutable a Unidad 07 |
 | 57 | Generacion, validacion funcional y aprobacion de Unidad 06 | Completado y aprobado | Tutorial, student notes, student reference, instructor notes, summary, laboratorio, chart Helm local, script de adopcion y validacion creados; release `platform-api-local` instalado, rollback validado, validacion final con 0 fallos, 0 avisos y aprobacion pedagogica del usuario |
+| 58 | Playbook de Unidad 07 | Completado y aprobado | `playbooks/units/07-local-terraform-automation.md` creado y aprobado por el usuario el 2026-07-20; define Terraform como automatizacion local del release Helm de `platform-api` e incorpora `student-reference.md` avanzado sobre arquitectura Terraform |
 
 ---
 
@@ -1032,7 +1034,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Generar el playbook de la Unidad 07
+Generar la Unidad 07
 ```
 
 ## Fuentes obligatorias
@@ -1055,13 +1057,13 @@ project/roadmap.md
 
 ## Trabajo permitido
 
-- generar el playbook especifico de la Unidad 07;
-- definir el alcance de Terraform sobre el chart Helm existente;
+- generar la Unidad 07;
+- aplicar el alcance de Terraform definido sobre el chart Helm existente;
 - conservar Helm como empaquetado y diferenciarlo de Terraform como automatizacion de instalacion.
 
 ## Trabajo todavía prohibido
 
-- crear módulos Terraform;
+- crear Terraform fuera del alcance de Unidad 07;
 - incorporar CI/CD, GitOps, observabilidad avanzada, seguridad avanzada o cloud;
 - sustituir MicroK8s por otra plataforma local;
 - sustituir la aplicación evolutiva sin decisión documentada.
