@@ -7,8 +7,9 @@
 | Unidad | 00 - Preparacion del entorno |
 | Identificador | `00-environment` |
 | Estado | Completada con limitaciones documentadas |
-| Ultima actualizacion | 2026-07-18 |
-| Actualizacion pedagogica | Hardening pedagogico global inicial aplicado el 2026-07-18 y aceptado por el usuario como cambio minimo |
+| Ultima actualizacion | 2026-07-20 |
+| Actualizacion pedagogica | `student-reference.md` y laboratorio de acompañamiento añadidos para cubrir contenedores, imagenes y registros antes de Unidad 01 |
+| Revision pedagogica de la referencia | Pendiente de aprobación del usuario |
 
 ## Resumen ejecutivo
 
@@ -21,6 +22,10 @@ Ubuntu 24.04.4 LTS sobre WSL2 fue validada como base Linux inicial, con `snap`, 
 MicroK8s y `kubectl` ya fueron instalados por el usuario desde el canal `1.35/stable` y responden en el entorno real. La validacion funcional mostro el nodo local en `Ready`, el addon `dns` habilitado y `kubectl` operativo. La validacion integrada termino sin fallos bloqueantes.
 
 Helm y Terraform ya fueron instalados y validados por el usuario como herramientas CLI. No se han creado charts, releases, modulos, backends, workloads, namespaces funcionales ni recursos de Unidad 01.
+
+El 2026-07-20 se añadio `tutorial/00-environment/student-reference.md` para resolver `GAP-001` como referencia pedagogica. La referencia cubre contenedores, imagenes, Dockerfile, multi-stage builds, usuario no root, tags, digests, registros, pull de imagenes desde Kubernetes y continuidad hacia Tekton, SBOM, firma y registros cloud.
+
+Tambien se añadio `platform/environment/container-images/README.md` como laboratorio de acompañamiento de solo lectura. El laboratorio ayuda a localizar `image` e `imagePullPolicy` en el Deployment de Unidad 01, consultar el contrato Kubernetes con `kubectl explain` y razonar sobre fallos como `ImagePullBackOff` sin construir imagenes ni modificar el cluster. Esta actualizacion no cambia scripts, no instala herramientas, no habilita registry local y no modifica el estado tecnico del cluster.
 
 ## Cambios introducidos
 
@@ -44,6 +49,8 @@ Helm y Terraform ya fueron instalados y validados por el usuario como herramient
 | Estado del proyecto | `project/project-state.md` | Actualizado con cierre de Unidad 00 y limitaciones documentadas |
 | Hardening pedagogico inicial | `tutorial/00-environment/README.md`, `tutorial/00-environment/instructor-notes.md` | Refuerzo de problema real, modelo mental, errores de razonamiento y lectura guiada |
 | Notas del alumno | `tutorial/00-environment/student-notes.md` | Creado como material pedagogico profundo sobre capas del entorno, contratos, evidencias y errores conceptuales |
+| Referencia del alumno sobre contenedores e imagenes | `tutorial/00-environment/student-reference.md` | Creado como referencia conceptual y profesional |
+| Laboratorio de acompañamiento sobre imagenes | `platform/environment/container-images/README.md` | Creado como laboratorio de lectura y observacion; no construye imagenes ni modifica el cluster |
 
 ## Decisiones registradas
 
@@ -169,9 +176,10 @@ platform/environment/windows/check-prerequisites.ps1
 - La plataforma Kubernetes local responde y queda lista para la siguiente unidad formativa cuando el estado del proyecto lo permita.
 - Los addons `helm` y `helm3` aparecen habilitados por MicroK8s como addons core observados; no sustituyen la instalacion y validacion de Helm como herramienta CLI del curso.
 - Windows 11, virtualizacion y salida completa de `wsl --status` / `wsl --list --verbose` deben validarse por equipo cuando se replique el laboratorio.
+- La referencia de contenedores, imagenes y registros no valida construccion de imagenes, Dockerfile, registry local ni credenciales de pull; esas capacidades quedan para unidades posteriores cuando se incorporen al laboratorio.
 
 ## Siguiente incremento recomendado
 
-Generar el playbook de la Unidad 01 antes de crear contenido formativo nuevo. La Unidad 01 no debe iniciarse desde historial de conversacion: debe gobernarse con un playbook versionado y usando este summary como fuente de continuidad.
+La Unidad 01 puede usar esta referencia como base conceptual para explicar el campo `image`, el runtime, `imagePullPolicy` y errores como `ImagePullBackOff`, sin construir imagenes propias.
 
 Nota de continuidad posterior: tras el hardening pedagogico global inicial del 2026-07-18, la Unidad 00 mantiene el mismo contrato tecnico de salida. Las unidades siguientes no deben inferir nuevas validaciones funcionales a partir de esta actualizacion documental. Los siguientes playbooks deben aplicar reglas pedagogicas mas exigentes que las usadas originalmente.

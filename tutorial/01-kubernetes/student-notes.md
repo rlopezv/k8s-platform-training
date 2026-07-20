@@ -4,6 +4,8 @@
 
 Estas notas explican lo que necesitas entender para completar la Unidad 01 con criterio, no solo siguiendo comandos. El laboratorio despliega `platform-api`; estas notas explican que piezas de Kubernetes aparecen, como se relacionan y como razonar cuando algo no queda como esperabas.
 
+La imagen usada por `platform-api` se apoya en la referencia de la Unidad 00 sobre contenedores, imagenes y registros: `tutorial/00-environment/student-reference.md`. El laboratorio de acompañamiento `platform/environment/container-images/README.md` ayuda a leer esa referencia de imagen antes de desplegar. Aqui se explica como Kubernetes consume esa imagen, no como se construye.
+
 La idea central es sencilla:
 
 ```text
@@ -112,6 +114,8 @@ El resultado final sera:
 | Puerto del Service | `80` |
 
 La aplicacion es deliberadamente simple. Eso permite que el foco este en Kubernetes: declaracion, reconciliacion, seleccion por labels, estado observado y diagnostico.
+
+La construccion de imagenes propias, el uso de registros locales o privados, tags inmutables, digests, SBOM y firma quedan fuera de esta unidad. La base conceptual esta en `tutorial/00-environment/student-reference.md` y se retomara cuando el itinerario llegue a CI/CD y supply chain security.
 
 ## Las piezas del cluster en esta unidad
 

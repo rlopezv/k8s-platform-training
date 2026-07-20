@@ -19,6 +19,8 @@ El laboratorio ejecutable esta en `platform/environment/`. Este README debe leer
 
 Para estudiar los conceptos con mas profundidad antes o despues del laboratorio, usa `tutorial/00-environment/student-notes.md`.
 
+Para preparar la base conceptual sobre contenedores, imagenes y registros antes de desplegar `platform-api` en la Unidad 01, consulta `tutorial/00-environment/student-reference.md`. El laboratorio de acompañamiento esta en `platform/environment/container-images/README.md` y es de solo lectura.
+
 ## Mapa de aprendizaje
 
 | Bloque | Que cubre | Que debe poder explicar el alumno |
@@ -135,8 +137,10 @@ Esta separacion evita confundir "como se instala el laboratorio local" con "como
 
 ```text
 tutorial/00-environment/README.md
+tutorial/00-environment/student-reference.md
 tutorial/00-environment/summary.md
 platform/environment/README.md
+platform/environment/container-images/README.md
 platform/environment/windows/check-prerequisites.ps1
 platform/environment/windows/prepare-ubuntu-wsl.ps1
 platform/environment/linux/check-prerequisites.sh

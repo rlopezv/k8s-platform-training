@@ -25,7 +25,7 @@ Cada entrada debe indicar:
 
 | ID | Laguna | Impacto formativo | Encaje natural | Tratamiento propuesto | Estado |
 |---|---|---|---|---|---|
-| GAP-001 | Contenedores, imagen y registro | La Unidad 01 despliega `platform-api` asumiendo una imagen existente; sin Dockerfile, usuario no root, tags inmutables y registro local, la seguridad de supply chain llega sin base suficiente | Antes de Tekton; posible unidad nueva entre 07 y 08 o refuerzo previo a 08 | Decidir si se crea una unidad específica de imagen/registro antes de CI | Abierta |
+| GAP-001 | Contenedores, imagen y registro | La Unidad 01 despliega `platform-api` asumiendo una imagen existente; sin Dockerfile, usuario no root, tags inmutables y registro local, la seguridad de supply chain llega sin base suficiente | Unidad 00 como referencia; Unidad 01 como consumo de imagen | Resuelto con `tutorial/00-environment/student-reference.md`, laboratorio de acompañamiento en `platform/environment/container-images/README.md` y enlaces mínimos desde Unidad 01; no se añaden prácticas de build ni registry | Cerrada |
 | GAP-002 | Gestión real de secretos | El curso pasa de Secrets ficticios a seguridad avanzada sin cubrir External Secrets, Sealed Secrets, SOPS o Vault | Unidad 09 o Unidad 19, según se enfoque GitOps local o migración cloud | Decidir herramienta principal y alcance: patrón GitOps, patrón cloud o comparación conceptual | Abierta |
 | GAP-003 | TLS, cert-manager e Ingress/Gateway API | La Unidad 03 introduce Ingress HTTP local, pero no certificados ni criterio de evolución hacia Gateway API | Refuerzo de Unidad 03 o unidad posterior de entrada segura antes de cloud | Decidir si se enseña Ingress, Gateway API o ambos con criterio de migración | Abierta |
 | GAP-004 | Workloads no Deployment | StatefulSet, headless Service, Jobs, CronJobs y DaemonSet no tienen tratamiento suficiente | StatefulSet en Unidad 04; Jobs/CronJobs en Unidad 02 u 08; DaemonSet en observabilidad o plataforma | Decidir si se refuerzan unidades existentes o se añade una unidad de workloads | Abierta |
@@ -37,6 +37,6 @@ Cada entrada debe indicar:
 
 ## Siguiente decisión recomendada
 
-Antes de generar la Unidad 08, decidir si `GAP-001` requiere una unidad nueva de contenedores, imagen y registro.
+`GAP-001` queda resuelta como referencia conceptual de Unidad 00, acompañada por un laboratorio de lectura y observacion de solo lectura.
 
-Motivo: Tekton puede validar y construir, pero el alumno necesita una base explícita sobre cómo se construye, etiqueta, endurece y publica la imagen que luego alimentará CI/CD, seguridad de supply chain y despliegue cloud.
+Siguiente decisión recomendada: revisar si alguna de las lagunas restantes debe resolverse antes de generar el playbook de Unidad 08 o si puede permanecer registrada para su unidad natural.

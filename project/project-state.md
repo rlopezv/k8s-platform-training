@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Framework V2 didactico abierto tras Unidad 07 |
-| Estado general | Unidades 00-07 completadas; Framework V2 didactico simplificado; lagunas de contenido registradas |
-| Último incremento completado | Framework V2 didactico simplificado y registro de lagunas creado |
-| Unidad activa | Ninguna; decision de roadmap pendiente antes de Unidad 08 |
+| Fase actual | Preparado para generar el playbook de Unidad 08 tras cierre documental de GAP-001 |
+| Estado general | Unidades 00-07 completadas; GAP-001 resuelto documentalmente mediante referencia y laboratorio de Unidad 00 |
+| Último incremento completado | Referencia y laboratorio de contenedores, imagenes y registros añadidos a Unidad 00 |
+| Unidad activa | Ninguna |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
 | Framework de generación | Framework V1 validado; Framework V2 didactico simplificado para `student-reference.md`, vision general y lagunas |
-| Siguiente incremento permitido | Decidir tratamiento de `GAP-001` en `project/content-gap-register.md` antes de generar Unidad 08 |
+| Siguiente incremento permitido | Generar el playbook de la Unidad 08 — Integración continua con Tekton |
 
 ---
 
@@ -75,17 +75,18 @@ El 2026-07-20 se genero la Unidad 07 por instruccion del usuario. La unidad crea
 
 Durante la validacion funcional de Unidad 07, Terraform descargo los providers `hashicorp/helm` `2.17.0` y `hashicorp/kubernetes` `2.38.0`, genero `.terraform.lock.hcl`, importo el release existente mediante `terraform import helm_release.platform_api platform-training/platform-api-local`, ejecuto `terraform apply` con resultado `0 added, 1 changed, 0 destroyed` y dejo `helm_release.platform_api` en el state local no versionado. La validacion de Unidad 07 finalizo con 0 fallos y 0 avisos. La validacion heredada de Unidad 06 tambien finalizo con 0 fallos y 0 avisos; `platform-api-local` quedo `deployed` en revision 4. El usuario aprobo pedagogicamente la Unidad 07 el 2026-07-20.
 
+El 2026-07-20 se resolvio `GAP-001` como mejora pedagogica de Unidad 00 mediante `tutorial/00-environment/student-reference.md` y `platform/environment/container-images/README.md`. La referencia cubre contenedores, imagenes y registros como vision general previa a Unidad 01 y continuidad hacia CI/CD, supply chain y cloud registries. El laboratorio asociado es de solo lectura y ayuda a leer `image`, `imagePullPolicy`, `kubectl explain` y fallos de descarga de imagenes sin construir imagenes ni modificar el cluster. No se modificaron scripts, manifests, charts, Terraform ni estado funcional del cluster. La aprobacion pedagogica final de esta referencia y su laboratorio queda pendiente del usuario.
+
 A partir de este estado se permite:
 
-- revisar `project/content-gap-register.md` y decidir ajustes de roadmap antes de Unidad 08;
 - crear o reforzar `student-reference.md` en unidades donde falte vision general, contexto de herramientas habituales o profundidad de referencia;
+- generar el playbook de la Unidad 08 — Integración continua con Tekton;
 - revisar contenido generado de Unidades 00-07 sin cambiar capacidades tecnicas salvo contradiccion real;
 - conservar `labs/07-local-terraform-automation/terraform/` como base tecnica para CI/CD.
 
 Todavía no se permite:
 
 - instalar Tekton;
-- generar el playbook de la Unidad 08 hasta cerrar la reapertura didactica o registrar una decision explicita;
 - instalar Argo CD;
 - desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
 - introducir KEDA;
@@ -100,8 +101,8 @@ Todavía no se permite:
 |---|---|---|---|
 | `README.md` | Actualizado | Student-Notes-Learning-Guide | Punto de entrada y visión general; refleja `student-notes.md` como artefacto por unidad |
 | `project/architecture.md` | Actualizado | Student-Notes-Learning-Guide | Arquitectura y decisiones estructurales; separa README y guías de aprendizaje del alumno |
-| `project/project-state.md` | Actualizado | Framework-V2-Didactic-Review | Estado consolidado; registra lagunas y siguiente decision de roadmap |
-| `project/content-gap-register.md` | Creado | Framework-V2-Didactic-Review | Registro ligero de lagunas de contenido y posibles encajes en el itinerario |
+| `project/project-state.md` | Actualizado | GAP-001 | Estado consolidado; registra cierre documental de GAP-001 y siguiente incremento permitido |
+| `project/content-gap-register.md` | Actualizado | GAP-001 | Registro ligero de lagunas; GAP-001 cerrado como referencia y laboratorio de Unidad 00 |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
 | `project/project-planning.md` | Actualizado | Framework-V2-Didactic-Review | Planificación incremental del trabajo; incluye sesiones de reapertura de framework didactico y revisión transversal |
 | `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
@@ -301,10 +302,10 @@ Todavía no se permite:
 |---|---|---|
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Materializado con Unidades 01, 02, 03, 04, 05, 06 y 07 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/`, `04-persistence-state/`, `05-scheduling-resilience-maintenance/`, `06-helm-packaging/` y `07-local-terraform-automation/` |
-| `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base |
+| `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base; laboratorio de acompañamiento de imagenes de solo lectura |
 | `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
 | `project/` | Operativo | Arquitectura, estado, roadmap y registro de lagunas de contenido |
-| `tutorial/` | Unidades 00, 01, 02, 03, 04, 05, 06 y 07 generadas | README de entrada, `student-notes.md`, instructor notes y summaries; Unidades 06 y 07 anaden `student-reference.md` |
+| `tutorial/` | Unidades 00, 01, 02, 03, 04, 05, 06 y 07 generadas | README de entrada, `student-notes.md`, instructor notes y summaries; Unidades 00, 06 y 07 anaden `student-reference.md` |
 
 ---
 
@@ -312,7 +313,7 @@ Todavía no se permite:
 
 | Unidad | Estado | Tutorial | Student notes | Student reference | Laboratorio o plataforma | Instructor notes | Summary |
 |---|---|---|---|---|---|---|---|
-| 00 — Preparación del entorno | Completada con limitaciones; `student-notes.md` aprobado | Sí | Sí | No aplica | Sí, `platform/environment/` | Sí | Sí |
+| 00 — Preparación del entorno | Completada con limitaciones; referencia y laboratorio de acompañamiento añadidos para GAP-001 con aprobación pendiente | Sí | Sí | Sí | Sí, `platform/environment/` | Sí | Sí |
 | 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | No aplica | Sí, `labs/01-kubernetes/` | Sí | Sí |
 | 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; `student-notes.md` aprobado | Sí | Sí | No aplica | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
 | 03 — Networking e ingreso | Completada, validada técnicamente y aprobada | Sí | Sí | No aplica | Sí, `labs/03-networking-ingress/` | Sí | Sí |
@@ -332,7 +333,9 @@ Todavía no se permite:
 | Playbook | `playbooks/units/00-environment.md` |
 | Tutorial | `tutorial/00-environment/README.md` |
 | Student notes | `tutorial/00-environment/student-notes.md` |
+| Student reference | `tutorial/00-environment/student-reference.md` |
 | Artefactos ejecutables | `platform/environment/` |
+| Laboratorio de acompañamiento | `platform/environment/container-images/README.md` |
 | Instructor notes | `tutorial/00-environment/instructor-notes.md` |
 | Summary | `tutorial/00-environment/summary.md` |
 
@@ -340,6 +343,7 @@ Limitaciones activas:
 
 - Windows 11, virtualización, salida completa de `wsl --status` y `wsl --list --verbose` siguen siendo validaciones por equipo al replicar el laboratorio.
 - Los scripts de Unidad 00 no deben modificarse salvo corrección justificada.
+- La referencia y el laboratorio de acompañamiento de contenedores, imagenes y registros no cambian el estado tecnico del cluster ni validan build, registry o credenciales.
 
 ## Unidad 01 — Fundamentos operativos y primera aplicación
 
@@ -969,13 +973,13 @@ Tras generar y validar funcionalmente la Unidad 07:
 | TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | `student-notes.md` de Unidades 01-05 reestructurado y aprobado como guia de aprendizaje; Unidad 00 conserva su formato previo aprobado | Cerrada para Unidades 01-05; aplicar criterio en futuras unidades |
 | TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo y revisión de `student-notes.md` | `playbooks/master.md` y `playbooks/unit-template.md` actualizados para describir guías de aprendizaje academicas y aplicadas, evitando estructuras enciclopédicas por defecto | Cerrada |
 | TD-008 | Reabrir Framework V2 para reforzar contrato didactico y revisar lagunas de Unidades 00-07 | Alta | Feedback del usuario tras aprobar Unidad 07 | Framework simplificado; `student-reference.md` queda como recurso opcional y las lagunas se registran en `project/content-gap-register.md` | Cerrada |
-| TD-009 | Decidir si falta una unidad de contenedores, imagen y registro antes de Tekton | Alta | `project/content-gap-register.md` `GAP-001` | Revisar roadmap antes de generar Unidad 08 | Abierta |
+| TD-009 | Decidir si falta una unidad de contenedores, imagen y registro antes de Tekton | Alta | `project/content-gap-register.md` `GAP-001` | Resuelto como `tutorial/00-environment/student-reference.md` y laboratorio de acompañamiento de solo lectura, sin unidad nueva ni cambios tecnicos | Cerrada |
 
 ## Lagunas de contenido
 
 | Registro | Estado | Siguiente acción |
 |---|---|---|
-| `project/content-gap-register.md` | Creado con 9 lagunas abiertas | Decidir `GAP-001` antes de generar Unidad 08 y revisar posibles ajustes del roadmap |
+| `project/content-gap-register.md` | 1 laguna cerrada y 8 abiertas | Revisar lagunas restantes cuando afecten al siguiente bloque; Unidad 08 puede avanzar a playbook |
 
 ---
 
@@ -1114,6 +1118,7 @@ Validaciones no disponibles en esta sesión:
 | 59 | Generacion, validacion funcional y aprobacion de Unidad 07 | Completado y aprobado | Tutorial, student notes, student reference, instructor notes, summary, laboratorio, proyecto Terraform local y validacion creados; release importado a Terraform, apply ejecutado con 0 destrucciones, validaciones finales con 0 fallos, 0 avisos y aprobacion pedagogica del usuario |
 | 60 | Apertura Framework V2 didactico | Completado | `project/project-planning.md` y `project/project-state.md` registran la pausa de Unidad 08 y el inicio de ajuste didactico transversal |
 | 61 | Simplificacion Framework V2 y registro de lagunas | Completado | Playbooks base ajustados de forma ligera para `student-reference.md` como referencia amplia; `project/content-gap-register.md` registra lagunas de contenedores, secretos, TLS, workloads, progressive delivery, multi-tenancy, ciclo de vida, coste y desacoplamiento de MicroK8s |
+| 62 | Resolucion documental de GAP-001 | Completado con aprobación pedagógica pendiente | `tutorial/00-environment/student-reference.md` y `platform/environment/container-images/README.md` creados sobre contenedores, imagenes y registros; Unidad 01 enlazada; no cambia scripts, manifests ni estado tecnico del cluster |
 
 ---
 
@@ -1122,7 +1127,7 @@ Validaciones no disponibles en esta sesión:
 El siguiente incremento principal es:
 
 ```text
-Decidir tratamiento de GAP-001 antes de generar Unidad 08
+Generar el playbook de la Unidad 08 — Integración continua con Tekton
 ```
 
 ## Fuentes obligatorias
@@ -1130,9 +1135,9 @@ Decidir tratamiento de GAP-001 antes de generar Unidad 08
 La sesión deberá leer:
 
 ```text
-playbooks/master.md
 project/project-state.md
 project/content-gap-register.md
+playbooks/master.md
 playbooks/unit-template.md
 playbooks/summary-template.md
 playbooks/project-state-template.md
@@ -1159,14 +1164,13 @@ project/roadmap.md
 
 ## Trabajo permitido
 
-- decidir si se introduce una unidad de contenedores, imagen y registro antes de Tekton;
-- actualizar `project/roadmap.md` y `project/project-planning.md` si cambia la secuencia;
-- actualizar playbooks afectados si se crea una nueva unidad o se refuerza una existente;
-- crear `student-reference.md` en unidades existentes cuando una laguna se resuelva como referencia conceptual o panoramica, sin cambiar capacidades tecnicas del laboratorio.
+- generar `playbooks/units/08-tekton.md`;
+- definir alcance, dependencias, entregables y validaciones de Unidad 08;
+- reutilizar `tutorial/07-local-terraform-automation/summary.md`, `labs/07-local-terraform-automation/` y el chart Helm de Unidad 06;
+- tener en cuenta `tutorial/00-environment/student-reference.md` y `platform/environment/container-images/README.md` como base conceptual y laboratorio de lectura de imagenes antes de diseñar CI.
 
 ## Trabajo todavía prohibido
 
-- generar el playbook de Unidad 08 antes de cerrar o pausar explicitamente Framework V2 didactico;
 - instalar Tekton o crear recursos Tekton;
 - crear Terraform cloud o backends remotos fuera del alcance futuro aprobado;
 - incorporar CI/CD, GitOps, observabilidad avanzada, seguridad avanzada o cloud;

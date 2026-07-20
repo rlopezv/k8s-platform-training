@@ -6,6 +6,8 @@ Estas notas explican los conceptos que hay detras de la preparacion del entorno.
 
 La Unidad 00 no busca que aprendas Kubernetes en profundidad. Busca que sepas reconocer si tu estacion de trabajo esta preparada para aprender Kubernetes sin mezclar problemas del sistema operativo con problemas del cluster.
 
+Si quieres preparar tambien la base conceptual sobre contenedores, imagenes y registros antes de la Unidad 01, lee `tutorial/00-environment/student-reference.md`. El laboratorio de acompañamiento `platform/environment/container-images/README.md` permite practicar la lectura de `image` e `imagePullPolicy` sin construir imagenes ni modificar el cluster.
+
 ## Modelo mental
 
 El entorno es una pila de capas. Cada capa ofrece un contrato a la siguiente:
@@ -152,6 +154,7 @@ Esta disciplina evita que una sesion futura dependa de memoria o conversacion.
 - Que diferencia hay entre host, WSL2, Ubuntu y MicroK8s?
 - Que demuestra `kubectl get nodes` que no demuestra `microk8s status`?
 - Por que Helm instalado no significa que existan charts del curso?
+- Que diferencia hay entre contenedor, imagen, runtime y registro?
 - Que capa revisarias si `snapcraft.io` no resuelve?
 - Por que conviene trabajar desde una ruta Linux en lugar de `/mnt/c/...`?
 

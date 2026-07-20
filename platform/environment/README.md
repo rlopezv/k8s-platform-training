@@ -35,6 +35,8 @@ Los comandos `microk8s` se limitaran a:
 ```text
 platform/environment/
 ├── README.md
+├── container-images/
+│   └── README.md
 ├── microk8s/
 │   ├── configure.sh
 │   ├── install.sh
@@ -54,6 +56,8 @@ platform/environment/
 ```
 
 Los scripts de herramientas ya forman parte de la Unidad 00. Instalan y validan Helm y Terraform como CLI sin crear charts, releases, modulos, backends ni recursos.
+
+`platform/environment/container-images/README.md` acompaña a `tutorial/00-environment/student-reference.md` con un laboratorio de lectura y observacion sobre imagenes de contenedor. No construye imagenes, no instala herramientas, no habilita registry local y no modifica el cluster.
 
 ## Separacion por contexto
 

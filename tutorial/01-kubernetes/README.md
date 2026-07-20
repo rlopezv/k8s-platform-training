@@ -19,6 +19,8 @@ El laboratorio despliega `platform-api`, pero la aplicacion es un vehiculo. Lo i
 
 Para estudiar esos conceptos desde cero, especialmente `Pod`, Deployment, ReplicaSet, Service, labels y reconciliacion, usa `tutorial/01-kubernetes/student-notes.md`.
 
+Si necesitas repasar que es una imagen de contenedor, un runtime o un registro antes de leer el campo `image` del Deployment, vuelve a `tutorial/00-environment/student-reference.md`. Para una practica breve de lectura, usa `platform/environment/container-images/README.md`.
+
 ## Mapa de aprendizaje
 
 | Concepto | Problema que resuelve | Limite en esta unidad |
@@ -129,6 +131,8 @@ Resultado esperado:
 ## Relacion con la Unidad 00
 
 La Unidad 00 preparo la plataforma. Esta unidad no reinstala MicroK8s, no cambia el cluster y no modifica `platform/environment/`.
+
+La Unidad 00 tambien deja una referencia conceptual sobre contenedores, imagenes y registros en `tutorial/00-environment/student-reference.md`. Esta unidad usa esa base sin construir imagenes propias todavia.
 
 Antes de desplegar la aplicacion, valida el estado heredado:
 
