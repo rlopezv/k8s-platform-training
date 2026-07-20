@@ -7,9 +7,9 @@
 | Unidad | 07 - Automatizacion local con Terraform |
 | Identificador | `07-local-terraform-automation` |
 | Fase del roadmap | Fase 3 - Empaquetado e infraestructura como codigo |
-| Estado | Completada, validada funcionalmente y pendiente de aprobacion pedagogica |
+| Estado | Completada, validada funcionalmente y aprobada pedagogicamente |
 | Fecha de cierre o actualizacion | 2026-07-20 |
-| Revision pedagogica del usuario | Pendiente |
+| Revision pedagogica del usuario | Aprobada el 2026-07-20 |
 
 ## Resumen ejecutivo
 
@@ -99,7 +99,7 @@ La unidad deja preparada la Unidad 08 para ejecutar validacion, plan y apply des
 
 | Componente | Ruta | Cambio realizado |
 |---|---|---|
-| Estado del proyecto | `project/project-state.md` | Debe registrar Unidad 07 generada y validaciones pendientes |
+| Estado del proyecto | `project/project-state.md` | Registra Unidad 07 generada, validada funcionalmente y aprobada pedagogicamente |
 
 ## Componentes retirados
 
@@ -251,7 +251,7 @@ El laboratorio exige revisar `terraform plan` antes de mutar el entorno.
 
 ## Aprobacion del usuario
 
-La revision pedagogica del usuario queda pendiente.
+El usuario aprobo pedagogicamente la Unidad 07 el 2026-07-20.
 
 ## Limitaciones activas
 
