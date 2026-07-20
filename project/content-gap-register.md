@@ -26,7 +26,7 @@ Cada entrada debe indicar:
 | ID | Laguna | Impacto formativo | Encaje natural | Tratamiento propuesto | Estado |
 |---|---|---|---|---|---|
 | GAP-001 | Contenedores, imagen y registro | La Unidad 01 despliega `platform-api` asumiendo una imagen existente; sin Dockerfile, usuario no root, tags inmutables y registro local, la seguridad de supply chain llega sin base suficiente | Unidad 00 como referencia; Unidad 01 como consumo de imagen | Resuelto con `tutorial/00-environment/student-reference.md`, laboratorio de acompañamiento en `platform/environment/container-images/README.md` y enlaces mínimos desde Unidad 01; no se añaden prácticas de build ni registry | Cerrada |
-| GAP-002 | Gestión real de secretos | El curso pasa de Secrets ficticios a seguridad avanzada sin cubrir External Secrets, Sealed Secrets, SOPS o Vault | Unidad 09 o Unidad 19, según se enfoque GitOps local o migración cloud | Decidir herramienta principal y alcance: patrón GitOps, patrón cloud o comparación conceptual | Abierta |
+| GAP-002 | Gestión real de secretos | El curso pasa de Secrets ficticios a seguridad avanzada sin cubrir cómo llegan secretos reales al clúster sin guardarlos en Git ni gestionarlos manualmente con `kubectl` | Unidad 09 como referencia GitOps; continuidad en cloud y seguridad avanzada | Abordado con decisión pedagógica: añadir `student-reference.md` en Unidad 09 sobre gestión de secretos en GitOps, comparando External Secrets Operator, Sealed Secrets, SOPS, Vault y secret managers cloud; no instalar herramientas ni crear laboratorio ahora | Cerrada |
 | GAP-003 | TLS, cert-manager e Ingress/Gateway API | La Unidad 03 introduce Ingress HTTP local, pero no certificados ni criterio de evolución hacia Gateway API | Refuerzo de Unidad 03 o unidad posterior de entrada segura antes de cloud | Decidir si se enseña Ingress, Gateway API o ambos con criterio de migración | Abierta |
 | GAP-004 | Workloads no Deployment | StatefulSet, headless Service, Jobs, CronJobs y DaemonSet no tienen tratamiento suficiente | StatefulSet en Unidad 04; Jobs/CronJobs en Unidad 02 u 08; DaemonSet en observabilidad o plataforma | Decidir si se refuerzan unidades existentes o se añade una unidad de workloads | Abierta |
 | GAP-005 | Progressive delivery | La promoción entre entornos no cubre canary, blue-green, Argo Rollouts o Flagger | Después de Argo CD y antes o junto a observabilidad operativa; posible ajuste de Unidad 10 o nueva unidad entre 10 y 11 | Decidir si entra como extensión de promoción o como bloque propio vinculado a SLI | Abierta |
@@ -38,5 +38,7 @@ Cada entrada debe indicar:
 ## Siguiente decisión recomendada
 
 `GAP-001` queda resuelta como referencia conceptual de Unidad 00, acompañada por un laboratorio de lectura y observacion de solo lectura.
+
+`GAP-002` queda abordada como decisión pedagógica para la Unidad 09. La Unidad 02 conserva Secrets ficticios para aprender el objeto Kubernetes; la gestión real de secretos se explicará en Unidad 09 desde el patrón GitOps y se retomará en cloud y seguridad avanzada cuando aparezcan identidad, secret managers y controles de supply chain.
 
 Siguiente decisión recomendada: revisar si alguna de las lagunas restantes debe resolverse antes de generar el playbook de Unidad 08 o si puede permanecer registrada para su unidad natural.

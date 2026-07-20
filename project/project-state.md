@@ -22,9 +22,9 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Preparado para generar el playbook de Unidad 08 tras cierre documental de GAP-001 |
-| Estado general | Unidades 00-07 completadas; GAP-001 resuelto documentalmente mediante referencia y laboratorio de Unidad 00 |
-| Último incremento completado | Referencia y laboratorio de contenedores, imagenes y registros añadidos a Unidad 00 |
+| Fase actual | Preparado para generar el playbook de Unidad 08 tras cierre documental de GAP-001 y decisión pedagógica de GAP-002 |
+| Estado general | Unidades 00-07 completadas; GAP-001 resuelto documentalmente y GAP-002 abordado con decisión para Unidad 09 |
+| Último incremento completado | GAP-001 resuelto con referencia/laboratorio de Unidad 00; GAP-002 decidido como referencia GitOps en Unidad 09 |
 | Unidad activa | Ninguna |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
@@ -77,6 +77,8 @@ Durante la validacion funcional de Unidad 07, Terraform descargo los providers `
 
 El 2026-07-20 se resolvio `GAP-001` como mejora pedagogica de Unidad 00 mediante `tutorial/00-environment/student-reference.md` y `platform/environment/container-images/README.md`. La referencia cubre contenedores, imagenes y registros como vision general previa a Unidad 01 y continuidad hacia CI/CD, supply chain y cloud registries. El laboratorio asociado es de solo lectura y ayuda a leer `image`, `imagePullPolicy`, `kubectl explain` y fallos de descarga de imagenes sin construir imagenes ni modificar el cluster. No se modificaron scripts, manifests, charts, Terraform ni estado funcional del cluster. La aprobacion pedagogica final de esta referencia y su laboratorio queda pendiente del usuario.
 
+El 2026-07-20 se abordo `GAP-002` como decisión pedagógica, sin crear contenido ejecutable nuevo. La Unidad 02 mantiene Secrets ficticios para aprender el objeto `Secret` y sus límites. La gestión real de secretos se resolverá en la Unidad 09 mediante `student-reference.md` orientado a GitOps, explicando por qué un `Secret` Kubernetes no basta como mecanismo de protección, cómo evitar secretos reales en Git y cómo comparar External Secrets Operator, Sealed Secrets, SOPS, Vault y secret managers cloud. La práctica técnica queda diferida hasta que encaje con GitOps, cloud o seguridad avanzada.
+
 A partir de este estado se permite:
 
 - crear o reforzar `student-reference.md` en unidades donde falte vision general, contexto de herramientas habituales o profundidad de referencia;
@@ -101,8 +103,8 @@ Todavía no se permite:
 |---|---|---|---|
 | `README.md` | Actualizado | Student-Notes-Learning-Guide | Punto de entrada y visión general; refleja `student-notes.md` como artefacto por unidad |
 | `project/architecture.md` | Actualizado | Student-Notes-Learning-Guide | Arquitectura y decisiones estructurales; separa README y guías de aprendizaje del alumno |
-| `project/project-state.md` | Actualizado | GAP-001 | Estado consolidado; registra cierre documental de GAP-001 y siguiente incremento permitido |
-| `project/content-gap-register.md` | Actualizado | GAP-001 | Registro ligero de lagunas; GAP-001 cerrado como referencia y laboratorio de Unidad 00 |
+| `project/project-state.md` | Actualizado | GAP-001/GAP-002 | Estado consolidado; registra cierre documental de GAP-001, decisión pedagógica de GAP-002 y siguiente incremento permitido |
+| `project/content-gap-register.md` | Actualizado | GAP-001/GAP-002 | Registro ligero de lagunas; GAP-001 cerrado como referencia/laboratorio de Unidad 00 y GAP-002 cerrado como decisión para Unidad 09 |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
 | `project/project-planning.md` | Actualizado | Framework-V2-Didactic-Review | Planificación incremental del trabajo; incluye sesiones de reapertura de framework didactico y revisión transversal |
 | `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
@@ -974,12 +976,13 @@ Tras generar y validar funcionalmente la Unidad 07:
 | TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo y revisión de `student-notes.md` | `playbooks/master.md` y `playbooks/unit-template.md` actualizados para describir guías de aprendizaje academicas y aplicadas, evitando estructuras enciclopédicas por defecto | Cerrada |
 | TD-008 | Reabrir Framework V2 para reforzar contrato didactico y revisar lagunas de Unidades 00-07 | Alta | Feedback del usuario tras aprobar Unidad 07 | Framework simplificado; `student-reference.md` queda como recurso opcional y las lagunas se registran en `project/content-gap-register.md` | Cerrada |
 | TD-009 | Decidir si falta una unidad de contenedores, imagen y registro antes de Tekton | Alta | `project/content-gap-register.md` `GAP-001` | Resuelto como `tutorial/00-environment/student-reference.md` y laboratorio de acompañamiento de solo lectura, sin unidad nueva ni cambios tecnicos | Cerrada |
+| TD-010 | Decidir tratamiento de gestión real de secretos antes de GitOps | Alta | `project/content-gap-register.md` `GAP-002` | Resuelto como `student-reference.md` de Unidad 09 sobre secretos en GitOps; Unidad 02 conserva Secrets ficticios y no se instala herramienta nueva ahora | Cerrada |
 
 ## Lagunas de contenido
 
 | Registro | Estado | Siguiente acción |
 |---|---|---|
-| `project/content-gap-register.md` | 1 laguna cerrada y 8 abiertas | Revisar lagunas restantes cuando afecten al siguiente bloque; Unidad 08 puede avanzar a playbook |
+| `project/content-gap-register.md` | 2 lagunas cerradas y 7 abiertas | Revisar lagunas restantes cuando afecten al siguiente bloque; Unidad 08 puede avanzar a playbook |
 
 ---
 
@@ -1119,6 +1122,7 @@ Validaciones no disponibles en esta sesión:
 | 60 | Apertura Framework V2 didactico | Completado | `project/project-planning.md` y `project/project-state.md` registran la pausa de Unidad 08 y el inicio de ajuste didactico transversal |
 | 61 | Simplificacion Framework V2 y registro de lagunas | Completado | Playbooks base ajustados de forma ligera para `student-reference.md` como referencia amplia; `project/content-gap-register.md` registra lagunas de contenedores, secretos, TLS, workloads, progressive delivery, multi-tenancy, ciclo de vida, coste y desacoplamiento de MicroK8s |
 | 62 | Resolucion documental de GAP-001 | Completado con aprobación pedagógica pendiente | `tutorial/00-environment/student-reference.md` y `platform/environment/container-images/README.md` creados sobre contenedores, imagenes y registros; Unidad 01 enlazada; no cambia scripts, manifests ni estado tecnico del cluster |
+| 63 | Decision pedagogica de GAP-002 | Completado | Gestión real de secretos diferida a `student-reference.md` de Unidad 09 con enfoque GitOps; Unidad 02 mantiene Secrets ficticios y no se instala External Secrets, Sealed Secrets, SOPS ni Vault en este incremento |
 
 ---
 
