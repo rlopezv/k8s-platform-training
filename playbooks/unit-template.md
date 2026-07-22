@@ -164,9 +164,10 @@ Antes de generar o modificar esta unidad, leer:
 2. `project/architecture.md`;
 3. `project/project-state.md`;
 4. `project/roadmap.md`;
-5. `tutorial/<unidad-anterior>/summary.md`;
-6. este playbook;
-7. [artefactos previos concretos].
+5. `playbooks/student-reference-template.md`;
+6. `tutorial/<unidad-anterior>/summary.md`;
+7. este playbook;
+8. [artefactos previos concretos].
 
 ## Excepciones
 
@@ -385,15 +386,15 @@ Las referencias deberán priorizar documentación oficial, especificaciones o fu
 
 ## Referencia del alumno
 
-Ruta opcional:
+Ruta:
 
 ```text
 tutorial/NN-unit-name/student-reference.md
 ```
 
-Crear este archivo cuando la unidad requiera una capa de referencia más profunda o más panorámica que `student-notes.md`.
+Crear este archivo siempre. Es un entregable obligatorio de la unidad y deberá seguir `playbooks/student-reference-template.md`.
 
-Si se incluye, declarar:
+Declarar:
 
 - qué laguna de profundidad cubre;
 - qué partes de `student-notes.md` amplía;
@@ -402,12 +403,6 @@ Si se incluye, declarar:
 - qué queda fuera para unidades posteriores.
 
 No usar `student-reference.md` como una segunda guía de laboratorio. Su función es aportar visión general, profundidad técnica y contexto profesional que ayuden a comprender el itinerario completo.
-
-Si no aplica, escribir:
-
-```text
-No aplica.
-```
 
 ## Notas del instructor
 
@@ -678,9 +673,9 @@ La unidad se considerará completada cuando:
 
 - [ ] exista `tutorial/NN-unit-name/README.md`;
 - [ ] exista `tutorial/NN-unit-name/student-notes.md`;
+- [ ] exista `tutorial/NN-unit-name/student-reference.md`;
 - [ ] exista `tutorial/NN-unit-name/instructor-notes.md`;
 - [ ] exista `tutorial/NN-unit-name/summary.md`;
-- [ ] `student-reference.md` exista o esté declarado como no aplicable;
 - [ ] existan los artefactos ejecutables previstos;
 - [ ] las rutas documentadas coincidan con el repositorio;
 - [ ] las validaciones estén definidas;

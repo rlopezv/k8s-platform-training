@@ -4,6 +4,8 @@
 
 Estas notas explican como una peticion HTTP llega hasta `platform-api`. El laboratorio crea un `Ingress`; estas notas explican la arquitectura de red que hace que ese objeto tenga sentido.
 
+Para una capa de referencia más amplia, con criterios profesionales sobre TLS, certificados, `cert-manager`, cloud y Gateway API, consulta `tutorial/03-networking-ingress/student-reference.md`.
+
 La idea central es:
 
 ```text

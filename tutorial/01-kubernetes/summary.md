@@ -8,7 +8,7 @@
 | Identificador | `01-kubernetes` |
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
 | Estado | Completada y aprobada con limitaciones |
-| Fecha de cierre o actualizacion | 2026-07-18 |
+| Fecha de cierre o actualizacion | 2026-07-22 |
 | Revision pedagogica del usuario | Aprobada; hardening pedagogico global inicial aplicado posteriormente y aceptado como cambio minimo |
 
 ## Resumen ejecutivo
@@ -22,6 +22,8 @@ Las validaciones estaticas y funcionales principales se ejecutaron sobre los art
 El contenido queda generado, tecnicamente validado y aprobado por el usuario. El usuario ha observado que el nivel de entrada es exigente y que la unidad esta mas orientada a explicar el laboratorio que a proporcionar una vision amplia del tema tratado. Esta observacion se registra como deuda para una futura sesion de hardening pedagogico global, preferiblemente cuando haya varias unidades generadas y pueda revisarse la progresion completa.
 
 El 2026-07-18 se aplico un hardening pedagogico global inicial sobre la Unidad 01. El tutorial refuerza ahora el problema que resuelve Kubernetes, el modelo declarativo, reconciliacion, control plane frente a nodos, abstracciones basicas, labels/selectors, diagnostico por diferencias entre estado deseado y observado, decisiones de diseno, errores de razonamiento y lectura guiada. No se modificaron manifiestos ni scripts. El usuario acepta estos cambios como minimo y registra que el nivel pedagogico de los README sigue siendo pobre para alumnos que todavia no conocen el tema.
+
+El 2026-07-22 se añadió `tutorial/01-kubernetes/student-reference.md` como referencia profesional sobre el mapa de workloads de Kubernetes. La referencia explica `Pod`, `ReplicaSet`, `Deployment`, `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, y resuelve documentalmente la parte conceptual de `GAP-004` sin modificar el laboratorio ni crear recursos nuevos.
 
 ## Objetivos alcanzados
 
@@ -94,6 +96,7 @@ El 2026-07-18 se aplico un hardening pedagogico global inicial sobre la Unidad 0
 |---|---|---|
 | Tutorial Unidad 01 | `tutorial/01-kubernetes/README.md` | Guia conceptual y practica del alumno |
 | Student notes Unidad 01 | `tutorial/01-kubernetes/student-notes.md` | Material pedagogico profundo sobre cluster, API, Namespace, Pod, Deployment, ReplicaSet, Service, labels, selectors y reconciliacion |
+| Student reference Unidad 01 | `tutorial/01-kubernetes/student-reference.md` | Referencia profesional sobre mapa de workloads y criterios de elección |
 | Instructor notes | `tutorial/01-kubernetes/instructor-notes.md` | Guia de imparticion y evaluacion |
 | Summary Unidad 01 | `tutorial/01-kubernetes/summary.md` | Contrato de continuidad |
 | Laboratorio Unidad 01 | `labs/01-kubernetes/README.md` | Referencia operativa |
@@ -119,6 +122,7 @@ Ninguno.
 tutorial/01-kubernetes/
 ├── README.md
 ├── student-notes.md
+├── student-reference.md
 ├── instructor-notes.md
 └── summary.md
 

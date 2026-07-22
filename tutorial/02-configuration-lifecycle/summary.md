@@ -8,8 +8,8 @@
 | Identificador | `02-configuration-lifecycle` |
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
 | Estado | Completada con limitaciones |
-| Fecha de cierre o actualizacion | 2026-07-18 |
-| Revision pedagogica del usuario | Aprobada; hardening pedagogico global inicial aplicado posteriormente y aceptado como cambio minimo |
+| Fecha de cierre o actualizacion | 2026-07-22 |
+| Revision pedagogica del usuario | Unidad aprobada; `student-reference.md` añadido posteriormente con aprobación pedagógica específica pendiente |
 
 ## Resumen ejecutivo
 
@@ -20,6 +20,8 @@ La solucion final queda en `labs/02-configuration-lifecycle/solution/` e incorpo
 El contenido y los artefactos han sido generados, aplicados y validados funcionalmente contra el MicroK8s local. El usuario reviso y aprobo la unidad el 2026-07-18.
 
 El 2026-07-18 se aplico un hardening pedagogico global inicial sobre la Unidad 02. El tutorial refuerza ahora configuracion como contrato entre aplicacion y plataforma, diferencia entre configuracion, secreto, estado y codigo, antecedente Twelve-Factor, ciclo de vida de Pods, probes como contratos operativos, requests/limits como contrato con scheduler y nodo, limites de seguridad de Secrets y razon por la que gestores externos de secretos quedan diferidos. El usuario acepta estos cambios como minimo y mantiene abierta la necesidad de elevar sustancialmente el nivel pedagogico de los README.
+
+El 2026-07-22 se añadió `tutorial/02-configuration-lifecycle/student-reference.md` como backfill documental del nuevo contrato global de unidades. La referencia profundiza en configuración como contrato, límites de `Secret`, consumo mediante variables y volúmenes, probes, requests, limits, QoS, coste y continuidad hacia Helm, GitOps, seguridad, escalado y cloud. No modifica manifiestos, scripts, laboratorios ni estado técnico del clúster.
 
 ## Objetivos alcanzados
 
@@ -34,6 +36,7 @@ El 2026-07-18 se aplico un hardening pedagogico global inicial sobre la Unidad 0
 | Definir requests y limits iniciales | Alcanzado | `resources.requests` y `resources.limits` en `deployment.yaml` |
 | Documentar rollouts y ciclo de vida basico | Alcanzado | `tutorial/02-configuration-lifecycle/README.md` |
 | Reforzar el tutorial como material pedagogico principal | Alcanzado documentalmente | `tutorial/02-configuration-lifecycle/README.md`, `tutorial/02-configuration-lifecycle/instructor-notes.md` |
+| Crear referencia profesional del alumno | Alcanzado documentalmente con aprobación pendiente | `tutorial/02-configuration-lifecycle/student-reference.md` |
 | Crear validacion no destructiva | Alcanzado | `labs/02-configuration-lifecycle/validation/validate.sh` |
 | Validar funcionalmente en MicroK8s | Alcanzado | `bash labs/02-configuration-lifecycle/validation/validate.sh`: 0 fallos, 0 avisos |
 
@@ -98,6 +101,7 @@ El 2026-07-18 se aplico un hardening pedagogico global inicial sobre la Unidad 0
 |---|---|---|
 | Tutorial Unidad 02 | `tutorial/02-configuration-lifecycle/README.md` | Guia conceptual y practica del alumno |
 | Student notes Unidad 02 | `tutorial/02-configuration-lifecycle/student-notes.md` | Material pedagogico profundo sobre ConfigMap, Secret, variables, volumenes, probes, requests, limits, rollouts y EndpointSlice |
+| Student reference Unidad 02 | `tutorial/02-configuration-lifecycle/student-reference.md` | Referencia profesional sobre configuración, secretos, probes, recursos, QoS, coste y continuidad |
 | Instructor notes | `tutorial/02-configuration-lifecycle/instructor-notes.md` | Guia de imparticion y evaluacion |
 | Summary Unidad 02 | `tutorial/02-configuration-lifecycle/summary.md` | Contrato de continuidad |
 | Laboratorio Unidad 02 | `labs/02-configuration-lifecycle/README.md` | Referencia operativa |
@@ -122,6 +126,7 @@ Ninguno.
 tutorial/02-configuration-lifecycle/
 ├── README.md
 ├── student-notes.md
+├── student-reference.md
 ├── instructor-notes.md
 └── summary.md
 

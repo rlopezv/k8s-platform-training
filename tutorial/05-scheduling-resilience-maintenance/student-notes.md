@@ -4,6 +4,8 @@
 
 Estas notas explican como Kubernetes decide donde ejecutar Pods y como una aplicacion se comporta durante cambios, fallos controlados e interrupciones voluntarias. La unidad parte de `platform-api` ya configurada, expuesta y con persistencia local de laboratorio.
 
+Para una capa de referencia más amplia, con criterios profesionales sobre scheduling, PDB, rollouts, mantenimiento, alta disponibilidad y límites de MicroK8s local, consulta `tutorial/05-scheduling-resilience-maintenance/student-reference.md`.
+
 La idea central es:
 
 ```text

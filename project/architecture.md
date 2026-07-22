@@ -136,6 +136,7 @@ El acceso directo al repositorio mejora la automatización, pero no constituye u
 │   ├── generate-session-handoff.md
 │   ├── master.md
 │   ├── project-state-template.md
+│   ├── student-reference-template.md
 │   ├── summary-template.md
 │   ├── unit-template.md
 │   └── units/
@@ -318,6 +319,7 @@ Como mínimo contendrá:
 tutorial/<unidad>/
 ├── README.md
 ├── student-notes.md
+├── student-reference.md
 ├── instructor-notes.md
 └── summary.md
 ```
@@ -331,6 +333,12 @@ Puerta de entrada de la unidad para el alumno: contexto, objetivos, mapa de apre
 Guía de aprendizaje de la unidad. Explica qué se va a cubrir, qué representa académicamente cada componente, qué se construye en el laboratorio, cómo se relacionan las piezas, qué ocurre al aplicar los artefactos, cómo comprobar el resultado, cómo diagnosticar fallos típicos, qué debe recordarse para la unidad siguiente y qué fuentes oficiales consultar.
 
 No debe convertirse en una enciclopedia interna ni en una referencia densa de invariantes, glosarios y anexos. Su función es dar estructura académica y utilidad práctica al alumno antes y durante el laboratorio.
+
+### `student-reference.md`
+
+Referencia profesional obligatoria de la unidad. Completa a `student-notes.md` con visión general, profundidad técnica, variantes, herramientas habituales, límites y criterios de decisión que no deben saturar el tutorial ni el laboratorio.
+
+Debe seguir `playbooks/student-reference-template.md`, enlazarse desde `README.md` y `student-notes.md`, y distinguir qué es conceptual, qué es práctica habitual y qué se ejecuta realmente en el curso.
 
 ### `instructor-notes.md`
 

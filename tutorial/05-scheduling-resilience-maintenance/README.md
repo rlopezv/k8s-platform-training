@@ -20,6 +20,8 @@ La Unidad 05 cubre:
 
 Para estudiar el modelo mental completo, usa `tutorial/05-scheduling-resilience-maintenance/student-notes.md`.
 
+Para profundizar en criterios profesionales sobre scheduling, affinity, taints, PDB, rollouts, mantenimiento, alta disponibilidad real, cloud y límites de MicroK8s local, usa `tutorial/05-scheduling-resilience-maintenance/student-reference.md`.
+
 ## Pregunta central
 
 La pregunta de la unidad es:

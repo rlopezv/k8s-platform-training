@@ -6,6 +6,8 @@ Estas notas explican lo que necesitas entender para completar la Unidad 01 con c
 
 La imagen usada por `platform-api` se apoya en la referencia de la Unidad 00 sobre contenedores, imagenes y registros: `tutorial/00-environment/student-reference.md`. El laboratorio de acompañamiento `platform/environment/container-images/README.md` ayuda a leer esa referencia de imagen antes de desplegar. Aqui se explica como Kubernetes consume esa imagen, no como se construye.
 
+Si quieres situar `Deployment` dentro del mapa completo de workloads de Kubernetes, lee `tutorial/01-kubernetes/student-reference.md`. Esa referencia explica cuándo aparecen `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, sin cambiar el laboratorio de esta unidad.
+
 La idea central es sencilla:
 
 ```text

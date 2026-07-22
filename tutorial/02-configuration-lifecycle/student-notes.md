@@ -4,6 +4,8 @@
 
 Estas notas explican como una aplicacion Kubernetes deja de ser solo un contenedor en marcha y empieza a ser un workload configurable, observable y gobernado por ciclo de vida. El laboratorio extiende `platform-api`; estas notas explican que representa cada pieza antes de ver como se usa.
 
+Para una capa de referencia más amplia, con criterios profesionales y límites de los mecanismos, consulta `tutorial/02-configuration-lifecycle/student-reference.md`.
+
 La idea central es:
 
 ```text

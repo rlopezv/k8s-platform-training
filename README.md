@@ -91,6 +91,7 @@ El procedimiento operativo se define en `project/how-to.md`.
 │   ├── generate-session-handoff.md
 │   ├── master.md
 │   ├── project-state-template.md
+│   ├── student-reference-template.md
 │   ├── summary-template.md
 │   ├── unit-template.md
 │   └── units/
@@ -224,6 +225,8 @@ Cada unidad deberá generar como mínimo:
 
 Una unidad no se considerará terminada mientras estos artefactos no sean coherentes entre sí y sus validaciones obligatorias no hayan sido ejecutadas o documentadas como pendientes.
 
+`student-notes.md` funciona como guía de aprendizaje de la unidad. `student-reference.md` es obligatorio y actúa como referencia profesional complementaria: visión general, profundidad técnica, variantes, herramientas habituales y criterios de decisión que no deben saturar el tutorial ni el laboratorio.
+
 ## Estructura prevista de una unidad
 
 La estructura exacta será definida por los playbooks, pero cada unidad deberá producir una organización equivalente a:
@@ -232,6 +235,7 @@ La estructura exacta será definida por los playbooks, pero cada unidad deberá 
 tutorial/<unidad>/
 ├── README.md
 ├── student-notes.md
+├── student-reference.md
 ├── instructor-notes.md
 └── summary.md
 

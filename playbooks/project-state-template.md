@@ -193,7 +193,7 @@ Utilizar una tabla:
 
 | Unidad | Tutorial | Student notes | Student reference | Laboratorio | Instructor notes | Summary | Estado |
 |---|---|---|---|---|---|---|---|
-| NN — Nombre | Sí/No/Parcial | Sí/No/Parcial | Sí/No/No aplica | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial | [estado] |
+| NN — Nombre | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial/Pendiente | Sí/No/Parcial | Sí/No/Parcial | Sí/No/Parcial | [estado] |
 
 ## Artefactos principales existentes
 

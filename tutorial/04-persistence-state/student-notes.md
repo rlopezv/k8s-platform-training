@@ -4,6 +4,8 @@
 
 Estas notas explican que significa persistir datos en Kubernetes. Hasta ahora `platform-api` podia recrear Pods sin conservar nada escrito dentro del contenedor. Esta unidad introduce el modelo que permite separar una aplicacion reemplazable de ciertos datos que deben sobrevivir.
 
+Para una capa de referencia más amplia, con criterios profesionales sobre StorageClass, CSI, StatefulSet, snapshots, backup y límites de `hostpath-storage`, consulta `tutorial/04-persistence-state/student-reference.md`.
+
 La idea central es:
 
 ```text

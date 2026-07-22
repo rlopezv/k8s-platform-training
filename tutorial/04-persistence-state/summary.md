@@ -8,8 +8,8 @@
 | Identificador | `04-persistence-state` |
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
 | Estado | Completada, validada funcionalmente y aprobada |
-| Fecha de cierre o actualizacion | 2026-07-19 |
-| Revision pedagogica del usuario | Aprobada el 2026-07-19 |
+| Fecha de cierre o actualizacion | 2026-07-22 |
+| Revision pedagogica del usuario | Unidad aprobada; `student-reference.md` añadido posteriormente con aprobación pedagógica específica pendiente |
 
 ## Resumen ejecutivo
 
@@ -19,6 +19,8 @@ La solucion final queda en `labs/04-persistence-state/solution/` y conserva name
 
 La validacion funcional se ejecuto correctamente en MicroK8s. El addon `hostpath-storage` quedo habilitado, la StorageClass `microk8s-hostpath` quedo disponible como default, el PVC `platform-api-data` quedo `Bound`, el volumen se monto en `platform-api`, el dato de laboratorio sobrevivio a la recreacion de un Pod y el fichero persistente fue servido por Ingress.
 
+El 2026-07-22 se añadió `tutorial/04-persistence-state/student-reference.md` como backfill documental del nuevo contrato global de unidades. La referencia profundiza en almacenamiento Kubernetes, PV, PVC, StorageClass, access modes, CSI, StatefulSet, headless Service, snapshots, backup, restore, límites de `hostpath-storage` y continuidad hacia cloud y fiabilidad. No modifica manifiestos, scripts, laboratorios ni estado técnico del clúster.
+
 ## Objetivos alcanzados
 
 | Objetivo | Estado | Evidencia |
@@ -26,6 +28,7 @@ La validacion funcional se ejecuto correctamente en MicroK8s. El addon `hostpath
 | Reutilizar `platform-api`, `platform-training` y la solucion de Unidad 03 | Alcanzado | `labs/04-persistence-state/solution/` conserva nombres y selectors base |
 | Crear tutorial de entrada | Alcanzado | `tutorial/04-persistence-state/README.md` |
 | Crear material pedagogico profundo | Alcanzado | `tutorial/04-persistence-state/student-notes.md` |
+| Crear referencia profesional del alumno | Alcanzado documentalmente con aprobación pendiente | `tutorial/04-persistence-state/student-reference.md` |
 | Crear notas del instructor | Alcanzado | `tutorial/04-persistence-state/instructor-notes.md` |
 | Crear laboratorio operativo | Alcanzado | `labs/04-persistence-state/README.md` |
 | Crear PVC de laboratorio | Alcanzado | `labs/04-persistence-state/solution/pvc.yaml` |
@@ -94,6 +97,7 @@ La validacion funcional se ejecuto correctamente en MicroK8s. El addon `hostpath
 |---|---|---|
 | Tutorial Unidad 04 | `tutorial/04-persistence-state/README.md` | Guia conceptual del alumno |
 | Student notes Unidad 04 | `tutorial/04-persistence-state/student-notes.md` | Material pedagogico profundo sobre persistencia |
+| Student reference Unidad 04 | `tutorial/04-persistence-state/student-reference.md` | Referencia profesional sobre almacenamiento Kubernetes, CSI, StatefulSet, snapshots, backup y límites de hostpath |
 | Instructor notes | `tutorial/04-persistence-state/instructor-notes.md` | Guia de imparticion y evaluacion |
 | Summary Unidad 04 | `tutorial/04-persistence-state/summary.md` | Contrato de continuidad |
 | Laboratorio Unidad 04 | `labs/04-persistence-state/README.md` | Referencia operativa |
@@ -119,6 +123,7 @@ Ninguno.
 tutorial/04-persistence-state/
 ├── README.md
 ├── student-notes.md
+├── student-reference.md
 ├── instructor-notes.md
 └── summary.md
 

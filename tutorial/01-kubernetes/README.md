@@ -19,6 +19,8 @@ El laboratorio despliega `platform-api`, pero la aplicacion es un vehiculo. Lo i
 
 Para estudiar esos conceptos desde cero, especialmente `Pod`, Deployment, ReplicaSet, Service, labels y reconciliacion, usa `tutorial/01-kubernetes/student-notes.md`.
 
+Para ampliar el mapa de workloads y entender por qué esta unidad usa `Deployment` pero Kubernetes también ofrece `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, usa `tutorial/01-kubernetes/student-reference.md`.
+
 Si necesitas repasar que es una imagen de contenedor, un runtime o un registro antes de leer el campo `image` del Deployment, vuelve a `tutorial/00-environment/student-reference.md`. Para una practica breve de lectura, usa `platform/environment/container-images/README.md`.
 
 ## Mapa de aprendizaje

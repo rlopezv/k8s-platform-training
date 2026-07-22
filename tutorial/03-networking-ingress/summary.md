@@ -8,8 +8,8 @@
 | Identificador | `03-networking-ingress` |
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
 | Estado | Completada, validada tecnicamente y aprobada con limitaciones |
-| Fecha de cierre o actualizacion | 2026-07-19 |
-| Revision pedagogica del usuario | Aprobada el 2026-07-19 junto con el refuerzo `student-notes.md` |
+| Fecha de cierre o actualizacion | 2026-07-22 |
+| Revision pedagogica del usuario | Unidad aprobada; `student-reference.md` añadido posteriormente con aprobación pedagógica específica pendiente |
 
 ## Resumen ejecutivo
 
@@ -18,6 +18,8 @@ La Unidad 03 evoluciona `platform-api` desde una aplicacion accesible solo media
 La solucion final queda en `labs/03-networking-ingress/solution/` y conserva namespace, Deployment, ConfigMap, Secret ficticio, probes, resources y Service `ClusterIP` heredados de Unidad 02. La unidad añade `ingress/platform-api` para el host `platform-api.local`, con `ingressClassName: public`, backend `service/platform-api` y puerto `80`.
 
 Gateway API queda documentada como comparacion conceptual. El addon Ingress de MicroK8s instala CRDs de Gateway API como efecto de plataforma local, pero el curso no crea `GatewayClass`, `Gateway` ni `HTTPRoute` como artefactos gestionados. TLS productivo, DNS publico, LoadBalancer cloud, NetworkPolicies, Helm, Terraform, CI/CD, GitOps, observabilidad avanzada y cloud siguen diferidos.
+
+El 2026-07-22 se añadió `tutorial/03-networking-ingress/student-reference.md` como backfill documental del nuevo contrato global de unidades y resolución material de `GAP-003`. La referencia profundiza en networking de Kubernetes, Service, EndpointSlice, DNS interno, Ingress Controller, TLS, certificados, `cert-manager`, Gateway API, entrada cloud y criterios de migración. No modifica manifiestos, scripts, laboratorios ni estado técnico del clúster.
 
 ## Objetivos alcanzados
 
@@ -29,6 +31,7 @@ Gateway API queda documentada como comparacion conceptual. El addon Ingress de M
 | Documentar DNS interno y EndpointSlice | Alcanzado | `tutorial/03-networking-ingress/README.md` |
 | Documentar Ingress Controller local de MicroK8s | Alcanzado | `tutorial/03-networking-ingress/README.md` y `labs/03-networking-ingress/README.md` |
 | Comparar Ingress y Gateway API sin migracion | Alcanzado | `tutorial/03-networking-ingress/README.md` |
+| Crear referencia profesional del alumno | Alcanzado documentalmente con aprobación pendiente | `tutorial/03-networking-ingress/student-reference.md` |
 | Crear validacion de Unidad 03 | Alcanzado | `labs/03-networking-ingress/validation/validate.sh` |
 | Validar funcionalmente en MicroK8s | Alcanzado | `bash labs/03-networking-ingress/validation/validate.sh`: 0 fallos, 0 avisos |
 
@@ -90,6 +93,7 @@ Gateway API queda documentada como comparacion conceptual. El addon Ingress de M
 |---|---|---|
 | Tutorial Unidad 03 | `tutorial/03-networking-ingress/README.md` | Guia conceptual del alumno |
 | Student notes Unidad 03 | `tutorial/03-networking-ingress/student-notes.md` | Material pedagogico profundo sobre Pod IP, Service, EndpointSlice, DNS interno, Ingress Controller, Ingress, host HTTP y Gateway API conceptual |
+| Student reference Unidad 03 | `tutorial/03-networking-ingress/student-reference.md` | Referencia profesional sobre networking, TLS, certificados, cert-manager, Gateway API, entrada cloud y criterios de decisión |
 | Instructor notes | `tutorial/03-networking-ingress/instructor-notes.md` | Guia de imparticion y evaluacion |
 | Summary Unidad 03 | `tutorial/03-networking-ingress/summary.md` | Contrato de continuidad |
 | Laboratorio Unidad 03 | `labs/03-networking-ingress/README.md` | Referencia operativa |
@@ -115,6 +119,7 @@ Ninguno.
 tutorial/03-networking-ingress/
 ├── README.md
 ├── student-notes.md
+├── student-reference.md
 ├── instructor-notes.md
 └── summary.md
 

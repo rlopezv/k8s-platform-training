@@ -8,8 +8,8 @@
 | Identificador | `05-scheduling-resilience-maintenance` |
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
 | Estado | Completada con revision pedagogica pendiente |
-| Fecha de cierre o actualizacion | 2026-07-19 |
-| Revision pedagogica del usuario | Pendiente |
+| Fecha de cierre o actualizacion | 2026-07-22 |
+| Revision pedagogica del usuario | Pendiente; `student-reference.md` añadido posteriormente con aprobación pedagógica específica pendiente |
 
 ## Resumen ejecutivo
 
@@ -19,6 +19,8 @@ La solucion final queda en `labs/05-scheduling-resilience-maintenance/solution/`
 
 La validacion funcional se ejecuto correctamente en MicroK8s. El Deployment quedo disponible, el PDB mostro `minAvailable: 1` y `disruptionsAllowed: 1`, los Pods quedaron asignados al nodo local `gmktecg2`, el Service mantuvo endpoints, el Ingress sirvio contenido de Unidad 05 y la eliminacion controlada de un Pod fue recuperada por el Deployment.
 
+El 2026-07-22 se añadió `tutorial/05-scheduling-resilience-maintenance/student-reference.md` como backfill documental del nuevo contrato global de unidades. La referencia profundiza en scheduler, node labels, `nodeSelector`, affinity, anti-affinity, taints, tolerations, requests, PVC y topología, `RollingUpdate`, rollback, PDB, mantenimiento, alta disponibilidad real, cloud y límites de MicroK8s local. No modifica manifiestos, scripts, laboratorios ni estado técnico del clúster.
+
 ## Objetivos alcanzados
 
 | Objetivo | Estado | Evidencia |
@@ -26,6 +28,7 @@ La validacion funcional se ejecuto correctamente en MicroK8s. El Deployment qued
 | Reutilizar `platform-api`, `platform-training` y la solucion de Unidad 04 | Alcanzado | `labs/05-scheduling-resilience-maintenance/starter/` y `solution/` derivan de `labs/04-persistence-state/solution/` |
 | Crear tutorial de entrada | Alcanzado | `tutorial/05-scheduling-resilience-maintenance/README.md` |
 | Crear material pedagogico profundo | Alcanzado | `tutorial/05-scheduling-resilience-maintenance/student-notes.md` |
+| Crear referencia profesional del alumno | Alcanzado documentalmente con aprobación pendiente | `tutorial/05-scheduling-resilience-maintenance/student-reference.md` |
 | Crear notas del instructor | Alcanzado | `tutorial/05-scheduling-resilience-maintenance/instructor-notes.md` |
 | Crear laboratorio operativo | Alcanzado | `labs/05-scheduling-resilience-maintenance/README.md` |
 | Crear PDB de `platform-api` | Alcanzado | `labs/05-scheduling-resilience-maintenance/solution/pdb.yaml` |
@@ -98,6 +101,7 @@ La validacion funcional se ejecuto correctamente en MicroK8s. El Deployment qued
 |---|---|---|
 | Tutorial Unidad 05 | `tutorial/05-scheduling-resilience-maintenance/README.md` | Guia conceptual del alumno |
 | Student notes Unidad 05 | `tutorial/05-scheduling-resilience-maintenance/student-notes.md` | Material pedagogico profundo sobre scheduling y resiliencia |
+| Student reference Unidad 05 | `tutorial/05-scheduling-resilience-maintenance/student-reference.md` | Referencia profesional sobre scheduling, PDB, rollouts, mantenimiento, HA real, cloud y límites de MicroK8s |
 | Instructor notes | `tutorial/05-scheduling-resilience-maintenance/instructor-notes.md` | Guia de imparticion y evaluacion |
 | Summary Unidad 05 | `tutorial/05-scheduling-resilience-maintenance/summary.md` | Contrato de continuidad |
 | Laboratorio Unidad 05 | `labs/05-scheduling-resilience-maintenance/README.md` | Referencia operativa |
@@ -125,6 +129,7 @@ Ninguno.
 tutorial/05-scheduling-resilience-maintenance/
 ├── README.md
 ├── student-notes.md
+├── student-reference.md
 ├── instructor-notes.md
 └── summary.md
 

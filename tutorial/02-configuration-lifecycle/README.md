@@ -19,7 +19,9 @@ La Unidad 02 cubre esa capa de madurez:
 
 El laboratorio muestra todos esos conceptos en `platform-api`, pero el objetivo no es aprender "un YAML mas largo". El objetivo es entender que un Pod no deberia ser una caja negra. Debe declarar sus necesidades y sus senales para que Kubernetes pueda operarlo.
 
-Para estudiar con mas detalle ConfigMap, Secret, probes, requests, limits, rollouts y EndpointSlice, usa `tutorial/02-configuration-lifecycle/student-notes.md`.
+Para estudiar con más detalle ConfigMap, Secret, probes, requests, limits, rollouts y EndpointSlice, usa `tutorial/02-configuration-lifecycle/student-notes.md`.
+
+Para profundizar en criterios profesionales, límites de `Secret`, diferencias entre variables y volúmenes, QoS, coste y continuidad hacia GitOps, Helm y escalado, usa `tutorial/02-configuration-lifecycle/student-reference.md`.
 
 ## Mapa de aprendizaje
 

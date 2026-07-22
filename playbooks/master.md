@@ -42,9 +42,10 @@ Antes de comenzar cualquier trabajo sobre una unidad, la IA deberá leer obligat
 2. `project/architecture.md`;
 3. `project/project-state.md`;
 4. `project/roadmap.md`;
-5. el `summary.md` de la unidad anterior;
-6. el playbook específico de la unidad;
-7. los artefactos existentes que la unidad deba reutilizar.
+5. `playbooks/student-reference-template.md`;
+6. el `summary.md` de la unidad anterior;
+7. el playbook específico de la unidad;
+8. los artefactos existentes que la unidad deba reutilizar.
 
 Para la Unidad 0 no existirá un `summary.md` anterior. Esta excepción deberá estar declarada en su playbook específico.
 
@@ -191,6 +192,7 @@ Cada unidad deberá generar obligatoriamente:
 ```text
 tutorial/<unidad>/README.md
 tutorial/<unidad>/student-notes.md
+tutorial/<unidad>/student-reference.md
 tutorial/<unidad>/instructor-notes.md
 tutorial/<unidad>/summary.md
 ```
@@ -318,13 +320,15 @@ Las instrucciones ejecutables completas pertenecen al README del laboratorio. `s
 
 ## Referencia del alumno
 
-Ruta opcional:
+Ruta:
 
 ```text
 tutorial/<unidad>/student-reference.md
 ```
 
-Se utilizará cuando `student-notes.md` no deba crecer más, pero la unidad necesite una capa de referencia para ofrecer visión general, profundidad técnica o contexto de herramientas habituales que no encajan en el flujo principal.
+Es un entregable obligatorio de cada unidad. Deberá seguir `playbooks/student-reference-template.md`.
+
+Se utilizará para ofrecer visión general, profundidad técnica o contexto de herramientas habituales que no encajan en el flujo principal de `student-notes.md`.
 
 `student-reference.md` deberá:
 
@@ -332,12 +336,10 @@ Se utilizará cuando `student-notes.md` no deba crecer más, pero la unidad nece
 - profundizar en conceptos, mecanismos, APIs, herramientas, decisiones, límites y variantes;
 - incluir contenido relevante aunque no se implemente en el laboratorio, dejando claro qué es conceptual, qué es práctica habitual y qué se ejecuta en el curso;
 - evitar convertirse en requisito previo oculto para seguir la unidad;
-- enlazarse desde `README.md` y `student-notes.md` cuando exista;
+- enlazarse desde `README.md` y `student-notes.md`;
 - mantener relación clara con el tema de la unidad y con la visión global del itinerario.
 
 El tutorial y `student-notes.md` proporcionan la base necesaria para seguir la unidad. `student-reference.md` puede ampliar hacia la visión general de Kubernetes, herramientas habituales y prácticas profesionales aunque esa amplitud no se materialice todavía en artefactos ejecutables.
-
-No todas las unidades necesitan `student-reference.md`.
 
 ## Laboratorio
 

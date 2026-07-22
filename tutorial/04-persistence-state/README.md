@@ -17,7 +17,9 @@ La Unidad 04 cubre:
 - por que tener un volumen no equivale a tener backup;
 - que limites tiene el almacenamiento local de MicroK8s frente a almacenamiento cloud.
 
-Para estudiar con mas detalle el modelo mental de almacenamiento, usa `tutorial/04-persistence-state/student-notes.md`.
+Para estudiar con más detalle el modelo mental de almacenamiento, usa `tutorial/04-persistence-state/student-notes.md`.
+
+Para profundizar en criterios profesionales sobre PV, PVC, StorageClass, CSI, access modes, StatefulSet, headless Service, snapshots, backup y límites de `hostpath-storage`, usa `tutorial/04-persistence-state/student-reference.md`.
 
 ## Pregunta central
 
