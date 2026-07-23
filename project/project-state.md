@@ -24,20 +24,20 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 |---|---|
 | Fase actual | Saneamiento documental tras revisión de coherencia de Unidades 00-07 |
 | Estado general | Unidades 00-07 completadas; contrato documental cerrado; Unidad 08 congelada hasta revisar playbooks contra el contrato cerrado |
-| Último incremento completado | Fase 2 del saneamiento documental: contrato documental cerrado en `playbooks/master.md`, `playbooks/unit-template.md` y `playbooks/student-reference-template.md` |
+| Último incremento completado | Fase 2 del saneamiento documental: contrato documental cerrado y estado/arquitectura alineados |
 | Unidad activa | Ninguna |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
 | Framework de generación | Framework V1 validado; Framework V2 didactico simplificado; Framework V3 documental incorpora `student-reference.md` obligatorio y plantilla global |
-| Siguiente incremento permitido | Saneamiento documental; Unidad 08 congelada hasta cerrar la fase 3 |
+| Siguiente incremento permitido | Saneamiento documental; Unidad 08 congelada hasta cerrar las fases 3 y 4 |
 
 ---
 
 # Fase actual
 
-El proyecto ha completado la **Unidad 00 — Preparación del entorno**, la **Unidad 01 — Fundamentos operativos y primera aplicación**, la **Unidad 02 — Configuración, secretos y ciclo de vida**, la **Unidad 03 — Networking e ingreso**, la **Unidad 04 — Persistencia y estado** y la **Unidad 05 — Scheduling, resiliencia y mantenimiento**. La Unidad 04 fue aprobada por el usuario y validada funcionalmente el 2026-07-19. La Unidad 05 fue generada y validada funcionalmente el 2026-07-19.
+El proyecto tiene generadas y registradas las **Unidades 00-07**. Según el estado consolidado, la Unidad 04 fue aprobada por el usuario y validada funcionalmente el 2026-07-19, la Unidad 05 fue generada y validada funcionalmente el 2026-07-19, y las Unidades 06 y 07 fueron generadas, validadas funcionalmente y aprobadas pedagógicamente entre el 2026-07-19 y el 2026-07-20. El conjunto de Unidades 00-07 está ahora en revisión documental contra el contrato cerrado de `student-reference.md`; la Unidad 08 permanece congelada hasta cerrar las fases 3 y 4 del saneamiento documental.
 
 La Unidad 01 incorporó la primera aplicación evolutiva del curso, `platform-api`, desplegada sobre MicroK8s mediante manifiestos Kubernetes estándar. El laboratorio local ya contiene un namespace funcional, un Deployment, Pods gestionados por ReplicaSet y un Service interno.
 
@@ -75,7 +75,7 @@ El 2026-07-20 se genero la Unidad 07 por instruccion del usuario. La unidad crea
 
 Durante la validacion funcional de Unidad 07, Terraform descargo los providers `hashicorp/helm` `2.17.0` y `hashicorp/kubernetes` `2.38.0`, genero `.terraform.lock.hcl`, importo el release existente mediante `terraform import helm_release.platform_api platform-training/platform-api-local`, ejecuto `terraform apply` con resultado `0 added, 1 changed, 0 destroyed` y dejo `helm_release.platform_api` en el state local no versionado. La validacion de Unidad 07 finalizo con 0 fallos y 0 avisos. La validacion heredada de Unidad 06 tambien finalizo con 0 fallos y 0 avisos; `platform-api-local` quedo `deployed` en revision 4. El usuario aprobo pedagogicamente la Unidad 07 el 2026-07-20.
 
-Entre el 2026-07-20 y el 2026-07-23 se registraron y trataron las lagunas de contenido detectadas en la revisión de Unidades 00-07. El detalle de cada laguna, su tratamiento y su estado queda delegado exclusivamente en `project/content-gap-register.md` para evitar doble mantenimiento. El estado consolidado actual es: 11 lagunas registradas, 5 cerradas, 6 abordadas y 0 abiertas.
+Entre el 2026-07-20 y el 2026-07-23 se registraron y trataron las lagunas de contenido detectadas en la revisión de Unidades 00-07. El detalle de cada laguna, su tratamiento y su estado queda delegado exclusivamente en `project/content-gap-register.md` para evitar doble mantenimiento. El estado consolidado actual es: 11 lagunas registradas, 4 cerradas, 7 abordadas y 0 abiertas.
 
 El 2026-07-22 se estableció `student-reference.md` como entregable obligatorio para todas las unidades y se creó `playbooks/student-reference-template.md` como plantilla global. En el mismo incremento se generó `tutorial/01-kubernetes/student-reference.md` para cubrir el mapa profesional de workloads de Kubernetes: `Pod`, `ReplicaSet`, `Deployment`, `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, sin cambiar manifiestos, scripts, laboratorio ni estado técnico del clúster. Las Unidades 02, 03, 04 y 05 quedaron inicialmente pendientes de backfill documental porque fueron generadas antes de que `student-reference.md` fuese obligatorio; ese backfill quedó completado posteriormente.
 
@@ -95,7 +95,7 @@ A partir de este estado se permite:
 
 Todavía no se permite:
 
-- generar la Unidad 08 hasta cerrar la fase 3 del saneamiento documental;
+- generar la Unidad 08 hasta cerrar las fases 3 y 4 del saneamiento documental;
 - instalar Tekton;
 - instalar Argo CD;
 - desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
@@ -1017,7 +1017,7 @@ Tras generar y validar funcionalmente la Unidad 07:
 
 | Registro | Estado | Siguiente acción |
 |---|---|---|
-| `project/content-gap-register.md` | 11 lagunas: 5 cerradas, 6 abordadas, 0 abiertas | GAP-004 requiere incremento funcional en Unidad 04 (`TD-023`); GAP-010 requiere retroajuste previo de Unidad 07 |
+| `project/content-gap-register.md` | 11 lagunas: 4 cerradas, 7 abordadas, 0 abiertas | GAP-004 requiere incremento funcional en Unidad 04 (`TD-023`); GAP-010 requiere retroajuste previo de Unidad 07 |
 
 ---
 
@@ -1181,9 +1181,11 @@ documental, en este orden:
 | 4 | Retroajuste de unidades: 07 como piloto, después 06, después 00 y 01, y por último auditoría de autosuficiencia de 02-05 | Pendiente |
 | 5 | Incremento funcional de la Unidad 04 (`TD-023`), con validación ejecutada | Pendiente |
 
-La Unidad 08 se desbloquea al cerrar la fase 3. El retroajuste de la fase 4 y la
-generación de la Unidad 08 pueden solaparse, salvo la Unidad 07, que debe
-completarse antes por ser el estado de entrada de la 08 y por contener GAP-010.
+La Unidad 08 se desbloquea al cerrar las fases 3 y 4: primero la revisión de
+playbooks contra el contrato cerrado, después el retroajuste de las unidades
+00-07 y la auditoría de autosuficiencia de 02-05. La fase 5 (`TD-023`) permanece
+como incremento funcional pendiente de Unidad 04 y no bloquea por sí sola la
+generación de Unidad 08, salvo decisión posterior.
 
 ## Trabajo todavía prohibido
 
