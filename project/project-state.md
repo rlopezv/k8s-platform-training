@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Preparado para generar el playbook de Unidad 08 tras obligatoriedad global de `student-reference.md` y backfill documental de Unidades 01-05 |
-| Estado general | Unidades 00-07 completadas; `student-reference.md` obligatorio hacia adelante; backfill documental de Unidades 02-05 completado |
-| Último incremento completado | `student-reference.md` añadido a Unidad 05 |
+| Fase actual | Saneamiento documental tras revisión de coherencia de Unidades 00-07 |
+| Estado general | Unidades 00-07 completadas; Unidad 08 congelada hasta cerrar el contrato documental y revisar playbooks |
+| Último incremento completado | Decisiones bloqueantes D1-D5 completadas; fase 1 de compactación y saneamiento de registros en curso |
 | Unidad activa | Ninguna |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
 | Framework de generación | Framework V1 validado; Framework V2 didactico simplificado; Framework V3 documental incorpora `student-reference.md` obligatorio y plantilla global |
-| Siguiente incremento permitido | Generar el playbook de la Unidad 08 — Integración continua con Tekton |
+| Siguiente incremento permitido | Saneamiento documental; Unidad 08 congelada hasta cerrar la fase 3 |
 
 ---
 
@@ -75,29 +75,13 @@ El 2026-07-20 se genero la Unidad 07 por instruccion del usuario. La unidad crea
 
 Durante la validacion funcional de Unidad 07, Terraform descargo los providers `hashicorp/helm` `2.17.0` y `hashicorp/kubernetes` `2.38.0`, genero `.terraform.lock.hcl`, importo el release existente mediante `terraform import helm_release.platform_api platform-training/platform-api-local`, ejecuto `terraform apply` con resultado `0 added, 1 changed, 0 destroyed` y dejo `helm_release.platform_api` en el state local no versionado. La validacion de Unidad 07 finalizo con 0 fallos y 0 avisos. La validacion heredada de Unidad 06 tambien finalizo con 0 fallos y 0 avisos; `platform-api-local` quedo `deployed` en revision 4. El usuario aprobo pedagogicamente la Unidad 07 el 2026-07-20.
 
-El 2026-07-20 se resolvio `GAP-001` como mejora pedagogica de Unidad 00 mediante `tutorial/00-environment/student-reference.md` y `platform/environment/container-images/README.md`. La referencia cubre contenedores, imagenes y registros como vision general previa a Unidad 01 y continuidad hacia CI/CD, supply chain y cloud registries. El laboratorio asociado es de solo lectura y ayuda a leer `image`, `imagePullPolicy`, `kubectl explain` y fallos de descarga de imagenes sin construir imagenes ni modificar el cluster. No se modificaron scripts, manifests, charts, Terraform ni estado funcional del cluster. La aprobacion pedagogica final de esta referencia y su laboratorio queda pendiente del usuario.
+Entre el 2026-07-20 y el 2026-07-23 se registraron y trataron las lagunas de contenido detectadas en la revisión de Unidades 00-07. El detalle de cada laguna, su tratamiento y su estado queda delegado exclusivamente en `project/content-gap-register.md` para evitar doble mantenimiento. El estado consolidado actual es: 11 lagunas registradas, 5 cerradas, 6 abordadas y 0 abiertas.
 
-El 2026-07-20 se abordo `GAP-002` como decisión pedagógica, sin crear contenido ejecutable nuevo. La Unidad 02 mantiene Secrets ficticios para aprender el objeto `Secret` y sus límites. La gestión real de secretos se resolverá en la Unidad 09 mediante `student-reference.md` orientado a GitOps, explicando por qué un `Secret` Kubernetes no basta como mecanismo de protección, cómo evitar secretos reales en Git y cómo comparar External Secrets Operator, Sealed Secrets, SOPS, Vault y secret managers cloud. La práctica técnica queda diferida hasta que encaje con GitOps, cloud o seguridad avanzada.
-
-El 2026-07-20 se abordo `GAP-003` como decisión pedagógica, sin cambiar el laboratorio de Unidad 03. TLS, certificados, cert-manager y Gateway API se incorporarán en el futuro mediante `tutorial/03-networking-ingress/student-reference.md`. La Unidad 03 mantiene su laboratorio actual centrado en DNS interno, Service, EndpointSlice e Ingress HTTP local; la referencia futura explicará entrada HTTPS de producción, certificados, `Issuer`, `ClusterIssuer`, terminación TLS, diferencias entre Ingress y Gateway API y criterio de migración. La práctica técnica queda diferida a GitOps, cloud o gobierno de plataforma cuando existan DNS, dominio, identidad o estándares de entrada.
-
-El 2026-07-20 se abordó `GAP-004` como decisión pedagógica transversal, sin crear una unidad catálogo de workloads. El 2026-07-22 se materializó la parte documental con `tutorial/01-kubernetes/student-reference.md` como mapa general de workloads para explicar que Deployment es una forma concreta de gestionar Pods, no la única forma de ejecutar trabajo en Kubernetes. La práctica técnica se repartirá por problema real: StatefulSet y headless Service en Unidad 04, Jobs/CronJobs en Unidad 08 y DaemonSet en observabilidad.
-
-El 2026-07-22 se abordo `GAP-005` como decisión pedagógica, sin crear laboratorio ni instalar Argo Rollouts o Flagger. Progressive delivery se incorporará en el futuro mediante `student-reference.md` de Unidad 10, conectando promoción entre entornos, Argo CD, canary, blue-green, rolling, feature flags y necesidad de señales operativas. La práctica técnica se diferirá hasta después de observabilidad básica, especialmente SLI/SLO de Unidad 12 u observabilidad integrada de Unidad 15, para evitar enseñar promociones progresivas sin criterio de salud.
-
-El 2026-07-22 se abordo `GAP-006` como decisión pedagógica repartida, sin crear contenido ejecutable nuevo. La Unidad 16 deberá cubrir namespaces como frontera administrativa, ResourceQuota, LimitRange, ownership por equipo y relación con RBAC, ServiceAccounts, NetworkPolicies y Pod Security Standards; puede incorporar un laboratorio real porque los límites y cuotas se observan bien cuando Kubernetes rechaza o completa recursos. La Unidad 24 deberá cubrir gobierno de plataforma, jerarquía de namespaces, golden paths, catálogo, estándares, lifecycle de namespaces y modelo operativo. La Unidad 02 podrá enlazar requests/limits con cuotas y coste sin ampliar su laboratorio.
-
-El 2026-07-22 se abordo `GAP-007` como decisión pedagógica, sin crear una unidad nueva por ahora. La Unidad 22 deberá comparar diferencias de upgrades y operación entre MicroK8s, AKS y EKS. La Unidad 23 deberá incorporar el ciclo de vida del clúster como bloque fuerte dentro de fiabilidad y recuperación: versiones Kubernetes, skew entre control plane, kubelet y `kubectl`, deprecaciones de API, release notes, estrategia por entorno, ventanas de mantenimiento, node pools, addons/controllers, CRDs, backup previo, rollback realista, runbook de upgrade y validación posterior. Riesgo registrado: si Unidad 23 queda demasiado cargada junto con backup, restore, RPO/RTO y continuidad, el alcance deberá reevaluarse antes de generar la unidad.
-
-El 2026-07-22 se abordo `GAP-008` como decisión pedagógica transversal, sin crear unidad propia ni laboratorio financiero aislado. La Unidad 02 deberá conectar requests/limits, QoS, ResourceQuota, LimitRange y coste como base de scheduling y capacidad. La Unidad 18 deberá conectar HPA/KEDA, métricas de escalado, escala a cero, límites y coste. La Unidad 22 deberá tratar coste como criterio operativo comparado entre MicroK8s, AKS y EKS: nodos, control plane, storage, load balancers, observabilidad, tráfico y autoscaling. Se registra como criterio estable evitar tablas de precios versionadas; el curso debe enseñar mecanismos que generan coste y cómo razonar sobre ellos.
-
-El 2026-07-22 se abordo `GAP-009` como decisión pedagógica estructural para Unidad 19, sin crear contenido ejecutable nuevo. La Unidad 19 deberá funcionar como puente obligatorio entre laboratorio local y cloud, separando explícitamente Kubernetes estándar, supuestos de MicroK8s y sustitutos en AKS/EKS. Deberá incluir una matriz formal de supuestos locales con columnas equivalentes a supuesto local, cómo aparece en MicroK8s, riesgo al migrar, sustituto en AKS, sustituto en EKS y decisión pendiente. La matriz deberá cubrir StorageClass, LoadBalancer, DNS, Ingress, identidad, registry, RBAC/workload identity, red/CNI/subnets, persistencia, backups/snapshots, observabilidad, disponibilidad, coste y operación.
-
-El 2026-07-22 se estableció `student-reference.md` como entregable obligatorio para todas las unidades y se creó `playbooks/student-reference-template.md` como plantilla global. En el mismo incremento se generó `tutorial/01-kubernetes/student-reference.md` para cubrir el mapa profesional de workloads de Kubernetes: `Pod`, `ReplicaSet`, `Deployment`, `StatefulSet`, `DaemonSet`, `Job` y `CronJob`. Esta referencia cierra documentalmente `GAP-004` en Unidad 01, sin cambiar manifiestos, scripts, laboratorio ni estado técnico del clúster. Las Unidades 02, 03, 04 y 05 quedaron inicialmente pendientes de backfill documental porque fueron generadas antes de que `student-reference.md` fuese obligatorio; ese backfill quedó completado posteriormente.
+El 2026-07-22 se estableció `student-reference.md` como entregable obligatorio para todas las unidades y se creó `playbooks/student-reference-template.md` como plantilla global. En el mismo incremento se generó `tutorial/01-kubernetes/student-reference.md` para cubrir el mapa profesional de workloads de Kubernetes: `Pod`, `ReplicaSet`, `Deployment`, `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, sin cambiar manifiestos, scripts, laboratorio ni estado técnico del clúster. Las Unidades 02, 03, 04 y 05 quedaron inicialmente pendientes de backfill documental porque fueron generadas antes de que `student-reference.md` fuese obligatorio; ese backfill quedó completado posteriormente.
 
 El 2026-07-22 se generó `tutorial/02-configuration-lifecycle/student-reference.md` como backfill documental de la Unidad 02. La referencia cubre configuración como contrato, límites de `Secret`, variables y volúmenes de configuración, probes, requests, limits, QoS, coste y continuidad hacia Helm, GitOps, seguridad, escalado y cloud. No cambia manifiestos, scripts, laboratorios ni estado técnico del clúster. La aprobación pedagógica específica de esta referencia queda pendiente del usuario.
 
-El 2026-07-22 se generó `tutorial/03-networking-ingress/student-reference.md` como backfill documental de la Unidad 03 y materialización de `GAP-003`. La referencia cubre networking de Kubernetes, Service, EndpointSlice, DNS interno, Ingress Controller, TLS, certificados, `cert-manager`, Gateway API, entrada cloud y criterios de migración. No cambia manifiestos, scripts, laboratorios ni estado técnico del clúster. La aprobación pedagógica específica de esta referencia queda pendiente del usuario.
+El 2026-07-22 se generó `tutorial/03-networking-ingress/student-reference.md` como backfill documental de la Unidad 03. La referencia cubre networking de Kubernetes, Service, EndpointSlice, DNS interno, Ingress Controller, TLS, certificados, `cert-manager`, Gateway API, entrada cloud y criterios de migración. No cambia manifiestos, scripts, laboratorios ni estado técnico del clúster. La aprobación pedagógica específica de esta referencia queda pendiente del usuario.
 
 El 2026-07-22 se generó `tutorial/04-persistence-state/student-reference.md` como backfill documental de la Unidad 04. La referencia cubre almacenamiento Kubernetes, PV, PVC, StorageClass, access modes, CSI, StatefulSet, headless Service, snapshots, backup, restore, límites de `hostpath-storage` y continuidad hacia cloud y fiabilidad. No cambia manifiestos, scripts, laboratorios ni estado técnico del clúster. La aprobación pedagógica específica de esta referencia queda pendiente del usuario.
 
@@ -105,13 +89,15 @@ El 2026-07-22 se generó `tutorial/05-scheduling-resilience-maintenance/student-
 
 A partir de este estado se permite:
 
-- crear o reforzar `student-reference.md` en unidades donde falte vision general, contexto de herramientas habituales o profundidad de referencia;
-- generar el playbook de la Unidad 08 — Integración continua con Tekton;
-- revisar contenido generado de Unidades 00-07 sin cambiar capacidades tecnicas salvo contradiccion real;
+- ejecutar el saneamiento documental de los registros de estado;
+- ampliar el contrato documental de `student-reference.md`, declarar la frontera con `student-notes.md` y añadir la regla ortográfica global;
+- revisar playbooks contra el contrato cerrado;
+- retroajustar unidades no conformes en el orden registrado en el siguiente incremento permitido;
 - conservar `labs/07-local-terraform-automation/terraform/` como base tecnica para CI/CD.
 
 Todavía no se permite:
 
+- generar la Unidad 08 hasta cerrar la fase 3 del saneamiento documental;
 - instalar Tekton;
 - instalar Argo CD;
 - desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
@@ -128,7 +114,7 @@ Todavía no se permite:
 | `README.md` | Actualizado | Student-Reference-Mandatory | Punto de entrada y visión general; refleja `student-notes.md` y `student-reference.md` como artefactos por unidad |
 | `project/architecture.md` | Actualizado | Student-Reference-Mandatory | Arquitectura y decisiones estructurales; separa README, guías de aprendizaje y referencias profesionales del alumno |
 | `project/project-state.md` | Actualizado | Student-Reference-Mandatory | Estado consolidado; registra obligatoriedad de `student-reference.md` y backfill documental de Unidades 02-05 completado |
-| `project/content-gap-register.md` | Actualizado | Student-Reference-Mandatory | Registro ligero de lagunas; GAP-004 cerrado documentalmente con referencia de Unidad 01 |
+| `project/content-gap-register.md` | Actualizado | Coherence-Review-Units-00-07 | Registro ligero de lagunas; fuente única del tratamiento de cada laguna por ID |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
 | `project/project-planning.md` | Actualizado | Framework-V2-Didactic-Review | Planificación incremental del trabajo; incluye sesiones de reapertura de framework didactico y revisión transversal |
 | `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
@@ -347,7 +333,7 @@ Todavía no se permite:
 
 | Unidad | Estado | Tutorial | Student notes | Student reference | Laboratorio o plataforma | Instructor notes | Summary |
 |---|---|---|---|---|---|---|---|
-| 00 — Preparación del entorno | Completada con limitaciones; referencia y laboratorio de acompañamiento añadidos para GAP-001 con aprobación pendiente | Sí | Sí | Sí | Sí, `platform/environment/` | Sí | Sí |
+| 00 — Preparación del entorno | Completada con limitaciones; referencia y laboratorio de acompañamiento añadidos con aprobación pendiente | Sí | Sí | Sí | Sí, `platform/environment/` | Sí | Sí |
 | 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; `student-reference.md` de workloads añadido con aprobación pendiente | Sí | Sí | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
 | 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; `student-reference.md` añadido con aprobación específica pendiente | Sí | Sí | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
 | 03 — Networking e ingreso | Completada, validada técnicamente y aprobada; `student-reference.md` añadido con aprobación específica pendiente | Sí | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
@@ -947,11 +933,15 @@ No existen actualmente:
 
 Tras generar y validar funcionalmente la Unidad 07:
 
+- la Unidad 08 queda congelada hasta completar el saneamiento documental y el retroajuste de las unidades no conformes;
 - la Unidad 06 conserva `platform-api`, `platform-training` y la evolucion acumulativa desde `labs/05-scheduling-resilience-maintenance/solution/`;
 - `labs/06-helm-packaging/chart/platform-api/` sigue siendo el chart local de aplicacion;
 - `labs/07-local-terraform-automation/terraform/` gestiona el release Helm local mediante Terraform;
 - conservar la separación pedagógica reforzada: los README actúan como entrada, `student-notes.md` como guía de aprendizaje y los README de laboratorio como guía operativa;
 - no sustituir la aplicación evolutiva sin justificación técnica o pedagógica explícita;
+- no modificar `platform-api` al incorporar la práctica de `StatefulSet` en la Unidad 04: el ejercicio usa un workload auxiliar desechable y existe para contrastar, no para contradecir el criterio ya documentado;
+- el workload auxiliar de la Unidad 04 no forma parte de la solución evolutiva ni del inventario permanente de este documento;
+- no generar unidades nuevas con `student-reference.md` fuera de `playbooks/student-reference-template.md`;
 - no crear Terraform fuera del alcance ya definido por Unidad 07;
 - no configurar backends remotos, modulos cloud, cuentas cloud, IAM, VPC, VNet, AKS ni EKS antes de sus unidades previstas;
 - no versionar `terraform.tfstate`, `.terraform/`, `terraform.tfvars` locales, planes binarios, kubeconfigs, tokens ni secretos reales;
@@ -1001,6 +991,7 @@ Tras generar y validar funcionalmente la Unidad 07:
 | Q-007 | Estrategia definitiva para directorios vacíos | No | Resuelta mediante `.gitkeep` hasta crear artefactos reales | Cerrada |
 | Q-008 | Aplicación evolutiva del curso | No | Resuelta como `platform-api` en Unidad 01 | Cerrada |
 | Q-009 | Nombre definitivo del namespace funcional de Unidad 01 | No | Resuelto como `platform-training` | Cerrada |
+| Q-010 | Nombre, imagen y ciclo de limpieza del workload auxiliar de la Unidad 04 | No | Al redactar el playbook de retroajuste de la Unidad 04 | Abierta |
 
 ---
 
@@ -1016,22 +1007,19 @@ Tras generar y validar funcionalmente la Unidad 07:
 | TD-006 | Hardening pedagógico global del itinerario | Alta | Revisión de Unidad 01 y feedback posterior del usuario | `student-notes.md` de Unidades 01-05 reestructurado y aprobado como guia de aprendizaje; Unidad 00 conserva su formato previo aprobado | Cerrada para Unidades 01-05; aplicar criterio en futuras unidades |
 | TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo y revisión de `student-notes.md` | `playbooks/master.md` y `playbooks/unit-template.md` actualizados para describir guías de aprendizaje academicas y aplicadas, evitando estructuras enciclopédicas por defecto | Cerrada |
 | TD-008 | Reabrir Framework V2 para reforzar contrato didactico y revisar lagunas de Unidades 00-07 | Alta | Feedback del usuario tras aprobar Unidad 07 | Framework simplificado inicialmente; `student-reference.md` queda elevado después a entregable obligatorio mediante `playbooks/student-reference-template.md` | Cerrada |
-| TD-009 | Decidir si falta una unidad de contenedores, imagen y registro antes de Tekton | Alta | `project/content-gap-register.md` `GAP-001` | Resuelto como `tutorial/00-environment/student-reference.md` y laboratorio de acompañamiento de solo lectura, sin unidad nueva ni cambios tecnicos | Cerrada |
-| TD-010 | Decidir tratamiento de gestión real de secretos antes de GitOps | Alta | `project/content-gap-register.md` `GAP-002` | Resuelto como `student-reference.md` de Unidad 09 sobre secretos en GitOps; Unidad 02 conserva Secrets ficticios y no se instala herramienta nueva ahora | Cerrada |
-| TD-011 | Decidir tratamiento de TLS, cert-manager e Ingress/Gateway API | Alta | `project/content-gap-register.md` `GAP-003` | Cerrado documentalmente con `tutorial/03-networking-ingress/student-reference.md`; no se modifica el laboratorio local de Ingress HTTP | Cerrada |
-| TD-012 | Decidir tratamiento de workloads no Deployment | Alta | `project/content-gap-register.md` `GAP-004` | Cerrado documentalmente con `tutorial/01-kubernetes/student-reference.md`; laboratorios quedan distribuidos en Unidad 04, Unidad 08 y observabilidad | Cerrada |
-| TD-013 | Decidir tratamiento de progressive delivery | Alta | `project/content-gap-register.md` `GAP-005` | Abordado como `student-reference.md` futuro de Unidad 10; práctica con Argo Rollouts o Flagger diferida hasta contar con SLI/SLO y observabilidad | Abordada |
-| TD-014 | Decidir tratamiento de multi-tenancy y gobierno de recursos | Alta | `project/content-gap-register.md` `GAP-006` | Abordado con controles concretos en Unidad 16, gobierno operativo en Unidad 24 y conexión ligera desde requests/limits de Unidad 02 | Abordada |
-| TD-015 | Decidir tratamiento de ciclo de vida del clúster | Alta | `project/content-gap-register.md` `GAP-007` | Abordado como comparativa en Unidad 22 y bloque fuerte de fiabilidad/recuperación en Unidad 23; revisar alcance si compite con backup/restore/RPO/RTO | Abordada |
-| TD-016 | Decidir tratamiento de coste y FinOps | Alta | `project/content-gap-register.md` `GAP-008` | Abordado como hilo transversal: Unidad 02 para requests/limits y QoS, Unidad 18 para escalado y Unidad 22 para coste operativo comparado; evitar tablas de precios estables | Abordada |
-| TD-017 | Decidir tratamiento de desacoplamiento de MicroK8s | Alta | `project/content-gap-register.md` `GAP-009` | Abordado como bloque estructural de Unidad 19 con inventario formal de supuestos locales y sustitutos AKS/EKS | Abordada |
-| TD-018 | Backfill de `student-reference.md` obligatorio en unidades históricas | Alta | Student-Reference-Mandatory | Unidades 02, 03, 04 y 05 completadas siguiendo `playbooks/student-reference-template.md` | Cerrada |
+| TD-018 | Backfill de `student-reference.md` obligatorio en unidades históricas | Alta | Student-Reference-Mandatory | Unidades 02, 03, 04 y 05 completadas siguiendo `playbooks/student-reference-template.md`. **Alcance limitado a las unidades que carecían del documento; las que ya lo tenían con molde previo quedan fuera y se tratan en TD-019** | Cerrada con alcance limitado |
+| TD-019 | Conformidad de `student-reference.md` en unidades 00, 01, 06 y 07 | Alta | Revisión de coherencia de Unidades 00-07 | Las cuatro referencias se generaron antes de existir `playbooks/student-reference-template.md` y no lo cumplen. Las 06 y 07 comparten un molde propio por módulos y duplican el diagnóstico de `student-notes.md`. Retroajuste como incremento único de barrido (D5), con la Unidad 07 como piloto | Abierta |
+| TD-020 | Ortografía incompleta en material del alumno | Media | Revisión de coherencia de Unidades 00-07 | Ausencia sistemática de tildes en todos los `student-notes.md` y en las referencias de 00, 06 y 07. Barrido editorial sin alterar bloques de código, rutas, comandos ni nombres de recursos. Añadir la regla a `playbooks/master.md` para evitar reincidencia | Abierta |
+| TD-021 | Frontera entre `student-notes.md` y `student-reference.md` no declarada | Alta | Revisión de coherencia de Unidades 00-07 | Ninguna plantilla declara qué contenido pertenece a cada documento; es la causa raíz de la duplicación de las Unidades 06 y 07. Declarar en `playbooks/unit-template.md` y `playbooks/student-reference-template.md`: las notas explican y diagnostican lo que ocurre dentro del laboratorio, la referencia explica lo que existe fuera y corrige modelos mentales; ningún contenido aparece en ambos | Abierta |
+| TD-022 | Auditoría de autosuficiencia de las referencias conformes | Media | Revisión de coherencia de Unidades 00-07 | Las Unidades 02 a 05 son conformes en estructura, pero no se ha verificado que el alumno pueda leer los artefactos de su propia unidad sin acudir a documentación externa. La auditoría puede reclasificar alguna unidad como no conforme | Abierta |
+| TD-023 | Incremento funcional de la Unidad 04: práctica de StatefulSet | Alta | `project/content-gap-register.md` `GAP-004`, decisión D4 | Incorporar práctica de `StatefulSet`, `volumeClaimTemplates` y headless Service sobre un workload auxiliar desechable. **No es retroajuste editorial: modifica laboratorio, validación y summary, y requiere validación ejecutada.** No se toca `platform-api`, cuyo argumento de réplicas reemplazables debe conservarse. La Unidad 05 no se ve afectada | Abierta |
+| TD-024 | Tratamiento de las lagunas de contenido del itinerario | Alta | `project/content-gap-register.md` | Delegado: cada laguna se gestiona en su registro por ID. Consolida y sustituye a TD-009..TD-017, retiradas por duplicación | Delegada |
 
 ## Lagunas de contenido
 
 | Registro | Estado | Siguiente acción |
 |---|---|---|
-| `project/content-gap-register.md` | 4 lagunas cerradas, 5 abordadas y 0 abiertas | Todas las lagunas iniciales de Unidades 00-07 tienen decisión; Unidad 08 puede avanzar a playbook |
+| `project/content-gap-register.md` | 11 lagunas: 5 cerradas, 6 abordadas, 0 abiertas | GAP-004 requiere incremento funcional en Unidad 04 (`TD-023`); GAP-010 requiere retroajuste previo de Unidad 07 |
 
 ---
 
@@ -1169,79 +1157,38 @@ Validaciones no disponibles en esta sesión:
 | 58 | Playbook de Unidad 07 | Completado y aprobado | `playbooks/units/07-local-terraform-automation.md` creado y aprobado por el usuario el 2026-07-20; define Terraform como automatizacion local del release Helm de `platform-api` e incorpora `student-reference.md` avanzado sobre arquitectura Terraform |
 | 59 | Generacion, validacion funcional y aprobacion de Unidad 07 | Completado y aprobado | Tutorial, student notes, student reference, instructor notes, summary, laboratorio, proyecto Terraform local y validacion creados; release importado a Terraform, apply ejecutado con 0 destrucciones, validaciones finales con 0 fallos, 0 avisos y aprobacion pedagogica del usuario |
 | 60 | Apertura Framework V2 didactico | Completado | `project/project-planning.md` y `project/project-state.md` registran la pausa de Unidad 08 y el inicio de ajuste didactico transversal |
-| 61 | Simplificacion Framework V2 y registro de lagunas | Completado | Playbooks base ajustados de forma ligera para `student-reference.md` como referencia amplia; `project/content-gap-register.md` registra lagunas de contenedores, secretos, TLS, workloads, progressive delivery, multi-tenancy, ciclo de vida, coste y desacoplamiento de MicroK8s |
-| 62 | Resolucion documental de GAP-001 | Completado con aprobación pedagógica pendiente | `tutorial/00-environment/student-reference.md` y `platform/environment/container-images/README.md` creados sobre contenedores, imagenes y registros; Unidad 01 enlazada; no cambia scripts, manifests ni estado tecnico del cluster |
-| 63 | Decision pedagogica de GAP-002 | Completado | Gestión real de secretos diferida a `student-reference.md` de Unidad 09 con enfoque GitOps; Unidad 02 mantiene Secrets ficticios y no se instala External Secrets, Sealed Secrets, SOPS ni Vault en este incremento |
-| 64 | Decision pedagogica de GAP-003 | Completado | TLS, cert-manager e Ingress/Gateway API se difieren a `student-reference.md` futuro de Unidad 03; el laboratorio actual de Unidad 03 conserva Ingress HTTP local sin certificados ni Gateway API |
-| 65 | Decision pedagogica de GAP-004 | Completado | Workloads no Deployment se resolvieron documentalmente con `tutorial/01-kubernetes/student-reference.md` como mapa general; StatefulSet/headless Service, Jobs/CronJobs y DaemonSet se practicaran en sus unidades naturales |
-| 66 | Decision pedagogica de GAP-005 | Completado | Progressive delivery se difiere a `student-reference.md` futuro de Unidad 10; práctica con canary/blue-green, Argo Rollouts o Flagger queda pendiente hasta disponer de SLI/SLO y observabilidad |
-| 67 | Decision pedagogica de GAP-006 | Completado | Multi-tenancy y gobierno de recursos se reparten entre Unidad 16 para controles Kubernetes concretos y Unidad 24 para gobierno operativo de plataforma; Unidad 02 solo conectara requests/limits con cuotas y coste |
-| 68 | Decision pedagogica de GAP-007 | Completado | Ciclo de vida del clúster se aborda en Unidad 22 como comparativa y en Unidad 23 como bloque fuerte de fiabilidad; queda registrado riesgo de alcance junto con backup, restore, RPO/RTO y continuidad |
-| 69 | Decision pedagogica de GAP-008 | Completado | Coste y FinOps se abordan como hilo transversal en Unidad 02, Unidad 18 y Unidad 22; se evita fijar tablas de precios y se priorizan mecanismos de coste |
-| 70 | Decision pedagogica de GAP-009 | Completado | Desacoplamiento de MicroK8s se aborda como bloque estructural de Unidad 19 con inventario formal de supuestos locales y sustitutos AKS/EKS |
-| 71 | Obligatoriedad de `student-reference.md` y referencia Unidad 01 | Completado con aprobación pedagógica pendiente | `playbooks/student-reference-template.md` creado, playbooks base actualizados para exigir `student-reference.md`, `tutorial/01-kubernetes/student-reference.md` añadido como mapa de workloads y Unidades 02-05 registradas como backfill pendiente |
-| 72 | Referencia del alumno Unidad 02 | Completado con aprobación pedagógica pendiente | `tutorial/02-configuration-lifecycle/student-reference.md` añadido como referencia profesional de configuración, secretos, probes, recursos, QoS, coste y continuidad; Unidades 03-05 quedan como backfill pendiente |
-| 73 | Referencia del alumno Unidad 03 | Completado con aprobación pedagógica pendiente | `tutorial/03-networking-ingress/student-reference.md` añadido como referencia profesional de networking, TLS, certificados, `cert-manager`, Gateway API, entrada cloud y criterios de migración; Unidades 04-05 quedan como backfill pendiente |
-| 74 | Referencia del alumno Unidad 04 | Completado con aprobación pedagógica pendiente | `tutorial/04-persistence-state/student-reference.md` añadido como referencia profesional de almacenamiento Kubernetes, CSI, StatefulSet, snapshots, backup, restore y límites de `hostpath-storage`; Unidad 05 queda como backfill pendiente |
-| 75 | Referencia del alumno Unidad 05 | Completado con aprobación pedagógica pendiente | `tutorial/05-scheduling-resilience-maintenance/student-reference.md` añadido como referencia profesional de scheduling, PDB, rollouts, mantenimiento, HA real, cloud y límites de MicroK8s; backfill documental de Unidades 02-05 completado |
+| 61 | Simplificacion Framework V2 y registro de lagunas | Completado | Playbooks base ajustados de forma ligera para `student-reference.md` como referencia amplia; `project/content-gap-register.md` queda como registro único de lagunas de contenido |
+| 62 | Tratamiento inicial de lagunas de contenido | Completado | Se crearon o registraron decisiones documentales asociadas a la revisión de Unidades 00-07 sin cambiar el estado técnico del clúster. El detalle vigente queda delegado en `project/content-gap-register.md` |
+| 63 | Obligatoriedad de `student-reference.md` y referencia Unidad 01 | Completado con aprobación pedagógica pendiente | `playbooks/student-reference-template.md` creado, playbooks base actualizados para exigir `student-reference.md`, `tutorial/01-kubernetes/student-reference.md` añadido como mapa de workloads y Unidades 02-05 registradas como backfill pendiente |
+| 64 | Referencia del alumno Unidad 02 | Completado con aprobación pedagógica pendiente | `tutorial/02-configuration-lifecycle/student-reference.md` añadido como referencia profesional de configuración, secretos, probes, recursos, QoS, coste y continuidad; Unidades 03-05 quedan como backfill pendiente |
+| 65 | Referencia del alumno Unidad 03 | Completado con aprobación pedagógica pendiente | `tutorial/03-networking-ingress/student-reference.md` añadido como referencia profesional de networking, TLS, certificados, `cert-manager`, Gateway API, entrada cloud y criterios de migración; Unidades 04-05 quedan como backfill pendiente |
+| 66 | Referencia del alumno Unidad 04 | Completado con aprobación pedagógica pendiente | `tutorial/04-persistence-state/student-reference.md` añadido como referencia profesional de almacenamiento Kubernetes, CSI, StatefulSet, snapshots, backup, restore y límites de `hostpath-storage`; Unidad 05 queda como backfill pendiente |
+| 67 | Referencia del alumno Unidad 05 | Completado con aprobación pedagógica pendiente | `tutorial/05-scheduling-resilience-maintenance/student-reference.md` añadido como referencia profesional de scheduling, PDB, rollouts, mantenimiento, HA real, cloud y límites de MicroK8s; backfill documental de Unidades 02-05 completado |
+| 68 | Revisión de coherencia de Unidades 00-07 | Documental | El 2026-07-23 se detecta que TD-018 cerró el backfill de `student-reference.md` contando solo las unidades que carecían del documento; 00, 01, 06 y 07 quedan no conformes. Se registran GAP-010 y GAP-011, se toman las decisiones D1-D5, se consolidan TD-009..TD-017 en TD-024 y se poda la prosa redundante de `content-gap-register.md`. La Unidad 08 queda congelada |
 
 ---
 
 # Siguiente incremento permitido
 
-El siguiente incremento principal es:
+La Unidad 08 queda congelada. El trabajo autorizado es el saneamiento
+documental, en este orden:
 
-```text
-Generar el playbook de la Unidad 08 — Integración continua con Tekton
-```
+| Fase | Trabajo | Estado |
+|---|---|---|
+| 0 | Decisiones bloqueantes D1-D5 | Completada |
+| 1 | Compactación y saneamiento de registros de estado | En curso |
+| 2 | Contrato documental: ampliar `student-reference-template.md`, declarar la frontera en `unit-template.md`, regla ortográfica en `master.md` | Pendiente |
+| 3 | Revisión de playbooks contra el contrato cerrado | Pendiente |
+| 4 | Retroajuste de unidades: 07 como piloto, después 06, después 00 y 01, y por último auditoría de autosuficiencia de 02-05 | Pendiente |
+| 5 | Incremento funcional de la Unidad 04 (`TD-023`), con validación ejecutada | Pendiente |
 
-## Fuentes obligatorias
-
-La sesión deberá leer:
-
-```text
-project/project-state.md
-project/content-gap-register.md
-playbooks/master.md
-playbooks/unit-template.md
-playbooks/summary-template.md
-playbooks/project-state-template.md
-project/project-planning.md
-project/architecture.md
-playbooks/units/00-environment.md
-playbooks/units/01-kubernetes.md
-playbooks/units/02-configuration-lifecycle.md
-playbooks/units/03-networking-ingress.md
-playbooks/units/04-persistence-state.md
-playbooks/units/05-scheduling-resilience-maintenance.md
-playbooks/units/06-helm-packaging.md
-playbooks/units/07-local-terraform-automation.md
-tutorial/00-environment/
-tutorial/01-kubernetes/
-tutorial/02-configuration-lifecycle/
-tutorial/03-networking-ingress/
-tutorial/04-persistence-state/
-tutorial/05-scheduling-resilience-maintenance/
-tutorial/06-helm-packaging/
-tutorial/07-local-terraform-automation/
-project/roadmap.md
-```
-
-## Trabajo permitido
-
-- generar `playbooks/units/08-tekton.md`;
-- definir alcance, dependencias, entregables y validaciones de Unidad 08;
-- reutilizar `tutorial/07-local-terraform-automation/summary.md`, `labs/07-local-terraform-automation/` y el chart Helm de Unidad 06;
-- tener en cuenta `tutorial/00-environment/student-reference.md` y `platform/environment/container-images/README.md` como base conceptual y laboratorio de lectura de imagenes antes de diseñar CI;
-- aplicar `playbooks/student-reference-template.md` en futuras unidades.
+La Unidad 08 se desbloquea al cerrar la fase 3. El retroajuste de la fase 4 y la
+generación de la Unidad 08 pueden solaparse, salvo la Unidad 07, que debe
+completarse antes por ser el estado de entrada de la 08 y por contener GAP-010.
 
 ## Trabajo todavía prohibido
 
-- instalar Tekton o crear recursos Tekton;
-- crear Terraform cloud o backends remotos fuera del alcance futuro aprobado;
-- incorporar CI/CD, GitOps, observabilidad avanzada, seguridad avanzada o cloud;
-- sustituir MicroK8s por otra plataforma local;
-- sustituir la aplicación evolutiva sin decisión documentada.
+Se conserva la lista vigente, con la adición de las restricciones activas de este documento.
 
 ---
 
