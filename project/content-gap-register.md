@@ -45,7 +45,7 @@ recoge solo lo que no cabe en ella.
 | Laguna | Advertencia |
 |---|---|
 | GAP-007 | Si la Unidad 23 acumula ciclo de vida del clúster junto a backup, restore y RPO/RTO, su alcance resultará inmanejable. Reevaluar antes de generarla y, si procede, desplazar parte a la Unidad 22 |
-| GAP-004 | Su cierre definitivo requiere completar el incremento funcional de Unidad 04 registrado en `TD-023`; mientras tanto permanece abordada, no cerrada |
+| GAP-004 | Su tratamiento como práctica convierte el retroajuste de la Unidad 04 en incremento funcional, no editorial. Ver `TD-023` |
 | GAP-010 | Depende de que la Unidad 07 se retroajuste antes de generar la Unidad 09 |
 
 ## Estado consolidado

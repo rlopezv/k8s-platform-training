@@ -1017,7 +1017,7 @@ Tras generar y validar funcionalmente la Unidad 07:
 
 | Registro | Estado | Siguiente acción |
 |---|---|---|
-| `project/content-gap-register.md` | 11 lagunas: 4 cerradas, 7 abordadas, 0 abiertas | GAP-004 requiere incremento funcional en Unidad 04 (`TD-023`); GAP-010 requiere retroajuste previo de Unidad 07 |
+| `project/content-gap-register.md` | 11 lagunas: 4 cerradas, 7 abordadas, 0 abiertas | GAP-004 requiere incremento funcional en Unidad 04 (`TD-023`); GAP-010 condiciona la preparación futura de Unidad 09 |
 
 ---
 
@@ -1180,12 +1180,6 @@ documental, en este orden:
 | 3 | Revisión de playbooks contra el contrato cerrado | Pendiente |
 | 4 | Retroajuste de unidades: 07 como piloto, después 06, después 00 y 01, y por último auditoría de autosuficiencia de 02-05 | Pendiente |
 | 5 | Incremento funcional de la Unidad 04 (`TD-023`), con validación ejecutada | Pendiente |
-
-La Unidad 08 se desbloquea al cerrar las fases 3 y 4: primero la revisión de
-playbooks contra el contrato cerrado, después el retroajuste de las unidades
-00-07 y la auditoría de autosuficiencia de 02-05. La fase 5 (`TD-023`) permanece
-como incremento funcional pendiente de Unidad 04 y no bloquea por sí sola la
-generación de Unidad 08, salvo decisión posterior.
 
 ## Trabajo todavía prohibido
 
