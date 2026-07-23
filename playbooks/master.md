@@ -326,16 +326,34 @@ Ruta:
 tutorial/<unidad>/student-reference.md
 ```
 
-Es un entregable obligatorio de cada unidad. Deberá seguir `playbooks/student-reference-template.md`.
+Es un entregable obligatorio de cada unidad. Deberá seguir `playbooks/student-reference-template.md`, que define su estructura canónica y sus obligaciones comprobables.
 
 Se utilizará para ofrecer visión general, profundidad técnica o contexto de herramientas habituales que no encajan en el flujo principal de `student-notes.md`.
+
+### Frontera entre notas y referencia
+
+`student-notes.md` explica y diagnostica lo que ocurre **dentro** del laboratorio. `student-reference.md` explica lo que existe **fuera** y corrige modelos mentales.
+
+De esa frontera se derivan cuatro reglas de obligado cumplimiento:
+
+- el diagnóstico de fallos del laboratorio pertenece siempre a `student-notes.md`;
+- los errores de concepto pertenecen siempre a `student-reference.md`, sin excepciones, tampoco en unidades sin laboratorio de aplicación;
+- ningún contenido aparece en ambos documentos: si los dos lo necesitan, uno lo desarrolla y el otro lo cita por ruta;
+- `student-reference.md` no puede ser requisito previo del laboratorio.
+
+La regla de no duplicación gobierna ese par. El `README.md` de la unidad puede nombrar un error de razonamiento, pero lo remite a la referencia por ruta en lugar de desarrollarlo. `instructor-notes.md` queda exento: su lector y su función son distintos.
+
+### Obligaciones de cobertura
 
 `student-reference.md` deberá:
 
 - completar, no sustituir, a `student-notes.md`;
 - profundizar en conceptos, mecanismos, APIs, herramientas, decisiones, límites y variantes;
+- resolver cada elemento excluido en el alcance de `student-notes.md` como cubierto, anclado con número de unidad o declarado fuera del itinerario;
+- nombrar toda simplificación del laboratorio que sería incorrecta en producción, con la razón técnica y la alternativa real;
+- declarar y cerrar la laguna de `project/content-gap-register.md` asignada a la unidad, si existe, dejando rastro del cierre en `summary.md`;
+- sostenerse sin las fuentes externas: las fuentes amplían, nunca completan;
 - incluir contenido relevante aunque no se implemente en el laboratorio, dejando claro qué es conceptual, qué es práctica habitual y qué se ejecuta en el curso;
-- evitar convertirse en requisito previo oculto para seguir la unidad;
 - enlazarse desde `README.md` y `student-notes.md`;
 - mantener relación clara con el tema de la unidad y con la visión global del itinerario.
 
@@ -423,6 +441,19 @@ El estado deberá reflejar únicamente hechos verificables.
 
 La prosa formativa deberá escribirse en español con ortografía completa: tildes, signos de apertura cuando correspondan, puntuación cuidada y frases comprensibles.
 
+Es prosa formativa la de todos los entregables documentales de una unidad, sin excepción:
+
+```text
+tutorial/<unidad>/README.md
+tutorial/<unidad>/student-notes.md
+tutorial/<unidad>/student-reference.md
+tutorial/<unidad>/instructor-notes.md
+tutorial/<unidad>/summary.md
+labs/<unidad>/README.md
+```
+
+La regla alcanza también a la prosa de los documentos de gobierno y de los playbooks.
+
 Los nombres de código, comandos, rutas, APIs, recursos Kubernetes, campos de manifiestos, identificadores, nombres de herramientas y valores literales deberán conservarse tal cual aparezcan en su contexto técnico. No deberán traducirse, castellanizarse ni corregirse ortográficamente si eso cambia el identificador real.
 
 ## Orientación profesional
@@ -501,7 +532,7 @@ El tutorial del alumno debe ser el material formativo principal. Debe explicar:
 - el modelo mental necesario antes del laboratorio;
 - conceptos con profundidad progresiva;
 - decisiones de diseño y trade-offs;
-- errores de razonamiento frecuentes;
+- errores de razonamiento frecuentes, nombrados aquí y desarrollados en `student-reference.md`;
 - conexión con el mundo real;
 - lectura guiada con preguntas concretas.
 
@@ -828,6 +859,8 @@ La IA no deberá cerrar una unidad cuando:
 - se haya creado una aplicación paralela no autorizada;
 - `project/project-state.md` no esté actualizado;
 - el resumen no permita continuar;
+- exista contenido duplicado entre `student-notes.md` y `student-reference.md`;
+- una exclusión declarada en el alcance quede sin resolver en `student-reference.md`;
 - existan secretos reales;
 - haya una contradicción arquitectónica sin resolver;
 - se afirme una ejecución no realizada;

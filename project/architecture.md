@@ -270,6 +270,10 @@ Debe gobernar:
 
 Define la estructura mínima de un playbook específico de unidad.
 
+### `playbooks/student-reference-template.md`
+
+Define la estructura canónica y las obligaciones comprobables de `student-reference.md`, incluida la frontera de contenido con `student-notes.md`.
+
 ### `playbooks/summary-template.md`
 
 Define el contenido obligatorio del resumen de continuidad de cada unidad.
@@ -339,6 +343,8 @@ No debe convertirse en una enciclopedia interna ni en una referencia densa de in
 Referencia profesional obligatoria de la unidad. Completa a `student-notes.md` con visión general, profundidad técnica, variantes, herramientas habituales, límites y criterios de decisión que no deben saturar el tutorial ni el laboratorio.
 
 Debe seguir `playbooks/student-reference-template.md`, enlazarse desde `README.md` y `student-notes.md`, y distinguir qué es conceptual, qué es práctica habitual y qué se ejecuta realmente en el curso.
+
+La frontera con `student-notes.md` es de obligado cumplimiento: las notas explican y diagnostican lo que ocurre dentro del laboratorio, la referencia explica lo que existe fuera y corrige modelos mentales, y ningún contenido aparece en ambos documentos.
 
 ### `instructor-notes.md`
 

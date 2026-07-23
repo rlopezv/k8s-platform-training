@@ -394,13 +394,27 @@ tutorial/NN-unit-name/student-reference.md
 
 Crear este archivo siempre. Es un entregable obligatorio de la unidad y deberá seguir `playbooks/student-reference-template.md`.
 
+### Frontera con las notas del alumno
+
+`student-notes.md` explica y diagnostica lo que ocurre **dentro** del laboratorio. `student-reference.md` explica lo que existe **fuera** y corrige modelos mentales.
+
+El diagnóstico de fallos del laboratorio pertenece siempre a las notas. Los errores de concepto pertenecen siempre a la referencia. Ningún contenido aparece en ambos documentos: si los dos lo necesitan, uno lo desarrolla y el otro lo cita por ruta.
+
+La referencia no debe ser requisito previo del laboratorio. El alumno debe poder completar la unidad sin haberla leído.
+
+Esta frontera gobierna el par `student-notes.md` / `student-reference.md`. El `README.md` de la unidad puede nombrar un error de razonamiento pero no lo desarrolla: remite a la referencia por ruta. `instructor-notes.md` queda exento, porque su lector y su función son distintos.
+
+### Declaraciones obligatorias del playbook
+
 Declarar:
 
-- qué laguna de profundidad cubre;
+- qué laguna de `project/content-gap-register.md` cubre, con su identificador, o que no cubre ninguna;
 - qué partes de `student-notes.md` amplía;
+- qué tipos de cobertura aplica: panorama, profundidad, criterio o práctica;
 - qué relación tiene con el tema de la unidad, el ecosistema Kubernetes o las herramientas habituales;
 - qué contenido es conceptual o de referencia aunque no se ejecute en el laboratorio;
-- qué queda fuera para unidades posteriores.
+- qué simplificaciones del laboratorio serían incorrectas en producción y obligan a bloque de práctica profesional;
+- qué queda fuera para unidades posteriores, con número de unidad, o declarado fuera del itinerario.
 
 No usar `student-reference.md` como una segunda guía de laboratorio. Su función es aportar visión general, profundidad técnica y contexto profesional que ayuden a comprender el itinerario completo.
 
@@ -684,6 +698,10 @@ La unidad se considerará completada cuando:
 - [ ] no existan secretos reales;
 - [ ] se reutilicen los artefactos anteriores;
 - [ ] el tutorial incluya referencias oficiales o fuentes primarias relevantes;
+- [ ] cada exclusión declarada en el alcance de `student-notes.md` esté cubierta, anclada con número de unidad o declarada fuera del itinerario en `student-reference.md`;
+- [ ] ningún contenido esté duplicado entre `student-notes.md` y `student-reference.md`;
+- [ ] el diagnóstico de fallos del laboratorio esté solo en `student-notes.md` y los errores de concepto solo en `student-reference.md`;
+- [ ] la laguna asignada a la unidad, si existe, esté declarada en `student-reference.md` y su cierre registrado en `summary.md`;
 - [ ] `project/project-state.md` esté actualizado;
 - [ ] el resultado prepare la siguiente unidad;
 - [ ] no existan contradicciones abiertas.
@@ -823,6 +841,8 @@ Antes de aprobar este documento:
 - [ ] las dependencias son verificables;
 - [ ] los artefactos previos están identificados;
 - [ ] los entregables están definidos;
+- [ ] el reparto de contenido entre notas y referencia respeta la frontera;
+- [ ] las simplificaciones del laboratorio que obligan a práctica profesional están identificadas;
 - [ ] las validaciones son suficientes;
 - [ ] los escenarios de error son realistas;
 - [ ] las restricciones de seguridad están declaradas;
