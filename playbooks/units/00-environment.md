@@ -1,11 +1,11 @@
-# Playbook de la Unidad 00 — Preparación del entorno
+# Playbook de la Unidad 00 - Preparación del entorno
 
 ## Identificación
 
 ### Unidad
 
 ```text
-00 — Preparación del entorno
+00 - Preparación del entorno
 ```
 
 ### Identificador
@@ -17,13 +17,13 @@
 ### Fase del roadmap
 
 ```text
-Fase 1 — Plataforma local
+Fase 1 - Plataforma local
 ```
 
 ### Estado del playbook
 
 ```text
-Aprobado para iniciar la generación de la Unidad 00 una vez cerrado el bootstrap
+Aprobado; regenerado contra el contrato documental en fase 4
 ```
 
 ### Propietario lógico
@@ -36,46 +36,60 @@ Plataforma local
 
 # Propósito de la unidad
 
-La Unidad 00 prepara y valida el entorno local sobre el que se desarrollará todo el itinerario.
+La Unidad 00 prepara la estación de trabajo local que sostiene todo el itinerario: Windows 11 como host, WSL2, Ubuntu LTS, MicroK8s, `kubectl`, Helm y Terraform. Su problema no es desplegar una aplicación, sino eliminar ambigüedad operativa antes de que aparezcan los conceptos de Kubernetes.
 
-Su responsabilidad es establecer una plataforma Kubernetes reproducible basada en:
+La unidad aparece al inicio porque una práctica posterior solo es formativa si el alumno puede distinguir un fallo del laboratorio de un fallo de host, virtualización, Linux, DNS, permisos, clúster o cliente. También cierra documentalmente `GAP-001`: la Unidad 01 consume una imagen de contenedor ya existente, y la Unidad 00 debe dar el mapa profesional de contenedores, imágenes y registros sin crear una práctica de build ni registry local.
 
-- Windows 11 como host;
-- WSL2;
-- Ubuntu LTS;
-- MicroK8s;
-- Helm;
-- Terraform.
+## Supuesto pedagógico
 
-La unidad debe dejar un entorno verificable, diagnosticable y recuperable, preparado para desplegar la aplicación evolutiva en la Unidad 01.
+La unidad se escribe para alumnos con perfil técnico que saben usar una terminal, pero que todavía no dominan Kubernetes ni el encaje entre host, WSL2, Linux, distribución local de Kubernetes, cliente, runtime, imagen y registry.
 
-Esta unidad no debe introducir todavía:
+Se explican desde cero:
 
-- workloads funcionales del curso;
-- la aplicación evolutiva;
-- charts Helm de aplicación;
-- infraestructura cloud;
-- Argo CD;
-- Tekton;
-- stack de observabilidad;
-- controles avanzados de seguridad;
-- KEDA.
+- qué responsabilidad tiene cada capa de la pila Windows -> WSL2 -> Ubuntu -> MicroK8s -> API Kubernetes -> `kubectl`;
+- qué diferencia hay entre instalar, configurar, validar y registrar evidencia;
+- qué partes del flujo son Kubernetes estándar y cuáles son específicas de MicroK8s;
+- por qué `kubectl` será el cliente operativo principal y `microk8s kubectl` solo fallback de diagnóstico;
+- qué significan contenedor, imagen, runtime, tag, digest, registry e `imagePullPolicy`;
+- por qué Helm y Terraform se instalan como CLI, pero no gestionan recursos todavía.
+
+Se retoman de fases anteriores:
+
+- el repositorio como fuente única de verdad;
+- la separación entre documentos de gobierno, tutoriales y artefactos ejecutables;
+- el requisito de registrar solo estado real y verificable.
+
+Se mencionan solo para continuidad:
+
+- aplicación evolutiva `platform-api`;
+- `Namespace`, `Deployment`, `Service`, `Pod` y errores de pull de imagen;
+- ConfigMaps, Secrets, probes, requests, limits, Ingress, persistencia, Helm, Terraform, Tekton, GitOps, observabilidad, seguridad, escalado, AKS y EKS.
+
+Errores de razonamiento que debe prevenir `student-reference.md`:
+
+- creer que MicroK8s es "todo Kubernetes";
+- creer que una herramienta instalada ya gestiona recursos del curso;
+- pensar que Kubernetes construye imágenes;
+- usar `latest` como si fuera una versión validada;
+- confundir tag con digest;
+- asumir que un registry público equivale a una estrategia profesional de supply chain;
+- tratar `ImagePullBackOff` como un fallo genérico de Deployment.
 
 ---
 
-# Resultados de aprendizaje
+# Resultado de aprendizaje
 
 Al completar la unidad, el alumno deberá ser capaz de:
 
-- verificar que Windows 11, WSL2 y Ubuntu cumplen las precondiciones del laboratorio;
-- instalar y configurar MicroK8s de forma reproducible;
-- validar el estado del clúster local;
-- configurar acceso operativo a Kubernetes;
-- instalar y comprobar Helm y Terraform;
-- identificar diferencias entre Kubernetes estándar y particularidades de MicroK8s;
-- ejecutar procedimientos básicos de diagnóstico;
-- repetir o recuperar la preparación del entorno sin depender de pasos implícitos;
-- justificar el estado final mediante evidencias verificables.
+- validar que Windows, WSL2 y Ubuntu cumplen las precondiciones del laboratorio;
+- instalar, configurar y validar MicroK8s de forma reproducible;
+- configurar `kubectl` como cliente principal contra la API Kubernetes local;
+- instalar y validar Helm y Terraform como CLI sin crear artefactos funcionales;
+- distinguir Kubernetes estándar de decisiones locales de MicroK8s;
+- interpretar avisos y fallos por capa antes de aplicar recuperaciones destructivas;
+- explicar por qué la Unidad 01 puede consumir una imagen ya publicada sin construirla todavía;
+- diferenciar proceso, contenedor, imagen, runtime, registry, tag, digest e `imagePullPolicy`;
+- justificar el estado final mediante evidencias registradas, sin inventar validaciones no ejecutadas.
 
 ---
 
@@ -83,54 +97,107 @@ Al completar la unidad, el alumno deberá ser capaz de:
 
 ## Incluido
 
-- comprobación de requisitos del host;
-- validación de WSL2;
-- validación o instalación de Ubuntu LTS;
-- preparación básica del entorno Linux;
-- instalación de MicroK8s;
-- configuración de permisos;
-- validación del clúster;
-- configuración de acceso mediante `kubectl` como cliente operativo principal;
-- habilitación de addons mínimos;
-- instalación y validación de Helm;
-- instalación y validación de Terraform;
-- scripts de comprobación;
-- diagnóstico básico;
-- procedimiento de reset o recuperación;
-- documentación de versiones activas;
-- actualización del estado del proyecto.
+- comprobación documental y operativa de requisitos del host Windows;
+- validación de WSL2 y Ubuntu LTS;
+- preparación básica de Ubuntu para ejecutar servicios y herramientas;
+- instalación, configuración y validación de MicroK8s;
+- configuración de permisos de usuario y kubeconfig;
+- uso de `kubectl` como cliente principal;
+- habilitación mínima del addon `dns`;
+- instalación y validación de Helm como CLI;
+- instalación y validación de Terraform como CLI;
+- scripts idempotentes o con comportamiento al repetir documentado;
+- diagnóstico y recuperación básica del entorno;
+- reset controlado de MicroK8s con confirmación explícita;
+- referencia profesional sobre contenedores, imágenes y registros para cerrar `GAP-001`;
+- laboratorio de acompañamiento de solo lectura en `platform/environment/container-images/README.md`;
+- actualización de `summary.md`, `project/project-state.md` y, si procede, `project/content-gap-register.md`.
 
 ## Excluido
 
-- despliegue de la aplicación evolutiva;
+- despliegue de `platform-api`;
 - creación de namespaces funcionales del curso;
-- despliegue de workloads de negocio;
-- empaquetado de aplicaciones con Helm;
-- uso de Terraform para crear infraestructura cloud;
-- GitOps;
-- pipelines CI;
-- monitorización, logging y tracing;
-- políticas avanzadas de seguridad;
-- escalado automático;
-- AKS;
-- EKS.
+- creación o modificación de workloads Kubernetes;
+- creación de manifiestos Kubernetes de aplicación;
+- construcción de imágenes;
+- instalación de Docker o Podman como requisito del curso;
+- habilitación del registry de MicroK8s;
+- publicación de imágenes;
+- credenciales de pull reales;
+- charts Helm, releases Helm de aplicación o repositorios Helm;
+- módulos Terraform, backends, providers configurados para gestionar recursos o cloud;
+- Tekton, Argo CD, GitOps, Prometheus, Grafana, Loki, Tempo, OpenTelemetry, KEDA, AKS y EKS;
+- tuning avanzado del API Server local, feature gates o rangos de puertos;
+- configuración avanzada de `.wslconfig` como práctica obligatoria;
+- `kubectx` y `kubens` como dependencias obligatorias.
 
 ## Diferido a unidades posteriores
 
 | Capacidad | Unidad prevista | Motivo |
 |---|---|---|
-| Primera aplicación evolutiva | Unidad 01 | Requiere entorno local validado |
-| Configuración y Secrets de aplicación | Unidad 02 | Depende del primer workload |
-| Ingress funcional | Unidad 03 | Depende de Services y aplicación |
-| Persistencia | Unidad 04 | Depende de workloads definidos |
-| Helm para la aplicación | Unidad 06 | Deben existir manifiestos acumulados |
-| Terraform aplicado al laboratorio | Unidad 07 | Primero deben fijarse responsabilidades y artefactos |
-| Tekton | Unidad 08 | Requiere aplicación y estrategia de build |
-| Argo CD | Unidad 09 | Requiere artefactos declarativos estables |
-| Observabilidad | Unidades 11–15 | Requiere una aplicación operativa |
-| Seguridad avanzada | Unidades 16–17 | Requiere workloads y automatización |
-| KEDA | Unidad 18 | Requiere métricas y aplicación escalable |
-| AKS y EKS | Unidades 20–21 | Requieren baseline local consolidado |
+| Primera aplicación evolutiva `platform-api` | Unidad 01 | Requiere entorno validado y cliente `kubectl` operativo |
+| Uso práctico de `image`, `imagePullPolicy` e `ImagePullBackOff` | Unidad 01 | El Deployment consume la imagen que esta unidad explica conceptualmente |
+| ConfigMaps, Secrets de laboratorio, probes, requests y limits | Unidad 02 | Requieren un Deployment base |
+| Ingress HTTP local, DNS operativo de aplicación y TLS como referencia | Unidad 03 | Requiere Service y aplicación |
+| Persistencia y StorageClass | Unidad 04 | Requiere workload existente |
+| Empaquetado de `platform-api` con Helm | Unidad 06 | Requiere manifiestos acumulados |
+| Gestión del release con Terraform | Unidad 07 | Requiere chart Helm funcional |
+| Construcción de imágenes en pipeline | Unidad 08 | Encaja en CI/CD con Tekton |
+| Gestión real de secretos y credenciales de registry | Unidad 09 y seguridad posterior | Requiere GitOps, identidad y políticas |
+| Supply chain, SBOM, firma y verificación de imágenes | Unidad 17 | Requiere pipelines e imagen propia |
+| Desacoplamiento formal de MicroK8s | Unidad 19 | Será el puente hacia cloud |
+| AKS/EKS y registries cloud ACR/ECR | Unidades 20-21 | Requieren cuentas, redes, identidad y coste cloud |
+
+---
+
+# Cobertura documental de la unidad
+
+## Frontera entre `student-notes.md` y `student-reference.md`
+
+`student-notes.md` explica lo que el alumno necesita para completar la preparación del entorno: capas de host, WSL2, Ubuntu, MicroK8s, `kubectl`, Helm y Terraform; qué se comprueba; cómo se interpreta un resultado; qué fallos operativos pueden aparecer dentro del laboratorio; y cómo ubicarlos por capa.
+
+`student-reference.md` explica lo que existe fuera del laboratorio y corrige modelos mentales: contenedores, imágenes, runtimes, OCI, Docker, Podman, containerd, tags, digests, registries, pull de imágenes, credenciales, `imagePullPolicy`, supply chain y límites profesionales de usar una imagen pública ya construida.
+
+No debe duplicarse contenido. Si ambos documentos necesitan un tema, uno lo desarrolla y el otro lo cita por ruta.
+
+## Laguna asignada
+
+| ID | Tratamiento en esta unidad | Cierre esperado |
+|---|---|---|
+| `GAP-001` | La referencia de la Unidad 00 cubre contenedores, imágenes y registros; el laboratorio de acompañamiento permite leer campos de imagen sin construir ni desplegar nada | Cierre documental en `tutorial/00-environment/student-reference.md`, rastro en `tutorial/00-environment/summary.md` y registro confirmado en `project/content-gap-register.md` |
+
+## Tipos de cobertura requeridos para `student-reference.md`
+
+| Tipo | Aplicación en la Unidad 00 |
+|---|---|
+| Panorama | Situar contenedores, imágenes, runtimes y registros antes de que Kubernetes despliegue `platform-api` |
+| Profundidad | Explicar tags, digests, capas, Dockerfile, multi-stage, `imagePullPolicy`, runtime y flujo de pull hasta poder leer el Deployment de Unidad 01 |
+| Criterio | Decidir cuándo basta una imagen pública versionada, cuándo se necesita registry gobernado y por qué evitar `latest` |
+| Práctica | Nombrar distancias con producción: no hay build propio, no hay registry local, no hay credenciales reales, no hay firma, no hay SBOM y no hay escaneo |
+
+## Simplificaciones que obligan a práctica profesional
+
+| Simplificación del laboratorio | Riesgo fuera del laboratorio | Alternativa profesional que debe explicar la referencia |
+|---|---|---|
+| MicroK8s local de un nodo | No representa disponibilidad, operación ni seguridad de un clúster corporativo | Clústeres gestionados o multi-nodo, runbooks y separación de responsabilidades |
+| Addon inicial `dns` como único addon explícito | Otros servicios de plataforma no están preparados | Habilitar capacidades solo cuando una unidad las necesite y registrarlo |
+| Helm y Terraform instalados pero sin uso | La presencia de una CLI puede confundirse con estado gestionado | Artefactos versionados, comandos documentados y estado registrado al empezar su unidad |
+| Imagen pública de `platform-api` en Unidad 01 | Dependencia externa, sin control de build ni supply chain | Registry gobernado, tags inmutables, digests, escaneo, firma y promoción |
+| Sin build ni registry local | No cubre ciclo código -> imagen -> publicación -> despliegue | Tekton, registry y seguridad de supply chain en unidades posteriores |
+| Sin credenciales de registry | No demuestra autenticación ni rotación | `imagePullSecrets`, ServiceAccounts e identidad gestionada cuando corresponda |
+
+## Uso de `.work/detail.md`
+
+La sección de Unidad 00 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se clasifican así:
+
+| Punto de `.work/detail.md` | Clasificación | Tratamiento |
+|---|---|---|
+| WSL2 con Ubuntu 22.04+ y comandos de administración | Práctica existente del laboratorio | Cubierto por README, notas y scripts Windows/Ubuntu; baseline real Ubuntu 24.04 LTS |
+| `.wslconfig`, límites de CPU/RAM, swap y compactación VHD | Criterio conceptual / exclusión parcial | Se menciona como ajuste de host fuera de práctica obligatoria; no se convierte en procedimiento |
+| MicroK8s por `snap`, grupos de usuario y addons base `dns`, `rbac` | Práctica existente y exclusión | `dns` cubierto; `rbac` no se habilita en Unidad 00 porque el alcance aprobado conserva addons mínimos |
+| Argumentos avanzados de API Server en `/var/snap/microk8s/current/args/` | Exclusión anclada | Se excluye de Unidad 00; se retoma en operación avanzada, seguridad o migración cuando exista necesidad |
+| `kubectl`, Helm y Terraform independientes | Práctica existente | Instalados y validados como CLI según estado registrado |
+| Kubeconfig, contextos y TLS con API Server | Práctica existente y criterio | Kubeconfig básico y comunicación por API cubiertos; `kubectx`/`kubens` quedan como herramientas opcionales no obligatorias |
 
 ---
 
@@ -138,21 +205,31 @@ Al completar la unidad, el alumno deberá ser capaz de:
 
 Antes de generar o modificar esta unidad, leer:
 
-1. `playbooks/master.md`;
-2. `project/architecture.md`;
-3. `project/project-state.md`;
-4. `project/roadmap.md`;
-5. este playbook;
-6. `playbooks/unit-template.md`;
-7. `playbooks/summary-template.md`;
-8. `playbooks/project-state-template.md`;
-9. los artefactos existentes en `platform/environment/`, si los hubiera.
+1. `project/documentation-cleanup-plan.md`;
+2. `README.md`;
+3. `project/architecture.md`;
+4. `project/project-state.md`;
+5. `project/roadmap.md`;
+6. `project/how-to.md`;
+7. `project/project-planning.md`;
+8. `project/content-gap-register.md`;
+9. `playbooks/master.md`;
+10. `playbooks/unit-template.md`;
+11. `playbooks/student-reference-template.md`;
+12. `playbooks/summary-template.md`;
+13. `playbooks/project-state-template.md`;
+14. este playbook;
+15. sección de Unidad 00 en `.work/detail.md`, solo como checklist de cobertura;
+16. `tutorial/00-environment/README.md`;
+17. `tutorial/00-environment/student-notes.md`;
+18. `tutorial/00-environment/student-reference.md`;
+19. `tutorial/00-environment/summary.md`;
+20. `platform/environment/README.md`;
+21. `platform/environment/container-images/README.md`.
 
-## Excepción
+## Excepciones
 
 No existe `summary.md` de una unidad anterior porque la Unidad 00 es la primera unidad formativa del itinerario.
-
-Esta es la única excepción al requisito de leer el resumen anterior.
 
 ---
 
@@ -160,139 +237,104 @@ Esta es la única excepción al requisito de leer el resumen anterior.
 
 ## Dependencias documentales
 
-Deben existir y estar revisados:
-
-```text
-README.md
-project/architecture.md
-project/project-state.md
-project/roadmap.md
-playbooks/master.md
-playbooks/unit-template.md
-playbooks/summary-template.md
-playbooks/project-state-template.md
-playbooks/units/00-environment.md
-```
+- contrato documental cerrado en `playbooks/student-reference-template.md`;
+- plan de saneamiento vigente en `project/documentation-cleanup-plan.md`;
+- registro de lagunas con `GAP-001`;
+- artefactos actuales de la Unidad 00;
+- documentación operativa de `platform/environment/`.
 
 ## Dependencias técnicas
 
 | Dependencia | Estado requerido | Método de comprobación |
 |---|---|---|
-| Windows 11 | Disponible | Comprobación documentada en PowerShell |
-| Virtualización | Habilitada | Validación mediante herramientas del sistema |
-| WSL2 | Disponible o instalable | `wsl --status` |
-| Ubuntu LTS | Disponible o instalable | `wsl --list --verbose` |
-| Acceso administrativo al host | Disponible cuando sea necesario | Validación manual explícita |
-| Acceso a Internet | Disponible para descargas | Prueba documentada |
-| Espacio en disco | Suficiente según requisitos definidos | Comprobación documentada |
-| Git | Disponible o instalable | `git --version` |
+| Windows 11 | Requisito previsto; validación por equipo | `platform/environment/windows/check-prerequisites.ps1` |
+| WSL2 | Disponible para la distribución objetivo | `wsl --status`, `wsl --list --verbose` |
+| Ubuntu LTS | Disponible y validable | `cat /etc/os-release` |
+| `systemd` y `snap` | Disponibles en Ubuntu | `bash platform/environment/linux/check-prerequisites.sh` |
+| MicroK8s | Instalado y operativo tras ejecutar scripts | `bash platform/environment/microk8s/validate.sh` |
+| `kubectl` | Cliente operativo principal | `kubectl version --client`, `kubectl get nodes` |
+| Helm | CLI instalada y validada | `bash platform/environment/tools/validate-tools.sh` |
+| Terraform | CLI instalada y validada | `bash platform/environment/tools/validate-tools.sh` |
 
 ## Dependencias pedagógicas
 
-El alumno debe ser capaz de:
+El alumno debe saber:
 
-- utilizar una terminal de PowerShell;
-- utilizar una shell Linux;
-- ejecutar comandos con privilegios cuando se indique;
-- interpretar salida básica de comandos;
-- trabajar con rutas y archivos;
-- comprender conceptos básicos de red y procesos.
+- abrir PowerShell y una shell Bash;
+- ejecutar comandos desde la raíz del repositorio;
+- distinguir rutas Windows y rutas Linux;
+- interpretar salidas básicas de comandos;
+- entender a nivel general qué es un proceso, un archivo, una red local y un permiso.
 
-No se asume experiencia previa administrando Kubernetes.
+No se asume experiencia previa administrando Kubernetes ni construyendo imágenes.
 
 ## Dependencias del laboratorio
 
-No existen artefactos técnicos previos obligatorios.
+No existen artefactos técnicos de unidades anteriores. La Unidad 00 reutiliza el framework del repositorio y deja sus artefactos ejecutables en:
 
-El repositorio debe contener el framework de bootstrap completo.
+```text
+platform/environment/
+```
 
 ---
 
 # Estado inicial esperado
 
-La unidad parte de un repositorio sin plataforma desplegada por sus propios artefactos.
+La unidad parte de un repositorio sin plataforma desplegada por sus propios artefactos y sin aplicación evolutiva. El entorno del alumno puede estar limpio o parcialmente preparado.
 
-El estado inicial esperado es:
+Estado esperado antes de ejecutar la unidad:
 
-- Windows 11 disponible como host;
+- Windows 11 disponible como host o pendiente de validación por equipo;
 - WSL2 ausente, parcialmente configurado o disponible;
 - Ubuntu LTS ausente o disponible;
 - MicroK8s no gestionado todavía por el proyecto;
-- Helm no gestionado todavía por el proyecto;
-- Terraform no gestionado todavía por el proyecto;
+- Helm y Terraform no gestionados todavía por el proyecto;
 - ningún namespace funcional del curso;
 - ningún workload;
-- ningún laboratorio previo;
-- ninguna aplicación evolutiva;
+- ningún chart Helm de aplicación;
+- ningún proyecto Terraform del curso;
 - ningún recurso cloud.
 
-MicroK8s se instalará dentro de Ubuntu sobre WSL2. Los scripts de MicroK8s no deberán intentar crear WSL, instalar una distribución Ubuntu ni ejecutar pasos propios de PowerShell.
+## Validación del estado inicial
 
-La unidad deberá admitir dos situaciones:
-
-1. entorno limpio que requiere instalación;
-2. entorno parcialmente preparado que requiere validación y normalización.
-
-No debe asumir que una herramienta está disponible únicamente porque exista en la máquina del alumno.
-
----
-
-# Validación del estado inicial
-
-La documentación deberá incluir comprobaciones equivalentes a:
-
-## En PowerShell
+Comprobaciones documentadas:
 
 ```powershell
-winver
+.\platform\environment\windows\check-prerequisites.ps1
 wsl --status
 wsl --list --verbose
 ```
 
-## En Ubuntu sobre WSL2
-
 ```bash
-uname -a
+bash platform/environment/linux/check-prerequisites.sh
 cat /etc/os-release
 git --version
 ```
 
-La salida exacta dependerá del entorno.
-
-La unidad deberá enseñar a interpretar:
-
-- versión de Windows;
-- versión de WSL;
-- distribución Linux;
-- modo WSL 1 o WSL 2;
-- arquitectura;
-- disponibilidad de Git;
-- errores que bloqueen la instalación.
+La salida exacta depende del equipo. No se registra como validada si no se ejecuta o si el usuario no aporta resultados.
 
 ---
 
 # Artefactos que deben reutilizarse
 
-No existen artefactos técnicos de unidades anteriores.
-
-Deben reutilizarse obligatoriamente:
-
-| Artefacto | Ruta | Uso |
+| Artefacto | Ruta | Uso en esta unidad |
 |---|---|---|
-| Arquitectura | `project/architecture.md` | Mantener separación entre plataforma y laboratorios |
-| Estado | `project/project-state.md` | Registrar únicamente hechos validados |
-| Roadmap | `project/roadmap.md` | Limitar el alcance de la unidad |
-| Playbook maestro | `playbooks/master.md` | Aplicar reglas globales |
-| Plantilla de resumen | `playbooks/summary-template.md` | Generar continuidad |
-| Plantilla de estado | `playbooks/project-state-template.md` | Actualizar estado consolidado |
+| Arquitectura | `project/architecture.md` | Mantener Unidad 00 fuera de `labs/` |
+| Estado | `project/project-state.md` | Registrar solo hechos verificables |
+| Roadmap | `project/roadmap.md` | Limitar alcance a plataforma local |
+| Registro de lagunas | `project/content-gap-register.md` | Confirmar cierre de `GAP-001` |
+| Plantilla de referencia | `playbooks/student-reference-template.md` | Regenerar `student-reference.md` |
+| Artefactos de entorno | `platform/environment/` | Scripts y documentación operativa |
+| Laboratorio de imágenes | `platform/environment/container-images/README.md` | Acompañar `GAP-001` sin build ni despliegue |
 
 ## Reglas de reutilización
 
-- no crear un laboratorio alternativo en `labs/`;
-- no crear una aplicación de ejemplo;
-- no introducir estructura paralela para scripts;
-- no duplicar instrucciones de gobierno;
-- mantener todos los artefactos ejecutables de la unidad en `platform/environment/`.
+- no crear un laboratorio paralelo en `labs/00-environment/`;
+- no crear workloads;
+- no crear manifiestos Kubernetes;
+- no modificar scripts de `platform/environment/` durante el saneamiento salvo defecto documental bloqueante explícito;
+- conservar `platform/environment/container-images/README.md` como laboratorio de solo lectura;
+- mantener `kubectl` como cliente principal y MicroK8s como distribución local.
 
 ---
 
@@ -300,26 +342,23 @@ Deben reutilizarse obligatoriamente:
 
 ## Componentes nuevos
 
-| Componente | Responsabilidad | Ubicación prevista |
-|---|---|---|
-| Tutorial de la Unidad 00 | Guiar la preparación del entorno | `tutorial/00-environment/README.md` |
-| Notas del instructor | Facilitar impartición y diagnóstico | `tutorial/00-environment/instructor-notes.md` |
-| Summary | Registrar estado final y continuidad | `tutorial/00-environment/summary.md` |
-| Scripts de PowerShell | Validar o preparar el host | `platform/environment/windows/` |
-| Scripts de shell | Preparar Ubuntu y herramientas | `platform/environment/linux/` |
-| Scripts de MicroK8s | Instalar, configurar y validar el clúster | `platform/environment/microk8s/` |
-| Scripts de herramientas | Instalar o validar Helm y Terraform | `platform/environment/tools/` |
-| Validación global | Comprobar el entorno completo | `platform/environment/validation/` |
-| Documentación operativa | Explicar ejecución de artefactos | `platform/environment/README.md` |
+```text
+Ninguno durante el saneamiento documental.
+```
+
+La generación original de Unidad 00 creó documentación y scripts; la fase 4 solo regenera y ajusta documentación permitida.
 
 ## Componentes modificados
 
 | Componente | Cambio | Compatibilidad esperada |
 |---|---|---|
-| `project/project-state.md` | Registrar entorno y versiones validadas | Compatible con el framework |
-| `.gitignore` | Excluir posibles artefactos locales sensibles o temporales | Sin impacto funcional |
-
-La modificación de `.gitignore` solo se realizará si los artefactos generados lo requieren.
+| `playbooks/units/00-environment.md` | Regeneración contra contrato documental | No cambia comportamiento técnico |
+| `tutorial/00-environment/README.md` | Ajuste de entrada, enlaces y cobertura | Mantiene pasos existentes |
+| `tutorial/00-environment/student-notes.md` | Alineación con frontera notas/referencia y ortografía | Conserva diagnóstico del laboratorio |
+| `tutorial/00-environment/student-reference.md` | Regeneración canónica y cierre de `GAP-001` | No crea práctica ejecutable nueva |
+| `tutorial/00-environment/summary.md` | Registro del saneamiento documental | No declara validaciones funcionales nuevas |
+| `project/project-state.md` | Estado de fase 4 y cierre de `TD-019` si procede | No cambia estado técnico del clúster |
+| `project/content-gap-register.md` | Solo si se ajusta el tratamiento de `GAP-001` | Mantiene fuente única de lagunas |
 
 ## Componentes retirados
 
@@ -331,189 +370,136 @@ Ninguno
 
 # Decisiones de diseño de la unidad
 
-## D-00-01 — MicroK8s como distribución local
+## D-00-01 - MicroK8s como distribución local
 
 ### Decisión
 
-Utilizar MicroK8s sobre Ubuntu LTS en WSL2.
+Usar MicroK8s sobre Ubuntu LTS en WSL2 como plataforma local inicial.
 
 ### Motivo
 
-- coincide con la arquitectura aprobada;
-- proporciona una experiencia cercana a un clúster Kubernetes real;
-- permite habilitar capacidades progresivamente;
-- evita introducir otra distribución local paralela.
+Respeta la arquitectura aprobada, permite disponer de un Kubernetes local reproducible y evita introducir distribuciones paralelas.
 
 ### Consecuencias
 
-- deberán documentarse particularidades de MicroK8s;
-- los comandos deberán usar `kubectl` como cliente operativo principal;
-- `microk8s kubectl` quedará reservado como fallback de diagnóstico cuando `kubectl` no esté aún configurado;
-- las capacidades estándar y específicas deberán separarse;
-- la portabilidad futura a AKS y EKS deberá mantenerse.
+- las particularidades de MicroK8s deben aislarse;
+- los procedimientos Kubernetes transferibles usarán `kubectl`;
+- la evolución hacia AKS y EKS requiere diferenciar distribución local y API estándar.
 
 ### Alternativas descartadas
 
-- Minikube: no se utilizará como plataforma principal.
-- kind: no se utilizará como plataforma principal.
-- Docker Desktop Kubernetes: no se utilizará como plataforma principal.
-- MicroShift u otras distribuciones: fuera del alcance inicial.
+- Minikube, kind y Docker Desktop Kubernetes: no se introducen como plataformas paralelas.
 
-## D-00-02 — Scripts separados por contexto de ejecución
+## D-00-02 - Scripts separados por contexto
 
 ### Decisión
 
-Separar los artefactos según se ejecuten en:
-
-- Windows PowerShell;
-- Ubuntu sobre WSL2;
-- MicroK8s;
-- validación global.
+Separar scripts Windows, Linux, MicroK8s, herramientas y validación integrada.
 
 ### Motivo
 
-Evitar ambigüedad sobre el shell, los permisos y el sistema donde debe ejecutarse cada comando.
+Evita ambigüedad sobre shell, permisos y sistema donde se ejecuta cada acción.
 
 ### Consecuencias
 
-- el tutorial deberá señalar cada cambio de contexto;
-- los scripts deberán utilizar nombres descriptivos;
-- las validaciones deberán indicar el entorno de ejecución.
+- cada documento debe indicar contexto de ejecución;
+- los scripts Linux no instalan WSL ni crean Ubuntu;
+- los scripts Windows no gestionan MicroK8s.
 
-## D-00-03 — Validación antes de instalación
+## D-00-03 - Validación antes de instalación
 
 ### Decisión
 
-Todos los procedimientos deberán comprobar primero el estado existente.
+Validar el estado existente antes de instalar o normalizar.
 
 ### Motivo
 
-La unidad debe funcionar tanto en entornos limpios como parcialmente preparados.
+La unidad debe funcionar en equipos limpios y en equipos parcialmente preparados.
 
 ### Consecuencias
 
-- los scripts deberán evitar reinstalaciones innecesarias;
-- las versiones observadas deberán registrarse;
-- los conflictos deberán diagnosticarse antes de modificar el sistema.
+- los scripts evitan reinstalaciones innecesarias;
+- los avisos se interpretan según fase;
+- las versiones observadas se registran solo cuando se han comprobado.
 
-## D-00-04 — Addons mínimos
+## D-00-04 - Addons mínimos
 
 ### Decisión
 
-Habilitar únicamente el addon `dns` como baseline inicial de MicroK8s.
+Habilitar como baseline explícita solo el addon `dns`.
 
 ### Motivo
 
-Evitar anticipar networking, observabilidad, almacenamiento u otras capacidades que pertenecen a unidades posteriores.
+Evita anticipar networking, almacenamiento, observabilidad, registry o seguridad avanzada.
 
 ### Consecuencias
 
-- `dns` permite resolución interna básica de Kubernetes y prepara validaciones mínimas del clúster.
-- `hostpath-storage`, `ingress`, `registry`, `metrics-server` y otros addons quedan diferidos hasta que una unidad los requiera explícitamente.
-- La lista final de addons habilitados deberá validarse y registrarse en `project/project-state.md`.
+- `rbac`, registry, Ingress, storage y otros addons quedan fuera de la práctica de Unidad 00;
+- cualquier addon observado por MicroK8s como core se registra como observado, no como objetivo didáctico de esta unidad.
 
-No se habilitarán addons únicamente por conveniencia futura.
-
-## D-00-05 — Terraform se instala, pero no gestiona recursos todavía
+## D-00-05 - Helm y Terraform solo como CLI
 
 ### Decisión
 
-Instalar y validar Terraform como herramienta corporativa, sin utilizarlo aún para provisionar infraestructura.
+Instalar y validar Helm y Terraform sin crear charts, releases, módulos, backends ni recursos.
 
 ### Motivo
 
-La Unidad 00 prepara herramientas. La definición de responsabilidades entre Terraform, Helm y Kubernetes corresponde a unidades posteriores.
+La unidad prepara herramientas; sus responsabilidades reales aparecen cuando existan artefactos de aplicación.
 
 ### Consecuencias
 
-- no se crearán módulos Terraform;
-- no se inicializarán backends;
-- no se gestionará MicroK8s mediante Terraform;
-- solo se validará la instalación y versión.
+- Helm se usa como empaquetador en Unidad 06;
+- Terraform gestiona el release Helm en Unidad 07;
+- la presencia de la CLI no implica ownership de recursos.
 
-## D-00-06 — Helm se instala, pero no se crea un chart
+## D-00-06 - `kubectl` como cliente principal
 
 ### Decisión
 
-Instalar y validar Helm sin empaquetar todavía la solución.
+Configurar `kubectl` independiente como cliente operativo principal del curso.
 
 ### Motivo
 
-No existen manifiestos acumulados ni aplicación evolutiva.
+`kubectl` es portable entre MicroK8s, AKS, EKS y otros clusters Kubernetes.
 
 ### Consecuencias
 
-- no se creará ningún chart;
-- no se instalarán releases funcionales;
-- la primera utilización formativa de Helm se realizará en la Unidad 06.
+- `microk8s kubectl` queda como fallback de diagnóstico;
+- el kubeconfig debe quedar disponible para el usuario;
+- las unidades posteriores deben favorecer comandos estándar de Kubernetes.
 
-## D-00-07 — `kubectl` como cliente operativo principal
+## D-00-07 - `GAP-001` sin práctica de build
 
 ### Decisión
 
-Utilizar `kubectl` como cliente operativo principal del curso desde Ubuntu sobre WSL2.
-
-MicroK8s seguirá siendo la distribución Kubernetes local inicial, pero sus comandos específicos se limitarán a instalación, configuración, gestión de addons, diagnóstico y recuperación.
+Cerrar `GAP-001` con referencia profesional y laboratorio de lectura, no con construcción de imagen ni registry local.
 
 ### Motivo
 
-- `kubectl` es el cliente estándar de Kubernetes y prepara mejor la evolución hacia AKS y EKS;
-- el alumno trabajará principalmente desde Ubuntu sobre WSL2 como estación Linux de plataforma;
-- evita que los procedimientos operativos queden acoplados al wrapper `microk8s kubectl`;
-- permite separar claramente Kubernetes estándar de operación específica de MicroK8s.
+La Unidad 01 necesita entender la imagen que consume, pero construir y publicar imágenes pertenece al flujo de CI/CD y supply chain.
 
 ### Consecuencias
 
-- la Unidad 00 deberá instalar o validar `kubectl`;
-- la Unidad 00 deberá configurar un kubeconfig usable por `kubectl`;
-- las validaciones operativas principales usarán `kubectl`;
-- `microk8s kubectl` podrá usarse como fallback de diagnóstico antes de completar la configuración del cliente estándar;
-- los scripts deberán diferenciar entre comandos genéricos de Kubernetes y comandos específicos de MicroK8s.
+- `student-reference.md` cubre el mapa mental de contenedores, imágenes y registros;
+- `platform/environment/container-images/README.md` es de solo lectura;
+- no se instala Docker, Podman ni registry local como requisito.
 
-### Alternativas descartadas
-
-- Usar `microk8s kubectl` como flujo principal: descartado por menor portabilidad pedagógica.
-- Crear solo un alias `kubectl='microk8s kubectl'`: permitido como medida temporal de diagnóstico, pero no como contrato principal del curso.
-
-## D-00-08 — Política inicial de versiones
+## D-00-08 - Política inicial de versiones
 
 ### Decisión
 
-Adoptar la siguiente baseline inicial para la Unidad 00:
-
-| Componente | Baseline inicial | Política |
-|---|---|---|
-| Windows | Windows 11 soportado | Validar versión y build; no fijar build exacta |
-| WSL | WSL2 actualizado | Validar con `wsl --status` y actualizar con `wsl --update` cuando proceda |
-| Ubuntu | Ubuntu 24.04 LTS | Baseline principal; aceptar 22.04 LTS si ya existe y pasa validaciones |
-| MicroK8s | Canal `1.35/stable` | Fijar canal snap; registrar versión exacta observada |
-| Kubernetes | 1.35.x | Derivado de MicroK8s |
-| kubectl | 1.35.x compatible | Debe respetar la política de skew de Kubernetes |
-| Helm | 3.21.x | Baseline inicial por adopción y estabilidad; reevaluar Helm 4 antes de la Unidad 06 |
-| Terraform | 1.15.x | Usar la última versión estable de la rama 1.15; evitar prereleases 1.16 |
+Mantener la baseline registrada: Ubuntu 24.04 LTS, MicroK8s `1.35/stable`, Kubernetes/kubectl 1.35.x, Helm 3.21.x y Terraform 1.15.x.
 
 ### Motivo
 
-- Ubuntu 24.04 LTS ofrece una base estable y vigente para WSL2.
-- MicroK8s `1.35/stable` evita depender de `latest/stable` y mejora la reproducibilidad.
-- `kubectl` debe mantenerse alineado con el control plane de Kubernetes.
-- Helm v3 sigue siendo ampliamente utilizado en entornos empresariales y reduce ruido para la Unidad 00, donde solo se instala y valida.
-- Helm v4 es la línea estable actual, por lo que la decisión debe reevaluarse antes de crear charts en la Unidad 06.
-- Terraform 1.15.x evita prereleases y mantiene una línea reciente estable.
+Reduce variabilidad en el entorno inicial y permite comparar resultados.
 
 ### Consecuencias
 
-- Los scripts deberán parametrizar versiones o canales cuando sea razonable.
-- Las versiones observadas deberán registrarse en `project/project-state.md` y `tutorial/00-environment/summary.md`.
-- No se considerará completada la Unidad 00 hasta registrar versiones reales ejecutadas en el entorno.
-- La decisión sobre Helm deberá reabrirse antes de generar contenido de empaquetado con Helm.
-
-### Alternativas descartadas
-
-- Ubuntu 26.04 LTS como baseline: diferido hasta comprobar madurez con WSL2 y MicroK8s.
-- `latest/stable` para MicroK8s: descartado por menor reproducibilidad.
-- Helm v4 como baseline de Unidad 00: diferido para no introducir cambios de major version antes de necesitarlos.
-- Terraform prerelease 1.16: descartado por no ser apropiado para un laboratorio reproducible.
+- las versiones exactas se registran desde evidencia real;
+- no se asume que un equipo nuevo tenga las mismas versiones sin validarlas;
+- cualquier actualización mayor se decide en su unidad natural.
 
 ---
 
@@ -525,26 +511,23 @@ Adoptar la siguiente baseline inicial para la Unidad 00:
 tutorial/00-environment/README.md
 ```
 
-Debe incluir:
+Debe actuar como puerta de entrada. Debe explicar el problema real, la arquitectura de capas, el mapa de aprendizaje, cómo usar `student-notes.md`, cómo usar `student-reference.md`, cómo llegar al README operativo de `platform/environment/` y qué queda preparado para Unidad 01.
 
-1. contexto;
-2. objetivos;
-3. arquitectura del entorno;
-4. requisitos;
-5. validación de Windows;
-6. instalación o validación de WSL2;
-7. instalación o validación de Ubuntu LTS;
-8. preparación de Ubuntu;
-9. instalación y configuración de MicroK8s;
-10. configuración de acceso;
-11. addons mínimos;
-12. instalación de Helm;
-13. instalación de Terraform;
-14. validación global;
-15. diagnóstico;
-16. recuperación o reset;
-17. estado final;
-18. conexión con la Unidad 01.
+## Notas del alumno
+
+```text
+tutorial/00-environment/student-notes.md
+```
+
+Debe explicar lo que ocurre dentro de la preparación del entorno: capas, contratos, comprobaciones, señales, fallos típicos del laboratorio, recuperación y evidencias. No debe convertirse en catálogo profesional de contenedores ni duplicar la referencia.
+
+## Referencia del alumno
+
+```text
+tutorial/00-environment/student-reference.md
+```
+
+Debe seguir `playbooks/student-reference-template.md` y cerrar `GAP-001`. Su tema profesional es contenedores, imágenes y registros, con relación directa con la imagen `nginxinc/nginx-unprivileged:1.27.4-alpine` que usa Unidad 01.
 
 ## Notas del instructor
 
@@ -552,18 +535,7 @@ Debe incluir:
 tutorial/00-environment/instructor-notes.md
 ```
 
-Debe incluir:
-
-- diferencias frecuentes entre versiones de Windows y WSL;
-- problemas de virtualización;
-- conflictos de red;
-- permisos de MicroK8s;
-- reinicio de sesión o shell;
-- errores de `snap`;
-- comportamiento de systemd en WSL2;
-- diferencias entre instalaciones limpias y existentes;
-- estrategia para no bloquear al grupo;
-- criterios para aceptar el entorno.
+No se modifican en esta fase salvo necesidad explícita.
 
 ## Resumen
 
@@ -571,17 +543,15 @@ Debe incluir:
 tutorial/00-environment/summary.md
 ```
 
-Debe seguir:
-
-```text
-playbooks/summary-template.md
-```
+Debe registrar el saneamiento documental, el cierre de `GAP-001`, validaciones funcionales no ejecutadas en esta fase y continuidad hacia Unidad 01.
 
 ## Artefactos ejecutables
 
 ```text
 platform/environment/
 ```
+
+Durante esta fase no se modifican scripts ni comportamiento funcional.
 
 ## Estado del proyecto
 
@@ -591,94 +561,77 @@ Actualizar:
 project/project-state.md
 ```
 
-siguiendo:
-
-```text
-playbooks/project-state-template.md
-```
-
 ---
 
 # Estructura prevista de artefactos
 
-La estructura final deberá ser equivalente a:
+La Unidad 00 conserva esta estructura:
 
 ```text
+tutorial/00-environment/
+├── README.md
+├── student-notes.md
+├── student-reference.md
+├── instructor-notes.md
+└── summary.md
+
 platform/environment/
 ├── README.md
-├── windows/
-│   ├── check-prerequisites.ps1
-│   └── setup-wsl.ps1
+├── container-images/
+│   └── README.md
 ├── linux/
-│   ├── check-prerequisites.sh
-│   └── prepare-ubuntu.sh
+│   └── check-prerequisites.sh
 ├── microk8s/
-│   ├── install.sh
 │   ├── configure.sh
-│   ├── validate.sh
-│   └── reset.sh
+│   ├── install.sh
+│   ├── reset.sh
+│   └── validate.sh
 ├── tools/
 │   ├── install-helm.sh
 │   ├── install-terraform.sh
 │   └── validate-tools.sh
-└── validation/
-    └── validate-environment.sh
+├── validation/
+│   └── validate-environment.sh
+└── windows/
+    ├── check-prerequisites.ps1
+    └── prepare-ubuntu-wsl.ps1
 ```
 
-Esta estructura es una baseline.
-
-Durante la generación podrá ajustarse cuando:
-
-- mejore claramente la idempotencia;
-- evite duplicación;
-- permita reutilización;
-- mantenga separación por contexto;
-- el cambio quede documentado en el summary.
-
-No deben crearse scripts vacíos o placeholders sin comportamiento definido.
-
----
-
-# Responsabilidad de los artefactos
+## Responsabilidad de cada artefacto
 
 | Ruta | Responsabilidad |
 |---|---|
-| `platform/environment/README.md` | Punto de entrada operativo de los scripts |
-| `platform/environment/windows/check-prerequisites.ps1` | Validar requisitos de Windows |
-| `platform/environment/windows/setup-wsl.ps1` | Instalar o normalizar WSL2 |
-| `platform/environment/linux/check-prerequisites.sh` | Validar Ubuntu y dependencias |
-| `platform/environment/linux/prepare-ubuntu.sh` | Preparar el entorno Linux |
-| `platform/environment/microk8s/install.sh` | Instalar MicroK8s |
-| `platform/environment/microk8s/configure.sh` | Configurar permisos y addons aprobados |
-| `platform/environment/microk8s/validate.sh` | Validar clúster y API |
-| `platform/environment/microk8s/reset.sh` | Recuperar o limpiar el estado de MicroK8s |
-| `platform/environment/tools/install-helm.sh` | Instalar Helm |
-| `platform/environment/tools/install-terraform.sh` | Instalar Terraform |
-| `platform/environment/tools/validate-tools.sh` | Comprobar herramientas y versiones |
-| `platform/environment/validation/validate-environment.sh` | Ejecutar validación integrada |
+| `tutorial/00-environment/README.md` | Entrada formativa de la unidad |
+| `tutorial/00-environment/student-notes.md` | Guía de aprendizaje y diagnóstico del laboratorio |
+| `tutorial/00-environment/student-reference.md` | Referencia profesional de contenedores, imágenes y registros |
+| `tutorial/00-environment/summary.md` | Continuidad y estado documental |
+| `platform/environment/README.md` | Operación de scripts de entorno |
+| `platform/environment/container-images/README.md` | Laboratorio de lectura sobre imagen e `imagePullPolicy` |
+| `platform/environment/windows/` | Comprobaciones y preparación desde PowerShell |
+| `platform/environment/linux/` | Comprobaciones de Ubuntu WSL |
+| `platform/environment/microk8s/` | Instalación, configuración, validación y reset de MicroK8s |
+| `platform/environment/tools/` | Instalación y validación de Helm/Terraform |
+| `platform/environment/validation/` | Validación integrada |
 
 ---
 
 # Flujo pedagógico obligatorio
 
-La unidad deberá seguir este orden:
+La unidad debe seguir este orden conceptual:
 
-1. explicar la arquitectura Windows → WSL2 → Ubuntu → MicroK8s;
-2. validar el host antes de modificarlo;
-3. instalar o normalizar WSL2;
-4. validar Ubuntu;
-5. preparar dependencias Linux;
-6. instalar MicroK8s;
-7. configurar permisos y acceso;
-8. habilitar únicamente addons mínimos;
-9. validar el clúster;
-10. instalar Helm y Terraform;
-11. ejecutar validación global;
-12. provocar o analizar al menos un fallo realista;
-13. documentar recuperación;
-14. registrar versiones y estado final.
+1. problema real: separar aprendizaje de Kubernetes de fallos del entorno;
+2. pila de capas Windows -> WSL2 -> Ubuntu -> MicroK8s -> API -> `kubectl`;
+3. validación del host antes de instalar;
+4. validación de Ubuntu y dependencias;
+5. instalación y configuración de MicroK8s;
+6. configuración de `kubectl`;
+7. validación del clúster;
+8. instalación y validación de Helm y Terraform como CLI;
+9. diagnóstico por capa y recuperación controlada;
+10. referencia profesional de imágenes como preparación para Unidad 01;
+11. consolidación de evidencias y limitaciones.
 
-Este orden evita diagnosticar errores de Kubernetes causados realmente por una base WSL2 incorrecta.
+Este orden evita saltar de un error de entorno a una explicación de Kubernetes que todavía no aplica.
 
 ---
 
@@ -686,70 +639,38 @@ Este orden evita diagnosticar errores de Kubernetes causados realmente por una b
 
 ## Preparación
 
-- comprobar requisitos de Windows;
-- confirmar virtualización;
-- comprobar versión de WSL;
-- comprobar distribución y versión de Ubuntu;
-- verificar conectividad;
-- verificar espacio disponible;
-- identificar instalaciones existentes.
+- comprobar Windows, virtualización, WSL y distribución objetivo;
+- comprobar Ubuntu, `systemd`, `snap`, Git, herramientas base, DNS y espacio;
+- revisar si las herramientas ya existen.
 
 ## Implementación
 
-- instalar o actualizar WSL2 cuando proceda;
-- instalar o seleccionar Ubuntu LTS;
-- preparar paquetes base;
-- instalar MicroK8s;
-- configurar pertenencia al grupo correspondiente;
-- configurar acceso al clúster;
-- habilitar addons mínimos;
-- instalar Helm;
-- instalar Terraform.
+- instalar Ubuntu WSL solo desde el procedimiento Windows documentado;
+- instalar MicroK8s y `kubectl` mediante scripts;
+- configurar grupo `microk8s`, addon `dns` y kubeconfig;
+- instalar Helm y Terraform como CLI.
 
 ## Validación
 
-- comprobar versión de WSL;
-- comprobar versión de Ubuntu;
-- comprobar estado de MicroK8s;
-- consultar nodos;
-- consultar namespaces del sistema;
-- comprobar DNS o addon equivalente si se habilita;
-- comprobar versión de Helm;
-- comprobar versión de Terraform;
-- ejecutar validación global.
+- comprobar WSL2, Ubuntu, MicroK8s, `kubectl`, nodos, namespaces, Helm y Terraform;
+- ejecutar validación integrada cuando los bloques previos existan.
 
 ## Diagnóstico
 
-- revisar estado de MicroK8s;
-- revisar servicios relevantes;
-- revisar eventos;
-- comprobar permisos;
-- comprobar resolución de nombres;
-- comprobar conectividad;
-- comprobar conflictos de puertos;
-- comprobar comportamiento de systemd;
-- generar informe de inspección cuando sea aplicable.
+- ubicar el fallo por capa;
+- distinguir `WARN` esperado de bloqueo;
+- comprobar DNS, permisos, contexto, kubeconfig, grupos y servicios.
 
 ## Recuperación
 
 - reabrir sesión para aplicar grupos;
-- reiniciar WSL;
-- reiniciar MicroK8s;
-- deshabilitar o rehabilitar addons;
-- ejecutar reset controlado;
-- reinstalar únicamente cuando el diagnóstico lo justifique.
+- reiniciar WSL o MicroK8s cuando proceda;
+- usar reset de MicroK8s solo con confirmación explícita;
+- no borrar distribuciones ni estado local sin procedimiento externo.
 
 ## Limpieza
 
-La unidad deberá distinguir:
-
-- reset de MicroK8s;
-- desinstalación de MicroK8s;
-- eliminación de Ubuntu;
-- desactivación de WSL;
-- limpieza de archivos temporales.
-
-Las operaciones destructivas no deberán agruparse en un único comando automático sin confirmación explícita.
+No hay limpieza ordinaria de la Unidad 00. El reset de MicroK8s es recuperación, no cierre normal.
 
 ---
 
@@ -759,53 +680,51 @@ Las operaciones destructivas no deberán agruparse en un único comando automát
 
 | Validación | Herramienta o comando | Resultado esperado |
 |---|---|---|
-| Sintaxis PowerShell | Mecanismo disponible en PowerShell | Scripts sin errores de sintaxis |
 | Sintaxis Bash | `bash -n <script>` | Código de salida 0 |
 | ShellCheck | `shellcheck <script>` cuando esté disponible | Sin errores bloqueantes |
+| Sintaxis PowerShell | Parser o ejecución controlada cuando esté disponible | Scripts sin errores de sintaxis |
 | Rutas documentadas | Revisión del repositorio | Todas las rutas existen |
-| Secretos | Revisión y búsqueda | No existen credenciales reales |
+| Secretos | Revisión documental | No hay credenciales reales |
 
 ## Validaciones funcionales
 
 | Validación | Procedimiento | Resultado esperado |
 |---|---|---|
 | WSL2 | `wsl --status` | WSL disponible |
-| Distribución | `wsl --list --verbose` | Ubuntu ejecutándose como WSL2 |
+| Distribución | `wsl --list --verbose` | Ubuntu objetivo en WSL2 |
 | Ubuntu | `cat /etc/os-release` | Ubuntu LTS compatible |
 | MicroK8s | `microk8s status --wait-ready` | Clúster preparado |
-| Nodo | `kubectl get nodes` | Nodo en estado Ready |
-| Cliente Kubernetes | `kubectl version --client` | Versión de cliente disponible |
-| API Kubernetes | Consulta de recursos | Respuesta satisfactoria |
-| Helm | `helm version` | Versión disponible |
-| Terraform | `terraform version` | Versión disponible |
-| Validación integrada | Script global | Código de salida 0 |
+| Nodo | `kubectl get nodes` | Nodo en `Ready` |
+| Cliente Kubernetes | `kubectl version --client` | Versión compatible |
+| Helm | `helm version` | CLI disponible |
+| Terraform | `terraform version` | CLI disponible |
+| Validación integrada | `bash platform/environment/validation/validate-environment.sh` | Sin fallos bloqueantes |
 
 ## Validaciones de continuidad
 
 Comprobar que:
 
-- no se ha creado una aplicación;
-- no existen workloads funcionales del curso;
-- el clúster queda listo para la Unidad 01;
-- las versiones están registradas;
-- los scripts pueden volver a ejecutarse sin dañar el entorno;
-- `project/project-state.md` refleja el estado observado;
-- `tutorial/00-environment/summary.md` contiene la evidencia necesaria.
+- no se han creado workloads;
+- no se han creado namespaces funcionales;
+- no se han creado charts ni módulos Terraform;
+- `summary.md` distingue validaciones ejecutadas de pendientes;
+- `student-reference.md` declara y cierra `GAP-001`;
+- la Unidad 01 puede reutilizar la explicación de imagen sin exigir build ni registry.
 
-## Validaciones no ejecutables en el entorno de generación
+## Validaciones no ejecutables en el saneamiento documental
 
-La IA puede generar y revisar estáticamente scripts, pero no debe afirmar que ha validado:
+Durante la fase 4 de saneamiento de Unidad 00 no se ejecutan validaciones funcionales nuevas. No declarar como nueva evidencia:
 
-- Windows 11 real;
+- Windows real;
 - virtualización real;
-- WSL2 real;
-- Ubuntu real;
-- MicroK8s real;
-- conectividad real;
-- permisos reales;
-- versiones observadas en el equipo del alumno.
-
-Estas validaciones deberán ejecutarse por el usuario y registrarse con resultados reales.
+- WSL2 desde PowerShell;
+- MicroK8s;
+- `kubectl`;
+- Helm;
+- Terraform;
+- pull de imágenes;
+- build de imágenes;
+- registry local.
 
 ---
 
@@ -813,16 +732,14 @@ Estas validaciones deberán ejecutarse por el usuario y registrarse con resultad
 
 | Escenario | Síntoma | Diagnóstico | Recuperación |
 |---|---|---|---|
-| Virtualización deshabilitada | WSL2 no inicia | Revisar estado de virtualización y requisitos | Habilitar virtualización y reiniciar |
-| Distribución en WSL1 | MicroK8s no funciona correctamente | `wsl --list --verbose` | Convertir la distribución a WSL2 |
-| Usuario fuera del grupo de MicroK8s | Errores de permisos | Comprobar grupos del usuario | Añadir grupo y reiniciar sesión |
-| MicroK8s no alcanza estado ready | `status --wait-ready` falla | Inspección y servicios | Reiniciar, inspeccionar o reset controlado |
-| DNS no operativo | Resolución interna falla | Revisar addon y pods del sistema | Reconfigurar addon |
-| Snap o systemd no disponibles | Instalación o servicios fallan | Revisar Ubuntu y configuración WSL | Normalizar configuración de Ubuntu |
-| Conflicto de puertos | Componentes no levantan | Inspección de puertos y procesos | Liberar o reconfigurar |
-| Falta de conectividad | Descargas o pulls fallan | DNS, proxy, firewall y red WSL | Corregir conectividad |
-| Terraform o Helm ya instalados | Versiones diferentes | Consultar binario y origen | Conservar, actualizar o normalizar según política |
-| Reset destructivo accidental | Pérdida del estado del clúster | Confirmar alcance | Reejecutar instalación y configuración |
+| Virtualización no disponible | WSL2 no inicia | Revisar host y features | Habilitar virtualización según procedimiento del equipo |
+| Distribución en WSL1 | MicroK8s no funciona correctamente | `wsl --list --verbose` | Convertir a WSL2 |
+| `systemd` o `snap` ausentes | Servicios o instalación fallan | `systemctl`, `snap version` | Normalizar Ubuntu/WSL antes de MicroK8s |
+| DNS bloqueado | Fallan descargas de `snap` o herramientas | `getent hosts snapcraft.io` | Resolver red/proxy/VPN sin versionar credenciales |
+| Usuario fuera de grupo | Errores de permisos MicroK8s | `groups`, salida de scripts | Añadir grupo y reabrir sesión |
+| Kubeconfig incorrecto | `kubectl` no habla con el clúster | `kubectl config current-context` | Regenerar kubeconfig desde MicroK8s |
+| Imagen no descargable en Unidad 01 | `ImagePullBackOff` o `ErrImagePull` | Eventos del Pod, nombre, tag, red, credenciales | Corregir referencia de imagen o acceso al registry en su unidad |
+| Reset usado como reflejo | Pérdida de estado local | Revisar alcance de `reset.sh` | Diagnosticar antes y ejecutar solo con confirmación |
 
 ---
 
@@ -830,46 +747,38 @@ Estas validaciones deberán ejecutarse por el usuario y registrarse con resultad
 
 ## Datos sensibles
 
-La unidad no debe requerir credenciales cloud.
-
-No se versionarán:
+No versionar:
 
 - contraseñas;
 - tokens;
-- claves privadas;
 - kubeconfigs personales;
-- proxies corporativos con credenciales;
-- certificados internos;
-- configuraciones específicas de una organización.
+- claves privadas;
+- certificados corporativos;
+- credenciales de proxy;
+- credenciales cloud;
+- credenciales de registry.
 
-Los scripts deberán aceptar configuración sensible mediante:
-
-- variables de entorno;
-- parámetros;
-- archivos locales ignorados;
-- placeholders documentados.
+La unidad usa placeholders y valores ficticios cuando necesita hablar de secretos o credenciales.
 
 ## Privilegios
 
-La documentación deberá señalar claramente:
+Documentar con claridad:
 
-- comandos ejecutados en PowerShell con privilegios administrativos;
-- comandos Linux ejecutados con `sudo`;
-- operaciones que modifican grupos;
-- operaciones que instalan paquetes;
-- operaciones que modifican WSL;
-- operaciones que reinician servicios o distribuciones.
+- cuándo se ejecuta PowerShell;
+- cuándo se requieren permisos administrativos;
+- cuándo un script Linux usa `sudo`;
+- qué operaciones modifican grupos;
+- qué operaciones escriben en `~/.kube/config` o `/usr/local/bin`.
 
 ## Operaciones destructivas
 
 | Operación | Advertencia | Alcance | Recuperación |
 |---|---|---|---|
-| `microk8s reset` o equivalente | Elimina recursos del clúster | MicroK8s local | Reconfiguración posterior |
-| Desinstalación de MicroK8s | Elimina la distribución Kubernetes | Ubuntu local | Reinstalación |
-| Eliminación de distribución WSL | Puede eliminar todo el filesystem Linux | Distribución completa | Restauración desde backup o reinstalación |
-| Desactivación de WSL | Afecta al entorno Linux | Host Windows | Reactivación y reinicio |
+| `microk8s reset` | Elimina recursos del clúster local | MicroK8s | Reconfigurar y redeplegar unidades necesarias |
+| Desinstalar MicroK8s | Elimina distribución Kubernetes local | Ubuntu | Reinstalar con scripts |
+| Eliminar distribución WSL | Borra filesystem Linux | Windows/WSL | Restaurar backup o reinstalar |
 
-Las operaciones destructivas deberán requerir confirmación explícita o ejecutarse manualmente.
+Las operaciones destructivas requieren confirmación explícita o quedan fuera del repositorio.
 
 ---
 
@@ -877,23 +786,22 @@ Las operaciones destructivas deberán requerir confirmación explícita o ejecut
 
 ## Kubernetes estándar
 
-La unidad deberá diferenciar como estándar:
-
-- API de Kubernetes;
-- recursos consultados;
-- estado de nodos;
-- namespaces;
-- uso operativo de `kubectl`;
-- validación del control plane desde el cliente.
+- API Kubernetes;
+- `kubectl`;
+- kubeconfig;
+- nodos y namespaces;
+- Pod spec con `image` e `imagePullPolicy`;
+- errores de pull de imagen;
+- uso de tags y digests como criterio de reproducibilidad.
 
 ## Específico de MicroK8s
 
-- instalación mediante mecanismo propio de Ubuntu;
+- instalación por `snap`;
 - comando `microk8s`;
-- gestión de addons;
-- grupo de usuarios;
-- comandos de inspección y reset;
-- kubeconfig generado por MicroK8s.
+- grupo `microk8s`;
+- addons;
+- generación de kubeconfig desde MicroK8s;
+- reset de la distribución local.
 
 ## Específico de AKS
 
@@ -901,7 +809,7 @@ La unidad deberá diferenciar como estándar:
 No aplica en esta unidad.
 ```
 
-Solo podrán añadirse notas comparativas breves sin procedimientos de AKS.
+Se permite referencia conceptual breve a ACR como registry cloud futuro, sin procedimiento.
 
 ## Específico de EKS
 
@@ -909,17 +817,15 @@ Solo podrán añadirse notas comparativas breves sin procedimientos de AKS.
 No aplica en esta unidad.
 ```
 
-Solo podrán añadirse notas comparativas breves sin procedimientos de EKS.
+Se permite referencia conceptual breve a ECR como registry cloud futuro, sin procedimiento.
 
 ## Estrategia de desacoplamiento
 
-- utilizar manifiestos Kubernetes estándar en unidades posteriores;
-- aislar comandos MicroK8s en scripts específicos;
-- utilizar `kubectl` como interfaz estable para operaciones Kubernetes;
-- evitar propagar rutas internas de MicroK8s;
-- documentar la obtención de kubeconfig;
-- no utilizar addons de MicroK8s como sustitutos conceptuales de componentes estándar;
-- registrar cualquier acoplamiento en el summary.
+- aislar comandos MicroK8s en `platform/environment/microk8s/`;
+- usar `kubectl` para operaciones Kubernetes transferibles;
+- no presentar addons MicroK8s como equivalentes universales;
+- registrar acoplamientos locales en `summary.md`;
+- diferir cloud hasta unidades previstas.
 
 ---
 
@@ -927,74 +833,50 @@ Solo podrán añadirse notas comparativas breves sin procedimientos de EKS.
 
 La IA no debe:
 
-- generar la aplicación evolutiva;
-- crear manifiestos de workloads funcionales;
+- generar Unidad 08;
+- crear workloads nuevos;
+- modificar manifiestos Kubernetes;
+- tocar labs de Unidades 01-07;
+- modificar scripts de `platform/environment/` salvo defecto documental bloqueante explícito;
+- ejecutar validaciones funcionales nuevas durante el saneamiento documental;
 - crear charts Helm;
 - crear módulos Terraform;
-- desplegar recursos cloud;
-- instalar Argo CD;
-- instalar Tekton;
-- instalar Prometheus, Grafana, Loki o Tempo;
-- instrumentar OpenTelemetry;
-- instalar KEDA;
-- crear contenido de la Unidad 01;
-- asumir versiones sin verificarlas;
-- afirmar que el entorno fue ejecutado;
-- habilitar addons no justificados;
-- almacenar configuraciones corporativas sensibles;
-- utilizar Docker Desktop como dependencia obligatoria;
-- introducir kind o Minikube como plataforma paralela.
+- instalar Docker, Podman o registry local como requisito;
+- habilitar addons nuevos por conveniencia;
+- modificar el API Server local, feature gates o rangos de puertos;
+- introducir Minikube, kind o Docker Desktop Kubernetes como plataforma paralela;
+- almacenar credenciales reales;
+- usar `.work/detail.md` como contrato o estructura.
 
 La IA sí puede:
 
-- crear scripts idempotentes;
-- crear validaciones;
-- documentar variantes controladas;
-- detectar instalaciones existentes;
-- parametrizar versiones;
-- crear procedimientos de diagnóstico;
-- crear procedimientos de recuperación;
-- proponer validaciones manuales;
-- actualizar el estado con resultados proporcionados por el usuario.
+- regenerar el playbook contra contrato;
+- regenerar `student-reference.md` contra `playbooks/student-reference-template.md`;
+- ajustar README, notas y summary para respetar la frontera documental;
+- revisar `GAP-001` en `project/content-gap-register.md`;
+- actualizar `project/project-state.md` con el estado documental real;
+- hacer validaciones documentales, de rutas, de búsqueda y de diff.
 
 ---
 
 # Criterios de aceptación
 
-La unidad se considerará completada cuando:
+La unidad se considera conforme tras el saneamiento cuando:
 
-- [ ] exista `tutorial/00-environment/README.md`;
-- [ ] exista `tutorial/00-environment/instructor-notes.md`;
-- [ ] exista `tutorial/00-environment/summary.md`;
-- [ ] exista `platform/environment/README.md`;
-- [ ] existan scripts de comprobación de Windows;
-- [ ] existan scripts de preparación de Ubuntu;
-- [ ] existan scripts de instalación, configuración, validación y reset de MicroK8s;
-- [ ] existan scripts de instalación o validación de Helm y Terraform;
-- [ ] exista una validación integrada;
-- [ ] los scripts Bash superen validación de sintaxis;
-- [ ] los scripts PowerShell hayan sido revisados o validados;
-- [ ] las rutas documentadas coincidan con el repositorio;
-- [ ] no existan secretos reales;
-- [ ] las operaciones destructivas estén protegidas;
-- [ ] las particularidades de MicroK8s estén separadas de Kubernetes estándar;
-- [ ] se hayan documentado validaciones reales a ejecutar;
-- [ ] el usuario haya proporcionado o registrado resultados de ejecución;
-- [ ] `project/project-state.md` contenga versiones y estado observados;
-- [ ] el summary permita iniciar la Unidad 01;
-- [ ] no se haya generado contenido fuera de alcance.
-
-## Criterios específicos
-
-- [ ] `wsl --list --verbose` confirma Ubuntu sobre WSL2;
-- [ ] `microk8s status --wait-ready` finaliza correctamente;
-- [ ] `kubectl get nodes` muestra el nodo Ready;
-- [ ] `kubectl version --client` muestra una versión válida;
-- [ ] Helm responde con una versión válida;
-- [ ] Terraform responde con una versión válida;
-- [ ] el script de validación integrada finaliza con éxito;
-- [ ] el procedimiento de recuperación ha sido revisado;
-- [ ] el estado final no contiene workloads funcionales del curso.
+- [ ] `playbooks/units/00-environment.md` declara frontera, laguna, tipos de cobertura, simplificaciones y uso limitado de `.work/detail.md`;
+- [ ] `tutorial/00-environment/student-reference.md` sigue las nueve secciones canónicas de `playbooks/student-reference-template.md`;
+- [ ] `student-reference.md` declara `GAP-001` en su propósito y lo cierra sin práctica nueva;
+- [ ] cada exclusión relevante de `student-notes.md` queda cubierta, anclada o declarada fuera del itinerario;
+- [ ] `student-notes.md` conserva diagnóstico del laboratorio y no duplica el catálogo profesional de imágenes;
+- [ ] `README.md` funciona como entrada y remite a notas, referencia y README operativo;
+- [ ] `summary.md` registra el saneamiento, `GAP-001` y la ausencia de validaciones funcionales nuevas;
+- [ ] `project/project-state.md` registra el saneamiento de Unidad 00 y cierra `TD-019` si ya no quedan unidades pendientes;
+- [ ] `project/content-gap-register.md` mantiene `GAP-001` cerrado o ajustado de forma coherente;
+- [ ] no hay cambios funcionales en `platform/environment/`;
+- [ ] no hay cambios en labs de Unidades 01-07;
+- [ ] no se han creado workloads, manifiestos, charts, módulos ni unidades nuevas;
+- [ ] la prosa del material del alumno tiene ortografía completa;
+- [ ] el reporte final incluye cobertura punto por punto contra `.work/detail.md`.
 
 ---
 
@@ -1002,31 +884,17 @@ La unidad se considerará completada cuando:
 
 ## Plataforma
 
-- Windows 11 validado;
-- WSL2 operativo;
-- Ubuntu LTS operativo;
-- MicroK8s instalado y ready;
-- acceso Kubernetes configurado mediante `kubectl`;
-- addons mínimos habilitados y documentados.
-
-## Herramientas
-
-- Git disponible;
-- Helm disponible;
-- Terraform disponible;
-- versiones registradas.
+Sin cambios funcionales durante el saneamiento. Se conserva el estado ya registrado: Ubuntu WSL, MicroK8s, `kubectl`, Helm y Terraform validados según evidencias históricas de Unidad 00.
 
 ## Aplicación
 
 ```text
-No definida y no desplegada.
+No definida ni desplegada por Unidad 00.
 ```
 
 ## Automatización
 
-- scripts de preparación disponibles;
-- scripts idempotentes o con comportamiento de repetición documentado;
-- validación integrada disponible.
+Se conservan scripts de `platform/environment/` sin cambios funcionales.
 
 ## Observabilidad
 
@@ -1037,78 +905,55 @@ No incorporada.
 ## Seguridad
 
 - sin credenciales reales;
-- privilegios documentados;
-- operaciones destructivas protegidas.
+- sin registry local;
+- sin credenciales de pull reales;
+- referencia conceptual a supply chain, firma y SBOM anclada a unidades posteriores.
 
 ## Artefactos principales
 
 ```text
+playbooks/units/00-environment.md
 tutorial/00-environment/README.md
-tutorial/00-environment/instructor-notes.md
+tutorial/00-environment/student-notes.md
+tutorial/00-environment/student-reference.md
 tutorial/00-environment/summary.md
 platform/environment/README.md
-platform/environment/windows/
-platform/environment/linux/
-platform/environment/microk8s/
-platform/environment/tools/
-platform/environment/validation/
+platform/environment/container-images/README.md
 project/project-state.md
+project/content-gap-register.md
 ```
 
 ---
 
 # Información obligatoria para el summary
 
-El `summary.md` deberá destacar:
+El `summary.md` debe destacar:
 
-- versión validada de Windows;
-- versión y estado de WSL;
-- distribución y versión de Ubuntu;
-- versión de MicroK8s;
-- versión de Kubernetes;
-- addons habilitados;
-- método de acceso al clúster;
-- versión de `kubectl`;
-- versión de Helm;
-- versión de Terraform;
-- scripts creados;
-- comandos de validación ejecutados;
-- resultados observados;
-- validaciones pendientes;
-- problemas encontrados;
-- decisiones específicas;
-- acoplamientos a MicroK8s;
-- limitaciones;
-- deuda técnica;
-- estado exacto que podrá asumir la Unidad 01.
+- Unidad 00 saneada contra contrato documental;
+- `GAP-001` cerrado por `student-reference.md`;
+- `platform/environment/container-images/README.md` como laboratorio de solo lectura;
+- que no hubo cambios funcionales en scripts;
+- que no se ejecutaron validaciones funcionales nuevas;
+- validaciones técnicas históricas que permanecen como evidencia;
+- validaciones Windows/PowerShell pendientes por equipo;
+- continuidad hacia Unidad 01.
 
 ---
 
 # Impacto esperado en project-state
 
-Al cerrar la unidad, actualizar como mínimo:
+Al cerrar el saneamiento documental de Unidad 00, actualizar como mínimo:
 
-- fase actual;
-- estado general;
-- última unidad completada;
-- unidad siguiente;
-- estado de artefactos;
-- estado del host;
-- estado de WSL2;
-- estado de Ubuntu;
-- estado de MicroK8s;
-- versión de Kubernetes;
-- addons habilitados;
-- herramientas y versiones;
-- validaciones globales;
-- decisiones específicas que afecten a unidades posteriores;
-- riesgos;
-- cuestiones abiertas;
-- deuda técnica;
-- historial de incrementos;
-- siguiente incremento permitido.
-
-El siguiente incremento permitido deberá ser la revisión o creación del playbook de la Unidad 01, no la generación directa de su contenido si dicho playbook aún no existe.
+- resumen ejecutivo;
+- último incremento completado;
+- siguiente incremento permitido;
+- artefactos de gobierno;
+- tabla de unidades;
+- bloque de Unidad 00;
+- decisiones específicas si se añade la frontera documental;
+- deuda `TD-019`, que queda cerrada si Unidad 00 queda conforme;
+- `TD-020`, que sigue parcialmente cerrada hasta sanear todas las unidades;
+- restricciones activas y continuidad de fase 4.
 
 ---
 
@@ -1117,40 +962,37 @@ El siguiente incremento permitido deberá ser la revisión o creación del playb
 ## Siguiente unidad prevista
 
 ```text
-01 — Fundamentos operativos y primera aplicación
+01 - Fundamentos operativos y primera aplicación
 ```
 
 ## Capacidades que deja preparadas
 
-- clúster Kubernetes local;
-- acceso operativo mediante cliente Kubernetes;
-- herramientas base instaladas;
-- validaciones del entorno;
-- scripts de diagnóstico;
-- procedimiento de recuperación;
-- versiones consolidadas.
+- entorno local validado según evidencias históricas;
+- `kubectl` como cliente principal;
+- Helm y Terraform disponibles como CLI;
+- modelo mental de contenedores, imágenes, runtime y registry;
+- criterio básico para leer `image`, tag, digest, `imagePullPolicy` y fallos de pull.
 
-## Elementos que la siguiente unidad deberá reutilizar
+## Elementos que la siguiente unidad debe reutilizar
 
 | Elemento | Ruta o referencia | Motivo |
 |---|---|---|
-| Entorno local | `platform/environment/` | No reinstalar ni sustituir la plataforma |
-| Summary | `tutorial/00-environment/summary.md` | Conocer versiones y estado |
-| Project state | `project/project-state.md` | Confirmar entorno disponible |
-| MicroK8s | Clúster validado | Desplegar el primer workload |
-| kubectl | Cliente Kubernetes configurado | Operar el clúster con comandos estándar |
-| Helm | Instalación validada | Disponible, pero no usar hasta que el roadmap lo indique |
-| Terraform | Instalación validada | Disponible, pero no usar para recursos todavía |
+| Entorno local | `platform/environment/` | No reinstalar ni sustituir plataforma |
+| Summary | `tutorial/00-environment/summary.md` | Conocer estado y limitaciones |
+| Referencia de imágenes | `tutorial/00-environment/student-reference.md` | Entender la imagen de `platform-api` |
+| Laboratorio de lectura | `platform/environment/container-images/README.md` | Leer `image` e `imagePullPolicy` sin modificar el clúster |
+| Estado del proyecto | `project/project-state.md` | Confirmar restricciones y herramientas disponibles |
 
 ## Elementos que no deben modificarse todavía
 
 - distribución Kubernetes;
-- estructura de `platform/environment/`;
-- addons no requeridos por la Unidad 01;
-- estrategia de Helm;
-- estrategia de Terraform;
-- componentes de observabilidad;
-- componentes de CI/CD.
+- addons de MicroK8s no requeridos;
+- scripts de entorno salvo corrección justificada;
+- registry local;
+- estrategia de build de imágenes;
+- Helm como empaquetador de aplicación;
+- Terraform como gestor de recursos;
+- componentes de CI/CD, GitOps, observabilidad, seguridad avanzada y cloud.
 
 ---
 
@@ -1158,73 +1000,18 @@ El siguiente incremento permitido deberá ser la revisión o creación del playb
 
 | Riesgo | Probabilidad | Impacto | Mitigación |
 |---|---|---|---|
-| Diferencias entre versiones de WSL | Media | Alto | Detectar versión y documentar variantes |
-| Virtualización no disponible | Baja | Alto | Validación temprana y bloqueo explícito |
-| Entorno corporativo con proxy | Media | Alto | Parametrizar sin versionar credenciales |
-| Cambios en instalación de herramientas | Media | Medio | Fijar métodos y validar versiones |
-| Addons de MicroK8s no portables | Media | Medio | Aislar y documentar |
-| Scripts destructivos | Baja | Alto | Confirmación y separación explícita |
-| Entorno parcialmente configurado | Alta | Medio | Validación antes de instalación |
-| Reinicios requeridos | Media | Medio | Señalar puntos de reinicio y reanudación |
-| Limitaciones de recursos del host | Media | Medio | Comprobación previa y requisitos mínimos |
+| Confundir saneamiento documental con revalidación técnica | Media | Alto | Registrar explícitamente que no se ejecutan validaciones funcionales nuevas |
+| Sobrecargar Unidad 00 con tuning de WSL o API Server | Media | Medio | Tratar esos puntos de `.work/detail.md` como criterio o exclusión anclada |
+| Duplicar contenedores e imágenes en notas y referencia | Media | Medio | Dejar el diagnóstico local en notas y el modelo profesional en referencia |
+| Convertir `GAP-001` en práctica de build | Media | Alto | Mantener laboratorio de solo lectura y anclar build a CI/CD |
+| Presentar MicroK8s como equivalente a cloud | Media | Alto | Separar Kubernetes estándar, MicroK8s y cloud en referencia y notas |
 
 ---
 
-# Cuestiones abiertas
-
-| Cuestión | Bloqueante | Momento de resolución |
-|---|---|---|
-| Versiones exactas de Ubuntu, MicroK8s, Helm y Terraform | Parcialmente resuelta por política inicial | Registrar versiones observadas durante validación real |
-| Addons mínimos exactos | Resuelta para el primer incremento: `dns` | Reabrir solo si una validación técnica lo exige |
-| Política de alias o instalación de `kubectl` independiente | Resuelta: `kubectl` como cliente principal | Reabrir solo si la instalación real lo exige |
-| Uso de systemd en la versión objetivo de WSL2 | No | Durante validación del entorno |
-| Requisitos mínimos de CPU, memoria y disco | Sí para publicar el tutorial | Durante la generación de la Unidad 00 |
-| Necesidad de soporte para proxy corporativo | No | Cuando el entorno objetivo lo requiera |
-| Uso de `.gitkeep` para directorios vacíos | No | Al cerrar el bootstrap o crear la estructura |
-
----
-
-# Checklist de revisión del playbook
-
-- [x] la unidad existe en `project/roadmap.md`;
-- [x] el identificador y las rutas son consistentes;
-- [x] el alcance no invade unidades posteriores;
-- [x] las dependencias son verificables;
-- [x] los artefactos previos están identificados;
-- [x] los entregables están definidos;
-- [x] las validaciones son suficientes;
-- [x] los escenarios de error son realistas;
-- [x] las restricciones de seguridad están declaradas;
-- [x] la portabilidad está considerada;
-- [x] los criterios de aceptación son objetivos;
-- [x] el estado final está definido;
-- [x] la conexión con la siguiente unidad es explícita;
-- [x] no contradice arquitectura, estado, roadmap ni playbook maestro.
-
----
-
-# Metadatos de mantenimiento
-
-## Fecha de creación
+# Preguntas abiertas
 
 ```text
-2026-07-17
+Ninguna bloqueante para el saneamiento documental de Unidad 00.
 ```
 
-## Última revisión
-
-```text
-2026-07-17
-```
-
-## Motivo de la última revisión
-
-Definición de `kubectl` como cliente operativo principal, concreción del addon inicial `dns`, aclaración de que MicroK8s se instala dentro de Ubuntu sobre WSL2 y definición de la política inicial de versiones.
-
-## Documentos afectados por cambios futuros
-
-- `project/architecture.md`, si cambia la plataforma local;
-- `project/roadmap.md`, si cambia el alcance o secuencia;
-- `project/project-state.md`, al iniciar o cerrar la unidad;
-- `playbooks/master.md`, si cambia el proceso global;
-- `tutorial/00-environment/summary.md`, al completar la unidad.
+La validación Windows/PowerShell sigue siendo una comprobación por equipo al replicar el laboratorio, no una pregunta de diseño.

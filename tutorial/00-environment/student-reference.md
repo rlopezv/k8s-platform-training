@@ -1,86 +1,104 @@
-# Student reference - Unidad 00
+# Referencia del alumno - Unidad 00: Contenedores, imágenes y registros
 
-## Proposito de esta referencia
+## Propósito de la referencia
 
-Esta referencia completa la Unidad 00 con una vision profesional de contenedores, imagenes y registros.
+Esta referencia completa `tutorial/00-environment/student-notes.md` con el mapa profesional de contenedores, imágenes y registros. Las notas explican cómo preparar y diagnosticar el entorno local; este documento explica qué ejecutará Kubernetes cuando la Unidad 01 despliegue `platform-api`.
 
-No es una guia de construccion de imagenes y no pide crear una imagen en esta unidad. Su objetivo es que, cuando la Unidad 01 despliegue `platform-api`, el alumno no vea la imagen como una cadena magica dentro de un YAML.
+Aplica cobertura de panorama, profundidad, criterio y práctica. Cierra `GAP-001` porque la Unidad 01 consume una imagen existente y el alumno necesita entender proceso, contenedor, imagen, runtime, registry, tag, digest, `imagePullPolicy` y errores de pull sin convertir la Unidad 00 en una práctica de construcción de imágenes.
 
-Tiene un laboratorio de acompañamiento en `platform/environment/container-images/README.md`. Ese laboratorio es de solo lectura: ayuda a localizar campos como `image` e `imagePullPolicy`, consultar el contrato Kubernetes y razonar sobre fallos de pull sin modificar el cluster.
+Esta referencia no instala Docker ni Podman, no construye imágenes, no habilita el registry de MicroK8s, no crea credenciales de pull, no despliega workloads y no modifica el estado técnico del clúster.
 
-La Unidad 00 prepara el entorno. Esta referencia prepara el mapa mental de una parte esencial de ese entorno: Kubernetes no ejecuta codigo fuente directamente; ejecuta contenedores creados a partir de imagenes, y esas imagenes viven normalmente en registros.
+## Relación con la unidad
 
-## Por que aparece en la Unidad 00
+La Unidad 00 practica:
 
-Antes de Kubernetes hay una pregunta mas basica:
+- preparación y validación de Windows, WSL2, Ubuntu, MicroK8s, `kubectl`, Helm y Terraform;
+- separación entre Kubernetes estándar y detalles locales de MicroK8s;
+- registro de evidencias reales sin inventar validaciones;
+- lectura de una futura referencia de imagen sin crear recursos.
+
+| Artefacto | Ruta | Qué observar |
+|---|---|---|
+| Notas del alumno | `tutorial/00-environment/student-notes.md` | Capas del entorno y diagnóstico dentro del laboratorio |
+| README operativo | `platform/environment/README.md` | Scripts, contexto de ejecución, efectos y validaciones |
+| Laboratorio de imágenes | `platform/environment/container-images/README.md` | Lectura de `image`, `imagePullPolicy` y fallos de pull sin modificar el clúster |
+| Deployment de Unidad 01 | `labs/01-kubernetes/solution/deployment.yaml` | Imagen pública versionada que usará `platform-api` |
+
+## Mapa conceptual
 
 ```text
-Que es exactamente lo que va a ejecutar el cluster?
+código fuente
+  -> receta de build
+    -> imagen
+      -> registry
+        -> runtime del nodo
+          -> contenedor
+            -> Pod declarado en Kubernetes
 ```
 
-La respuesta no es "una aplicacion" en abstracto. Kubernetes ejecuta contenedores. Un contenedor arranca desde una imagen. Una imagen se construye, se etiqueta, se publica en un registro y se descarga en el nodo donde vaya a ejecutarse el Pod.
+Kubernetes no ejecuta código fuente directamente. Un Pod declara contenedores, cada contenedor arranca desde una imagen, el runtime del nodo obtiene esa imagen desde un registry y el kubelet informa el estado resultante a la API Kubernetes.
 
-La Unidad 01 usa una imagen publica ya existente para no mezclar demasiados trabajos a la vez. Eso es correcto para empezar con Kubernetes, pero deja una laguna conceptual importante. Esta referencia y su laboratorio de acompañamiento cubren esa laguna sin construir imagenes ni habilitar un registry local.
+La Unidad 00 no construye esa cadena completa. Solo prepara el entorno y ofrece el vocabulario necesario para que la imagen de Unidad 01 no parezca una cadena mágica en YAML.
 
-## Proceso, contenedor, imagen y runtime
+Distinciones clave:
 
-Un proceso es un programa en ejecucion dentro de un sistema operativo.
+- un proceso es un programa en ejecución;
+- un contenedor es un proceso aislado con filesystem, entorno, red y límites;
+- una imagen es una plantilla versionada para crear contenedores;
+- un runtime descarga imágenes y arranca contenedores;
+- un registry almacena y sirve imágenes;
+- Kubernetes declara qué imagen debe ejecutar, pero no la construye.
 
-Un contenedor es una forma de ejecutar uno o varios procesos con aislamiento de filesystem, red, usuarios, limites y entorno. No es una maquina virtual completa. Comparte el kernel del host, pero ve un entorno controlado.
+## Conceptos y mecanismos
 
-Una imagen es una plantilla inmutable desde la que se crean contenedores. Contiene el filesystem base, binarios, librerias, metadatos, usuario por defecto, variables, puertos declarados y comando de arranque.
+### Proceso, contenedor e imagen
 
-Un runtime de contenedores es la pieza que descarga imagenes, prepara el entorno de ejecucion y arranca contenedores. En Kubernetes, el kubelet habla con el runtime mediante la Container Runtime Interface, o CRI.
+Un proceso existe mientras se ejecuta. Un contenedor añade aislamiento alrededor de uno o varios procesos: filesystem, usuarios, red, variables de entorno, límites y señales. No es una máquina virtual completa; comparte el kernel del nodo.
 
-Resumen:
+Una imagen existe antes de arrancar el contenedor. Contiene filesystem, binarios, librerías, metadatos, usuario por defecto, variables, puertos declarados y comando de arranque. Si la imagen cambia, el contenedor nuevo puede comportarse de forma distinta aunque el manifiesto Kubernetes parezca igual.
 
-| Concepto | Que es | Cuando existe |
+| Concepto | Qué es | Qué no es |
 |---|---|---|
-| Proceso | Programa ejecutandose | Durante la ejecucion |
-| Contenedor | Proceso aislado con filesystem y configuracion propios | Durante la ejecucion |
-| Imagen | Plantilla versionada para crear contenedores | Antes de ejecutar |
-| Runtime | Motor que descarga imagenes y arranca contenedores | En el nodo |
+| Proceso | Programa en ejecución | Unidad de despliegue de Kubernetes |
+| Contenedor | Proceso aislado arrancado desde una imagen | Máquina virtual completa |
+| Imagen | Plantilla inmutable o versionada para contenedores | Código fuente vivo |
+| Runtime | Componente que descarga y ejecuta imágenes | Controlador de Kubernetes |
 
-## OCI, containerd, Docker y Podman
+### OCI, Docker, Podman y containerd
 
-OCI, Open Container Initiative, define especificaciones comunes para imagenes y runtimes. Gracias a ese contrato, una imagen puede construirse con una herramienta y ejecutarse con otra compatible.
+OCI define especificaciones comunes para imágenes y runtimes. Ese contrato permite que una imagen construida con una herramienta compatible pueda ejecutarse con otra.
 
-Docker popularizo la experiencia de construir y ejecutar contenedores. Incluye herramientas de usuario, formato de Dockerfile, cliente, daemon y flujo de trabajo local.
+Docker popularizó la experiencia de build y ejecución local. Podman ofrece un flujo similar con un enfoque que puede funcionar sin daemon central. Kubernetes, en muchos clústeres modernos, usa `containerd` u otro runtime compatible mediante CRI.
 
-Podman ofrece una experiencia parecida para construir y ejecutar contenedores, con un enfoque que puede funcionar sin daemon central y con mejor integracion rootless en algunos entornos.
-
-containerd es un runtime ampliamente usado por Kubernetes. En muchos clusters modernos, Kubernetes no habla con Docker como runtime principal; habla con containerd u otro runtime compatible mediante CRI.
-
-Para el itinerario, lo importante no es memorizar marcas, sino separar responsabilidades:
+La decisión importante no es elegir una marca en Unidad 00, sino separar responsabilidades:
 
 | Pieza | Responsabilidad |
 |---|---|
-| Dockerfile o Containerfile | Describe como construir una imagen |
-| Docker o Podman | Herramientas habituales para construir, etiquetar y probar imagenes |
-| Registry | Almacena y sirve imagenes |
-| containerd u otro runtime | Descarga y ejecuta imagenes en el nodo |
-| Kubernetes | Declara que imagen debe ejecutar un Pod |
+| Dockerfile o Containerfile | Describe cómo construir una imagen |
+| Docker o Podman | Construye, etiqueta y prueba imágenes localmente |
+| Registry | Almacena y distribuye imágenes |
+| containerd u otro runtime | Descarga y arranca contenedores en el nodo |
+| Kubernetes | Declara la imagen que debe ejecutar un Pod |
 
-## Que contiene una imagen
+### Qué contiene una imagen
 
-Una imagen suele construirse por capas. Cada instruccion relevante de la receta de construccion puede crear una capa nueva. Las capas permiten reutilizar contenido y distribuir cambios de forma eficiente.
+Una imagen suele estar formada por capas. Cada capa representa cambios sobre el filesystem anterior. Las capas permiten reutilizar contenido, distribuir cambios de forma eficiente y razonar sobre qué entra realmente en el runtime.
 
-Una imagen profesional debe ser:
+Una imagen profesional debería ser:
 
 - reproducible;
-- pequena sin sacrificar operabilidad;
-- explicita en versiones;
-- segura por defecto;
-- observable durante el diagnostico;
-- compatible con el runtime donde se ejecutara.
+- explícita en versiones;
+- pequeña sin perder operabilidad;
+- ejecutable como usuario no privilegiado cuando la aplicación lo permita;
+- libre de secretos, cachés de build y herramientas innecesarias;
+- observable cuando falla;
+- compatible con el runtime y la arquitectura del nodo.
 
-Una imagen no deberia depender de pasos manuales no documentados. Si para reconstruirla hace falta recordar una conversacion, copiar archivos a mano o usar una version implicita de una herramienta, esa imagen no es una base fiable para CI/CD.
+Si reconstruir una imagen depende de pasos manuales no documentados, esa imagen no es una base fiable para CI/CD ni para promoción entre entornos.
 
-## Dockerfile como receta
+### Dockerfile y multi-stage builds
 
-Un Dockerfile describe como pasar de codigo fuente y dependencias a una imagen ejecutable.
-
-Ejemplo conceptual:
+Un Dockerfile describe cómo pasar de código fuente y dependencias a una imagen ejecutable. Este ejemplo es conceptual, no un artefacto de la unidad:
 
 ```dockerfile
 FROM runtime-base:version
@@ -91,90 +109,72 @@ EXPOSE 8080
 CMD ["./app"]
 ```
 
-Este ejemplo no forma parte del laboratorio de Unidad 00. Sirve para reconocer decisiones que apareceran mas adelante:
+Las decisiones que importa reconocer son:
 
-- que imagen base se usa;
-- que archivos entran en la imagen;
-- que usuario ejecuta el proceso;
-- que puerto documenta la imagen;
-- que comando arranca la aplicacion.
+- imagen base;
+- archivos copiados;
+- usuario de ejecución;
+- puerto documentado;
+- comando de arranque.
 
-## Multi-stage builds
-
-Un build multi-stage separa la fase de construccion de la fase de ejecucion.
-
-La idea es sencilla:
+Un build multi-stage separa la fase de construcción de la fase de runtime:
 
 ```text
-stage de build
-  contiene compiladores, gestores de dependencias y herramientas pesadas
-
-stage de runtime
-  contiene solo lo necesario para ejecutar
+stage de build: compiladores, gestores de dependencias y herramientas pesadas
+stage de runtime: solo lo necesario para ejecutar
 ```
 
-Esto reduce tamano, superficie de ataque y ruido operativo. Tambien ayuda a que la imagen final no incluya secretos, caches o herramientas que solo eran necesarias durante la compilacion.
+Este patrón reduce tamaño, superficie de ataque y riesgo de arrastrar secretos o herramientas de compilación a producción.
 
-Este patron sera importante cuando el curso llegue a CI/CD y supply chain security.
+### Usuario no root, filesystem, puertos y variables
 
-## Usuario no root, filesystem, puertos y variables
+Ejecutar como root dentro del contenedor aumenta el impacto de errores de configuración o vulnerabilidades. Por eso muchas imágenes profesionales se preparan para correr como usuario no privilegiado.
 
-Ejecutar como root dentro del contenedor aumenta el impacto de errores de configuracion o vulnerabilidades. Una imagen preparada para Kubernetes deberia poder ejecutarse con un usuario no privilegiado siempre que la aplicacion lo permita.
+También conviene separar:
 
-Tambien conviene distinguir:
-
-- filesystem de la imagen: viene de la imagen y deberia tratarse como inmutable;
+- filesystem de la imagen: viene de la imagen y debe tratarse como inmutable;
 - filesystem escribible del contenedor: existe durante la vida del contenedor;
 - volumen: almacenamiento conectado desde fuera del contenedor;
-- variables de entorno: configuracion recibida al arrancar;
-- puerto del contenedor: puerto donde escucha el proceso dentro del Pod.
+- variables de entorno: configuración recibida al arrancar;
+- puerto de contenedor: puerto donde escucha el proceso dentro del Pod.
 
-Estas diferencias conectan con unidades posteriores:
+Estos temas reaparecen en unidades posteriores: ConfigMaps y Secrets en Unidad 02, volúmenes en Unidad 04, security contexts en Unidad 16 y supply chain en Unidad 17.
 
-| Tema | Unidad |
-|---|---|
-| Variables, ConfigMaps y Secrets | Unidad 02 |
-| Volumenes y persistencia | Unidad 04 |
-| Security contexts y privilegios | Unidad 16 |
-| SBOM, firma y verificacion | Unidad 17 |
+### Tags, `latest` y digests
 
-## Tags, `latest` y digests
-
-Una imagen se referencia normalmente con:
+Una imagen suele referenciarse así:
 
 ```text
 registry.example.com/equipo/app:1.2.3
 ```
 
-El tag es una etiqueta legible. Puede ser inmutable si la organizacion lo protege, pero tecnicamente muchos registros permiten mover un tag para apuntar a otra imagen.
+El tag es una etiqueta legible. Puede ser inmutable si el registry lo protege, pero técnicamente muchos registros permiten mover un tag para apuntar a otro contenido.
 
-`latest` no significa "la mejor version" ni "la version mas nueva validada". Solo es un tag convencional. Usarlo en plataformas compartidas reduce reproducibilidad.
+`latest` no significa "la versión más nueva validada". Solo es un tag convencional. Usarlo como contrato de despliegue reduce reproducibilidad porque el mismo manifiesto podría arrancar una imagen distinta en otro momento.
 
-Un digest identifica el contenido de una imagen:
+Un digest identifica contenido concreto:
 
 ```text
 registry.example.com/equipo/app@sha256:...
 ```
 
-El digest es mas reproducible porque apunta a contenido concreto. En entornos profesionales es habitual combinar tags legibles para humanos con digests o politicas que impidan sobrescribir versiones publicadas.
+El digest ofrece mayor reproducibilidad. En entornos profesionales se suelen combinar tags legibles, políticas que impiden sobrescribir versiones y, cuando procede, despliegue por digest.
 
-## Registros de imagenes
+### Registros de imágenes
 
-Un registry almacena imagenes y permite que los nodos las descarguen.
+Un registry almacena imágenes y permite que los nodos las descarguen.
 
-Tipos habituales:
-
-| Tipo | Ejemplo | Uso |
+| Tipo | Ejemplo | Uso habitual |
 |---|---|---|
-| Publico | Docker Hub, GitHub Container Registry | Imagenes publicas o de comunidad |
-| Privado corporativo | ACR, ECR, Harbor, Artifactory | Imagenes internas con control de acceso |
-| Local de laboratorio | Registry addon de MicroK8s | Pruebas sin publicar fuera del entorno local |
+| Público | Docker Hub, GitHub Container Registry | Imágenes públicas o comunitarias |
+| Privado corporativo | ACR, ECR, Harbor, Artifactory | Imágenes internas con control de acceso |
+| Local de laboratorio | Registry addon de MicroK8s | Pruebas locales acotadas |
 
-La Unidad 00 no habilita el registry de MicroK8s. Queda como concepto para entender que, antes de CI/CD, el curso debe decidir donde se publica una imagen y como Kubernetes la descarga.
+La Unidad 00 no habilita el registry de MicroK8s. Hacerlo implicaría nuevas decisiones sobre publicación, pull, limpieza, credenciales y relación con CI/CD. Aquí basta con entender qué problema resolvería un registry.
 
-## Como Kubernetes usa una imagen
+### Cómo Kubernetes usa una imagen
 
-En un Pod o Deployment aparece una referencia como esta:
+En el Deployment de Unidad 01 aparece una referencia como esta:
 
 ```yaml
 containers:
@@ -183,109 +183,150 @@ containers:
     imagePullPolicy: IfNotPresent
 ```
 
-Kubernetes no construye esa imagen. El flujo normal es:
+El flujo normal es:
 
 ```text
 1. El manifiesto declara una imagen.
 2. El scheduler asigna el Pod a un nodo.
 3. El kubelet del nodo pide la imagen al runtime.
-4. El runtime consulta el registry si la imagen no esta disponible localmente o si la politica lo exige.
+4. El runtime consulta el registry si la imagen no está disponible localmente o si la política lo exige.
 5. El runtime crea y arranca el contenedor.
 6. El kubelet reporta estado del Pod a la API.
 ```
 
-Si la descarga falla, el Pod puede quedar en `ImagePullBackOff` o `ErrImagePull`. Ese fallo no significa que el Deployment este mal como controlador; significa que el nodo no ha podido obtener la imagen declarada.
+Si la descarga falla, el Pod puede quedar en `ErrImagePull` o `ImagePullBackOff`. Eso no significa por sí mismo que el Deployment sea el controlador equivocado: significa que el nodo no pudo obtener la imagen declarada.
 
-## `imagePullPolicy` y credenciales
+### `imagePullPolicy` y credenciales
 
-`imagePullPolicy` influye en cuando el nodo intenta descargar una imagen.
+`imagePullPolicy` influye en cuándo el nodo intenta descargar una imagen.
 
-| Politica | Idea principal |
+| Política | Idea principal |
 |---|---|
 | `IfNotPresent` | Usa la imagen local si ya existe; si no, la descarga |
 | `Always` | Comprueba el registry cada vez que arranca el contenedor |
-| `Never` | No descarga; exige que la imagen exista ya en el nodo |
+| `Never` | No descarga; exige que la imagen ya exista en el nodo |
 
-Para imagenes privadas, Kubernetes necesita credenciales de pull. Normalmente se configuran mediante Secrets de tipo `kubernetes.io/dockerconfigjson` y se referencian desde `imagePullSecrets` o desde una ServiceAccount.
+Para imágenes privadas, Kubernetes necesita credenciales de pull. Normalmente se configuran mediante Secrets de tipo `kubernetes.io/dockerconfigjson` y se referencian desde `imagePullSecrets` o desde una ServiceAccount.
 
-Este curso no introduce credenciales reales en Unidad 00. La gestion seria parte de un bloque posterior sobre CI/CD, GitOps, secretos y cloud registries.
+La Unidad 00 no introduce credenciales reales. La gestión profesional de secretos y credenciales se retoma cuando aparezcan GitOps, identidad y registros cloud.
 
-## Conexion con `platform-api`
+### Conexión con `platform-api`
 
-La primera version de `platform-api` usa:
+La primera versión de `platform-api` usa:
 
 ```text
 nginxinc/nginx-unprivileged:1.27.4-alpine
 ```
 
-Esa eleccion tiene tres ventajas didacticas:
+La elección es didáctica:
 
-- expone HTTP sin construir todavia una aplicacion propia;
+- expone HTTP sin construir todavía una aplicación propia;
 - puede ejecutarse sin privilegios de root dentro del contenedor;
-- permite observar Pods, logs, Service y errores de imagen con poco ruido.
+- permite observar Pods, logs, Service y errores de imagen con poco ruido;
+- usa un tag explícito en lugar de `latest`.
 
-Tambien tiene limites:
+Sus límites también son importantes:
 
-- no ensena a crear una imagen propia;
+- no enseña a crear una imagen propia;
 - depende de disponibilidad externa del registry;
 - no introduce firma, SBOM ni escaneo;
-- no representa todavia un ciclo completo codigo -> imagen -> despliegue.
+- no representa el ciclo completo código -> imagen -> despliegue.
 
-La Unidad 01 acepta esos limites para centrarse en Kubernetes. Las unidades posteriores deberan cerrar el ciclo de imagenes cuando aparezcan CI/CD y seguridad de supply chain.
+## Criterios de decisión
 
-## Relacion con Tekton, supply chain y cloud
+### Cuándo basta una imagen pública versionada
 
-Tekton no solo ejecuta comandos. En una plataforma real suele formar parte de un flujo como este:
+Basta para una unidad inicial cuando el objetivo es aprender Kubernetes y el coste pedagógico de construir imágenes distraería del modelo de clúster, Pod, Deployment y Service.
 
-```text
-codigo
-  -> build
-  -> test
-  -> imagen
-  -> SBOM
-  -> firma/verificacion
-  -> publicacion en registry
-  -> despliegue declarativo
-```
+No basta cuando la organización necesita controlar procedencia, vulnerabilidades, firma, retención, disponibilidad, promoción o cumplimiento. En ese caso la imagen debe venir de un proceso gobernado.
 
-Supply chain security necesita saber que se esta protegiendo:
+### Cuándo evitar `latest`
 
-- receta de construccion;
-- dependencias;
-- imagen resultante;
-- identidad del proceso que construye;
-- registro donde se publica;
-- evidencia de firma o verificacion;
-- politica que permite o bloquea el despliegue.
+Evita `latest` siempre que quieras reproducir un despliegue, comparar entornos o depurar un cambio. Un tag explícito no garantiza por sí solo inmutabilidad, pero mejora el contrato de lectura y permite aplicar políticas de registry.
 
-En cloud, los registros suelen ser servicios gestionados:
+Usa digest o políticas de tag inmutable cuando el contenido exacto de la imagen sea parte del control de cambio.
 
-| Plataforma | Registry habitual |
+### Cuándo necesitas un registry privado
+
+Necesitas un registry privado cuando la imagen contiene código interno, dependencias privadas, requisitos de acceso, retención, escaneo, firma o promoción por entornos.
+
+Un registry privado no resuelve todo. También exige gestión de credenciales, permisos, limpieza, replicación, disponibilidad, auditoría y política de tags.
+
+### Cómo evaluar una imagen para Kubernetes
+
+Antes de promover una imagen, comprueba:
+
+- si declara y ejecuta un usuario no root cuando sea posible;
+- si tiene tag o digest trazable;
+- si expone el puerto que el manifiesto espera;
+- si arranca con configuración externa;
+- si escribe en rutas compatibles con contenedores efímeros;
+- si produce logs útiles;
+- si su proceso responde bien a señales de terminación;
+- si el registry es accesible desde los nodos.
+
+### Cómo interpretar `ImagePullBackOff`
+
+`ImagePullBackOff` apunta al paso de obtención de imagen. Las causas típicas son nombre incorrecto, tag inexistente, registry caído, DNS o red bloqueados, rate limit, credenciales ausentes, credenciales inválidas o arquitectura incompatible.
+
+No lo confundas con `CrashLoopBackOff`: en ese caso la imagen se descargó y el problema aparece al arrancar o mantener el proceso.
+
+## Relación con el laboratorio
+
+El laboratorio practica:
+
+- validar capas del entorno local;
+- instalar y validar MicroK8s, `kubectl`, Helm y Terraform;
+- leer la imagen que usará Unidad 01 en `labs/01-kubernetes/solution/deployment.yaml`;
+- consultar el contrato Kubernetes de `image` e `imagePullPolicy` con comandos de lectura;
+- razonar sobre errores de pull sin crear Pods nuevos.
+
+El laboratorio menciona, pero no practica:
+
+- construcción de imágenes propias: Unidad 08;
+- publicación en registry: Unidad 08 y Unidades 20-21 para cloud;
+- credenciales reales de registry: Unidad 09 y seguridad posterior;
+- SBOM, firma y verificación de imágenes: Unidad 17;
+- registry de MicroK8s: fuera del flujo principal salvo decisión posterior explícita;
+- tuning avanzado de API Server local: fuera de Unidad 00; se retoma solo si una unidad operativa lo necesita.
+
+Restricción de la unidad: no modificar `platform/environment/` para convertir esta referencia en una práctica de build. El cierre de `GAP-001` es documental y conceptual.
+
+## Errores frecuentes
+
+| Error | Por qué importa |
 |---|---|
-| Azure | Azure Container Registry |
-| AWS | Elastic Container Registry |
-| Entorno neutral | Harbor, GitHub Container Registry u otro registry OCI |
+| Pensar que Kubernetes construye imágenes | Kubernetes consume imágenes; el build pertenece a CI/CD o a herramientas de contenedores |
+| Creer que un contenedor es una máquina virtual | Lleva a esperar aislamiento, kernel y ciclo de vida que no existen |
+| Usar `latest` como versión validada | Reduce reproducibilidad y dificulta auditoría |
+| Confundir tag con digest | El tag puede moverse; el digest identifica contenido concreto |
+| Pensar que una imagen pública es una estrategia de supply chain | Falta gobierno sobre procedencia, escaneo, firma, retención y disponibilidad |
+| Tratar `ImagePullBackOff` como fallo de la aplicación | El proceso quizá ni siquiera arrancó porque la imagen no se descargó |
+| Creer que instalar Docker es requisito para usar Kubernetes | Los nodos usan runtimes compatibles; el cliente de build no tiene por qué existir en la estación del alumno |
+| Guardar credenciales de registry en Git | Expone acceso a imágenes privadas y rompe el modelo de secretos del curso |
 
-Por eso esta referencia aparece temprano: no obliga a ejecutar todos esos pasos, pero da vocabulario y mapa mental para reconocerlos cuando aparezcan.
+## Continuidad
 
-## Que recordar para la Unidad 01
+Unidad 01 retoma esta referencia al desplegar `platform-api` con `image: nginxinc/nginx-unprivileged:1.27.4-alpine` e `imagePullPolicy: IfNotPresent`. Allí el alumno observa cómo una imagen declarada se convierte en contenedores dentro de Pods.
 
-Antes de desplegar `platform-api`, recuerda:
+Unidad 02 conecta variables de entorno, ConfigMaps y Secrets con la configuración que recibe un contenedor al arrancar.
 
-- Kubernetes ejecuta contenedores dentro de Pods;
-- los contenedores arrancan desde imagenes;
-- la imagen debe existir en un registry o estar disponible en el nodo;
-- `image` identifica que se quiere ejecutar;
-- `imagePullPolicy` influye en la descarga;
-- `ImagePullBackOff` suele apuntar a nombre, tag, red, permisos o disponibilidad del registry;
-- usar una imagen publica versionada es una decision didactica, no una estrategia completa de produccion.
+Unidad 04 separa filesystem efímero del contenedor, volumen y persistencia externa.
+
+Unidad 08 introduce el lugar natural para construir imágenes en pipeline, ejecutar tests y preparar publicación.
+
+Unidad 09 retoma la gestión real de secretos y credenciales en un flujo GitOps, sin guardarlas en Git.
+
+Unidad 17 profundiza en supply chain: SBOM, firma, verificación, políticas de admisión y bloqueo de imágenes no conformes.
+
+Unidades 20 y 21 conectan la publicación y consumo de imágenes con ACR en Azure y ECR en AWS.
 
 ## Fuentes de referencia
 
-| Fuente | Que leer | Pregunta que deberias poder responder |
+| Fuente | Qué leer | Pregunta que deberías poder responder |
 |---|---|---|
-| Open Container Initiative | Concepto de runtime e image specification | Que estandar comparten las herramientas de contenedores? |
-| Kubernetes Documentation - Images | Nombres de imagen, tags, digests y pull policies | Como decide Kubernetes que imagen descargar? |
-| Kubernetes Documentation - Pull an Image from a Private Registry | Uso de credenciales para registros privados | Como obtiene Kubernetes acceso a una imagen privada? |
-| Docker Documentation - Dockerfile reference | Instrucciones principales de Dockerfile | Que decisiones quedan codificadas en una receta de imagen? |
-| Podman Documentation | Construccion y ejecucion local compatible con contenedores OCI | Por que Docker no es la unica herramienta posible? |
+| [Open Container Initiative](https://opencontainers.org/) | Qué estandarizan las especificaciones de imagen y runtime | Qué contrato permite interoperar entre herramientas de contenedores? |
+| [Kubernetes - Images](https://kubernetes.io/docs/concepts/containers/images/) | Nombres de imagen, tags, digests y pull policies | Cómo decide Kubernetes qué imagen descargar? |
+| [Kubernetes - Pull an Image from a Private Registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/) | Credenciales de pull mediante Secrets | Cómo obtiene un Pod acceso a una imagen privada? |
+| [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) | Instrucciones principales de una receta de imagen | Qué decisiones quedan codificadas en el build? |
+| [Podman documentation](https://docs.podman.io/) | Construcción y ejecución local compatible con OCI | Por qué Docker no es la única herramienta posible? |
