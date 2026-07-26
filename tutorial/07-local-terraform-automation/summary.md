@@ -4,20 +4,23 @@
 
 | Campo | Valor |
 |---|---|
-| Unidad | 07 - Automatizacion local con Terraform |
+| Unidad | 07 - Automatización local con Terraform |
 | Identificador | `07-local-terraform-automation` |
-| Fase del roadmap | Fase 3 - Empaquetado e infraestructura como codigo |
-| Estado | Completada, validada funcionalmente y aprobada pedagogicamente |
-| Fecha de cierre o actualizacion | 2026-07-20 |
-| Revision pedagogica del usuario | Aprobada el 2026-07-20 |
+| Fase del roadmap | Fase 3 - Empaquetado e infraestructura como código |
+| Estado | Completada, validada funcionalmente y aprobada pedagógicamente |
+| Fecha de cierre o actualización | 2026-07-26 |
+| Revisión pedagógica del usuario | Aprobada el 2026-07-20 |
+| Actualización documental | Fase 4 de saneamiento documental; aprobación específica pendiente |
 
 ## Resumen ejecutivo
 
 La Unidad 07 incorpora Terraform como capa declarativa local para gestionar el release Helm `platform-api-local` de `platform-api`. La unidad reutiliza el chart Helm de Unidad 06 ubicado en `labs/06-helm-packaging/chart/platform-api/` y crea un proyecto Terraform local en `labs/07-local-terraform-automation/terraform/`.
 
-Terraform declara `helm_release.platform_api`, variables tipadas, un values file renderizado con `templatefile()`, `set_sensitive` con secreto ficticio, outputs no sensibles y validacion automatizada. El backend sigue siendo local y el state queda como artefacto no versionado.
+Terraform declara `helm_release.platform_api`, variables tipadas, un values file renderizado con `templatefile()`, `set_sensitive` con secreto ficticio, outputs no sensibles y validación automatizada. El backend sigue siendo local y el state queda como artefacto no versionado.
 
-La unidad deja preparada la Unidad 08 para ejecutar validacion, plan y apply desde CI/CD con Tekton, manteniendo la frontera entre Kubernetes, Helm y Terraform.
+La unidad deja preparada la Unidad 08 para ejecutar validación, plan y apply desde CI/CD con Tekton, manteniendo la frontera entre Kubernetes, Helm y Terraform.
+
+El 2026-07-26 se regeneraron `playbooks/units/07-local-terraform-automation.md` y `tutorial/07-local-terraform-automation/student-reference.md` contra el contrato documental cerrado en `playbooks/student-reference-template.md`. El ajuste no modifica laboratorios, validaciones ni artefactos Terraform, no ejecuta nuevas validaciones técnicas y cierra documentalmente `GAP-010` declarando la frontera de propiedad entre Terraform y GitOps.
 
 ## Objetivos alcanzados
 
@@ -31,9 +34,12 @@ La unidad deja preparada la Unidad 08 para ejecutar validacion, plan y apply des
 | Ignorar state, tfvars locales y planes | Alcanzado | `terraform/.gitignore` |
 | Crear documentacion del alumno | Alcanzado | `README.md`, `student-notes.md`, `student-reference.md` |
 | Crear laboratorio operativo | Alcanzado | `labs/07-local-terraform-automation/README.md` |
-| Crear validacion automatizada | Alcanzado | `labs/07-local-terraform-automation/validation/validate.sh` |
-| Ejecutar validaciones estaticas | Alcanzado | `bash -n`, `terraform fmt`, `terraform init`, `terraform validate` |
+| Crear validación automatizada | Alcanzado | `labs/07-local-terraform-automation/validation/validate.sh` |
+| Ejecutar validaciones estáticas | Alcanzado | `bash -n`, `terraform fmt`, `terraform init`, `terraform validate` |
 | Ejecutar apply funcional | Alcanzado | `terraform apply`: 0 added, 1 changed, 0 destroyed |
+| Regenerar playbook contra contrato documental | Alcanzado | `playbooks/units/07-local-terraform-automation.md` |
+| Regenerar referencia del alumno contra plantilla canónica | Alcanzado | `tutorial/07-local-terraform-automation/student-reference.md` |
+| Cerrar documentalmente `GAP-010` | Alcanzado | `student-reference.md`, sección "Conceptos y mecanismos"; `project/content-gap-register.md` |
 
 ## Estado inicial utilizado
 
@@ -45,11 +51,11 @@ La unidad deja preparada la Unidad 08 para ejecutar validacion, plan y apply des
 
 ## Aplicacion
 
-- `platform-api` existe como aplicacion evolutiva.
+- `platform-api` existe como aplicación evolutiva.
 - El chart Helm local conserva Namespace, ConfigMap, Secret ficticio, PVC, Deployment, Service, Ingress y PDB.
 - El release documentado se llama `platform-api-local`.
 
-## Automatizacion
+## Automatización
 
 - Unidad 06 instalaba y actualizaba el release con Helm CLI.
 - No existian archivos `.tf` ni state Terraform del curso antes de generar Unidad 07.
@@ -63,7 +69,7 @@ La unidad deja preparada la Unidad 08 para ejecutar validacion, plan y apply des
 
 | Artefacto | Ruta | Uso |
 |---|---|---|
-| Summary Unidad 06 | `tutorial/06-helm-packaging/summary.md` | Continuidad tecnica |
+| Summary Unidad 06 | `tutorial/06-helm-packaging/summary.md` | Continuidad técnica |
 | Student reference Unidad 06 | `tutorial/06-helm-packaging/student-reference.md` | Frontera Helm/Terraform |
 | Chart Helm | `labs/06-helm-packaging/chart/platform-api/` | Paquete instalado por Terraform |
 | Validacion Unidad 06 | `labs/06-helm-packaging/validation/validate.sh` | Validacion funcional heredada |
@@ -79,8 +85,8 @@ La unidad deja preparada la Unidad 08 para ejecutar validacion, plan y apply des
 - renderizado de values con `templatefile()`;
 - `set_sensitive` con Secret ficticio de laboratorio;
 - outputs no sensibles para inspeccion;
-- validacion automatizada de Terraform, Helm y Kubernetes;
-- referencia avanzada de Terraform para state, variables, expresiones, modulos e integracion Kubernetes/Helm.
+- validación automatizada de Terraform, Helm y Kubernetes;
+- referencia avanzada de Terraform para state, variables, expresiones, módulos e integración Kubernetes/Helm.
 
 ## Componentes creados
 
@@ -88,7 +94,7 @@ La unidad deja preparada la Unidad 08 para ejecutar validacion, plan y apply des
 |---|---|---|
 | Tutorial Unidad 07 | `tutorial/07-local-terraform-automation/README.md` | Puerta de entrada |
 | Student notes | `tutorial/07-local-terraform-automation/student-notes.md` | Guia de aprendizaje |
-| Student reference | `tutorial/07-local-terraform-automation/student-reference.md` | Referencia tecnica avanzada |
+| Student reference | `tutorial/07-local-terraform-automation/student-reference.md` | Referencia técnica avanzada |
 | Instructor notes | `tutorial/07-local-terraform-automation/instructor-notes.md` | Guia de imparticion |
 | Summary Unidad 07 | `tutorial/07-local-terraform-automation/summary.md` | Continuidad |
 | Laboratorio | `labs/07-local-terraform-automation/README.md` | Operacion Terraform |
@@ -99,7 +105,12 @@ La unidad deja preparada la Unidad 08 para ejecutar validacion, plan y apply des
 
 | Componente | Ruta | Cambio realizado |
 |---|---|---|
-| Estado del proyecto | `project/project-state.md` | Registra Unidad 07 generada, validada funcionalmente y aprobada pedagogicamente |
+| Estado del proyecto | `project/project-state.md` | Registra Unidad 07 generada, validada funcionalmente y aprobada pedagógicamente |
+| Playbook Unidad 07 | `playbooks/units/07-local-terraform-automation.md` | Regenerado contra el contrato documental de fase 4 |
+| Student reference | `tutorial/07-local-terraform-automation/student-reference.md` | Regenerada con estructura canónica y cierre de `GAP-010` |
+| README de alumno | `tutorial/07-local-terraform-automation/README.md` | Ajustado para remitir los errores conceptuales a la referencia |
+| Student notes | `tutorial/07-local-terraform-automation/student-notes.md` | Ajustadas para mantener diagnóstico operativo y remitir modelos mentales a la referencia |
+| Registro de lagunas | `project/content-gap-register.md` | `GAP-010` marcado como cerrado documentalmente |
 
 ## Componentes retirados
 
@@ -140,7 +151,7 @@ labs/07-local-terraform-automation/
 |---|---|---|
 | MicroK8s | Reutilizado | `project/project-state.md` |
 | Kubernetes local | Reutilizado | `project/project-state.md` |
-| Recursos cloud | No creados | Revision de artefactos |
+| Recursos cloud | No creados | Revisión de artefactos |
 
 ## Aplicacion
 
@@ -151,28 +162,28 @@ labs/07-local-terraform-automation/
 | Release Helm | Gestionado por Terraform como `platform-api-local`, revision Helm 4 | `helm_release.platform_api`; `helm status` |
 | PVC | Conservado como `platform-api-data` | Chart heredado; destroy advertido como destructivo |
 
-## Automatizacion
+## Automatización
 
 | Elemento | Estado final | Evidencia |
 |---|---|---|
 | Terraform | Proyecto local creado y aplicado | `labs/07-local-terraform-automation/terraform/` |
 | State local | Creado por import/apply y no versionado | `terraform/.gitignore`; `terraform state list` |
 | Backend remoto | No configurado | `versions.tf` sin bloque backend |
-| Modulo local | No creado | Decision de claridad pedagogica |
+| Módulo local | No creado | Decisión de claridad pedagógica |
 
 ## Seguridad
 
 | Elemento | Estado final | Evidencia |
 |---|---|---|
 | Secret de laboratorio | Valores ficticios | `terraform.tfvars.example` |
-| Credenciales reales | No introducidas | Revision de artefactos |
+| Credenciales reales | No introducidas | Revisión de artefactos |
 | Archivos sensibles Terraform | Ignorados | `terraform/.gitignore` |
 
 ## Inventario relevante
 
 ## Namespaces
 
-| Namespace | Proposito | Creado en esta unidad |
+| Namespace | Propósito | Creado en esta unidad |
 |---|---|---|
 | `platform-training` | Namespace funcional del curso | No; gestionado por chart/release |
 
@@ -185,7 +196,7 @@ labs/07-local-terraform-automation/
 
 ## Servicios y endpoints
 
-| Servicio o endpoint | Acceso | Proposito |
+| Servicio o endpoint | Acceso | Propósito |
 |---|---|---|
 | `service/platform-api` | `ClusterIP`, puerto 80 | Acceso interno |
 | `ingress/platform-api` | `platform-api.local` | Entrada HTTP local |
@@ -228,7 +239,13 @@ El laboratorio usa placeholders y advierte que el state puede contener datos sen
 
 El laboratorio exige revisar `terraform plan` antes de mutar el entorno.
 
+## D-07-06 - Cierre documental de `GAP-010`
+
+La referencia de la Unidad 07 declara que Terraform puede gestionar `helm_release.platform_api` durante el laboratorio local, pero no debe competir indefinidamente con Argo CD cuando GitOps aparezca en la Unidad 09. La Unidad 09 conserva el compromiso de resolver el patrón operativo definitivo.
+
 ## Validaciones realizadas
+
+Las siguientes validaciones pertenecen al cierre funcional original de la Unidad 07, registrado el 2026-07-20. No se han repetido durante el saneamiento documental del 2026-07-26.
 
 | Validacion | Resultado |
 |---|---|
@@ -248,10 +265,14 @@ El laboratorio exige revisar `terraform plan` antes de mutar el entorno.
 ## Validaciones pendientes
 
 - `shellcheck` si esta disponible.
+- Revisión pedagógica específica del saneamiento documental de la Unidad 07 por parte del usuario.
+- No se ejecutaron nuevas validaciones técnicas durante la fase 4.
 
 ## Aprobacion del usuario
 
-El usuario aprobo pedagogicamente la Unidad 07 el 2026-07-20.
+El usuario aprobó pedagógicamente la Unidad 07 el 2026-07-20.
+
+La aprobación específica del saneamiento documental de la Unidad 07 queda pendiente del usuario responsable del curso.
 
 ## Limitaciones activas
 
@@ -260,12 +281,12 @@ El usuario aprobo pedagogicamente la Unidad 07 el 2026-07-20.
 - `set_sensitive` no elimina la necesidad de proteger state.
 - El release existente se importo a Terraform antes del apply; no se recreo.
 - `terraform destroy` no fue ejecutado.
-- No se crean modulos cloud, backends remotos, Tekton, Argo CD, observabilidad avanzada, AKS ni EKS.
+- No se crean módulos cloud, backends remotos, Tekton, Argo CD, observabilidad avanzada, AKS ni EKS.
 - El laboratorio sigue dependiendo de MicroK8s local, `microk8s-hostpath` e Ingress local.
 
 ## Continuidad para Unidad 08
 
-La Unidad 08 debera reutilizar:
+La Unidad 08 deberá reutilizar:
 
 ```text
 labs/07-local-terraform-automation/terraform/
@@ -274,4 +295,4 @@ labs/06-helm-packaging/chart/platform-api/
 tutorial/07-local-terraform-automation/summary.md
 ```
 
-La siguiente unidad puede introducir Tekton para ejecutar validacion, plan y apply controlado. No debe sustituir Helm ni Terraform por una pipeline imperativa.
+La siguiente unidad puede introducir Tekton para ejecutar validación, plan y apply controlado. No debe sustituir Helm ni Terraform por una pipeline imperativa.

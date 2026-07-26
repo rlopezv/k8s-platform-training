@@ -1,32 +1,32 @@
-# Unidad 07 - Automatizacion local con Terraform
+# Unidad 07 - Automatización local con Terraform
 
-## Guia pedagogica de la unidad
+## Guía pedagógica de la unidad
 
 Esta unidad introduce Terraform cuando `platform-api` ya tiene un paquete Helm funcional. La pregunta ya no es "como instalo el chart?", sino:
 
 ```text
-Como declaro la instalacion del release Helm para que pueda planificarse, aplicarse, inspeccionarse y repetirse con estado explicito?
+¿Cómo declaro la instalación del release Helm para que pueda planificarse, aplicarse, inspeccionarse y repetirse con estado explícito?
 ```
 
-Terraform aparece despues de Helm porque no reemplaza el chart. Kubernetes sigue ejecutando recursos, Helm sigue empaquetando y renderizando la aplicacion, y Terraform declara que el release `platform-api-local` debe existir con unos valores determinados.
+Terraform aparece después de Helm porque no reemplaza el chart. Kubernetes sigue ejecutando recursos, Helm sigue empaquetando y renderizando la aplicación, y Terraform declara que el release `platform-api-local` debe existir con unos valores determinados.
 
-Para estudiar el modelo mental usa `tutorial/07-local-terraform-automation/student-notes.md`. Para consultar arquitectura avanzada de Terraform usa `tutorial/07-local-terraform-automation/student-reference.md`. Para ejecutar comandos usa `labs/07-local-terraform-automation/README.md`.
+Para estudiar el modelo mental usa `tutorial/07-local-terraform-automation/student-notes.md`. Para consultar arquitectura avanzada, criterios profesionales y errores de razonamiento usa `tutorial/07-local-terraform-automation/student-reference.md`. Para ejecutar comandos usa `labs/07-local-terraform-automation/README.md`.
 
 ## Problema real
 
-En la Unidad 06 el operador ejecutaba comandos Helm directamente. Ese flujo funciona en local, pero tiene limites:
+En la Unidad 06 el operador ejecutaba comandos Helm directamente. Ese flujo funciona en local, pero tiene límites:
 
 - el resultado depende de recordar los flags usados;
-- no queda un plan previo separado de la aplicacion;
+- no queda un plan previo separado de la aplicación;
 - no existe una interfaz clara de variables y outputs;
-- no hay un estado Terraform que relacione configuracion declarada y release real;
-- es dificil preparar una futura pipeline que ejecute validacion, plan y apply controlado.
+- no hay un estado Terraform que relacione configuración declarada y release real;
+- es difícil preparar una futura pipeline que ejecute validación, plan y apply controlado.
 
-Terraform resuelve este problema declarando el release Helm como recurso. Antes de cambiar el cluster, Terraform evalua la configuracion, construye un grafo de dependencias y muestra un plan.
+Terraform resuelve este problema declarando el release Helm como recurso. Antes de cambiar el clúster, Terraform evalúa la configuración, construye un grafo de dependencias y muestra un plan.
 
 ## Objetivos
 
-Al finalizar la unidad podras:
+Al finalizar la unidad podrás:
 
 - inicializar un proyecto Terraform local;
 - explicar `init`, `plan`, `apply`, `destroy` y `state`;
@@ -35,7 +35,7 @@ Al finalizar la unidad podras:
 - parametrizar el despliegue con variables y `terraform.tfvars.example`;
 - exponer outputs no sensibles;
 - validar que Terraform, Helm y Kubernetes observan el mismo estado;
-- diagnosticar drift basico sin borrar PVCs ni secretos reales.
+- diagnosticar drift básico sin borrar PVCs ni secretos reales.
 
 ## Conocimientos previos
 
@@ -47,9 +47,9 @@ Debes venir de las Unidades 00 a 06. En particular:
 - entiendes la diferencia entre chart, values, template y release;
 - sabes validar rollout, EndpointSlice, Ingress y estado Helm.
 
-## Relacion con la Unidad 06
+## Relación con la Unidad 06
 
-La Unidad 06 dejo el chart:
+La Unidad 06 dejó el chart:
 
 ```text
 labs/06-helm-packaging/chart/platform-api/
@@ -77,18 +77,18 @@ La unidad parte de:
 
 ## Mapa de aprendizaje
 
-| Concepto | Responsabilidad | Pregunta de diagnostico |
+| Concepto | Responsabilidad | Pregunta de diagnóstico |
 |---|---|---|
-| Terraform Core | Evalua HCL, grafo, plan y state | Que cambiaria antes de aplicar? |
-| Provider | Traduce Terraform a una API externa | Contra que sistema habla este bloque? |
-| Resource | Objeto gestionado por Terraform | Que identidad queda en el state? |
-| Variable | Entrada parametrizable | Que cambia entre ejecuciones? |
-| Output | Salida consultable | Que informacion puede consumir otra automatizacion? |
-| State | Mapa entre configuracion y realidad | Que cree Terraform que gestiona? |
-| `helm_release` | Release Helm declarado como recurso | Que chart y valores instala? |
-| Drift | Desalineacion entre estado deseado, state y realidad | Que propone el siguiente plan? |
+| Terraform Core | Evalúa HCL, grafo, plan y state | ¿Qué cambiaría antes de aplicar? |
+| Provider | Traduce Terraform a una API externa | ¿Contra qué sistema habla este bloque? |
+| Resource | Objeto gestionado por Terraform | ¿Qué identidad queda en el state? |
+| Variable | Entrada parametrizable | ¿Qué cambia entre ejecuciones? |
+| Output | Salida consultable | ¿Qué información puede consumir otra automatización? |
+| State | Mapa entre configuración y realidad | ¿Qué cree Terraform que gestiona? |
+| `helm_release` | Release Helm declarado como recurso | ¿Qué chart y valores instala? |
+| Drift | Desalineación entre estado deseado, state y realidad | ¿Qué propone el siguiente plan? |
 
-## Diseno del laboratorio
+## Diseño del laboratorio
 
 El laboratorio crea:
 
@@ -101,7 +101,7 @@ El laboratorio crea:
 - `values/platform-api-values.yaml.tftpl` para renderizar values Helm desde Terraform;
 - `validation/validate.sh` para comprobar Terraform, Helm y Kubernetes.
 
-No se crea backend remoto, modulo cloud, cluster, pipeline, GitOps ni observabilidad avanzada.
+No se crea backend remoto, módulo cloud, clúster, pipeline, GitOps ni observabilidad avanzada.
 
 ## Validaciones
 
@@ -114,7 +114,7 @@ terraform -chdir=labs/07-local-terraform-automation/terraform validate
 terraform -chdir=labs/07-local-terraform-automation/terraform plan -var-file=terraform.tfvars.example
 ```
 
-La aplicacion funcional requiere revisar el plan y aplicar:
+La aplicación funcional requiere revisar el plan y aplicar:
 
 ```bash
 terraform -chdir=labs/07-local-terraform-automation/terraform apply -var-file=terraform.tfvars.example
@@ -124,28 +124,22 @@ bash labs/06-helm-packaging/validation/validate.sh
 
 ## Errores de razonamiento frecuentes
 
-- Creer que Terraform sustituye a Helm.
-- Ejecutar `apply` sin leer el plan.
-- Versionar `terraform.tfstate` o `terraform.tfvars` locales.
-- Guardar secretos reales en variables o state.
-- Confundir drift con fallo inmediato.
-- Usar `destroy` como limpieza rutinaria.
-- Convertir Terraform en una capa de templates Kubernetes paralela al chart.
+Esta unidad nombra varios errores conceptuales, pero no los desarrolla aquí para no duplicar la referencia: creer que Terraform sustituye a Helm, tratar el state como caché, usar `destroy` como limpieza rutinaria o dejar que Terraform y GitOps gestionen lo mismo. Están explicados en `tutorial/07-local-terraform-automation/student-reference.md`.
 
 ## Resultado final
 
 Al cierre de la unidad, `platform-api` sigue empaquetada por Helm, pero el release local puede quedar gestionado por Terraform mediante `helm_release.platform_api`. El state local es un artefacto de ejecución no versionado.
 
-La Unidad 08 podra reutilizar este flujo para introducir CI/CD con Tekton: una pipeline podra validar el chart, inicializar Terraform, generar plan y aplicar cambios de forma controlada.
+La Unidad 08 podrá reutilizar este flujo para introducir CI/CD con Tekton: una pipeline podrá validar el chart, inicializar Terraform, generar plan y aplicar cambios de forma controlada.
 
 ## Lectura guiada
 
-| Fuente | Que leer | Para que sirve |
+| Fuente | Qué leer | Para qué sirve |
 |---|---|---|
 | [Terraform Language](https://developer.hashicorp.com/terraform/language) | Sintaxis, bloques, expresiones y valores | Leer HCL con criterio |
 | [Terraform CLI](https://developer.hashicorp.com/terraform/cli) | `init`, `plan`, `apply`, `destroy`, `state` | Operar el flujo del laboratorio |
-| [Terraform State](https://developer.hashicorp.com/terraform/language/state) | Proposito y riesgos del state | Entender por que no se versiona |
+| [Terraform State](https://developer.hashicorp.com/terraform/language/state) | Propósito y riesgos del state | Entender por qué no se versiona |
 | [Terraform Input Variables](https://developer.hashicorp.com/terraform/language/values/variables) | Tipos, validaciones y prioridad | Diseñar entradas seguras |
-| [Terraform Outputs](https://developer.hashicorp.com/terraform/language/values/outputs) | Salidas y sensibilidad | Exponer informacion util |
+| [Terraform Outputs](https://developer.hashicorp.com/terraform/language/values/outputs) | Salidas y sensibilidad | Exponer información útil |
 | [Helm provider - `helm_release`](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | Argumentos y ciclo de vida | Relacionar Terraform y Helm |
-| [Kubernetes provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs) | Configuracion del provider | Entender autenticacion local y futura cloud |
+| [Kubernetes provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs) | Configuración del provider | Entender autenticación local y futura cloud |
