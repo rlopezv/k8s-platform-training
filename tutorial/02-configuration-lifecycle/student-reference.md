@@ -1,8 +1,8 @@
-# Referencia del alumno - Unidad 02
+# Referencia del alumno - Unidad 02: Configuración, secretos y ciclo de vida
 
 ## Propósito de la referencia
 
-Esta referencia amplía `tutorial/02-configuration-lifecycle/student-notes.md` con una visión profesional sobre configuración, secretos de Kubernetes, probes, recursos y ciclo de vida de un `Deployment`.
+Esta referencia amplía `tutorial/02-configuration-lifecycle/student-notes.md` con una visión profesional sobre configuración, secretos de Kubernetes, probes, recursos, QoS, coste y ciclo de vida de un `Deployment`.
 
 El laboratorio de la unidad enseña a aplicar esos mecanismos sobre `platform-api`. Esta referencia explica por qué existen, qué límites tienen y qué decisiones aparecen cuando el mismo patrón se lleva a un entorno real.
 
@@ -18,6 +18,7 @@ La Unidad 02 convierte el `Deployment` mínimo de la Unidad 01 en un workload m�
 - contenido montado como fichero desde un volumen de configuración;
 - `startupProbe`, `readinessProbe` y `livenessProbe`;
 - `resources.requests` y `resources.limits`;
+- `terminationGracePeriodSeconds` como práctica inicial de terminación;
 - un nuevo rollout cuando cambia `.spec.template`.
 
 Los artefactos principales para leer esta referencia son:
@@ -47,6 +48,9 @@ Probes
 
 Requests y limits
   -> contrato de capacidad con scheduler, nodo y runtime
+
+Terminación
+  -> margen para que el proceso cierre antes de ser forzado
 
 Deployment
   -> ciclo de vida declarativo del template de Pod
@@ -104,7 +108,7 @@ Las variables de entorno son simples y habituales, pero tienen una propiedad imp
 
 Los volúmenes de configuración sirven cuando la aplicación espera ficheros. Kubernetes puede actualizar el contenido proyectado, pero eso no garantiza que la aplicación recargue el fichero ni que exista un rollout auditable.
 
-En plataformas reales suele preferirse que los cambios relevantes del comportamiento del workload queden reflejados en el `Pod template`. Más adelante, Helm permitirá expresar patrones como anotaciones de checksum para provocar rollouts controlados cuando cambie una configuración empaquetada.
+En plataformas reales suele preferirse que los cambios relevantes del comportamiento del workload queden reflejados en el `Pod template`. Por eso, cuando una configuración cambia pero el template no cambia, el equipo debe decidir explícitamente cómo recrear Pods: `rollout restart`, una anotación operativa en el template o, más adelante, un patrón de Helm que calcule un checksum de la configuración y lo ponga como anotación del Pod. La idea que debes conservar ahora es simple: Kubernetes solo crea una nueva revisión del Deployment cuando cambia `.spec.template`.
 
 ### Probes
 
@@ -129,9 +133,25 @@ Los recursos conectan la aplicación con la capacidad real del nodo.
 | `limits.cpu` | Nodo y runtime | Frontera de consumo de CPU, normalmente mediante throttling |
 | `limits.memory` | Nodo y runtime | Frontera de memoria; superarla puede terminar el contenedor |
 
-Kubernetes usa requests y limits para clasificar Pods en clases de QoS: `Guaranteed`, `Burstable` y `BestEffort`. Esa clasificación influye en decisiones de presión de recursos y desalojo.
+CPU y memoria no fallan igual. Si un contenedor supera su límite de CPU, normalmente no muere: el runtime reduce o retrasa su acceso a CPU, lo que se observa como throttling y puede aumentar latencia. Si supera su límite de memoria, el contenedor puede terminar con `OOMKilled` porque no hay una forma equivalente de "ralentizar" memoria ya asignada.
+
+Kubernetes usa requests y limits para clasificar Pods en clases de QoS: `Guaranteed`, `Burstable` y `BestEffort`. Esa clasificación influye en decisiones de presión de recursos y desalojo. No es una prioridad absoluta ni una promesa de supervivencia, pero sí una jerarquía relativa: ante presión de recursos, los Pods `BestEffort` son los más expuestos, `Burstable` ocupa una posición intermedia y `Guaranteed` recibe el trato más protegido.
 
 La Unidad 02 usa valores conservadores para laboratorio: `25m` de CPU y `64Mi` de memoria como requests, `100m` de CPU y `128Mi` de memoria como limits. Son valores didácticos, no una recomendación productiva universal.
+
+### Terminación controlada
+
+Kubernetes no solo arranca y reinicia contenedores; también los termina. Cuando un Pod debe salir de servicio, Kubernetes marca el Pod para terminación, deja de considerarlo destino normal de tráfico cuando corresponde y envía una señal de terminación al proceso del contenedor. Después espera el tiempo definido por `terminationGracePeriodSeconds` antes de forzar el cierre.
+
+La Unidad 02 declara:
+
+```yaml
+terminationGracePeriodSeconds: 20
+```
+
+Ese campo aporta margen, pero no garantiza por sí solo un cierre graceful. Para que el cierre sea realmente controlado, la aplicación debe atender SIGTERM, terminar peticiones en curso, cerrar conexiones, vaciar buffers y liberar recursos. En algunos workloads también se usa un hook `preStop` para ejecutar una acción previa, por ejemplo avisar a un proceso, pausar aceptación de tráfico o coordinar drenaje.
+
+El laboratorio no añade `preStop` ni cambia el comportamiento interno de Nginx. Por tanto, la unidad practica el campo básico de gracia y deja el patrón completo de apagado, mantenimiento, PDB y drenaje para unidades posteriores.
 
 ### Ciclo de vida declarativo del Deployment
 
@@ -206,6 +226,7 @@ El laboratorio practica:
 - montaje de `index.html` desde ConfigMap;
 - probes HTTP sobre `/` en el puerto `http`;
 - requests y limits iniciales;
+- `terminationGracePeriodSeconds: 20`;
 - observación de rollout y endpoints.
 
 El laboratorio no practica:
@@ -216,6 +237,8 @@ El laboratorio no practica:
 - `ResourceQuota` o `LimitRange`;
 - autoscaling;
 - coste cloud;
+- hook `preStop`;
+- gestión real de SIGTERM en la aplicación;
 - patrones Helm de checksum de configuración.
 
 No debe modificarse `platform-api` ni sustituirse la imagen en esta unidad. El objetivo es aprender el contrato operativo que Kubernetes necesita alrededor de una imagen ya existente.
@@ -232,10 +255,13 @@ No debe modificarse `platform-api` ni sustituirse la imagen en esta unidad. El o
 | Esperar que una variable de entorno cambie en caliente | Las variables se fijan al arrancar el proceso |
 | Poner requests y limits como números decorativos | Afectan scheduling, densidad, rendimiento, coste y desalojos |
 | Copiar valores de laboratorio a producción | Los valores de esta unidad son didácticos y conservadores |
+| Creer que `terminationGracePeriodSeconds` basta para cerrar bien | El proceso debe cooperar; `preStop`, drenaje y PDB se tratan más adelante |
 
 ## Continuidad
 
 La Unidad 03 reutiliza readiness y Service para explicar tráfico de entrada mediante Ingress.
+
+La Unidad 05 retomará terminación, disponibilidad, PDB, mantenimiento y rollbacks con una visión más operativa del ciclo de vida.
 
 La Unidad 06 retomará configuración en Helm: `values`, templates, helpers, upgrades y patrones para provocar rollouts trazables cuando cambia la configuración empaquetada.
 
@@ -256,5 +282,6 @@ La Unidad 22 conectará requests, limits, densidad de nodos, autoscaling, observ
 | [Kubernetes - Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) | Diferencias entre probes y ejemplos de configuración | ¿Qué probe controla tráfico y cuál provoca reinicios? |
 | [Kubernetes - Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) | Requests, limits y comportamiento de CPU y memoria | ¿Cómo afectan requests y limits al scheduler y al nodo? |
 | [Kubernetes - Pod Quality of Service Classes](https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/) | Clases `Guaranteed`, `Burstable` y `BestEffort` | ¿Cómo clasifica Kubernetes un Pod según sus recursos? |
+| [Kubernetes - Pod Lifecycle](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/) | Terminación y condiciones de Pods | ¿Qué ocurre entre solicitar el cierre de un Pod y forzarlo? |
 | [Kubernetes - Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) | Rollouts, ReplicaSets y revisiones | ¿Qué cambios provocan una nueva revisión del Deployment? |
 | [Kubernetes - EndpointSlices](https://kubernetes.io/docs/concepts/services-networking/endpoint-slices/) | Relación entre Services y destinos | ¿Cómo se representa que un Pod está disponible para tráfico? |
