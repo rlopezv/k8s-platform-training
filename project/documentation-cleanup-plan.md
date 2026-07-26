@@ -52,10 +52,40 @@ El contrato manda sobre el reparto. La lista fija qué se cubre; el contrato fij
 | 03 — Networking e ingreso | Conforme | Ajustar | — |
 | 04 — Persistencia y estado | Conforme | Ajustar; más cierre funcional en fase 5 | `TD-023` |
 | 05 — Scheduling y resiliencia | Conforme | Ajustar | — |
-| 06 — Empaquetado con Helm | No conforme | Regenerar | `TD-019` |
+| 06 — Empaquetado con Helm | No conforme | Regenerar y ampliar en profundidad | `TD-019` |
 | 07 — Automatización con Terraform | No conforme | Regenerar | `TD-019` |
 
 En las cuatro unidades a regenerar, el playbook se regenera y la referencia sale de él. En las cuatro a ajustar, el playbook se regenera igual por homogeneidad, pero la referencia solo recibe correcciones puntuales.
+
+La Unidad 06 es un caso aparte dentro de las regeneradas. Su referencia debe profundizar en subcharts, values globales, umbrella charts y hooks como criterio, por decisión del usuario, aunque eso la lleve por encima del techo general de 400 líneas. Es una excepción de tamaño declarada, no un incumplimiento; su regla propia está en el apartado 3bis.
+
+---
+
+# 3bis. Excepción de tamaño de la Unidad 06
+
+El contrato fija una extensión orientativa de 200 a 400 líneas para `student-reference.md`, con la regla de que por encima de 400 se revise si hay contenido que pertenece a la fuente primaria. La Unidad 06 recibe una excepción explícita.
+
+## Regla propia
+
+La referencia de la Unidad 06 puede llegar hasta **500 líneas**. Por encima de 500, aplica la regla general: revisar qué sobra.
+
+## Motivo
+
+La densidad conceptual de Helm —templates, contexto, values, helpers, subcharts, values globales, umbrella charts, hooks y `helm test`— no cabe con profundidad de criterio en 400 líneas. El usuario decide cubrir subcharts, umbrella y hooks en profundidad aunque la referencia exceda el techo general.
+
+## Condición
+
+La excepción autoriza más criterio, no más catálogo. Las líneas adicionales explican el porqué y el cuándo de subcharts, umbrella y hooks; no transcriben la tabla de funciones de Helm ni el inventario de anotaciones de hook. El espacio se obtiene también recortando lo que hoy roza catálogo en la referencia —las secciones de funciones y de sangría—, y reinvirtiéndolo en criterio. Una referencia que llega a 500 por inventario sí es el defecto que el techo advierte.
+
+## Trazabilidad
+
+La excepción se declara en el propósito de la referencia y en el `summary.md` de la unidad, para que una referencia de más de 400 líneas se lea como decisión y no como error.
+
+## Candidato a laboratorio avanzado
+
+Los puntos de la lista de cobertura de la 06 que piden practicar umbrella con base de datos auxiliar, hooks de migración y `helm test` posdespliegue no entran en el saneamiento: exceden el alcance del playbook 06, que los excluye como ejecutables, y arrastran un workload con estado que la unidad no tiene. Quedan como criterio en la referencia.
+
+Se registra como candidato a laboratorio avanzado de la Unidad 06 su práctica ejecutable, con un subchart auxiliar desechable fuera de la solución evolutiva, en la línea de `scratch-stateful` de la Unidad 04. No se diseña en el saneamiento. Es deuda futura anclada, no trabajo de este plan.
 
 ---
 
@@ -92,10 +122,10 @@ Por cada una de las ocho unidades, en su sesión:
 3. alinear `tutorial/<unidad>/student-notes.md`: formato, y traslado a la referencia del contenido conceptual que el contrato saca de las notas;
 4. barrido ortográfico de los documentos del alumno de la unidad, conservando literales técnicos;
 5. añadir al `tutorial/<unidad>/summary.md` la línea de cierre de laguna que corresponda;
-6. verificar la cobertura: comparar la referencia resultante contra la lista del paso 0, punto por punto. Si algún punto no aparece, el playbook lo perdió y se corrige antes de cerrar. Esta comprobación es verificación, no generación; la cobertura ya debía estar puesta desde el paso 1;
+6. verificar la cobertura según el formato del apartado 7: cruzar la lista del paso 0 contra la referencia, el playbook y el README del laboratorio, punto por punto, con veredicto de criterio frente a práctica. Si algún punto no aparece, el playbook lo perdió y se corrige antes de cerrar. Esta comprobación es verificación, no generación; la cobertura ya debía estar puesta desde el paso 1;
 7. actualizar `project/project-state.md` y, cuando se cierre una laguna, `project/content-gap-register.md`.
 
-La Unidad 04 recibe además, en la fase 5, el cierre funcional de `TD-023`, descrito en el apartado 7.
+La Unidad 04 recibe además, en la fase 5, el cierre funcional de `TD-023`, descrito en el apartado 8.
 
 ---
 
@@ -104,14 +134,14 @@ La Unidad 04 recibe además, en la fase 5, el cierre funcional de `TD-023`, desc
 ## Orden
 
 ```text
-07 (piloto) → 06 → 01 → 00 → 02 → 03 → 05 → 04 documental → TD-022 → 04 funcional (TD-023)
+07 (piloto) → 06 → 01 → 00 → 02 → 03 → 05 → 04 funcional (TD-023)
 ```
 
-La Unidad 07 es el piloto: valida el contrato sobre contenido real antes de aplicarlo a las otras siete, y su referencia debe cerrar `GAP-010`, que la Unidad 09 necesita. Los playbooks 06 y 07, los que contradicen el contrato, se corrigen primero. Después las dos no conformes restantes, 01 y 00. Después las cuatro conformes, cuyo trabajo es de ajuste: 02, 03, 05 y 04 documental. Tras ajustar esas cuatro referencias se ejecuta la auditoría `TD-022`. Y al final queda el cierre funcional de la 04.
+La Unidad 07 es el piloto: valida el contrato sobre contenido real antes de aplicarlo a las otras siete, y su referencia debe cerrar `GAP-010`, que la Unidad 09 necesita. Los playbooks 06 y 07, los que contradicen el contrato, se corrigen primero. Después las dos no conformes restantes, 01 y 00. Después las cuatro conformes, cuyo trabajo es de ajuste. Y al final el cierre funcional de la 04.
 
 ## Una unidad por sesión
 
-El reparto es por unidad y no por lote porque cada sesión debe cargar el contrato completo más los artefactos de la unidad, y repartir esa carga entre dos unidades degrada la calidad. Estimación: entre diez y once sesiones, según cuánta revisión del usuario se intercale. Las cuatro unidades a regenerar son las más largas; las cuatro a ajustar podrían emparejarse si alguna resulta liviana, pero no se compromete de antemano. La auditoría `TD-022` puede cerrarse en una sesión propia o incorporarse al cierre del último ajuste documental si la evidencia es suficiente.
+El reparto es por unidad y no por lote porque cada sesión debe cargar el contrato completo más los artefactos de la unidad, y repartir esa carga entre dos unidades degrada la calidad. Estimación: entre nueve y diez sesiones, según cuánta revisión del usuario se intercale. Las cuatro unidades a regenerar son las más largas; las cuatro a ajustar podrían emparejarse si alguna resulta liviana, pero no se compromete de antemano.
 
 ## Entradas de cada sesión
 
@@ -129,7 +159,42 @@ Ficheros completos listos para colocar en el repositorio, no parches: el playboo
 
 ---
 
-# 7. Fase 5 — Cierre funcional de la Unidad 04
+# 7. Formato de la validación de cobertura
+
+La verificación de cobertura del paso 6 tiene una forma fija, para que cada unidad se cierre con el mismo rigor y no con una comprobación vaga. Quedó definida al probarla sobre la Unidad 07.
+
+## Fuentes del cruce
+
+Cada punto de la lista del usuario se contrasta contra tres documentos, no solo contra la referencia:
+
+- `tutorial/<unidad>/student-reference.md`, para ver si el concepto o criterio está cubierto y con qué profundidad;
+- `playbooks/units/<unidad>.md`, para ver si el alcance autoriza lo que el punto pide;
+- `labs/<unidad>/README.md`, para ver qué de ese punto ya se practica en el laboratorio y por tanto pertenece a las notas, no a la referencia.
+
+## Veredicto por punto
+
+Para cada punto de la lista se declara:
+
+- dónde está cubierto hoy, con cita del documento y la sección;
+- el grado de alineación: cubierto, parcial o laguna;
+- el registro que le corresponde según el contrato: criterio o práctica. Un punto redactado como práctica que el laboratorio no ejecuta se ancla o se explica como distancia con producción; no se convierte en artefacto nuevo sin cambiar el alcance del playbook;
+- el reparto entre documentos: qué va a la referencia, qué a las notas, qué a la fuente primaria.
+
+## Regla de decisión criterio frente a práctica
+
+El README es el árbitro. Si el laboratorio ya ejecuta la parte operativa de un punto, esa parte es de las notas y a la referencia solo va el porqué y la distancia con producción. Si el laboratorio no la ejecuta, practicarla exige cambiar el alcance del playbook y revalidar, y por defecto se resuelve como criterio ampliado en la referencia salvo decisión explícita del usuario en contra.
+
+## Salida
+
+Una tabla o lista, punto por punto, con las cuatro declaraciones anteriores y una recomendación de reparto. Es verificación, no generación: si algo falta, se corrige el playbook y la referencia antes de cerrar la unidad, no se parchea la tabla.
+
+## Ambigüedades
+
+Cuando un punto de la lista sea ambiguo respecto al contrato —por ejemplo, si «backend remoto simulado» significa un concepto explicado o un artefacto nuevo—, se resuelve con el usuario antes de cerrar, no se interpreta en silencio.
+
+---
+
+# 8. Fase 5 — Cierre funcional de la Unidad 04
 
 `TD-023` es la práctica de `StatefulSet`, `volumeClaimTemplates` y headless Service sobre un workload auxiliar desechable, sin migrar `platform-api`. Se ejecuta al final del saneamiento porque es el único incremento con validación técnica y su evidencia la aporta el usuario.
 
@@ -146,7 +211,7 @@ El cierre de `TD-023` requiere validación ejecutada contra MicroK8s. No se decl
 
 ---
 
-# 8. Impacto en deudas y cuestiones
+# 9. Impacto en deudas y cuestiones
 
 | Elemento | Efecto del saneamiento |
 |---|---|
@@ -163,7 +228,7 @@ Los cierres de laguna se registran en `project/content-gap-register.md` a medida
 
 ---
 
-# 9. Qué desbloquea el saneamiento
+# 10. Qué desbloquea el saneamiento
 
 La Unidad 08 espera al cierre completo de las fases 4 y 5, incluida la auditoría `TD-022`. Por decisión del usuario del 2026-07-23, el plan no se parte para adelantarla.
 
@@ -171,7 +236,7 @@ Las unidades 09 en adelante no dependen del saneamiento salvo por `GAP-010`, que
 
 ---
 
-# 10. Decisiones registradas de esta planificación
+# 11. Decisiones registradas de esta planificación
 
 - El saneamiento se organiza como regeneración de playbook seguida de regeneración o ajuste de referencia, unidad por unidad, no como fases separadas de especificación y aplicación.
 - No se introduce ninguna categoría de artefacto nueva. La corrección de cada unidad vive en su propio playbook y sus propios entregables.
@@ -179,3 +244,5 @@ Las unidades 09 en adelante no dependen del saneamiento salvo por `GAP-010`, que
 - El cierre funcional de la Unidad 04 se aparta como fase 5 y se ejecuta al final, con validación del usuario.
 - La corrección de los ocho playbooks es parte del trabajo por unidad, no una deuda separada.
 - La lista de cobertura que aporta el usuario es una entrada de sesión obligatoria y previa al playbook, no una pasada final. El playbook la absorbe en su sección de cobertura, la referencia nace cubriéndola, y el cierre de la unidad la verifica punto por punto. El reparto de cada punto entre referencia, notas, README y fuente primaria lo decide el contrato, no la lista.
+- La validación de cobertura tiene el formato fijo del apartado 7, definido al probarlo sobre la Unidad 07: cruce de la lista contra referencia, playbook y README, con veredicto de criterio frente a práctica por punto, y el README como árbitro de qué es práctica y qué es criterio.
+- La Unidad 06 tiene una excepción de tamaño declarada: su referencia puede llegar a 500 líneas para cubrir subcharts, umbrella y hooks en profundidad como criterio, según el apartado 3bis. La práctica ejecutable de esos temas queda fuera del saneamiento, registrada como candidato a laboratorio avanzado.

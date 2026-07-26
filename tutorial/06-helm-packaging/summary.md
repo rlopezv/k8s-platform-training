@@ -8,8 +8,9 @@
 | Identificador | `06-helm-packaging` |
 | Fase del roadmap | Fase 3 - Empaquetado e infraestructura como codigo |
 | Estado | Completada, validada funcionalmente y aprobada pedagogicamente |
-| Fecha de cierre o actualizacion | 2026-07-19 |
+| Fecha de cierre o actualizacion | 2026-07-26 |
 | Revision pedagogica del usuario | Aprobada el 2026-07-19 |
+| Actualización documental | Fase 4 de saneamiento documental; aprobación específica pendiente |
 
 ## Resumen ejecutivo
 
@@ -18,6 +19,8 @@ La Unidad 06 incorpora Helm como mecanismo de empaquetado, parametrizacion y ges
 El chart conserva el contrato funcional acumulado: namespace `platform-training`, Deployment `platform-api`, ConfigMap, Secret ficticio, PVC `platform-api-data`, Service `ClusterIP`, Ingress `platform-api.local`, PDB, probes, resources, rollout y scheduling seguro. El release local documentado se llama `platform-api-local`.
 
 La unidad deja preparado el paso a Terraform en la Unidad 07, pero no crea archivos `.tf`, no usa `helm_release` y no introduce modulos Terraform.
+
+El 2026-07-26 se regeneró `playbooks/units/06-helm-packaging.md` contra el contrato documental cerrado en `playbooks/student-reference-template.md`, se regeneró `tutorial/06-helm-packaging/student-reference.md` con la estructura canónica y la excepción de tamaño declarada para profundizar en subcharts, umbrella y hooks como criterio, y se ajustaron `README.md` y `student-notes.md` para respetar la frontera entre guía de laboratorio y referencia profesional. El saneamiento no modifica laboratorios, chart Helm, scripts de validación ni estado técnico del clúster, y no ejecuta validaciones funcionales nuevas.
 
 ## Objetivos alcanzados
 
@@ -35,6 +38,9 @@ La unidad deja preparado el paso a Terraform en la Unidad 07, pero no crea archi
 | Ejecutar validaciones estaticas principales | Alcanzado | `bash -n`, `helm lint`, `helm template`, dry-run cliente |
 | Ejecutar instalacion funcional del release | Alcanzado | `helm upgrade --install platform-api-local ...`: revision 1 desplegada |
 | Ejecutar upgrade y rollback real | Alcanzado | Upgrade temporal a revision 2 y rollback a revision 1, dejando revision 3 desplegada |
+| Regenerar playbook contra contrato documental | Alcanzado | `playbooks/units/06-helm-packaging.md` |
+| Regenerar referencia del alumno contra plantilla canónica | Alcanzado | `tutorial/06-helm-packaging/student-reference.md` |
+| Mantener laboratorios y validaciones sin cambios en fase 4 | Alcanzado | Revisión documental; no se modificó `labs/06-helm-packaging/` |
 
 ## Estado inicial utilizado
 
@@ -101,6 +107,10 @@ La unidad deja preparado el paso a Terraform en la Unidad 07, pero no crea archi
 | Componente | Ruta | Cambio realizado |
 |---|---|---|
 | Estado del proyecto | `project/project-state.md` | Debe registrar Unidad 06 generada y validaciones ejecutadas |
+| Playbook Unidad 06 | `playbooks/units/06-helm-packaging.md` | Regenerado contra el contrato documental de fase 4 |
+| Student reference | `tutorial/06-helm-packaging/student-reference.md` | Regenerada con estructura canónica y sin diagnóstico operativo de laboratorio |
+| README de alumno | `tutorial/06-helm-packaging/README.md` | Ajustado para remitir errores conceptuales y criterios profesionales a la referencia |
+| Student notes | `tutorial/06-helm-packaging/student-notes.md` | Ajustadas para mantener diagnóstico operativo y enlazar la referencia |
 
 ## Componentes retirados
 
@@ -250,6 +260,8 @@ El laboratorio exige `helm template` y dry-run antes de `helm upgrade --install`
 | Rollback Helm | Upgrade temporal a revision 2 y `helm rollback platform-api-local 1 --namespace platform-training`: revision 3 desplegada |
 | Validacion funcional final | `bash labs/06-helm-packaging/validation/validate.sh`: 0 fallos, 0 avisos |
 
+Estas validaciones son históricas de generación y cierre técnico de Unidad 06. Durante el saneamiento documental de fase 4 del 2026-07-26 no se ejecutaron validaciones funcionales nuevas.
+
 ## Validaciones pendientes
 
 - `shellcheck` queda pendiente si no esta disponible en el entorno.
@@ -257,6 +269,8 @@ El laboratorio exige `helm template` y dry-run antes de `helm upgrade --install`
 ## Aprobacion del usuario
 
 El usuario aprobo pedagogicamente la Unidad 06 el 2026-07-19.
+
+La aprobación específica del saneamiento documental de fase 4 queda pendiente del usuario.
 
 ## Limitaciones activas
 

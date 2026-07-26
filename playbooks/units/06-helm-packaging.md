@@ -1,6 +1,6 @@
 # Playbook de la Unidad 06 - Empaquetado con Helm
 
-## Identificacion
+## Identificación
 
 ### Unidad
 
@@ -17,95 +17,95 @@
 ### Fase del roadmap
 
 ```text
-Fase 3 - Empaquetado e infraestructura como codigo
+Fase 3 - Empaquetado e infraestructura como código
 ```
 
 ### Estado del playbook
 
 ```text
-Aprobado por instruccion de generacion
+Aprobado; regenerado contra el contrato documental en fase 4
 ```
 
-### Propietario logico
+### Propietario lógico
 
 ```text
-Empaquetado e infraestructura como codigo
+Empaquetado e infraestructura como código
 ```
 
 ---
 
-# Proposito de la unidad
+# Propósito de la unidad
 
-La Unidad 06 introduce Helm como mecanismo de empaquetado, parametrizacion y gestion de releases para la aplicacion evolutiva `platform-api`. La unidad parte de los manifiestos Kubernetes estables de `labs/05-scheduling-resilience-maintenance/solution/`, que ya incluyen configuracion externa, Secret ficticio, probes, requests/limits, Service, Ingress, PVC, estrategia de `RollingUpdate`, constraints seguros de scheduling y `PodDisruptionBudget`.
+La Unidad 06 introduce Helm como mecanismo de empaquetado, parametrización y gestión de releases para la aplicación evolutiva `platform-api`. La unidad parte de los manifiestos Kubernetes estables de `labs/05-scheduling-resilience-maintenance/solution/`, que ya incluyen configuración externa, Secret ficticio, probes, requests/limits, Service, Ingress, PVC, estrategia `RollingUpdate`, constraints seguros de scheduling y `PodDisruptionBudget`.
 
-Esta unidad aparece despues de scheduling y resiliencia porque Helm no debe ocultar decisiones operativas que el alumno todavia no comprende. El objetivo es convertir manifiestos conocidos en un chart mantenible, explicar como el motor de plantillas transforma texto en YAML Kubernetes y preparar la separacion futura entre Helm y Terraform.
+Helm aparece después de scheduling y resiliencia porque no debe ocultar decisiones de Kubernetes que el alumno todavía no haya practicado. El objetivo es convertir manifiestos conocidos en un chart mantenible, explicar cómo el motor de plantillas transforma values y templates en YAML Kubernetes, y preparar la frontera con Terraform que se ejecuta en la Unidad 07.
 
-## Supuesto pedagogico
+## Supuesto pedagógico
 
-La unidad debe escribirse para alumnos con perfil tecnico que han usado YAML Kubernetes declarativo, pero todavia no dominan Helm, templates de Go, jerarquia de valores ni gestion de releases.
+La unidad se escribe para alumnos con perfil técnico que ya han aplicado manifiestos Kubernetes, pero que todavía no dominan Helm, Go templates, jerarquía de valores, helpers, release history ni rollback de releases.
 
-Se explicaran desde cero:
+Se explican desde cero:
 
-- que es un chart, una template, un values file y un release de Helm;
-- como Helm renderiza templates hacia manifiestos Kubernetes;
-- como funciona el objeto de contexto `.` en templates;
-- como usar `$` como referencia al contexto raiz;
-- como controlar espacios en blanco para producir YAML valido;
-- como usar pipelines y funciones comunes;
-- como se fusionan valores por defecto, valores de entorno y overrides por CLI;
-- como usar `if`, `range` y `with` sin perder contexto;
-- como declarar helpers reutilizables en `_helpers.tpl`;
-- como instalar, actualizar, inspeccionar y revertir un release;
-- como validar templates con `helm lint`, `helm template`, dry-run y comprobaciones con `kubectl`.
+- qué representan chart, template, values file y release;
+- cómo Helm renderiza templates hacia manifiestos Kubernetes;
+- cómo se relacionan `Chart.yaml`, `values.yaml`, `values-local.yaml`, `templates/` y `_helpers.tpl`;
+- qué contienen `.Values`, `.Chart`, `.Release` y `.Capabilities`;
+- cómo funcionan el contexto `.`, el contexto raíz `$`, `if`, `range` y `with`;
+- cómo usar pipelines, `quote`, `toYaml`, `indent`, `nindent` e `include` para producir YAML legible;
+- cómo se fusionan valores por defecto, archivos `-f` y overrides puntuales de CLI;
+- cómo instalar, actualizar, inspeccionar y revertir un release local;
+- cómo validar con `helm lint`, `helm template`, dry-run cliente y comprobaciones Kubernetes.
 
-Se retomaran de unidades anteriores:
+Se retoman de unidades anteriores:
 
-- `platform-api` como aplicacion evolutiva;
-- namespace `platform-training`;
+- `platform-api` como aplicación evolutiva;
+- namespace funcional `platform-training`;
 - Deployment, ReplicaSet, Pods, ConfigMap, Secret ficticio, Service, EndpointSlice, Ingress, PVC y PDB;
-- probes, requests/limits, labels, selectors y rollout;
-- diagnostico con `kubectl get`, `describe`, `logs`, `rollout status`, `rollout history` y `rollout undo`;
-- separacion entre tutorial de entrada, `student-notes.md`, referencia del alumno y laboratorio operativo.
+- probes, requests/limits, labels, selectors, rollout y scheduling;
+- diagnóstico operativo con `kubectl get`, `describe`, `logs`, `rollout status` y eventos;
+- separación entre documentación formativa, referencia profesional y README operativo del laboratorio.
 
-Se mencionaran y diferiran:
+Se mencionan solo para continuidad:
 
-- gestion de releases Helm mediante Terraform;
+- gestión del release Helm mediante Terraform;
 - `helm_release`, `templatefile()` y `set_sensitive`;
-- modulos Terraform;
-- publicacion de charts en repositorios remotos u OCI;
-- firma, provenance, politicas de supply chain y admision;
-- integracion con Argo CD;
-- promocion formal entre entornos;
-- secretos productivos y gestores externos de secretos.
+- módulos Terraform;
+- publicación de charts en repositorios remotos u OCI;
+- subcharts y patrón umbrella;
+- hooks y `helm test`;
+- firma, provenance, políticas de supply chain y admisión;
+- integración con Argo CD, Tekton y promoción entre entornos;
+- gestión real de secretos productivos.
 
-Errores de razonamiento que deben prevenirse:
+Errores de razonamiento que debe prevenir `student-reference.md`:
 
-- creer que Helm reemplaza Kubernetes, cuando solo empaqueta y renderiza manifiestos;
+- creer que Helm reemplaza Kubernetes;
+- creer que un chart válido garantiza una aplicación disponible;
 - convertir todos los campos en variables sin criterio;
-- usar `--set` como mecanismo principal de configuracion compleja;
 - confundir defaults del chart con valores de entorno;
-- romper YAML por sangria o control incorrecto de espacios;
+- usar `--set` como mecanismo principal para estructuras complejas;
 - perder el contexto dentro de `range` o `with`;
-- duplicar labels y nombres en cada template en vez de usar helpers;
-- introducir secretos reales en `values.yaml`, `values-*.yaml` o comandos de ejemplo;
-- presentar Terraform como parte ejecutable de esta unidad cuando el roadmap lo situa en la Unidad 07.
+- romper YAML por sangría o control incorrecto de espacios;
+- duplicar nombres, labels y selectors en cada template en lugar de usar helpers;
+- guardar secretos reales en `values.yaml`, `values-local.yaml` o comandos;
+- tratar hooks, subcharts, umbrella charts y repositorios remotos como parte ejecutable de esta unidad.
 
 ---
 
-# Resultados de aprendizaje
+# Resultado de aprendizaje
 
-Al completar la unidad, el alumno debera ser capaz de:
+Al completar la unidad, el alumno deberá ser capaz de:
 
 - convertir los manifiestos acumulados de `platform-api` en un chart Helm funcional;
-- parametrizar imagen, replicas, labels, Ingress, resources, scheduling, PVC y PDB sin ocultar su significado;
-- explicar el flujo de renderizado desde templates y values hasta YAML Kubernetes;
-- usar `.` y `$` correctamente en templates con `if`, `range` y `with`;
-- aplicar control de espacios, `quote`, `indent`, `nindent` e `include` para producir YAML valido;
-- separar valores por defecto de valores de entorno;
+- explicar el flujo desde values y templates hasta YAML Kubernetes renderizado;
+- parametrizar imagen, réplicas, Ingress, resources, scheduling, PVC y PDB sin ocultar su significado;
+- leer `_helpers.tpl` para identificar nombres, labels y selectors reutilizables;
+- justificar qué valores deben exponerse y cuáles deben permanecer fijos;
+- separar valores por defecto, valores locales y overrides puntuales;
 - instalar, actualizar, inspeccionar y revertir un release local;
-- validar un chart con `helm lint`, `helm template`, dry-run y comprobaciones de Kubernetes;
-- justificar que valores deben exponerse y cuales deben permanecer fijos;
-- explicar donde termina Helm y donde empezara Terraform en la Unidad 07.
+- validar un chart con `helm lint`, `helm template`, dry-run cliente y comprobaciones Kubernetes;
+- reconocer errores de modelo mental sobre Helm, Kubernetes, values, releases y secretos;
+- explicar dónde termina Helm y dónde empieza Terraform en la Unidad 07.
 
 ---
 
@@ -113,45 +113,104 @@ Al completar la unidad, el alumno debera ser capaz de:
 
 ## Incluido
 
-- reutilizacion de `labs/05-scheduling-resilience-maintenance/solution/` como entrada tecnica;
-- creacion de un chart local para `platform-api`;
-- estructura basica de chart con `Chart.yaml`, `values.yaml`, `templates/` y `_helpers.tpl`;
+- reutilización de `labs/05-scheduling-resilience-maintenance/solution/` como entrada técnica;
+- chart local para `platform-api` en `labs/06-helm-packaging/chart/platform-api/`;
+- estructura de chart con `Chart.yaml`, `values.yaml`, `values-local.yaml`, `templates/` y `_helpers.tpl`;
 - templates para Namespace, ConfigMap, Secret ficticio, PVC, Deployment, Service, Ingress y PDB;
-- valores por defecto seguros para laboratorio;
-- valores separados para entorno local cuando proceda;
-- instalacion y upgrade local con Helm;
+- helpers para nombres, labels, selectors y nombres derivados;
+- values por defecto seguros para laboratorio y values locales para MicroK8s;
+- instalación y upgrade local con Helm CLI;
 - rollback de release Helm;
-- validacion con `helm lint`, `helm template`, `helm install --dry-run`, `helm upgrade --install` y `kubectl`;
-- documentacion formativa de Helm desde cero;
-- nuevo elemento `student-reference.md` como referencia tecnica avanzada de plantillas y gestion de variables;
-- actualizacion de `tutorial/06-helm-packaging/summary.md` al cerrar la unidad;
-- actualizacion de `project/project-state.md` al generar y cerrar la unidad.
+- inspección con `helm status`, `helm get values`, `helm get manifest` y `helm history`;
+- validación con `helm lint`, `helm template`, dry-run cliente y script heredado de la unidad;
+- referencia del alumno conforme a `playbooks/student-reference-template.md`;
+- explicación conceptual de subcharts, umbrella charts, hooks, `helm test`, repositorios remotos y Terraform sin práctica nueva.
 
 ## Excluido
 
-- modulos Terraform;
-- ejecucion de `helm_release` mediante Terraform;
-- gestion real de secretos productivos;
-- integracion con External Secrets, Sealed Secrets, SOPS o Vault;
-- repositorios remotos de charts, OCI registry o publicacion de paquetes;
-- CI/CD, Tekton, Argo CD o GitOps;
+- creación o modificación de módulos Terraform;
+- ejecución de `helm_release` mediante Terraform en esta unidad;
+- gestión real de secretos productivos;
+- integración con External Secrets Operator, Sealed Secrets, SOPS o Vault;
+- repositorios remotos de charts, OCI registry o publicación de paquetes;
+- subcharts ejecutables o umbrella chart ejecutable;
+- hooks ejecutables y `helm test` ejecutable;
+- Tekton, Argo CD, GitOps o CI/CD;
 - Prometheus, Grafana, Loki, Tempo, OpenTelemetry u observabilidad avanzada;
-- KEDA, HPA o escalado automatico;
-- AKS, EKS o clusters multi-nodo cloud;
-- sustitucion de `platform-api`;
+- KEDA, HPA o escalado automático;
+- AKS, EKS o clústeres multi-nodo cloud;
+- sustitución de `platform-api`;
 - cambio del namespace funcional `platform-training`;
-- introduccion de Minikube, kind o Docker Desktop Kubernetes.
+- introducción de Minikube, kind o Docker Desktop Kubernetes.
 
 ## Diferido a unidades posteriores
 
 | Capacidad | Unidad prevista | Motivo |
 |---|---|---|
-| Terraform `helm_release` ejecutable | Unidad 07 | Requiere chart Helm funcional y limite claro entre empaquetado y IaC |
-| Modulos Terraform | Unidad 07 | Pertenece a automatizacion de infraestructura |
-| Promocion entre entornos | Unidad 10 | Requiere Helm y automatizacion previos |
-| Argo CD | Unidad 09 | Requiere chart y layout declarativo estable |
-| Repositorios remotos u OCI | Unidad posterior | No es necesario para el primer chart local |
-| Secret management productivo | Unidades de seguridad | Requiere politicas y herramientas especificas |
+| Terraform `helm_release` ejecutable | Unidad 07 | Requiere chart Helm funcional y frontera clara entre empaquetado e IaC |
+| Módulos Terraform | Unidad 07 como criterio; práctica posterior si procede | Primero se necesita proyecto Terraform plano y legible |
+| Tekton y CI/CD | Unidad 08 | Requiere chart y automatización local previos |
+| Argo CD y GitOps | Unidad 09 | Requiere chart y layout declarativo estable |
+| Gestión real de secretos en GitOps | Unidad 09 | Pertenece al flujo de secretos sin guardarlos en Git |
+| Promoción formal entre entornos | Unidad 10 | Requiere Helm, Terraform, CI/CD y GitOps previos |
+| Service mesh | Unidad 16 | Anclaje de `GAP-011`; se tratará como criterio frente a NetworkPolicy y mTLS |
+| Topology spread constraints | Unidad 18 | Anclaje de `GAP-011`; encaja con distribución, escalado y capacidad |
+| Desacoplamiento de MicroK8s | Unidad 19 | Será el puente hacia AKS/EKS |
+| Repositorios remotos u OCI | Unidades cloud o CI/CD posteriores | Requiere registry, credenciales, publicación y gobierno |
+| Hooks, `helm test`, subcharts y umbrella charts | Unidades posteriores de CI/CD, datos u operación | Requieren workloads auxiliares, dependencias y validaciones nuevas |
+| Secret management productivo | Unidades 09 y 16 | Requiere herramientas, políticas e identidad |
+
+---
+
+# Cobertura documental de la unidad
+
+## Frontera entre `student-notes.md` y `student-reference.md`
+
+`student-notes.md` explica lo que el alumno necesita para completar el laboratorio: qué se construye, cómo se relacionan chart, templates, values y release, cómo observar el renderizado, cómo comprobar el release y cómo diagnosticar fallos operativos del laboratorio.
+
+`student-reference.md` explica lo que existe fuera del laboratorio y corrige modelos mentales: arquitectura de Helm, contexto de templates, jerarquía de values, helpers, criterios de parametrización, límites de `--set`, releases frente a recursos Kubernetes, subcharts, umbrella charts, hooks, `helm test`, repositorios remotos, seguridad de values y frontera con Terraform.
+
+No debe duplicarse contenido. Si ambos documentos necesitan un tema, uno lo desarrolla y el otro lo cita por ruta.
+
+## Laguna asignada
+
+| ID | Tratamiento en esta unidad | Cierre esperado |
+|---|---|---|
+| Ninguna | Unidad 06 no tiene una laguna propia asignada en `project/content-gap-register.md` | No se actualiza el registro salvo que una revisión posterior cambie el estado de una laguna |
+
+`GAP-011` ya figura cerrado en `project/content-gap-register.md`; la Unidad 06 debe respetarlo anclando los elementos excluidos con número de unidad o declarándolos fuera del itinerario.
+
+## Tipos de cobertura requeridos para `student-reference.md`
+
+| Tipo | Aplicación en la Unidad 06 |
+|---|---|
+| Panorama | Situar Helm frente a Kubernetes, Terraform, CI/CD, GitOps y empaquetado de aplicaciones |
+| Profundidad | Explicar templates, contexto, values, helpers y release history hasta poder leer el chart de `platform-api` |
+| Criterio | Decidir qué parametrizar, cuándo usar `--set`, cuándo usar files, cuándo usar helpers y cuándo evitar complejidad |
+| Práctica | Nombrar distancias con producción: Secret ficticio, chart local, HTTP sin TLS, `microk8s-hostpath`, ausencia de registry, hooks y repositorios remotos |
+
+## Simplificaciones que obligan a práctica profesional
+
+| Simplificación del laboratorio | Riesgo fuera del laboratorio | Alternativa profesional que debe explicar la referencia |
+|---|---|---|
+| Chart local en el repositorio | No hay distribución, versionado de paquete ni control de publicación | Repositorio Helm u OCI registry con autenticación, versionado y proceso de promoción |
+| Secret ficticio en values | Values y releases pueden quedar almacenados y expuestos según permisos e historial | Secret manager, External Secrets, SOPS, Sealed Secrets o Vault según contexto |
+| `values-local.yaml` orientado a MicroK8s | Acopla Ingress, storage y supuestos locales | Values por entorno y matriz clara de diferencias entre local, AKS y EKS |
+| `microk8s-hostpath` | Almacenamiento local, de nodo único y sin garantías cloud | CSI gestionado, StorageClass cloud, backups y políticas de retención |
+| HTTP local sin TLS | No demuestra certificados, rotación ni terminación segura | TLS con `cert-manager`, Ingress/Gateway y gestión de certificados |
+| Rollback Helm local | No equivale a promoción, rollback GitOps ni recuperación de datos | Estrategia de releases, backups, health checks, observabilidad y runbooks |
+| Sin subcharts, hooks ni `helm test` ejecutables | No cubre dependencias ni comprobaciones posdespliegue reales | Pruebas y dependencias diseñadas cuando existan workloads auxiliares y CI/CD |
+
+## Uso de `.work/detail.md`
+
+La sección de Unidad 06 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
+
+- fundamentos de empaquetado con `templates/`, `values.yaml` y `Chart.yaml`;
+- ciclo de vida con `helm lint`, `helm template`, `helm install` y `helm upgrade`;
+- parametrización con `.Values`, `.Release.Name`, condicionales y bucles;
+- procesamiento de datos con `toYaml`, `indent`, `nindent`, `tpl`, `merge` y control de nulos;
+- subcharts, values globales y patrón umbrella como criterio conceptual, no práctica ejecutable;
+- hooks, `helm test`, release state y rollback como frontera entre lo practicado y lo profesional.
 
 ---
 
@@ -159,29 +218,28 @@ Al completar la unidad, el alumno debera ser capaz de:
 
 Antes de generar o modificar esta unidad, leer:
 
-1. `playbooks/master.md`;
-2. `project/architecture.md`;
-3. `project/project-state.md`;
-4. `project/roadmap.md`;
-5. `project/project-planning.md`;
+1. `project/documentation-cleanup-plan.md`;
+2. `README.md`;
+3. `project/architecture.md`;
+4. `project/project-state.md`;
+5. `project/roadmap.md`;
 6. `project/how-to.md`;
-7. `playbooks/unit-template.md`;
-8. `playbooks/summary-template.md`;
-9. `playbooks/project-state-template.md`;
-10. `tutorial/05-scheduling-resilience-maintenance/README.md`;
-11. `tutorial/05-scheduling-resilience-maintenance/student-notes.md`;
-12. `tutorial/05-scheduling-resilience-maintenance/summary.md`;
-13. este playbook;
-14. `labs/05-scheduling-resilience-maintenance/README.md`;
-15. `labs/05-scheduling-resilience-maintenance/solution/namespace.yaml`;
-16. `labs/05-scheduling-resilience-maintenance/solution/configmap.yaml`;
-17. `labs/05-scheduling-resilience-maintenance/solution/secret.yaml`;
-18. `labs/05-scheduling-resilience-maintenance/solution/pvc.yaml`;
-19. `labs/05-scheduling-resilience-maintenance/solution/pdb.yaml`;
-20. `labs/05-scheduling-resilience-maintenance/solution/deployment.yaml`;
-21. `labs/05-scheduling-resilience-maintenance/solution/service.yaml`;
-22. `labs/05-scheduling-resilience-maintenance/solution/ingress.yaml`;
-23. `labs/05-scheduling-resilience-maintenance/validation/validate.sh`.
+7. `project/project-planning.md`;
+8. `project/content-gap-register.md`;
+9. `playbooks/master.md`;
+10. `playbooks/unit-template.md`;
+11. `playbooks/student-reference-template.md`;
+12. `playbooks/summary-template.md`;
+13. `playbooks/project-state-template.md`;
+14. `tutorial/05-scheduling-resilience-maintenance/summary.md`;
+15. este playbook;
+16. `.work/detail.md`, solo sección de Unidad 06 y solo como checklist de cobertura;
+17. `tutorial/06-helm-packaging/README.md`;
+18. `tutorial/06-helm-packaging/student-notes.md`;
+19. `tutorial/06-helm-packaging/student-reference.md`;
+20. `tutorial/06-helm-packaging/instructor-notes.md`;
+21. `tutorial/06-helm-packaging/summary.md`;
+22. `labs/06-helm-packaging/README.md`.
 
 ## Excepciones
 
@@ -193,104 +251,78 @@ Ninguna. La Unidad 05 existe y deja `tutorial/05-scheduling-resilience-maintenan
 
 ## Dependencias documentales
 
-Deben existir:
+- contrato documental cerrado en `playbooks/student-reference-template.md`;
+- plan de saneamiento vigente en `project/documentation-cleanup-plan.md`;
+- summary de la Unidad 05;
+- artefactos actuales de la Unidad 06;
+- registro de lagunas para comprobar que la unidad no tiene laguna propia asignada.
 
-```text
-README.md
-project/architecture.md
-project/project-state.md
-project/roadmap.md
-project/project-planning.md
-project/how-to.md
-playbooks/master.md
-playbooks/unit-template.md
-playbooks/summary-template.md
-playbooks/project-state-template.md
-playbooks/units/06-helm-packaging.md
-tutorial/05-scheduling-resilience-maintenance/summary.md
-tutorial/05-scheduling-resilience-maintenance/student-notes.md
-```
+## Dependencias técnicas
 
-## Dependencias tecnicas
-
-| Dependencia | Estado requerido | Metodo de comprobacion |
+| Dependencia | Estado requerido | Método de comprobación |
 |---|---|---|
-| MicroK8s | Instalado y operativo | `microk8s status --wait-ready` |
-| Kubernetes local | Nodo `Ready` | `kubectl get nodes` |
-| `kubectl` | Cliente principal operativo | `kubectl version --client` |
-| Helm | CLI validada antes de crear charts | `helm version --short` |
+| MicroK8s | Instalado y operativo según estado ya registrado | `microk8s status --wait-ready` |
+| Kubernetes local | Nodo `Ready` según estado ya registrado | `kubectl get nodes` |
+| `kubectl` | Cliente operativo | `kubectl version --client` |
+| Helm | CLI disponible y chart de Unidad 06 existente | `helm version --short` |
 | Namespace `platform-training` | Existente o aplicable desde chart | `kubectl get namespace platform-training` |
-| Manifiestos Unidad 05 | Disponibles y validables | `kubectl apply --dry-run=client -f labs/05-scheduling-resilience-maintenance/solution/` |
-| Deployment `platform-api` | Desplegable desde Unidad 05 | `kubectl -n platform-training rollout status deployment/platform-api` |
-| PVC `platform-api-data` | `Bound` cuando la Unidad 05 este aplicada | `kubectl -n platform-training get pvc platform-api-data` |
-| Terraform | Instalado, pero no usado para gestionar esta unidad | `terraform version` |
+| Chart `platform-api` | Disponible en el repositorio | `test -f labs/06-helm-packaging/chart/platform-api/Chart.yaml` |
+| Release `platform-api-local` | Gestionado históricamente por Helm y después por Terraform desde Unidad 07 | `helm status platform-api-local --namespace platform-training` |
 
-## Dependencias pedagogicas
+Durante la fase 4 de saneamiento documental no se declaran nuevas validaciones técnicas como ejecutadas.
+
+## Dependencias pedagógicas
 
 El alumno debe haber completado o dominar:
 
-- Unidad 00 y validacion del entorno local;
-- Unidad 01 y relacion entre Deployment, ReplicaSet, Pod, Service, labels y selectors;
-- Unidad 02 y uso de ConfigMap, Secret ficticio, probes, requests y limits;
-- Unidad 03 y relacion entre Service, EndpointSlice e Ingress;
-- Unidad 04 y relacion entre PVC, PV, StorageClass y volumen montado;
-- Unidad 05 y relacion entre scheduling, rollout, PDB, replicas y disponibilidad;
-- lectura basica de YAML;
-- uso de `kubectl apply`, `get`, `describe`, `logs`, `rollout status`, `rollout history` y `rollout undo`.
+- Unidad 00: entorno local y herramientas;
+- Unidad 01: Deployment, ReplicaSet, Pod, Service, labels y selectors;
+- Unidad 02: ConfigMap, Secret ficticio, probes, requests y limits;
+- Unidad 03: Service, EndpointSlice e Ingress;
+- Unidad 04: PVC, PV, StorageClass y volumen montado;
+- Unidad 05: scheduling, rollout, PDB, réplicas y disponibilidad;
+- lectura básica de YAML y uso de `kubectl apply`, `get`, `describe`, `logs`, `rollout status` y `rollout history`.
 
 ## Dependencias del laboratorio
 
-Artefactos que deben existir antes de comenzar:
-
 ```text
 tutorial/05-scheduling-resilience-maintenance/summary.md
-tutorial/05-scheduling-resilience-maintenance/student-notes.md
-labs/05-scheduling-resilience-maintenance/README.md
-labs/05-scheduling-resilience-maintenance/solution/namespace.yaml
-labs/05-scheduling-resilience-maintenance/solution/configmap.yaml
-labs/05-scheduling-resilience-maintenance/solution/secret.yaml
-labs/05-scheduling-resilience-maintenance/solution/pvc.yaml
-labs/05-scheduling-resilience-maintenance/solution/pdb.yaml
-labs/05-scheduling-resilience-maintenance/solution/deployment.yaml
-labs/05-scheduling-resilience-maintenance/solution/service.yaml
-labs/05-scheduling-resilience-maintenance/solution/ingress.yaml
-labs/05-scheduling-resilience-maintenance/validation/validate.sh
+labs/05-scheduling-resilience-maintenance/solution/
+labs/06-helm-packaging/README.md
+labs/06-helm-packaging/chart/platform-api/
+labs/06-helm-packaging/validation/adopt-existing-resources.sh
+labs/06-helm-packaging/validation/validate.sh
 ```
 
 ---
 
 # Estado inicial esperado
 
-La unidad parte de `platform-api` desplegada sobre MicroK8s en el namespace `platform-training`, con configuracion externa, Secret ficticio, probes, resources, Service interno, Ingress HTTP local, PVC de laboratorio, estrategia de `RollingUpdate`, constraints seguros de scheduling y PDB.
+La unidad parte de `platform-api` desplegada sobre MicroK8s en el namespace `platform-training`, con configuración externa, Secret ficticio, probes, resources, Service interno, Ingress HTTP local, PVC de laboratorio, estrategia `RollingUpdate`, constraints seguros de scheduling y PDB.
+
+En la fase 4 de saneamiento documental, la Unidad 06 ya existe. El laboratorio técnico no se modifica: solo se regenera el playbook y se ajustan los documentos del alumno necesarios para cumplir el contrato documental.
 
 Estado verificable esperado:
 
-- MicroK8s y Kubernetes disponibles segun `project/project-state.md`;
-- Helm disponible como CLI validada;
-- Terraform disponible como CLI, pero sin gestionar recursos del curso;
-- no existen charts Helm del curso antes de esta unidad;
-- no existen releases Helm del curso antes de esta unidad;
-- `labs/05-scheduling-resilience-maintenance/solution/` es la base tecnica de entrada;
-- los secretos existentes son ficticios y no contienen credenciales reales.
+- MicroK8s, Kubernetes y Helm figuran como disponibles en `project/project-state.md`;
+- `labs/06-helm-packaging/chart/platform-api/Chart.yaml` existe;
+- `labs/06-helm-packaging/chart/platform-api/templates/` contiene templates para los recursos acumulados;
+- `labs/06-helm-packaging/validation/validate.sh` existe;
+- los secretos versionados son ficticios;
+- `platform-api-data` no se borra en el flujo normal;
+- la Unidad 07 ya puede gestionar el release Helm desde Terraform, pero eso no cambia el alcance documental de Unidad 06.
 
-## Validacion del estado inicial
+## Validación del estado inicial
+
+Comprobaciones documentales permitidas en la fase 4:
 
 ```bash
-bash platform/environment/validation/validate-environment.sh
-bash labs/05-scheduling-resilience-maintenance/validation/validate.sh
-helm version --short
-find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print
-find . -path ./.git -prune -o -type f '(' -name '*.tf' -o -name '*.tfvars' ')' -print
+test -f labs/06-helm-packaging/chart/platform-api/Chart.yaml
+test -f tutorial/06-helm-packaging/student-reference.md
+test -f labs/06-helm-packaging/README.md
 ```
 
-Resultado esperado:
-
-```text
-Las validaciones heredadas no muestran fallos bloqueantes.
-Helm informa su version.
-No existen Chart.yaml del curso antes de generar la unidad.
-No existen archivos Terraform del curso antes de la Unidad 07.
-```
+Las validaciones funcionales heredadas quedan como estado histórico registrado en `tutorial/06-helm-packaging/summary.md`, no como validación nueva de este saneamiento.
 
 ---
 
@@ -298,44 +330,253 @@ No existen archivos Terraform del curso antes de la Unidad 07.
 
 | Artefacto | Ruta | Uso en esta unidad |
 |---|---|---|
-| Summary Unidad 05 | `tutorial/05-scheduling-resilience-maintenance/summary.md` | Continuidad tecnica y pedagogica |
-| Student notes Unidad 05 | `tutorial/05-scheduling-resilience-maintenance/student-notes.md` | Contexto previo sobre decisiones operativas que se parametrizan |
-| Manifiestos Unidad 05 | `labs/05-scheduling-resilience-maintenance/solution/` | Base para crear templates Helm |
-| Validacion Unidad 05 | `labs/05-scheduling-resilience-maintenance/validation/validate.sh` | Precondicion funcional heredada |
+| Summary Unidad 05 | `tutorial/05-scheduling-resilience-maintenance/summary.md` | Continuidad técnica y pedagógica |
+| Manifiestos Unidad 05 | `labs/05-scheduling-resilience-maintenance/solution/` | Base acumulada convertida en templates Helm |
+| Chart Helm Unidad 06 | `labs/06-helm-packaging/chart/platform-api/` | Artefacto técnico ya validado que no se modifica en fase 4 |
+| Laboratorio Unidad 06 | `labs/06-helm-packaging/README.md` | Fuente operativa actual |
+| Validación Unidad 06 | `labs/06-helm-packaging/validation/validate.sh` | Validación existente, no modificada |
+| Script de adopción | `labs/06-helm-packaging/validation/adopt-existing-resources.sh` | Migración controlada desde recursos aplicados con `kubectl` |
+| Registro de lagunas | `project/content-gap-register.md` | Confirmar que no hay laguna propia asignada a Unidad 06 |
 
-## Reglas de reutilizacion
+## Reglas de reutilización
 
-- conservar `platform-api` como aplicacion evolutiva;
-- conservar `platform-training` como namespace funcional por defecto;
-- conservar los nombres logicos de recursos salvo que Helm requiera helpers de nombre y la compatibilidad quede explicada;
-- convertir los manifiestos existentes en templates sin cambiar comportamiento funcional innecesariamente;
-- parametrizar solo valores con variabilidad real o pedagogicamente relevante;
-- mantener Secret ficticio de laboratorio sin introducir credenciales reales;
-- preservar Service, Ingress, PVC, PDB, probes, resources, rollout y scheduling de Unidad 05.
+- conservar `platform-api`;
+- conservar `platform-training`;
+- conservar `platform-api-local`;
+- no duplicar el chart Helm;
+- no modificar laboratorios ni validaciones en fase 4;
+- mantener Secrets ficticios y no introducir credenciales reales;
+- preservar Service, Ingress, PVC, PDB, probes, resources, rollout y scheduling de Unidad 05;
+- no borrar el PVC como parte normal de instalación, upgrade, rollback o limpieza;
+- no crear Terraform en Unidad 06.
 
 ---
 
-# Entregables esperados
+# Cambios previstos sobre la solución
 
-## Documentacion del alumno
+## Componentes nuevos
+
+Ninguno en fase 4. La unidad ya existe.
+
+## Componentes modificados
+
+| Componente | Cambio | Compatibilidad esperada |
+|---|---|---|
+| Playbook Unidad 06 | Regeneración contra `playbooks/unit-template.md` y contrato de `student-reference.md` | Sustituye el molde por módulos y elimina la contradicción documental |
+| `student-reference.md` | Regeneración completa contra `playbooks/student-reference-template.md` | Mantiene cobertura de Helm y separa errores conceptuales de diagnóstico operativo |
+| `README.md` | Ajuste de enlaces, ortografía y frontera con referencia | Conserva función de puerta de entrada |
+| `student-notes.md` | Ajuste de alcance y remisión de errores conceptuales | Conserva diagnóstico operativo del laboratorio |
+| `summary.md` | Registro del saneamiento documental de Unidad 06 | No declara validaciones técnicas nuevas |
+| `project/project-state.md` | Registro del incremento documental | Mantiene Unidad 08 congelada |
+
+## Componentes retirados
+
+Ninguno.
+
+---
+
+# Decisiones de diseño de la unidad
+
+## D-06-01 - Helm empaqueta `platform-api`
+
+### Decisión
+
+El primer chart del curso empaqueta la aplicación evolutiva existente. No se crea una aplicación de ejemplo independiente.
+
+### Motivo
+
+El curso es acumulativo y Helm debe organizar recursos ya comprendidos por el alumno.
+
+### Consecuencias
+
+- el chart conserva el contrato funcional de Unidad 05;
+- la lectura de templates se hace sobre recursos conocidos;
+- Terraform y GitOps posteriores reutilizan el mismo paquete.
+
+### Alternativas descartadas
+
+- chart de ejemplo mínimo: rompe continuidad pedagógica;
+- aplicación alternativa: contradice la arquitectura del repositorio.
+
+## D-06-02 - Parametrización con criterio
+
+### Decisión
+
+Se parametrizan valores con variabilidad real o valor pedagógico: imagen, réplicas, Ingress, configuración visible, Secret ficticio, PVC, resources, rollout, probes, scheduling y PDB.
+
+### Motivo
+
+Un chart útil no convierte todo el YAML en values. Expone diferencias legítimas y mantiene fijo lo que forma parte del contrato del recurso.
+
+### Consecuencias
+
+- el alumno puede distinguir configuración de estructura;
+- se reduce riesgo de values excesivamente frágiles;
+- la referencia debe explicar cuándo no parametrizar.
+
+### Alternativas descartadas
+
+- parametrizar cada campo: aumenta complejidad sin criterio;
+- mantener manifiestos planos: no introduce el aprendizaje de Helm.
+
+## D-06-03 - Referencia conforme al contrato documental
+
+### Decisión
+
+`tutorial/06-helm-packaging/student-reference.md` sigue `playbooks/student-reference-template.md` y no un índice propio por módulos.
+
+### Motivo
+
+La fase 4 corrige precisamente la contradicción previa: la referencia no puede contener diagnóstico de laboratorio ni una estructura divergente del contrato cerrado.
+
+### Consecuencias
+
+- los errores de modelo mental quedan en la referencia;
+- el diagnóstico operativo queda en `student-notes.md`;
+- la cobertura avanzada de Helm se conserva dentro de las secciones canónicas.
+
+### Alternativas descartadas
+
+- mantener el molde por módulos: contradice el contrato documental;
+- duplicar diagnóstico en referencia y notas: incumple la frontera global.
+
+## D-06-04 - Terraform queda diferido como ejecución
+
+### Decisión
+
+La referencia puede explicar la frontera conceptual con Terraform, pero la Unidad 06 no crea archivos Terraform ni gestiona releases desde Terraform.
+
+### Motivo
+
+Terraform pertenece a la Unidad 07 y necesita un chart funcional como entrada.
+
+### Consecuencias
+
+- `helm_release`, `templatefile()` y `set_sensitive` pueden aparecer solo como continuidad;
+- no se ejecuta ninguna validación Terraform en Unidad 06;
+- la Unidad 07 conserva la responsabilidad de IaC.
+
+### Alternativas descartadas
+
+- crear Terraform en Unidad 06: anticipa la unidad siguiente;
+- omitir la frontera: dificulta entender el paso a Unidad 07.
+
+## D-06-05 - Renderizado antes de instalación
+
+### Decisión
+
+El alumno debe inspeccionar YAML renderizado antes de instalar o actualizar el release.
+
+### Motivo
+
+Helm no debe tratarse como caja negra. El renderizado muestra qué Kubernetes recibirá realmente el API server.
+
+### Consecuencias
+
+- `helm template` y dry-run son parte central del flujo;
+- los errores de template se separan de los errores de Kubernetes;
+- el laboratorio conserva comandos de inspección del release.
+
+### Alternativas descartadas
+
+- instalar directamente sin renderizar: reduce capacidad de diagnóstico;
+- usar solo `helm lint`: no basta para validar el manifiesto final.
+
+---
+
+# Estructura de entregables
+
+## Tutorial
+
+Ruta:
 
 ```text
 tutorial/06-helm-packaging/README.md
+```
+
+Debe actuar como puerta de entrada de la unidad y remitir a:
+
+- `tutorial/06-helm-packaging/student-notes.md` para la guía de aprendizaje;
+- `tutorial/06-helm-packaging/student-reference.md` para errores de modelo mental, criterios y profundidad profesional;
+- `labs/06-helm-packaging/README.md` para pasos ejecutables.
+
+## Notas del alumno
+
+Ruta:
+
+```text
 tutorial/06-helm-packaging/student-notes.md
+```
+
+Debe explicar el laboratorio y diagnosticar fallos operativos: renderizado inválido, YAML rechazado, Service sin endpoints y upgrade roto.
+
+Debe enlazar a `student-reference.md` para errores conceptuales sobre Helm, parametrización, values, releases, secretos y frontera con Terraform.
+
+## Referencia del alumno
+
+Ruta:
+
+```text
 tutorial/06-helm-packaging/student-reference.md
+```
+
+Crear este archivo siempre. Debe seguir `playbooks/student-reference-template.md` y contener las nueve secciones canónicas en orden.
+
+Debe cubrir:
+
+- panorama de Helm frente a Kubernetes, Terraform, CI/CD y GitOps;
+- profundidad suficiente para leer el chart real de `platform-api`;
+- criterios de parametrización, values, helpers, `--set`, subcharts, umbrella charts, hooks, `helm test`, repositorios y rollback;
+- prácticas profesionales que sustituyen las simplificaciones del laboratorio;
+- anclaje explícito de elementos no practicados hacia unidades futuras o declaración fuera del itinerario.
+
+No debe incluir tablas de diagnóstico operativo del laboratorio.
+
+## Notas del instructor
+
+Ruta:
+
+```text
 tutorial/06-helm-packaging/instructor-notes.md
+```
+
+El saneamiento de fase 4 no modifica este archivo salvo instrucción explícita.
+
+## Resumen
+
+Ruta:
+
+```text
 tutorial/06-helm-packaging/summary.md
 ```
 
-Responsabilidades:
-
-- `README.md`: puerta de entrada, objetivos, mapa conceptual, flujo de uso y validaciones;
-- `student-notes.md`: guia de aprendizaje academica y aplicada de Helm en la unidad;
-- `student-reference.md`: referencia tecnica avanzada sobre plantillas, variables, helpers y frontera con Terraform;
-- `instructor-notes.md`: guia de imparticion, riesgos, evaluacion y recuperacion;
-- `summary.md`: contrato de continuidad hacia Unidad 07.
+Debe registrar la actualización documental de fase 4, distinguirla de las validaciones funcionales históricas y no declarar validaciones nuevas.
 
 ## Laboratorio
+
+Ruta:
+
+```text
+labs/06-helm-packaging/
+```
+
+El laboratorio no se modifica en fase 4.
+
+## Estado del proyecto
+
+Actualizar:
+
+```text
+project/project-state.md
+```
+
+para registrar el saneamiento documental de Unidad 06 y mantener congelada la Unidad 08.
+
+---
+
+# Estructura prevista del laboratorio
+
+La estructura existente se conserva:
 
 ```text
 labs/06-helm-packaging/
@@ -356,290 +597,280 @@ labs/06-helm-packaging/
 │           ├── service.yaml
 │           └── ingress.yaml
 └── validation/
+    ├── adopt-existing-resources.sh
     └── validate.sh
 ```
 
-La ruta exacta del chart podra ajustarse durante generacion solo si se documenta la razon y se actualizan todas las referencias.
+## Responsabilidad de cada artefacto
+
+| Ruta | Responsabilidad |
+|---|---|
+| `labs/06-helm-packaging/README.md` | Secuencia operativa del laboratorio |
+| `labs/06-helm-packaging/chart/platform-api/Chart.yaml` | Metadatos del chart |
+| `labs/06-helm-packaging/chart/platform-api/values.yaml` | Defaults del chart |
+| `labs/06-helm-packaging/chart/platform-api/values-local.yaml` | Overrides locales de MicroK8s |
+| `labs/06-helm-packaging/chart/platform-api/templates/` | Templates que renderizan recursos Kubernetes |
+| `labs/06-helm-packaging/chart/platform-api/templates/_helpers.tpl` | Helpers de nombres, labels y selectors |
+| `labs/06-helm-packaging/validation/adopt-existing-resources.sh` | Adopción de recursos heredados por metadata Helm |
+| `labs/06-helm-packaging/validation/validate.sh` | Validación existente de chart, release y recursos |
 
 ---
 
-# Student reference requerido
+# Flujo pedagógico obligatorio
 
-La Unidad 06 debe incorporar un nuevo elemento de referencia para el alumno:
+La unidad sigue este orden:
 
-```text
-tutorial/06-helm-packaging/student-reference.md
-```
+1. problema real: varios manifiestos acumulados empiezan a ser difíciles de instalar y parametrizar;
+2. por qué ahora: el alumno ya comprende los recursos Kubernetes que Helm empaquetará;
+3. modelo mental: chart, template, values, renderizado y release;
+4. lectura de artefactos: `Chart.yaml`, values, templates y helpers;
+5. decisiones de diseño: qué parametrizar y qué mantener fijo;
+6. observación: renderizar antes de instalar;
+7. implementación en laboratorio: adopción, install, upgrade, inspección y rollback;
+8. validación: Helm, Kubernetes y script existente;
+9. diagnóstico: fallos operativos en `student-notes.md`;
+10. consolidación: errores de modelo mental y práctica profesional en `student-reference.md`;
+11. continuidad: Terraform en Unidad 07.
 
-Titulo recomendado:
-
-```text
-Arquitectura avanzada de plantillas y gestion de variables en Helm
-```
-
-Este documento no sustituye a `student-notes.md`. Su funcion es servir como referencia tecnica consultable durante ejercicios, revisiones y futuras unidades. Debe ser mas denso, preciso y estructurado que la guia de aprendizaje, pero conservar explicaciones progresivas y ejemplos pequenos conectados con `platform-api`.
-
-## Indice minimo obligatorio
-
-### Modulo 1 - El compilador de Helm y el motor de plantillas de Go
-
-#### 1.1 Introduccion al motor `text/template` de Go
-
-- mecanica del pipeline de renderizado, desde texto plano hasta YAML de Kubernetes;
-- anatomia del ambito de contexto: que es el punto `.`;
-- objetos globales del compilador;
-- el signo dolar `$` como ancla raiz del contexto.
-
-#### 1.2 Control estricto de espacios en blanco y sintaxis estandar
-
-- operador de supresion de espacios `{{-` y `-}}`;
-- prevencion de errores de sangria en bloques declarativos YAML;
-- uso de pipelines `|`;
-- funciones de formateo como `quote`, `upper` y `lower`.
-
-### Modulo 2 - Jerarquia, fusion y sustitucion de variables
-
-#### 2.1 Ciclo de vida y flujo de prioridades
-
-- piramide de pesos de Helm, desde el archivo por defecto hasta la consola;
-- relacion entre `values.yaml`, valores de chart padre, archivos `-f` y `--set`;
-- mecanica de combinacion y sustitucion de mapas complejos;
-- riesgos de destruir configuraciones parciales por overrides mal estructurados.
-
-#### 2.2 Flujo de datos horizontal y descendente
-
-- nivel 1: ambito interno del subchart en `charts/subchart/values.yaml`;
-- nivel 2: inyeccion y sobrescritura desde el chart padre;
-- nivel 3: inyeccion transversal mediante `.Values.global`;
-- nivel 4: sobrescritura externa en produccion mediante archivos de entorno con `-f`;
-- nivel 5: inyeccion quirurgica por linea de comandos con `--set` y `--set-string`.
-
-### Modulo 3 - Estructuras de control de flujo y mutacion de contexto
-
-#### 3.1 Logica condicional avanzada
-
-- evaluacion de existencia y booleanos con `if`, `else if` y `else`;
-- operadores de comparacion prefijos de Go: `eq`, `ne`, `lt`, `ge`, `and` y `or`.
-
-#### 3.2 Iteraciones eficientes en YAML
-
-- bucles sobre listas planas con `range`;
-- desestructuracion clave-valor de mapas complejos.
-
-#### 3.3 Mutacion del ambito con `with`
-
-- simplificacion de rutas largas de variables;
-- peligro de perdida de contexto;
-- recuperacion del contexto raiz con `$`.
-
-### Modulo 4 - Ingenieria de codigo reutilizable con `_helpers.tpl`
-
-#### 4.1 Declaracion e invocacion de bloques nombrados
-
-- uso de la directiva `define` para empaquetar logica;
-- diferencias tecnicas entre `template` e `include`;
-- paso obligatorio del contexto de ejecucion.
-
-#### 4.2 Tecnicas de indentacion dinamica
-
-- operador de sangria tradicional `indent`;
-- operador con nueva linea `nindent`;
-- inyeccion limpia de bloques de labels y variables de entorno.
-
-### Modulo 5 - Orquestacion con Terraform como siguiente nivel
-
-#### 5.1 El recurso `helm_release` de Terraform
-
-- mapeo conceptual de variables HCL a estructuras YAML de Helm;
-- inyeccion limpia mediante la funcion `templatefile()` de Terraform;
-- proteccion de secretos en el estado con `set_sensitive`;
-- limite de alcance: este modulo es una referencia de continuidad hacia Unidad 07, no un laboratorio ejecutable de Unidad 06.
-
-## Criterios de calidad del `student-reference.md`
-
-- debe usar ejemplos breves basados en `platform-api`;
-- debe distinguir claramente Go templates, funciones de Helm/Sprig y YAML Kubernetes;
-- debe incluir advertencias sobre sangria, contexto y overrides destructivos;
-- debe evitar credenciales reales;
-- debe incluir referencias a documentacion oficial de Helm y Terraform;
-- debe cerrar con una tabla de diagnostico de errores frecuentes de renderizado.
+Este orden evita saltar desde definiciones de Helm a comandos sin explicar primero qué problema resuelve el empaquetado.
 
 ---
 
-# Diseno pedagogico
+# Procedimientos obligatorios
 
-## `README.md`
+## Preparación
 
-Debe responder:
+- comprobar entorno local y salida de Unidad 05 según el laboratorio existente;
+- revisar que el chart local existe en fase 4;
+- confirmar que no se modificarán laboratorios ni validaciones durante saneamiento.
 
-- por que Helm aparece despues de manifiestos nativos;
-- que problema resuelve empaquetar `platform-api`;
-- que partes del comportamiento ya existian antes de Helm;
-- que comandos debe ejecutar el alumno;
-- como validar que el release conserva el comportamiento de Unidad 05.
+## Implementación
 
-## `student-notes.md`
+- en la generación histórica, convertir los manifiestos de Unidad 05 en templates Helm;
+- en fase 4, regenerar el contrato documental y los documentos del alumno necesarios.
 
-Debe mantener la estructura aprobada para guias del alumno:
+## Validación
 
-- proposito;
-- que se va a cubrir;
-- que representa cada componente;
-- que vas a construir;
-- como se relacionan las piezas;
-- que ocurre al aplicar los artefactos;
-- como comprobar que funciona;
-- diagnostico de cuatro fallos tipicos;
-- que debes recordar para la Unidad 07;
-- fuentes de referencia.
+- conservar las validaciones históricas registradas en `summary.md`;
+- durante fase 4, ejecutar solo comprobaciones documentales o estáticas que no desplieguen ni modifiquen el clúster.
 
-## `student-reference.md`
+## Diagnóstico
 
-Debe actuar como manual de consulta sobre plantillas y variables. Puede ser mas extenso que `student-notes.md`, pero no debe convertirse en una copia de la documentacion oficial.
+- documentar fallos de laboratorio solo en `student-notes.md` y `labs/06-helm-packaging/README.md`;
+- documentar errores conceptuales solo en `student-reference.md`.
 
-## `labs/06-helm-packaging/README.md`
+## Recuperación
 
-Debe incluir:
+- mantener rollback Helm y reinstalación del estado versionado como recuperación operativa en el laboratorio;
+- no usar la referencia como runbook.
 
-- precondiciones;
-- estructura del chart;
-- migracion desde manifiestos de Unidad 05;
-- comandos de renderizado;
-- instalacion inicial;
-- upgrade;
-- rollback;
-- inspeccion del release;
-- validacion automatizada;
-- recuperacion de errores comunes;
-- limpieza controlada si procede.
+## Limpieza
+
+- no borrar el PVC como limpieza normal;
+- no añadir nuevas operaciones destructivas en fase 4.
 
 ---
 
-# Validaciones requeridas
+# Validaciones obligatorias
 
-## Validaciones estaticas
+## Validaciones estáticas
 
-```bash
-bash -n labs/06-helm-packaging/validation/validate.sh
-helm lint labs/06-helm-packaging/chart/platform-api
-helm template platform-api-local labs/06-helm-packaging/chart/platform-api --namespace platform-training -f labs/06-helm-packaging/chart/platform-api/values-local.yaml
-helm template platform-api-local labs/06-helm-packaging/chart/platform-api --namespace platform-training -f labs/06-helm-packaging/chart/platform-api/values-local.yaml | kubectl apply --dry-run=client -f -
-```
-
-Si `shellcheck` esta disponible:
-
-```bash
-shellcheck labs/06-helm-packaging/validation/validate.sh
-```
+| Validación | Herramienta o comando | Resultado esperado |
+|---|---|---|
+| Sintaxis Bash | `bash -n labs/06-helm-packaging/validation/validate.sh` | Sin errores |
+| Sintaxis Bash de adopción | `bash -n labs/06-helm-packaging/validation/adopt-existing-resources.sh` | Sin errores |
+| Helm lint | `helm lint labs/06-helm-packaging/chart/platform-api` | 0 charts failed |
+| Renderizado Helm | `helm template platform-api-local labs/06-helm-packaging/chart/platform-api --namespace platform-training -f labs/06-helm-packaging/chart/platform-api/values-local.yaml` | Manifiestos renderizados |
+| Dry-run cliente | `helm template platform-api-local labs/06-helm-packaging/chart/platform-api --namespace platform-training -f labs/06-helm-packaging/chart/platform-api/values-local.yaml | kubectl apply --dry-run=client -f -` | Recursos aceptados por cliente |
 
 ## Validaciones funcionales
 
-```bash
-helm upgrade --install platform-api-local labs/06-helm-packaging/chart/platform-api --namespace platform-training --create-namespace -f labs/06-helm-packaging/chart/platform-api/values-local.yaml
-kubectl -n platform-training rollout status deployment/platform-api
-bash labs/06-helm-packaging/validation/validate.sh
-helm history platform-api-local --namespace platform-training
-helm rollback platform-api-local <revision> --namespace platform-training
+| Validación | Procedimiento | Resultado esperado |
+|---|---|---|
+| Instalación o upgrade | `helm upgrade --install platform-api-local ...` | Release `deployed` |
+| Rollout | `kubectl -n platform-training rollout status deployment/platform-api` | Deployment disponible |
+| Validación de unidad | `bash labs/06-helm-packaging/validation/validate.sh` | 0 fallos y 0 avisos |
+| Rollback | `helm rollback platform-api-local <revision> --namespace platform-training` | Release vuelve a una revisión anterior y Deployment queda disponible |
+
+## Validaciones de continuidad
+
+Comprobar que:
+
+- el chart de Unidad 06 sigue disponible para Unidad 07;
+- `platform-api`, `platform-training` y `platform-api-local` conservan sus nombres;
+- las rutas documentadas existen;
+- el laboratorio no borra `platform-api-data`;
+- no se crean `.tf`, `.tfvars` ni módulos Terraform en Unidad 06.
+
+## Validaciones no ejecutables en el entorno de generación
+
+En la fase 4 de saneamiento documental no se ejecutan validaciones funcionales nuevas. Las validaciones históricas permanecen registradas en `summary.md` y `project/project-state.md`.
+
+---
+
+# Escenarios de error obligatorios
+
+| Escenario | Síntoma | Diagnóstico | Recuperación |
+|---|---|---|---|
+| Template inválido | `helm template` falla | Revisar sintaxis Go template, contexto, `quote`, `toYaml`, `nindent` y espacios | Corregir template y volver a renderizar |
+| YAML rechazado por Kubernetes | Dry-run cliente falla | Revisar API, kind, spec y campos renderizados | Ajustar template o values sin saltar la validación |
+| Service sin endpoints | HTTP falla o EndpointSlice vacío | Revisar labels y selectors renderizados | Corregir helpers o values de labels |
+| Upgrade rompe la aplicación | Rollout no progresa o respuesta HTTP incorrecta | Revisar `helm history`, manifiesto renderizado y eventos Kubernetes | `helm rollback` a revisión válida y reinstalar estado versionado |
+
+Estos escenarios pertenecen a `student-notes.md` y al README del laboratorio. `student-reference.md` debe cubrir errores de modelo mental, no runbooks de recuperación.
+
+---
+
+# Requisitos de seguridad
+
+## Datos sensibles
+
+- usar solo Secrets ficticios de laboratorio;
+- no guardar credenciales reales en `values.yaml`, `values-local.yaml`, historial de shell ni ejemplos;
+- explicar que values y release history no son un sistema de secret management productivo;
+- mantener fuera de alcance External Secrets, SOPS, Sealed Secrets, Vault y secret managers cloud salvo como criterio conceptual.
+
+## Privilegios
+
+- Helm y `kubectl` requieren permisos suficientes sobre `platform-training`;
+- el script de adopción añade metadata Helm a recursos existentes;
+- no se requieren roles cloud;
+- no se añaden permisos nuevos en fase 4.
+
+## Operaciones destructivas
+
+| Operación | Advertencia | Alcance | Recuperación | Confirmación requerida |
+|---|---|---|---|---|
+| `helm uninstall platform-api-local` | Puede retirar recursos del release y dejar continuidad rota | Release Helm local | Reinstalar con `helm upgrade --install` | Sí, operación manual |
+| Borrado de PVC | No es limpieza normal y puede perder datos del laboratorio | `platform-api-data` | Restaurar solo si existe backup o recrear dato de laboratorio | Sí, fuera del flujo normal |
+
+---
+
+# Requisitos de portabilidad
+
+## Kubernetes estándar
+
+- Deployment, Service, ConfigMap, Secret, PVC, Ingress y PDB son APIs estándar o extensiones Kubernetes habituales;
+- labels, selectors, probes, resources y rollout siguen siendo decisiones Kubernetes aunque se rendericen con Helm.
+
+## Específico de MicroK8s
+
+- `values-local.yaml` refleja supuestos locales;
+- `microk8s-hostpath` es almacenamiento de laboratorio;
+- Ingress local usa la configuración disponible en MicroK8s.
+
+## Específico de AKS
+
+- no aplica en esta unidad;
+- values de cloud deberán ajustar StorageClass, Ingress Controller, certificados, identidad y DNS en unidades posteriores.
+
+## Específico de EKS
+
+- no aplica en esta unidad;
+- values de cloud deberán ajustar StorageClass, Ingress Controller, certificados, identidad y DNS en unidades posteriores.
+
+## Estrategia de desacoplamiento
+
+- separar defaults del chart y overrides locales;
+- centralizar nombres y labels en helpers;
+- no acoplar templates a un único entorno cuando pueda expresarse como values;
+- documentar las diferencias locales en la referencia, no esconderlas en el laboratorio.
+
+---
+
+# Restricciones de generación
+
+La IA no debe:
+
+- modificar `labs/06-helm-packaging/` durante la fase 4;
+- crear Unidad 08;
+- ejecutar validaciones funcionales nuevas;
+- crear módulos Terraform;
+- crear, modificar o ejecutar `helm_release` en Unidad 06;
+- introducir secretos reales;
+- publicar charts en repositorios remotos u OCI;
+- añadir subcharts, hooks o `helm test` ejecutables;
+- instalar Tekton, Argo CD, observabilidad avanzada, KEDA ni recursos cloud;
+- sustituir `platform-api`;
+- cambiar `platform-training`;
+- borrar PVCs o documentar su borrado como limpieza normal.
+
+La IA sí puede:
+
+- regenerar este playbook;
+- regenerar `tutorial/06-helm-packaging/student-reference.md`;
+- ajustar `README.md`, `student-notes.md` y `summary.md`;
+- actualizar `project/project-state.md`;
+- actualizar `project/content-gap-register.md` solo si se cierra o ajusta una laguna.
+
+---
+
+# Criterios de aceptación
+
+La unidad se considerará saneada documentalmente cuando:
+
+- [ ] `playbooks/units/06-helm-packaging.md` esté regenerado contra el contrato vigente;
+- [ ] `tutorial/06-helm-packaging/student-reference.md` siga las nueve secciones canónicas de `playbooks/student-reference-template.md`;
+- [ ] `README.md` enlace a notas, referencia y laboratorio sin desarrollar contenido que pertenece a la referencia;
+- [ ] `student-notes.md` conserve diagnóstico operativo y remita errores conceptuales a la referencia;
+- [ ] cada exclusión declarada en `student-notes.md` esté cubierta, anclada con número de unidad o declarada fuera del itinerario en `student-reference.md`;
+- [ ] ningún contenido esté duplicado entre `student-notes.md` y `student-reference.md`;
+- [ ] el diagnóstico de fallos del laboratorio esté solo en `student-notes.md` y los errores de concepto solo en `student-reference.md`;
+- [ ] la referencia nombre las simplificaciones de laboratorio y la alternativa profesional;
+- [ ] `.work/detail.md` haya sido usado solo como checklist de cobertura;
+- [ ] `summary.md` registre el saneamiento sin declarar validaciones funcionales nuevas;
+- [ ] `project/project-state.md` refleje el estado real y mantenga Unidad 08 congelada;
+- [ ] no se hayan modificado labs, chart Helm ni validaciones;
+- [ ] no existan secretos reales;
+- [ ] no existan contradicciones abiertas.
+
+---
+
+# Estado final esperado
+
+## Plataforma
+
+- sin cambios técnicos por fase 4;
+- MicroK8s, Kubernetes y Helm conservan el estado histórico registrado.
+
+## Aplicación
+
+- `platform-api` se conserva como aplicación evolutiva;
+- namespace `platform-training` se conserva;
+- release `platform-api-local` sigue siendo el nombre del release local documentado.
+
+## Automatización
+
+- chart Helm local conservado en `labs/06-helm-packaging/chart/platform-api/`;
+- Terraform continúa perteneciendo a Unidad 07.
+
+## Seguridad
+
+- Secrets ficticios de laboratorio;
+- sin credenciales reales versionadas;
+- sin nuevos permisos ni operaciones destructivas.
+
+## Artefactos principales
+
+```text
+playbooks/units/06-helm-packaging.md
+tutorial/06-helm-packaging/README.md
+tutorial/06-helm-packaging/student-notes.md
+tutorial/06-helm-packaging/student-reference.md
+tutorial/06-helm-packaging/summary.md
+project/project-state.md
 ```
 
-La validacion funcional debe comprobar, como minimo:
-
-- release Helm instalado;
-- manifiestos renderizados sin errores;
-- Deployment disponible;
-- Service `ClusterIP` con endpoints;
-- Ingress conservado para `platform-api.local`;
-- PVC `platform-api-data` conservado;
-- PDB `platform-api` presente;
-- labels y selectors coherentes;
-- rollback documentado y recuperable;
-- ausencia de secretos reales.
-
-## Validaciones pendientes si no se ejecutan
-
-Si el entorno no esta disponible, registrar como pendientes:
-
-- `helm lint`;
-- `helm template`;
-- dry-run contra `kubectl`;
-- instalacion o upgrade real;
-- validacion funcional del release;
-- rollback real.
-
 ---
 
-# Restricciones especificas
+# Información obligatoria para el summary
 
-- No crear modulos Terraform en esta unidad.
-- No ejecutar `helm_release` en esta unidad.
-- No introducir secretos reales ni valores sensibles.
-- No usar `--set` para estructuras complejas como camino principal.
-- No romper compatibilidad con `labs/05-scheduling-resilience-maintenance/solution/`.
-- No eliminar PVC como parte normal de instalacion, upgrade, rollback o limpieza.
-- No cambiar el namespace funcional por defecto.
-- No introducir aplicaciones alternativas.
-- No instalar CI/CD, GitOps, observabilidad avanzada, KEDA ni recursos cloud.
-- No publicar charts en repositorios remotos.
+El `summary.md` deberá destacar:
 
----
-
-# Decisiones previstas
-
-## D-06-01 - Helm empaqueta `platform-api`
-
-El primer chart del curso debe empaquetar la aplicacion evolutiva existente. No se crea una aplicacion de ejemplo independiente.
-
-## D-06-02 - Parametrizacion con criterio
-
-La unidad debe ensenar que no todo campo debe convertirse en variable. Se parametrizan valores con variabilidad real: imagen, replicas, Ingress, resources, scheduling, PVC, PDB y configuracion visible de laboratorio.
-
-## D-06-03 - `student-reference.md` como referencia tecnica avanzada
-
-La unidad incorpora `tutorial/06-helm-packaging/student-reference.md` para cubrir arquitectura de plantillas, jerarquia de valores, control de flujo, helpers y frontera conceptual con Terraform.
-
-## D-06-04 - Terraform queda diferido como ejecucion
-
-La referencia puede explicar `helm_release`, `templatefile()` y `set_sensitive` para preparar Unidad 07, pero la Unidad 06 no debe crear archivos Terraform ni gestionar releases desde Terraform.
-
-## D-06-05 - Validacion por renderizado antes de instalacion
-
-El alumno debe ver primero el YAML renderizado antes de instalarlo. Esto evita tratar Helm como una caja negra.
-
----
-
-# Fuentes externas recomendadas
-
-- Helm Chart Template Guide: https://helm.sh/docs/chart_template_guide/
-- Helm Values Files: https://helm.sh/docs/chart_template_guide/values_files/
-- Helm Template Functions and Pipelines: https://helm.sh/docs/chart_template_guide/functions_and_pipelines/
-- Helm Named Templates: https://helm.sh/docs/chart_template_guide/named_templates/
-- Helm Subcharts and Global Values: https://helm.sh/docs/chart_template_guide/subcharts_and_globals/
-- Helm Function List: https://helm.sh/docs/chart_template_guide/function_list/
-- Terraform `templatefile`: https://developer.hashicorp.com/terraform/language/functions/templatefile
-- Terraform Helm provider `helm_release`: https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release
-
----
-
-# Criterios de aceptacion
-
-El playbook de Unidad 06 quedara listo para aprobar cuando:
-
-- respete el roadmap y el estado actual;
-- mantenga `platform-api` como aplicacion evolutiva;
-- defina el chart local esperado sin crear Terraform;
-- incorpore `student-reference.md` como entregable obligatorio;
-- trate Terraform solo como continuidad conceptual hacia Unidad 07;
-- distinga validacion tecnica de revision pedagogica del usuario;
-- declare validaciones verificables;
-- no contradiga las restricciones de unidades anteriores.
-
-La Unidad 06 quedara completada cuando, en una sesion posterior al playbook aprobado:
-
-- existan todos los documentos de `tutorial/06-helm-packaging/`;
-- exista el chart local de `platform-api`;
-- exista el laboratorio operativo;
-- exista la validacion automatizada;
-- las validaciones estaticas se hayan ejecutado;
-- las validaciones funcionales se hayan ejecutado o queden registradas como pendientes con causa;
-- `tutorial/06-helm-packaging/summary.md` registre continuidad hacia Unidad 07;
-- `project/project-state.md` refleje el estado real.
+- que la Unidad 06 fue saneada documentalmente en fase 4;
+- que el playbook fue regenerado contra el contrato vigente;
+- que `student-reference.md` fue regenerado con estructura canónica;
+- que README y notas fueron ajustados para respetar la frontera entre notas y referencia;
+- que no se modificaron laboratorios, chart Helm ni validaciones;
+- que no se ejecutaron validaciones funcionales nuevas;
+- que Unidad 07 sigue reutilizando el chart y Unidad 08 permanece congelada por el plan de saneamiento.
