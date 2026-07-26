@@ -1,27 +1,29 @@
-# Unidad 01 - Fundamentos operativos y primera aplicacion
+# Unidad 01 - Fundamentos operativos y primera aplicación
 
-## Guia pedagogica de la unidad
+## Guía pedagógica de la unidad
 
-Esta unidad es el primer contacto real con Kubernetes como sistema de operacion de aplicaciones. No busca que el alumno memorice una lista de objetos, sino que cambie de modelo mental.
+Esta unidad es el primer contacto real con Kubernetes como sistema de operación de aplicaciones. No busca que el alumno memorice una lista de objetos, sino que cambie de modelo mental.
 
 Antes de Kubernetes, muchas operaciones se piensan como acciones directas: arrancar un proceso, abrir un puerto, copiar un fichero, reiniciar un servicio. Kubernetes introduce otra forma de trabajar: declaras objetos en una API y un conjunto de controladores intenta mantener el estado real cerca del estado deseado.
 
-La unidad cubre esa transicion:
+La unidad cubre esa transición:
 
 - de ejecutar un contenedor a declarar un workload;
-- de pensar en una maquina a pensar en un cluster;
+- de pensar en una máquina a pensar en un clúster;
 - de mirar un proceso a observar objetos, estado y eventos;
 - de usar nombres manuales a usar labels y selectors;
 - de acceder a un Pod concreto a usar un Service estable;
-- de "ha fallado el comando" a "que parte de la reconciliacion no coincide?".
+- de "ha fallado el comando" a "¿qué parte de la reconciliación no coincide?".
 
 El laboratorio despliega `platform-api`, pero la aplicacion es un vehiculo. Lo importante es entender las responsabilidades que aparecen por primera vez: `Namespace`, `Deployment`, `ReplicaSet`, `Pod`, `Service`, labels, selectors, eventos y logs.
 
-Para estudiar esos conceptos desde cero, especialmente `Pod`, Deployment, ReplicaSet, Service, labels y reconciliacion, usa `tutorial/01-kubernetes/student-notes.md`.
+Para estudiar esos conceptos desde cero, especialmente `Pod`, Deployment, ReplicaSet, Service, labels y reconciliación, usa `tutorial/01-kubernetes/student-notes.md`.
 
-Para ampliar el mapa de workloads y entender por qué esta unidad usa `Deployment` pero Kubernetes también ofrece `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, usa `tutorial/01-kubernetes/student-reference.md`.
+Para ampliar el mapa profesional y entender por qué esta unidad usa `Deployment` pero Kubernetes también ofrece `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, usa `tutorial/01-kubernetes/student-reference.md`. Esa referencia también cubre la diferencia entre labels y anotaciones, estrategias `Recreate` frente a `RollingUpdate`, CoreDNS y FQDN internos como criterio conceptual, sin cambiar el laboratorio.
 
-Si necesitas repasar que es una imagen de contenedor, un runtime o un registro antes de leer el campo `image` del Deployment, vuelve a `tutorial/00-environment/student-reference.md`. Para una practica breve de lectura, usa `platform/environment/container-images/README.md`.
+Si necesitas repasar qué es una imagen de contenedor, un runtime o un registro antes de leer el campo `image` del Deployment, vuelve a `tutorial/00-environment/student-reference.md`. Para una práctica breve de lectura, usa `platform/environment/container-images/README.md`.
+
+La frontera documental de la unidad es deliberada: el README orienta, `student-notes.md` explica y diagnostica el laboratorio, `student-reference.md` corrige modelos mentales y cubre lo que existe fuera de esta práctica inicial.
 
 ## Mapa de aprendizaje
 
@@ -38,13 +40,13 @@ Si necesitas repasar que es una imagen de contenedor, un runtime o un registro a
 
 ## Pregunta central
 
-La pregunta de la unidad no es "como despliego nginx?". La pregunta es:
+La pregunta de la unidad no es "¿cómo despliego nginx?". La pregunta es:
 
 ```text
-Como convierte Kubernetes una declaracion versionada en Pods reales y en un punto de acceso interno estable?
+¿Cómo convierte Kubernetes una declaración versionada en Pods reales y en un punto de acceso interno estable?
 ```
 
-Si el alumno puede responder esa pregunta con `platform-api`, esta preparado para que la Unidad 02 anada configuracion, salud y recursos sobre la misma base.
+Si el alumno puede responder esa pregunta con `platform-api`, está preparado para que la Unidad 02 añada configuración, salud y recursos sobre la misma base.
 
 ## Contexto
 

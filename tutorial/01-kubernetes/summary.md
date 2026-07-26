@@ -8,8 +8,9 @@
 | Identificador | `01-kubernetes` |
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
 | Estado | Completada y aprobada con limitaciones |
-| Fecha de cierre o actualizacion | 2026-07-22 |
+| Fecha de cierre o actualización | 2026-07-27 |
 | Revision pedagogica del usuario | Aprobada; hardening pedagogico global inicial aplicado posteriormente y aceptado como cambio minimo |
+| Saneamiento documental | Fase 4 aplicada a Unidad 01; aprobación específica registrada el 2026-07-27 |
 
 ## Resumen ejecutivo
 
@@ -25,6 +26,12 @@ El 2026-07-18 se aplico un hardening pedagogico global inicial sobre la Unidad 0
 
 El 2026-07-22 se añadió `tutorial/01-kubernetes/student-reference.md` como referencia profesional sobre el mapa de workloads de Kubernetes. La referencia explica `Pod`, `ReplicaSet`, `Deployment`, `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, y resuelve documentalmente la parte conceptual de `GAP-004` sin modificar el laboratorio ni crear recursos nuevos.
 
+El 2026-07-27 se aplicó el saneamiento documental de fase 4 sobre la Unidad 01. Se regeneró `playbooks/units/01-kubernetes.md` contra el contrato documental cerrado, se regeneró `tutorial/01-kubernetes/student-reference.md` con la estructura canónica de `playbooks/student-reference-template.md`, y se ajustaron `README.md` y `student-notes.md` para reforzar la frontera entre laboratorio y referencia. `.work/detail.md` se usó solo como checklist de cobertura. No se modificó `labs/01-kubernetes/`, no se crearon workloads nuevos, no se cambiaron manifiestos Kubernetes y no se ejecutaron validaciones funcionales nuevas.
+
+El usuario confirmó la aprobación específica del saneamiento documental de la Unidad 01 el 2026-07-27.
+
+Tras este saneamiento, `GAP-004` queda cerrado documentalmente para la Unidad 01 como mapa profesional de workloads. La práctica de `StatefulSet` y `Headless Service` sigue anclada a Unidad 04 como `TD-023`, por lo que el registro global mantiene la laguna en estado abordado hasta que esa práctica se implemente y valide.
+
 ## Objetivos alcanzados
 
 | Objetivo | Estado | Evidencia |
@@ -39,6 +46,9 @@ El 2026-07-22 se añadió `tutorial/01-kubernetes/student-reference.md` como ref
 | Añadir referencias para ampliar conceptos | Alcanzado | `tutorial/01-kubernetes/README.md` |
 | Reforzar el tutorial como material pedagogico principal | Alcanzado documentalmente | `tutorial/01-kubernetes/README.md`, `tutorial/01-kubernetes/instructor-notes.md` |
 | Validar funcionalmente en MicroK8s | Alcanzado | `bash labs/01-kubernetes/validation/validate.sh`: 0 fallos, 0 avisos |
+| Regenerar playbook contra contrato documental | Alcanzado documentalmente | `playbooks/units/01-kubernetes.md` |
+| Regenerar referencia canónica de alumno | Alcanzado documentalmente | `tutorial/01-kubernetes/student-reference.md` |
+| Mantener laboratorio sin cambios durante saneamiento | Alcanzado documentalmente | `git diff -- labs/01-kubernetes` sin cambios |
 
 ## Estado inicial utilizado
 
@@ -111,6 +121,7 @@ El 2026-07-22 se añadió `tutorial/01-kubernetes/student-reference.md` como ref
 | Estado del proyecto | `project/project-state.md` | Registrado cierre documental y tecnico de Unidad 01 segun validaciones disponibles |
 | Flujo de trabajo | `project/how-to.md`, `playbooks/master.md` | Separada validacion tecnica de aprobacion del usuario |
 | Hardening pedagogico inicial | `tutorial/01-kubernetes/README.md`, `tutorial/01-kubernetes/instructor-notes.md` | Refuerzo conceptual, decisiones de diseno, diagnostico razonado y lectura guiada |
+| Saneamiento documental fase 4 | `playbooks/units/01-kubernetes.md`, `tutorial/01-kubernetes/README.md`, `tutorial/01-kubernetes/student-notes.md`, `tutorial/01-kubernetes/student-reference.md`, `tutorial/01-kubernetes/summary.md` | Playbook y referencia alineados con contrato documental cerrado; `GAP-004` tratado sin cambios de laboratorio |
 
 ## Componentes retirados
 
@@ -332,6 +343,7 @@ Registrada tambien en `project/how-to.md`, `playbooks/master.md` y `project/proj
 | ShellCheck | `shellcheck` no esta disponible en este entorno | Ejecutar cuando la herramienta este instalada |
 | Validacion Windows/WSL desde PowerShell | Esta sesion opera desde Ubuntu WSL, no desde el host Windows | Validacion por equipo al replicar el laboratorio |
 | Hardening pedagogico global | Se difiere para revisar progresion, vision conceptual y referencias con varias unidades generadas | Sesion futura especifica |
+| Validaciones funcionales durante saneamiento documental de 2026-07-27 | El alcance prohibía ejecutar validaciones funcionales nuevas | No ejecutadas en esta sesión |
 
 ## Limitaciones y deuda tecnica
 
@@ -341,6 +353,7 @@ Registrada tambien en `project/how-to.md`, `playbooks/master.md` y `project/proj
 | L-01-02 | La aplicacion aun no tiene configuracion externa, secretos de laboratorio, probes ni recursos | Diferido a Unidad 02 |
 | L-01-03 | El Service es interno; no hay ingreso permanente | Diferido a Unidad 03 |
 | L-01-04 | El contenido tiene un nivel de entrada exigente y prioriza la explicacion del laboratorio sobre una vision conceptual amplia | Diferido a hardening pedagogico global |
+| L-01-05 | La práctica de `StatefulSet` y `Headless Service` asociada a `GAP-004` no pertenece a Unidad 01 | Anclada a Unidad 04 como `TD-023` |
 
 ## Elementos que debe reutilizar la Unidad 02
 
@@ -354,8 +367,8 @@ Registrada tambien en `project/how-to.md`, `playbooks/master.md` y `project/proj
 
 ## Siguiente incremento recomendado
 
-Generar el playbook de la Unidad 02 - Configuracion, secretos y ciclo de vida, conservando la deuda de hardening pedagogico global registrada.
+Continuar la fase 4 del saneamiento documental con la Unidad 00. La Unidad 08 permanece congelada hasta cerrar el saneamiento completo.
 
 ```text
-Generar el playbook de la Unidad 02 - Configuracion, secretos y ciclo de vida
+Continuar fase 4 con saneamiento documental de la Unidad 00
 ```

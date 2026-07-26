@@ -1,11 +1,11 @@
-# Playbook de la Unidad 01 - Fundamentos operativos y primera aplicacion
+# Playbook de la Unidad 01 - Fundamentos operativos y primera aplicación
 
-## Identificacion
+## Identificación
 
 ### Unidad
 
 ```text
-01 - Fundamentos operativos y primera aplicacion
+01 - Fundamentos operativos y primera aplicación
 ```
 
 ### Identificador
@@ -23,10 +23,10 @@ Fase 2 - Fundamentos Kubernetes
 ### Estado del playbook
 
 ```text
-Aprobado para iniciar la generacion de la Unidad 01
+Aprobado; regenerado contra el contrato documental en fase 4
 ```
 
-### Propietario logico
+### Propietario lógico
 
 ```text
 Fundamentos Kubernetes
@@ -34,32 +34,69 @@ Fundamentos Kubernetes
 
 ---
 
-# Proposito de la unidad
+# Propósito de la unidad
 
-La Unidad 01 introduce la operacion basica de Kubernetes desplegando la primera version funcional de la solucion evolutiva del curso sobre el entorno MicroK8s validado en la Unidad 00.
+La Unidad 01 transforma el clúster MicroK8s validado en la Unidad 00 en la primera base funcional del itinerario: la aplicación evolutiva `platform-api`, desplegada de forma declarativa mediante `Namespace`, `Deployment` y `Service`.
 
-Su responsabilidad es transformar el laboratorio local vacio en una base de aplicacion declarativa, inspeccionable y reutilizable. La unidad debe establecer las primeras convenciones de namespaces, labels, selectors, manifiestos y validaciones operativas que las unidades posteriores ampliaran con configuracion, networking, persistencia, Helm, Terraform, CI/CD, observabilidad, seguridad, escalado y cloud.
+La unidad aparece aquí porque antes de incorporar configuración, secretos, red de entrada, persistencia, Helm, Terraform o GitOps el alumno necesita ver directamente cómo Kubernetes recibe declaraciones, persiste estado deseado, reconcilia objetos y expone una aplicación mediante selección por labels. También deja las convenciones iniciales de namespace, nombres, labels, selectors, imagen y validación que reutiliza la Unidad 02.
+
+## Supuesto pedagógico
+
+La unidad se escribe para alumnos con perfil técnico que han preparado el entorno local, pero que todavía no dominan Kubernetes, sus recursos principales ni su modelo declarativo.
+
+Se explican desde cero:
+
+- qué representa un clúster Kubernetes;
+- qué papel tienen `kube-apiserver`, datastore del clúster, scheduler, controller manager, kubelet, kube-proxy y container runtime;
+- qué diferencia hay entre estado deseado y estado observado;
+- qué son `Namespace`, `Deployment`, `ReplicaSet`, `Pod`, `Service`, labels, selectors, endpoints y eventos;
+- cómo una petición de `kubectl apply` llega a la API y acaba produciendo Pods;
+- cómo un Service `ClusterIP` selecciona Pods sin depender de sus nombres efímeros;
+- cómo usar estado, eventos y logs para diagnosticar fallos básicos del laboratorio.
+
+Se retoman de unidades anteriores:
+
+- Ubuntu WSL, MicroK8s y `kubectl` como entorno local operativo;
+- Helm y Terraform como herramientas ya instaladas, sin usarlas todavía;
+- contenedores, imágenes, runtime y registros desde `tutorial/00-environment/student-reference.md`;
+- lectura de comandos desde la raíz del repositorio.
+
+Se mencionan solo para continuidad:
+
+- ConfigMaps, Secrets, probes, requests, limits y rollout por cambios en el template del Pod;
+- Ingress, Gateway API, DNS externo y TLS;
+- almacenamiento persistente, `StatefulSet` y `Headless Service`;
+- estrategias avanzadas de despliegue, incluidas diferencias entre `Recreate` y `RollingUpdate`;
+- CoreDNS y resolución FQDN interna;
+- Helm, Terraform, Tekton, Argo CD, observabilidad, seguridad, escalado y cloud.
+
+Errores de razonamiento que debe prevenir `student-reference.md`:
+
+- creer que todo workload debe ser un `Deployment`;
+- confundir Pod con contenedor;
+- tratar `ReplicaSet` como artefacto principal de autoría;
+- pensar que el Service apunta al Deployment por nombre;
+- creer que `kubectl apply` equivale a aplicación disponible;
+- asumir que un único nodo MicroK8s representa disponibilidad de producción;
+- confundir etiquetas y anotaciones;
+- interpretar `RollingUpdate` como garantía suficiente de despliegue sin indisponibilidad;
+- pensar que DNS interno, Ingress y exposición externa son lo mismo.
 
 ---
 
-# Resultados de aprendizaje
+# Resultado de aprendizaje
 
-Al completar la unidad, el alumno debera ser capaz de:
+Al completar la unidad, el alumno deberá ser capaz de:
 
-- validar que el entorno MicroK8s heredado de la Unidad 00 esta listo para recibir workloads;
-- explicar la arquitectura basica del clúster, incluyendo control plane, nodos worker y componentes principales;
-- situar `kube-apiserver`, `etcd`, `kube-scheduler`, `kube-controller-manager`, `kubelet`, `kube-proxy` y container runtime dentro del flujo operativo;
-- diferenciar el papel de CRI, CNI y CSI sin implementarlos todavia en el laboratorio;
-- justificar la relacion entre Pods, ReplicaSets, Deployments y Services;
-- identificar como se gestiona la configuracion en Kubernetes mediante ConfigMaps, Secrets, variables de entorno y volumenes de configuracion, y que parte se implementara en Unidad 02;
-- identificar para que sirven probes, requests, limits, Ingress, Gateway API y almacenamiento persistente, y en que unidad se implementaran;
-- distinguir observabilidad basica disponible desde Kubernetes (`status`, eventos y logs) de la observabilidad avanzada que se incorporara con Prometheus, Grafana, Loki, Tempo, OpenTelemetry y OpenMetrics;
-- crear un namespace funcional del curso mediante manifiestos declarativos;
-- desplegar la primera version de la aplicacion evolutiva usando recursos Kubernetes estandar;
-- inspeccionar estado, eventos, logs, labels y selectors con `kubectl`;
-- diagnosticar fallos basicos de despliegue, scheduling, imagen y seleccion de Pods;
-- recuperar el laboratorio a un estado conocido sin destruir la plataforma base;
-- dejar artefactos reutilizables para la Unidad 02.
+- validar que el entorno MicroK8s heredado de la Unidad 00 está listo para recibir workloads;
+- desplegar `platform-api` con manifiestos declarativos de `Namespace`, `Deployment` y `Service`;
+- explicar el recorrido de una declaración desde `kubectl` hasta Pods reales y endpoints de Service;
+- distinguir qué responsabilidades pertenecen al control plane, al nodo, al runtime, a la red y al almacenamiento;
+- relacionar Deployment, ReplicaSet y Pods sin gestionar Pods manuales como diseño principal;
+- justificar por qué el laboratorio usa un `Deployment` y no `StatefulSet`, `DaemonSet`, `Job` o `CronJob`;
+- validar estado, rollout, Pods, labels, selectors, endpoints, eventos y logs;
+- diagnosticar fallos básicos de namespace, imagen, selector, contexto y arranque de contenedor;
+- explicar qué queda preparado para que la Unidad 02 añada configuración, secretos de laboratorio, probes y recursos.
 
 ---
 
@@ -67,60 +104,102 @@ Al completar la unidad, el alumno debera ser capaz de:
 
 ## Incluido
 
-- seleccion o definicion minima de la aplicacion evolutiva;
-- estructura inicial de laboratorio en `labs/01-kubernetes/`;
-- introduccion conceptual de arquitectura Kubernetes: control plane, nodos worker y flujo de reconciliacion;
-- explicacion conceptual de `kube-apiserver`, `etcd`, `kube-scheduler`, `kube-controller-manager`, `kubelet`, `kube-proxy` y container runtime;
-- mapa conceptual de CRI, CNI y CSI como interfaces de runtime, red y almacenamiento;
-- vision general de gestion de configuracion en Kubernetes: ConfigMaps, Secrets, variables de entorno y volumenes de configuracion;
-- mapa conceptual de recursos que se implementaran despues: probes, requests, limits, Ingress, Gateway API y almacenamiento persistente;
-- vision general de observabilidad: estado, eventos y logs en Unidad 01; metricas, dashboards, logs centralizados, trazas y correlacion en Unidades 11-15;
-- primer namespace funcional del curso;
-- manifiestos declarativos para `Namespace`, `Deployment` y `Service`;
-- uso de Pods y ReplicaSets como recursos observados y explicados, no como artefactos primarios gestionados manualmente;
-- convenciones iniciales de nombres, labels y selectors;
-- comandos de inspeccion con `kubectl`;
-- logs de contenedor;
-- eventos de Kubernetes;
-- validaciones estaticas y funcionales del despliegue;
-- procedimientos de diagnostico, recuperacion y limpieza del laboratorio de la unidad;
-- notas del instructor y summary de continuidad;
-- actualizacion de `project/project-state.md` al cerrar la unidad.
+- primera aplicación evolutiva `platform-api`;
+- namespace funcional `platform-training`;
+- manifiestos declarativos en `labs/01-kubernetes/starter/` y `labs/01-kubernetes/solution/`;
+- `Deployment` con dos réplicas de `nginxinc/nginx-unprivileged:1.27.4-alpine`;
+- `Service` `ClusterIP` para acceso interno estable;
+- labels y selectors como contrato entre Deployment, Pods y Service;
+- observación de ReplicaSet, Pods, endpoints, eventos y logs;
+- explicación conceptual del control plane, nodos, datastore, scheduler, controladores, kubelet, kube-proxy, runtime, CRI, CNI y CSI;
+- diferencia entre etiquetas y anotaciones, dejando las anotaciones corporativas como criterio, no práctica;
+- mapa profesional de workloads en `student-reference.md` para cerrar la parte documental de `GAP-004`;
+- explicación conceptual de `Recreate` frente a `RollingUpdate`, sin cambiar la estrategia del laboratorio;
+- explicación conceptual de CoreDNS y FQDN internos, sin crear recursos DNS nuevos;
+- validación no destructiva mediante `labs/01-kubernetes/validation/validate.sh`;
+- actualización de `summary.md` y `project/project-state.md` al cierre documental.
 
 ## Excluido
 
-- implementacion practica de ConfigMaps y Secrets de aplicacion;
-- implementacion practica de probes;
-- definicion practica de requests y limits;
-- implementacion practica de Ingress;
-- implementacion practica de Gateway API;
-- implementacion practica de almacenamiento persistente;
-- instalacion, sustitucion o configuracion avanzada de CNI, CSI o container runtime;
-- charts Helm;
-- modulos Terraform;
-- pipelines Tekton;
-- aplicaciones Argo CD;
-- observabilidad con Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
-- politicas avanzadas de seguridad;
-- escalado con KEDA;
-- recursos AKS o EKS;
-- registro de credenciales reales o configuraciones corporativas sensibles.
+- implementación práctica de ConfigMaps, Secrets, variables de entorno y volúmenes de configuración;
+- implementación práctica de probes, requests y limits;
+- implementación práctica de Ingress, Gateway API, TLS o DNS externo;
+- implementación práctica de almacenamiento persistente, `StatefulSet` o `Headless Service`;
+- configuración manual de ReplicaSets como artefacto principal;
+- creación de Jobs, CronJobs, DaemonSets u otros workloads nuevos;
+- cambio de estrategia del Deployment o ajuste práctico de `maxSurge` y `maxUnavailable`;
+- instalación, sustitución o configuración avanzada de CRI, CNI, CSI, CoreDNS o container runtime;
+- anotaciones corporativas obligatorias de ciclo de vida;
+- charts Helm, módulos Terraform, pipelines Tekton o aplicaciones Argo CD;
+- Prometheus, Grafana, Loki, Tempo, OpenTelemetry, OpenMetrics o KEDA;
+- recursos AKS, EKS o cloud;
+- modificación de laboratorios, manifiestos Kubernetes o workloads durante el saneamiento documental.
 
 ## Diferido a unidades posteriores
 
 | Capacidad | Unidad prevista | Motivo |
 |---|---|---|
-| Implementacion de ConfigMaps, Secrets, probes y recursos | Unidad 02 | Requiere una aplicacion ya desplegada; Unidad 01 debe explicar conceptualmente como Kubernetes separa configuracion, secretos e imagen |
-| Implementacion de Networking avanzado, Ingress y Gateway API | Unidad 03 | Requiere Service y workload base; Unidad 01 debe explicar la diferencia entre Service, Ingress y Gateway API |
-| Implementacion de persistencia | Unidad 04 | Requiere modelo inicial de aplicacion; Unidad 01 debe introducir volumen, PV, PVC y CSI a nivel conceptual |
-| Helm | Unidad 06 | Requiere manifiestos declarativos estables |
-| Terraform | Unidad 07 | Requiere artefactos de despliegue ya definidos |
-| Tekton | Unidad 08 | Requiere aplicacion y estrategia de build |
-| Argo CD | Unidad 09 | Requiere layout declarativo estable |
-| Observabilidad avanzada | Unidades 11-15 | Requiere aplicacion operativa; Unidad 01 debe explicar el mapa de señales y usar estado, logs y eventos como observabilidad basica |
-| Seguridad avanzada | Unidades 16-17 | Requiere workloads definidos |
-| KEDA | Unidad 18 | Requiere metricas y aplicacion escalable |
-| AKS y EKS | Unidades 20-21 | Requieren baseline local consolidado |
+| ConfigMaps, Secrets, variables, volúmenes de configuración, probes, requests y limits | Unidad 02 | Requieren un Deployment base ya existente |
+| Ingress HTTP local | Unidad 03 | Requiere Service y workload operativo |
+| Gateway API, TLS y certificados | Unidad 03 como referencia; práctica posterior si procede | Son frontera de entrada y seguridad perimetral, no fundamento inicial |
+| Persistencia, PVC, StorageClass, `StatefulSet` y `Headless Service` | Unidad 04 | `GAP-004` mantiene práctica de estado en su unidad natural |
+| Estrategias de rollout avanzadas y ajuste fino de `maxSurge`/`maxUnavailable` | Unidad 05 y continuidad posterior | Requiere probes, recursos y criterios de disponibilidad ya tratados |
+| Helm | Unidad 06 | Requiere manifiestos Kubernetes estables |
+| Terraform | Unidad 07 | Requiere chart Helm funcional |
+| Jobs y CronJobs | Unidad 08 | Encajan como tareas finitas y periódicas de CI/CD |
+| Argo CD y GitOps | Unidad 09 | Requiere layout declarativo estable |
+| CoreDNS avanzado, servicios entre namespaces y DNS operativo profundo | Unidades 03, 19 y cloud | Se retoma al tratar red, migración y plataformas gestionadas |
+| DaemonSet | Unidades 13-15 | Encaja con agentes de observabilidad y plataforma |
+
+---
+
+# Cobertura documental de la unidad
+
+## Frontera entre `student-notes.md` y `student-reference.md`
+
+`student-notes.md` explica lo que el alumno necesita para completar el laboratorio: qué representa cada componente usado, qué se construye con `platform-api`, cómo se relacionan Deployment, ReplicaSet, Pods y Service, cómo aplicar y observar manifiestos, y cómo diagnosticar fallos reales del laboratorio.
+
+`student-reference.md` explica lo que existe fuera del laboratorio y corrige modelos mentales: mapa profesional de workloads, criterios de elección entre controladores, diferencias entre etiquetas y anotaciones, estrategias de despliegue, límites del laboratorio local, CoreDNS/FQDN interno y continuidad hacia unidades posteriores.
+
+No debe duplicarse contenido. Si ambos documentos necesitan un tema, uno lo desarrolla y el otro lo cita por ruta.
+
+## Laguna asignada
+
+| ID | Tratamiento en esta unidad | Cierre esperado |
+|---|---|---|
+| `GAP-004` | La referencia cierra documentalmente el mapa conceptual de workloads no Deployment: `StatefulSet`, `DaemonSet`, `Job` y `CronJob`; la práctica de `StatefulSet` y `Headless Service` permanece anclada a Unidad 04 como `TD-023` | Cierre documental de la parte de Unidad 01 en `student-reference.md` y rastro en `summary.md`; `project/content-gap-register.md` sigue en estado `Abordada` mientras `TD-023` no esté implementada y validada |
+
+## Tipos de cobertura requeridos para `student-reference.md`
+
+| Tipo | Aplicación en la Unidad 01 |
+|---|---|
+| Panorama | Situar `Deployment` dentro del mapa completo de workloads y de la arquitectura Kubernetes |
+| Profundidad | Explicar controladores, relación Deployment/ReplicaSet/Pod, selector de Service, CoreDNS/FQDN y rollout conceptual |
+| Criterio | Decidir cuándo usar `Deployment`, `StatefulSet`, `DaemonSet`, `Job`, `CronJob`, labels o anotaciones |
+| Práctica | Nombrar distancias con producción: un nodo local, `ClusterIP` con `port-forward`, imagen pública, ausencia de probes/resources/TLS y estrategia de despliegue no ajustada |
+
+## Simplificaciones que obligan a práctica profesional
+
+| Simplificación del laboratorio | Riesgo fuera del laboratorio | Alternativa profesional que debe explicar la referencia |
+|---|---|---|
+| MicroK8s local de un nodo | No demuestra alta disponibilidad, distribución entre nodos ni fallos zonales | Clústeres multi-nodo, gestión de capacidad, mantenimiento y plataformas gestionadas |
+| Imagen pública versionada | Depende de disponibilidad externa y no demuestra control de supply chain | Registro gobernado, tags inmutables, digests, escaneo, firma y promoción |
+| Sin probes | El Service puede seleccionar Pods que ejecutan proceso pero no están listos funcionalmente | `startupProbe`, `readinessProbe` y `livenessProbe` desde Unidad 02 |
+| Sin requests ni limits | No hay contrato explícito de scheduling, capacidad ni contención | Requests, limits, QoS y políticas de recursos desde Unidad 02 |
+| Service `ClusterIP` probado con `port-forward` | No representa exposición estable ni entrada productiva | Ingress/Gateway, TLS, DNS y balanceadores en unidades posteriores |
+| Estrategia de Deployment no ajustada | Un rollout puede no cumplir expectativas de disponibilidad sin probes ni presupuesto | Estrategias revisadas junto a probes, PDB, observabilidad y progressive delivery |
+| Labels básicos sin anotaciones de gobierno | No codifican ownership, ciclo de vida ni integración con herramientas corporativas | Convenciones de metadata, anotaciones de tooling y gobierno de plataforma |
+
+## Uso de `.work/detail.md`
+
+La sección de Unidad 01 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
+
+- arquitectura del plano de control, flujo de `kubectl` hacia la API y diferencia entre datastore local embebido y `etcd` distribuido;
+- namespaces, labels y anotaciones como aislamiento lógico y metadata de ciclo de vida;
+- anatomía de Pod, kubelet y container runtime `containerd`;
+- Deployment como autoría principal y ReplicaSet como controlador derivado observado;
+- estrategias `Recreate` y `RollingUpdate`, incluyendo `maxSurge` y `maxUnavailable` como criterio conceptual;
+- Service `ClusterIP`, CoreDNS y FQDN interno como descubrimiento interno.
 
 ---
 
@@ -128,23 +207,32 @@ Al completar la unidad, el alumno debera ser capaz de:
 
 Antes de generar o modificar esta unidad, leer:
 
-1. `playbooks/master.md`;
-2. `project/architecture.md`;
-3. `project/project-state.md`;
-4. `project/roadmap.md`;
-5. `project/project-planning.md`;
+1. `project/documentation-cleanup-plan.md`;
+2. `README.md`;
+3. `project/architecture.md`;
+4. `project/project-state.md`;
+5. `project/roadmap.md`;
 6. `project/how-to.md`;
-7. `playbooks/unit-template.md`;
-8. `playbooks/summary-template.md`;
-9. `playbooks/project-state-template.md`;
-10. `tutorial/00-environment/summary.md`;
-11. este playbook;
-12. `platform/environment/README.md`;
-13. los scripts existentes en `platform/environment/validation/`, `platform/environment/microk8s/` y `platform/environment/tools/`.
+7. `project/project-planning.md`;
+8. `project/content-gap-register.md`;
+9. `playbooks/master.md`;
+10. `playbooks/unit-template.md`;
+11. `playbooks/student-reference-template.md`;
+12. `playbooks/summary-template.md`;
+13. `playbooks/project-state-template.md`;
+14. `playbooks/units/01-kubernetes.md`;
+15. `tutorial/00-environment/summary.md`;
+16. sección de Unidad 01 en `.work/detail.md`;
+17. `tutorial/01-kubernetes/README.md`;
+18. `tutorial/01-kubernetes/student-notes.md`;
+19. `tutorial/01-kubernetes/student-reference.md`;
+20. `tutorial/01-kubernetes/summary.md`;
+21. `labs/01-kubernetes/README.md`;
+22. `labs/01-kubernetes/solution/`.
 
 ## Excepciones
 
-Ninguna. La Unidad 00 esta cerrada y existe `tutorial/00-environment/summary.md`.
+Ninguna. La Unidad 00 está cerrada y existe `tutorial/00-environment/summary.md`.
 
 ---
 
@@ -152,97 +240,88 @@ Ninguna. La Unidad 00 esta cerrada y existe `tutorial/00-environment/summary.md`
 
 ## Dependencias documentales
 
-Deben existir y estar revisados:
+- `tutorial/00-environment/summary.md`;
+- `tutorial/00-environment/student-reference.md`;
+- `platform/environment/container-images/README.md`;
+- `labs/01-kubernetes/README.md`;
+- `labs/01-kubernetes/solution/`;
+- `project/content-gap-register.md`.
 
-```text
-README.md
-project/architecture.md
-project/project-state.md
-project/roadmap.md
-project/project-planning.md
-project/how-to.md
-playbooks/master.md
-playbooks/unit-template.md
-playbooks/summary-template.md
-playbooks/project-state-template.md
-playbooks/units/01-kubernetes.md
-tutorial/00-environment/summary.md
-```
+## Dependencias técnicas
 
-## Dependencias tecnicas
-
-| Dependencia | Estado requerido | Metodo de comprobacion |
+| Dependencia | Estado requerido | Método de comprobación |
 |---|---|---|
-| Ubuntu WSL objetivo | Validado como Ubuntu 24.04 LTS | `cat /etc/os-release` |
-| MicroK8s | Instalado y en estado operativo | `microk8s status --wait-ready` |
-| Kubernetes local | Nodo `Ready` | `kubectl get nodes` |
-| `kubectl` | Cliente principal operativo | `kubectl version --client` |
-| DNS de Kubernetes | Addon `dns` habilitado | `microk8s status` y validacion mediante Service/DNS cuando aplique |
-| Helm | Instalado, pero no usado para desplegar la unidad | `helm version --short` |
-| Terraform | Instalado, pero no usado para gestionar recursos | `terraform version` |
-| Conectividad para imagenes | Disponible cuando se use una imagen externa | Pull real durante despliegue o uso de imagen ya disponible |
+| Ubuntu WSL objetivo | Validado como Ubuntu 24.04 LTS | Evidencia registrada en `tutorial/00-environment/summary.md` |
+| MicroK8s | Instalado y operativo | Evidencia registrada en `tutorial/00-environment/summary.md` |
+| Kubernetes local | Nodo `Ready` | Evidencia registrada en `tutorial/01-kubernetes/summary.md` |
+| `kubectl` | Cliente principal operativo | Evidencia registrada en `tutorial/01-kubernetes/summary.md` |
+| Helm | Instalado, no usado en Unidad 01 | Evidencia heredada de Unidad 00 |
+| Terraform | Instalado, no usado en Unidad 01 | Evidencia heredada de Unidad 00 |
 
-## Dependencias pedagogicas
+Durante el saneamiento documental no se ejecutan validaciones funcionales nuevas.
+
+## Dependencias pedagógicas
 
 El alumno debe haber completado o dominar:
 
-- preparacion y validacion del entorno de la Unidad 00;
-- uso basico de shell Linux;
-- ejecucion de comandos con `kubectl`;
-- lectura de salidas tabulares y YAML;
-- conceptos iniciales de procesos, puertos y conectividad HTTP.
+- preparación y validación del entorno de Unidad 00;
+- conceptos básicos de contenedor, imagen y registro desde `tutorial/00-environment/student-reference.md`;
+- uso básico de shell Linux;
+- lectura de YAML y salidas tabulares de `kubectl`.
 
 ## Dependencias del laboratorio
 
-Artefactos que deben existir antes de comenzar:
+Artefactos que deben existir:
 
 ```text
-tutorial/00-environment/summary.md
-platform/environment/README.md
-platform/environment/validation/validate-environment.sh
-platform/environment/microk8s/validate.sh
-platform/environment/tools/validate-tools.sh
+labs/01-kubernetes/README.md
+labs/01-kubernetes/starter/namespace.yaml
+labs/01-kubernetes/starter/deployment.yaml
+labs/01-kubernetes/starter/service.yaml
+labs/01-kubernetes/solution/namespace.yaml
+labs/01-kubernetes/solution/deployment.yaml
+labs/01-kubernetes/solution/service.yaml
+labs/01-kubernetes/validation/validate.sh
 ```
 
 ---
 
 # Estado inicial esperado
 
-La unidad parte de un entorno local validado, sin workloads funcionales del curso y sin aplicacion evolutiva definida.
+La unidad parte de un entorno MicroK8s local validado por la Unidad 00 y de un repositorio que ya contiene la Unidad 01 generada, validada funcionalmente y aprobada pedagógicamente antes del saneamiento documental.
 
-Estado verificable esperado:
+En el saneamiento documental, el estado inicial esperado es:
 
-- Ubuntu 24.04 LTS sobre WSL2 disponible;
-- MicroK8s `v1.35.6` validado por el usuario en la Unidad 00;
-- Kubernetes `v1.35.6` operativo en MicroK8s;
-- `kubectl` `v1.35.6` configurado como cliente principal;
-- Helm `v3.21.0+ge0878d4` instalado y validado, sin charts del curso;
-- Terraform `1.15.7` instalado y validado, sin modulos ni estado;
-- namespaces existentes solo de sistema y `default`;
-- `labs/` sin laboratorios funcionales;
-- sin workloads, Services de aplicacion, endpoints ni recursos cloud.
+- `platform-api` ya definida como aplicación evolutiva;
+- namespace funcional `platform-training` ya declarado en manifiestos;
+- Deployment y Service ya definidos en `labs/01-kubernetes/solution/`;
+- `student-reference.md` existente pero no conforme al contrato canónico;
+- `GAP-004` registrada como abordada en `project/content-gap-register.md`;
+- Unidad 08 congelada hasta cerrar el saneamiento.
 
-No debe asumirse que las validaciones Windows/WSL pendientes por equipo han sido completadas salvo que el usuario aporte resultados.
+## Validación del estado inicial
 
-## Validacion del estado inicial
-
-Ejecutar desde Ubuntu WSL objetivo:
+Para generación original de la unidad:
 
 ```bash
 bash platform/environment/validation/validate-environment.sh
-bash platform/environment/microk8s/validate.sh
 kubectl get nodes
 kubectl get namespaces
-find labs -type f -not -name .gitkeep -print
+```
+
+Para el saneamiento documental:
+
+```bash
+git status --short
+test -f tutorial/01-kubernetes/student-reference.md
+test -f labs/01-kubernetes/README.md
 ```
 
 Resultado esperado:
 
 ```text
-La validacion del entorno no muestra fallos bloqueantes.
-El nodo local aparece en Ready.
-Solo existen namespaces de sistema y default antes de crear la unidad.
-labs/ no contiene artefactos funcionales previos.
+Los documentos y laboratorios de Unidad 01 existen.
+No se ejecutan validaciones funcionales nuevas durante el saneamiento.
 ```
 
 ---
@@ -251,144 +330,132 @@ labs/ no contiene artefactos funcionales previos.
 
 | Artefacto | Ruta | Uso en esta unidad |
 |---|---|---|
-| Summary Unidad 00 | `tutorial/00-environment/summary.md` | Continuidad de estado, versiones y limitaciones |
-| Referencia de entorno | `platform/environment/README.md` | Recordar comandos base y contexto de ejecucion |
-| Validacion integrada | `platform/environment/validation/validate-environment.sh` | Confirmar precondiciones del entorno |
-| Validacion MicroK8s | `platform/environment/microk8s/validate.sh` | Confirmar clúster antes del despliegue |
-| Validacion herramientas | `platform/environment/tools/validate-tools.sh` | Confirmar baseline CLI sin usar Helm/Terraform aun |
-| Estado del proyecto | `project/project-state.md` | Registrar solo hechos implementados y validados |
+| Summary Unidad 00 | `tutorial/00-environment/summary.md` | Continuidad de entorno, versiones y límites |
+| Referencia de imágenes | `tutorial/00-environment/student-reference.md` | Base conceptual para `image` e `imagePullPolicy` |
+| Laboratorio de lectura de imágenes | `platform/environment/container-images/README.md` | Apoyo opcional para entender consumo de imágenes |
+| Laboratorio Unidad 01 | `labs/01-kubernetes/README.md` | Árbitro de lo que se practica realmente |
+| Manifiestos finales | `labs/01-kubernetes/solution/` | Base técnica que no debe modificarse en este saneamiento |
+| Registro de lagunas | `project/content-gap-register.md` | Estado de `GAP-004` |
 
-## Reglas de reutilizacion
+## Reglas de reutilización
 
-- no duplicar scripts de preparacion del entorno en `labs/01-kubernetes/`;
-- no modificar `platform/environment/` salvo que se detecte un defecto real en validaciones heredadas;
-- no crear un segundo clúster local;
-- usar `kubectl` como cliente principal;
-- usar `microk8s kubectl` solo como fallback de diagnostico;
-- conservar Helm y Terraform instalados como baseline, sin usarlos todavia para gestionar el despliegue.
+- no modificar `labs/01-kubernetes/`;
+- no crear workloads nuevos;
+- no cambiar manifiestos Kubernetes;
+- no crear un segundo namespace funcional;
+- conservar `platform-api` y `platform-training`;
+- conservar `kubectl` como herramienta operativa de Unidad 01;
+- tratar `.work/detail.md` como cobertura y checklist, no como estructura.
 
 ---
 
-# Cambios previstos sobre la solucion
+# Cambios previstos sobre la solución
 
 ## Componentes nuevos
 
-| Componente | Responsabilidad | Ubicacion prevista |
-|---|---|---|
-| Tutorial de la Unidad 01 | Guiar conceptos y laboratorio del alumno | `tutorial/01-kubernetes/README.md` |
-| Notas del instructor | Facilitar imparticion, diagnostico y evaluacion | `tutorial/01-kubernetes/instructor-notes.md` |
-| Summary | Registrar continuidad tecnica y pedagogica | `tutorial/01-kubernetes/summary.md` |
-| Laboratorio | Contener instrucciones y artefactos declarativos | `labs/01-kubernetes/README.md` |
-| Manifiestos starter | Proporcionar punto de partida incompleto o guiado | `labs/01-kubernetes/starter/` |
-| Manifiestos solution | Proporcionar solucion declarativa validada | `labs/01-kubernetes/solution/` |
-| Namespace del curso | Aislar recursos funcionales iniciales | `labs/01-kubernetes/solution/namespace.yaml` |
-| Deployment inicial | Ejecutar la primera version de la aplicacion | `labs/01-kubernetes/solution/deployment.yaml` |
-| Service inicial | Exponer la aplicacion dentro del clúster | `labs/01-kubernetes/solution/service.yaml` |
-| Validacion del laboratorio | Comprobar estado esperado de la unidad | `labs/01-kubernetes/validation/` |
+Ninguno durante el saneamiento documental.
 
 ## Componentes modificados
 
 | Componente | Cambio | Compatibilidad esperada |
 |---|---|---|
-| `project/project-state.md` | Registrar inicio, progreso, validacion y cierre de Unidad 01 segun corresponda | Mantiene estado real como fuente de verdad |
+| Playbook Unidad 01 | Regeneración contra contrato documental cerrado | Conserva alcance técnico y añade frontera notas/referencia |
+| `student-reference.md` | Regeneración con estructura canónica | Cierra documentalmente el mapa de workloads de `GAP-004` |
+| `README.md` | Ajuste de enlaces, propósito y frontera documental | Mantiene función de puerta de entrada |
+| `student-notes.md` | Ajuste de alcance para remitir errores conceptuales a la referencia | Mantiene diagnóstico operativo del laboratorio |
+| `summary.md` | Registro del saneamiento documental | No cambia estado técnico validado |
+| `project/project-state.md` | Registro del incremento y siguiente trabajo permitido | Mantiene Unidad 08 congelada |
 
 ## Componentes retirados
 
-```text
-Ninguno
-```
+Ninguno.
 
 ---
 
-# Decisiones de diseno de la unidad
+# Decisiones de diseño de la unidad
 
 ## D-01-01 - Manifiestos Kubernetes como artefacto primario
 
-### Decision
+### Decisión
 
-La Unidad 01 gestionara la aplicacion mediante manifiestos Kubernetes YAML versionados, aplicados con `kubectl`.
-
-### Motivo
-
-La unidad introduce fundamentos operativos antes de incorporar herramientas de empaquetado o automatizacion.
-
-### Consecuencias
-
-- Helm y Terraform no gestionan todavia recursos del curso;
-- los manifiestos deben ser claros, pequeños y reutilizables;
-- la Unidad 02 podra extender estos recursos sin migracion de herramienta.
-
-### Alternativas descartadas
-
-- Helm desde la Unidad 01: anticipa contenido posterior.
-- Terraform desde la Unidad 01: oculta los recursos Kubernetes basicos que el alumno debe operar.
-
-## D-01-02 - Aplicacion evolutiva simple, observable y portable
-
-### Decision
-
-La aplicacion inicial debera ser suficientemente simple para desplegarse con un `Deployment` y un `Service`, pero debera permitir evolucionar hacia configuracion, salud, metricas, logs, trazas, escalado y despliegue cloud.
-
-La seleccion concreta de nombre, imagen y estructura se realizara durante la primera sesion de generacion de Unidad 01 y debera registrarse en el tutorial, el summary y `project/project-state.md`.
+La Unidad 01 gestiona `platform-api` mediante manifiestos Kubernetes YAML aplicados con `kubectl`.
 
 ### Motivo
 
-El estado actual exige definir la aplicacion antes de generar la Unidad 01, pero el repositorio aun no contiene artefactos de aplicacion. El playbook debe fijar criterios sin crear workloads prematuramente.
+El alumno necesita ver las APIs base antes de que Helm, Terraform o GitOps añadan capas de gestión.
 
 ### Consecuencias
 
-- no se puede cerrar la Unidad 01 sin una aplicacion desplegada y validada;
-- no se deben usar credenciales, servicios externos obligatorios ni dependencias corporativas;
-- la imagen debe fijarse con una version explicita o digest validado durante la generacion;
-- la aplicacion no debe requerir Ingress, persistencia, colas ni bases de datos en esta unidad.
+- Helm y Terraform no gestionan recursos en esta unidad;
+- los manifiestos de `solution/` son la base de Unidad 02;
+- los documentos deben distinguir Kubernetes estándar de particularidades de MicroK8s.
 
 ### Alternativas descartadas
 
-- Aplicacion distinta por unidad: contradice el laboratorio evolutivo.
-- Aplicacion dependiente de cloud: anticipa unidades gestionadas.
-- Workload efimero tipo `busybox` como aplicacion principal: no soporta evolucion pedagogica suficiente.
+- Helm desde Unidad 01: ocultaría las APIs base.
+- Terraform desde Unidad 01: introduciría state e IaC antes de entender workloads.
 
-## D-01-03 - Namespace funcional unico inicial
+## D-01-02 - `Deployment` como workload principal inicial
 
-### Decision
+### Decisión
 
-La unidad creara un namespace funcional unico para la solucion del curso.
+`platform-api` se modela como `Deployment` porque es una aplicación HTTP simple, replicada y reemplazable.
 
 ### Motivo
 
-Permite aislar recursos del laboratorio y prepara una convencion reutilizable para las unidades posteriores.
+Permite estudiar reconciliación, ReplicaSet, Pods, rollout y Service sin introducir identidad estable ni tareas finitas.
 
 ### Consecuencias
 
-- el namespace debe definirse declarativamente;
-- todos los recursos funcionales de la aplicacion inicial deben ubicarse en ese namespace;
-- la convencion de nombre debe quedar documentada y registrada al cerrar la unidad.
+- `StatefulSet`, `DaemonSet`, `Job` y `CronJob` se cubren como criterio en la referencia;
+- la práctica de otros workloads queda anclada a unidades naturales;
+- `GAP-004` se cierra documentalmente en Unidad 01, pero su parte práctica permanece en Unidad 04 como `TD-023`.
 
 ### Alternativas descartadas
 
-- Usar `default`: reduce claridad operativa.
-- Crear multiples namespaces: anticipa topologias y gobierno posteriores.
+- Pod manual como aplicación principal: carece de controlador de ciclo de vida.
+- StatefulSet desde el inicio: introduce estado e identidad antes de persistencia.
 
-## D-01-04 - Starter y solution sin duplicar laboratorios completos
+## D-01-03 - Metadata mínima y portable
 
-### Decision
+### Decisión
 
-`starter/` contendra solo los artefactos necesarios para guiar el ejercicio y `solution/` contendra la solucion final validada.
+La unidad usa labels estandarizados `app.kubernetes.io/*` y una label de unidad; las anotaciones corporativas se explican como criterio, pero no se implementan.
 
 ### Motivo
 
-Permite aprendizaje incremental sin crear laboratorios independientes.
+Las labels son necesarias para seleccionar Pods y mantener continuidad. Las anotaciones de ciclo de vida dependen de herramientas de gobierno todavía no introducidas.
 
 ### Consecuencias
 
-- el tutorial debe explicar cuando usar cada ruta;
-- la solucion final sera la fuente que la Unidad 02 debera reutilizar;
-- cualquier diferencia entre starter y solution debe ser intencional y documentada.
+- el laboratorio mantiene metadata suficiente para selección y trazabilidad básica;
+- ownership, catálogos, políticas y automatización avanzada se difieren;
+- la referencia debe explicar la diferencia entre label y anotación.
 
 ### Alternativas descartadas
 
-- Solo comandos imperativos: dificulta continuidad.
-- Copias completas por cada paso: aumenta divergencia y mantenimiento.
+- Añadir anotaciones corporativas ficticias al saneamiento: modificaría manifiestos fuera de alcance.
+
+## D-01-04 - Service interno antes de entrada externa
+
+### Decisión
+
+La Unidad 01 usa un Service `ClusterIP` y validación HTTP temporal con `kubectl port-forward`.
+
+### Motivo
+
+Permite aprender selección por labels, endpoints y acceso interno antes de introducir Ingress o Gateway API.
+
+### Consecuencias
+
+- no hay endpoint externo permanente;
+- CoreDNS y FQDN internos se explican como criterio conceptual;
+- entrada HTTP estable, TLS y DNS externo quedan para unidades posteriores.
+
+### Alternativas descartadas
+
+- Ingress desde Unidad 01: invade Unidad 03.
+- LoadBalancer local desde Unidad 01: introduce dependencias de red antes del Service básico.
 
 ---
 
@@ -402,29 +469,51 @@ Ruta:
 tutorial/01-kubernetes/README.md
 ```
 
-Debe incluir:
+Debe actuar como puerta de entrada. Debe incluir:
 
-1. contexto;
-2. objetivos;
-3. conocimientos previos;
-4. relacion con la Unidad 00;
-5. estado inicial;
-6. arquitectura del clúster: control plane, nodos worker y flujo de reconciliacion;
-7. componentes del control plane: `kube-apiserver`, `etcd`, `kube-scheduler` y `kube-controller-manager`;
-8. componentes de nodo: `kubelet`, `kube-proxy` y container runtime;
-9. interfaces de plataforma: CRI, CNI y CSI;
-10. mapa de objetos Kubernetes: namespaces, Pods, ReplicaSets, Deployments y Services;
-11. gestion de configuracion en Kubernetes: ConfigMaps, Secrets, variables de entorno y volumenes de configuracion;
-12. red e ingreso: Service, Ingress y Gateway API;
-13. salud, recursos y persistencia: probes, requests, limits, volumenes, PV, PVC y StorageClass;
-14. observabilidad en Kubernetes: estado, eventos, logs, metricas, trazas y señales operativas;
-15. labels y selectors;
-16. procedimiento declarativo;
-17. validaciones;
-18. diagnostico con logs y eventos;
-19. recuperacion o limpieza;
-20. conclusion;
-21. conexion con la Unidad 02.
+1. problema real que resuelve la unidad;
+2. relación con la Unidad 00;
+3. objetivo de desplegar `platform-api`;
+4. mapa de aprendizaje;
+5. lectura guiada de `student-notes.md`, `student-reference.md` y README del laboratorio;
+6. explicación introductoria de clúster, API, reconciliación, workloads, Service, labels y observabilidad básica;
+7. decisiones de diseño principales;
+8. referencias oficiales guiadas;
+9. conexión con Unidad 02.
+
+## Notas del alumno
+
+Ruta:
+
+```text
+tutorial/01-kubernetes/student-notes.md
+```
+
+Debe explicar y diagnosticar el laboratorio: componentes usados, aplicación concreta, manifiestos, aplicación declarativa, observación, validación, fallos típicos y recuperación.
+
+No debe desarrollar errores de modelo mental ni convertir la referencia en prerrequisito del laboratorio. Puede remitir a `tutorial/01-kubernetes/student-reference.md` para el mapa profesional de workloads, estrategias y prácticas fuera del laboratorio.
+
+## Referencia del alumno
+
+Ruta:
+
+```text
+tutorial/01-kubernetes/student-reference.md
+```
+
+Debe seguir `playbooks/student-reference-template.md` y contener exactamente la estructura canónica:
+
+1. propósito de la referencia;
+2. relación con la unidad;
+3. mapa conceptual;
+4. conceptos y mecanismos;
+5. criterios de decisión;
+6. relación con el laboratorio;
+7. errores frecuentes;
+8. continuidad;
+9. fuentes de referencia.
+
+Debe declarar `GAP-004`, los tipos de cobertura aplicados y las negaciones verificables: no modifica laboratorios, no crea workloads nuevos, no cambia manifiestos, no instala herramientas y no ejecuta validaciones funcionales.
 
 ## Notas del instructor
 
@@ -434,16 +523,7 @@ Ruta:
 tutorial/01-kubernetes/instructor-notes.md
 ```
 
-Debe incluir:
-
-- intencion pedagogica;
-- puntos de enfasis;
-- demostraciones recomendadas;
-- errores frecuentes;
-- preguntas de comprobacion;
-- criterios de evaluacion;
-- riesgos tecnicos;
-- limites de alcance para no anticipar Unidad 02.
+Quedan fuera del alcance de este saneamiento salvo que una contradicción bloqueante obligue a corregirlas. El usuario no las incluyó en el alcance permitido.
 
 ## Resumen
 
@@ -453,19 +533,23 @@ Ruta:
 tutorial/01-kubernetes/summary.md
 ```
 
-Debe seguir:
+Debe registrar:
 
-```text
-playbooks/summary-template.md
-```
+- que la Unidad 01 ya estaba generada, validada funcionalmente y aprobada antes del saneamiento;
+- que el saneamiento documental no ejecuta validaciones funcionales nuevas;
+- que `student-reference.md` queda regenerado contra contrato;
+- que `GAP-004` queda cerrado documentalmente para Unidad 01, con práctica de `StatefulSet` pendiente en Unidad 04 (`TD-023`);
+- que `labs/01-kubernetes/` no cambió.
 
 ## Laboratorio
 
-Ruta normal:
+Ruta:
 
 ```text
 labs/01-kubernetes/
 ```
+
+No se modifica durante este saneamiento.
 
 ## Estado del proyecto
 
@@ -484,6 +568,8 @@ playbooks/project-state-template.md
 ---
 
 # Estructura prevista del laboratorio
+
+La estructura existente se conserva:
 
 ```text
 labs/01-kubernetes/
@@ -505,136 +591,114 @@ labs/01-kubernetes/
 | Ruta | Responsabilidad |
 |---|---|
 | `labs/01-kubernetes/README.md` | Referencia operativa del laboratorio |
-| `labs/01-kubernetes/starter/` | Punto de partida para el alumno |
+| `labs/01-kubernetes/starter/` | Punto de partida guiado |
 | `labs/01-kubernetes/solution/` | Estado final reutilizable por unidades posteriores |
-| `labs/01-kubernetes/validation/validate.sh` | Validacion no destructiva de recursos esperados |
+| `labs/01-kubernetes/validation/validate.sh` | Validación no destructiva del estado esperado |
 
 ---
 
-# Flujo pedagogico obligatorio
+# Flujo pedagógico obligatorio
 
-La unidad debera seguir este orden conceptual:
+La unidad debe seguir este orden conceptual:
 
-1. confirmar el entorno heredado de Unidad 00;
-2. explicar como se organiza un clúster: control plane, nodos worker y componentes principales;
-3. explicar como `kube-apiserver`, `etcd`, scheduler y controllers convierten declaracion en estado observado;
-4. situar kubelet, kube-proxy, container runtime, CRI, CNI y CSI en la operacion de un Pod;
-5. presentar el mapa de recursos del itinerario: workload, configuracion, salud, recursos, red, ingreso, Gateway API y almacenamiento;
-6. presentar el mapa de observabilidad del itinerario: estado, eventos y logs ahora; metricas, dashboards, logs centralizados, trazas y correlacion despues;
-7. presentar la necesidad de aislar recursos;
-8. crear el namespace declarativo;
-9. introducir Pods como resultado de un Deployment;
-10. desplegar la aplicacion con Deployment;
-11. relacionar ReplicaSets y Pods generados;
-12. exponer la aplicacion con Service;
-13. validar estado, logs, eventos y seleccion por labels;
-14. provocar o analizar al menos un fallo realista;
-15. consolidar el estado que reutilizara la Unidad 02.
+1. recuperar el estado dejado por Unidad 00;
+2. presentar Kubernetes como API declarativa y bucle de reconciliación;
+3. separar control plane, datastore, nodos, kubelet, runtime, red y almacenamiento;
+4. introducir `Namespace` como aislamiento lógico inicial;
+5. introducir `Deployment` como autoría principal de `platform-api`;
+6. observar `ReplicaSet` y Pods como recursos derivados;
+7. conectar Service, labels, selectors, endpoints, CoreDNS y FQDN interno;
+8. validar estado, rollout, logs y eventos;
+9. diagnosticar fallos operativos del laboratorio;
+10. situar otros workloads y estrategias en la referencia;
+11. dejar preparado el Deployment para Unidad 02.
 
-Este orden evita que el alumno trate Kubernetes como una lista de comandos aislados y muestra la relacion entre declaracion, reconciliacion, estado observado y diagnostico.
+Este orden evita saltar de definiciones a comandos sin explicar la necesidad que conecta cada abstracción con la siguiente.
 
 ---
 
 # Procedimientos obligatorios
 
-## Preparacion
+## Preparación
 
-- validar entorno con los scripts heredados;
-- confirmar contexto actual de `kubectl`;
-- confirmar ausencia de workloads funcionales previos;
-- revisar estructura del laboratorio.
+- confirmar que el alumno trabaja desde la raíz del repositorio;
+- validar el entorno heredado cuando se ejecute la unidad;
+- distinguir validación técnica histórica de saneamiento documental actual;
+- revisar `labs/01-kubernetes/README.md` antes de clasificar cobertura.
 
-## Implementacion
+## Implementación
 
-- explicar el recorrido de una declaracion desde `kubectl apply` hasta la reconciliacion;
-- aplicar el namespace;
-- aplicar el Deployment;
-- observar ReplicaSet y Pods generados;
-- aplicar el Service;
-- documentar comandos exactos y resultados esperados.
+- aplicar namespace, Deployment y Service en orden cuando se ejecute el laboratorio;
+- explicar el recorrido de una declaración desde `kubectl` hasta Pods y endpoints;
+- no introducir cambios en manifiestos durante el saneamiento.
 
-## Validacion
+## Validación
 
-- comprobar estado de Deployment, ReplicaSet, Pods y Service;
-- comprobar labels y selectors;
-- revisar logs;
-- revisar eventos del namespace;
-- validar conectividad del Service mediante `kubectl port-forward` o un Pod temporal de diagnostico, segun se defina en la unidad.
+- validar Deployment, ReplicaSet, Pods, Service, endpoints, logs y eventos cuando se ejecute la unidad;
+- registrar que el saneamiento documental actual no ejecuta validaciones funcionales nuevas.
 
-## Diagnostico
+## Diagnóstico
 
-- identificar si un fallo pertenece al plano de control, al nodo, al runtime, a red o al manifiesto aplicado;
-- interpretar `ImagePullBackOff` o `ErrImagePull`;
-- diagnosticar selector que no apunta a Pods;
-- diagnosticar Pod no listo o CrashLoopBackOff cuando aplique;
-- revisar eventos y logs antes de modificar manifiestos.
+- cubrir namespace ausente, contexto equivocado, imagen no descargable, selector incorrecto y contenedor en reinicio en `student-notes.md`;
+- reservar errores de modelo mental para `student-reference.md`.
 
-## Recuperacion
+## Recuperación
 
-- reaplicar manifiestos declarativos;
-- corregir imagen, labels o selector;
-- reiniciar rollout solo si el tutorial justifica el caso;
-- volver a ejecutar la validacion.
+- recuperar el estado esperado reaplicando los manifiestos de `solution/`;
+- no usar reset de MicroK8s como limpieza de esta unidad;
+- advertir que borrar el namespace elimina la base que reutiliza Unidad 02.
 
 ## Limpieza
 
-- documentar limpieza del namespace de la unidad como operacion opcional;
-- no destruir MicroK8s ni artefactos de Unidad 00;
-- advertir que la limpieza elimina la aplicacion que la Unidad 02 espera reutilizar.
+- documentar limpieza como opcional;
+- no ejecutarla durante saneamiento documental.
 
 ---
 
 # Validaciones obligatorias
 
-## Validaciones estaticas
+## Validaciones estáticas
 
-| Validacion | Herramienta o comando | Resultado esperado |
+| Validación | Herramienta o comando | Resultado esperado |
 |---|---|---|
-| Sintaxis YAML | `kubectl apply --dry-run=client -f labs/01-kubernetes/solution/` | Manifiestos aceptados por el cliente |
-| Ausencia de secretos reales | Revision de manifiestos | Sin tokens, passwords, claves privadas ni kubeconfigs |
-| Sintaxis Bash de validacion | `bash -n labs/01-kubernetes/validation/validate.sh` | Codigo de salida 0 |
+| Coherencia documental | Revisión de rutas y enlaces | Rutas existentes y sin referencias a artefactos nuevos |
+| Ausencia de cambios en labs | `git diff -- labs/01-kubernetes` | Sin cambios |
+| Sintaxis Bash histórica | `bash -n labs/01-kubernetes/validation/validate.sh` | Solo aplicable cuando se valide técnicamente, no en este saneamiento |
 
 ## Validaciones funcionales
 
-| Validacion | Procedimiento | Resultado esperado |
+| Validación | Procedimiento | Resultado esperado |
 |---|---|---|
-| Entorno heredado | `bash platform/environment/validation/validate-environment.sh` | Sin fallos bloqueantes |
-| Clúster disponible | `kubectl get nodes` | Nodo local `Ready` |
-| Namespace creado | `kubectl get namespace <namespace>` | Namespace activo |
-| Deployment disponible | `kubectl -n <namespace> rollout status deployment/<deployment>` | Rollout completado |
-| Pods saludables | `kubectl -n <namespace> get pods -l <selector>` | Pods en `Running` o estado esperado documentado |
-| Service selecciona Pods | `kubectl -n <namespace> get endpoints <service>` | Endpoints presentes |
-| Logs disponibles | `kubectl -n <namespace> logs deploy/<deployment>` | Salida interpretable |
-| Validacion del laboratorio | `bash labs/01-kubernetes/validation/validate.sh` | Sin fallos |
+| Laboratorio Unidad 01 | `bash labs/01-kubernetes/validation/validate.sh` | 0 fallos y 0 avisos según validación histórica registrada |
+| Prueba HTTP | `kubectl port-forward` y `curl` | `HTTP/1.1 200 OK` según validación histórica registrada |
+
+No se ejecutan validaciones funcionales nuevas durante la fase 4 documental.
 
 ## Validaciones de continuidad
 
 Comprobar que:
 
-- los scripts de Unidad 00 siguen disponibles;
-- MicroK8s no fue reinstalado ni reseteado;
-- Helm y Terraform siguen instalados pero sin charts, releases ni modulos del curso;
-- `labs/01-kubernetes/solution/` contiene los artefactos que reutilizara la Unidad 02;
-- `tutorial/01-kubernetes/summary.md` registra namespace, recursos, imagen y comandos principales;
-- `project/project-state.md` refleja solo recursos realmente creados y validados.
+- `labs/01-kubernetes/solution/` sigue sin cambios;
+- `student-reference.md` declara y cubre `GAP-004`;
+- toda exclusión relevante de `student-notes.md` queda cubierta, anclada o declarada fuera del itinerario;
+- `.work/detail.md` queda cruzado punto por punto en el cierre;
+- Unidad 02 puede seguir reutilizando `platform-api`, `platform-training` y `labs/01-kubernetes/solution/`.
 
-## Validaciones no ejecutables en el entorno de generacion
+## Validaciones no ejecutables en el entorno de generación
 
-Declarar como pendientes cualquier validacion funcional que no se ejecute realmente en MicroK8s.
-
-No afirmar que un Deployment, Pod, Service o endpoint funciona si solo se revisaron los archivos.
+Las validaciones funcionales del clúster, Windows, WSL2 y MicroK8s no se ejecutan durante este saneamiento y no deben registrarse como nuevas evidencias.
 
 ---
 
 # Escenarios de error obligatorios
 
-| Escenario | Sintoma | Diagnostico | Recuperacion |
+| Escenario | Síntoma | Diagnóstico | Recuperación |
 |---|---|---|---|
-| Imagen no descargable | Pod en `ImagePullBackOff` o `ErrImagePull` | `kubectl describe pod` y eventos | Corregir imagen o tag, reaplicar manifiesto |
-| Selector incorrecto | Service sin endpoints | `kubectl get endpoints`, comparar labels/selectors | Corregir selector o labels y reaplicar |
-| Namespace ausente | `kubectl apply` o consultas fallan por namespace inexistente | `kubectl get namespace` | Aplicar `namespace.yaml` antes del resto |
-| Contenedor falla al iniciar | Pod en `CrashLoopBackOff` | `kubectl logs` y `kubectl describe pod` | Corregir argumentos, imagen o configuracion inicial |
-| Contexto `kubectl` equivocado | Recursos no aparecen o se aplican a otro clúster | `kubectl config current-context` y `kubectl get nodes` | Cambiar contexto o reconfigurar `kubectl` desde Unidad 00 |
+| Namespace ausente | Recursos no aparecen o `platform-training` no existe | `kubectl get namespaces` | Aplicar `namespace.yaml` antes del resto |
+| Imagen no descargable | Pod en `ImagePullBackOff` o `ErrImagePull` | `kubectl describe pod` y eventos | Corregir imagen o tag, reaplicar Deployment |
+| Selector incorrecto | Service sin endpoints | Comparar labels de Pods y selector del Service | Corregir selector o labels y reaplicar |
+| Contenedor falla al iniciar | Pod en `CrashLoopBackOff` | `kubectl logs`, `--previous` y `describe pod` | Corregir imagen, argumentos o configuración inicial |
+| Contexto `kubectl` equivocado | Recursos no aparecen o se aplican en otro clúster | `kubectl config current-context` y `kubectl get nodes` | Reconfigurar `kubectl` según Unidad 00 |
 
 ---
 
@@ -642,13 +706,7 @@ No afirmar que un Deployment, Pod, Service o endpoint funciona si solo se revisa
 
 ## Datos sensibles
 
-La Unidad 01 no debe requerir secretos reales.
-
-Solo se permiten:
-
-- valores publicos de laboratorio;
-- imagenes publicas o construidas sin credenciales;
-- placeholders documentados cuando se prepare contenido futuro.
+La Unidad 01 no usa Secrets ni credenciales reales.
 
 No versionar:
 
@@ -662,26 +720,22 @@ No versionar:
 
 ## Privilegios
 
-Documentar:
-
-- que `kubectl` opera contra el clúster local;
-- que no deben requerirse privilegios cloud;
-- que no se deben ejecutar comandos con `sudo` para crear recursos Kubernetes;
-- que los permisos locales de MicroK8s pertenecen a la preparacion de Unidad 00.
+- `kubectl` opera contra el clúster local;
+- no se requieren privilegios cloud;
+- no se usan comandos con `sudo` para crear recursos Kubernetes;
+- los permisos locales de MicroK8s pertenecen a Unidad 00.
 
 ## Operaciones destructivas
 
-| Operacion | Advertencia | Alcance | Recuperacion | Confirmacion requerida |
+| Operación | Advertencia | Alcance | Recuperación | Confirmación requerida |
 |---|---|---|---|---|
-| `kubectl delete namespace <namespace>` | Elimina la aplicacion de la unidad | Recursos funcionales de Unidad 01 | Reaplicar `labs/01-kubernetes/solution/` | Confirmacion explicita en tutorial |
-
-No usar `platform/environment/microk8s/reset.sh --confirm-reset` como limpieza de Unidad 01.
+| `kubectl delete namespace platform-training` | Elimina la aplicación que reutiliza Unidad 02 | Recursos funcionales de Unidad 01 | Reaplicar `labs/01-kubernetes/solution/` | Confirmación explícita en laboratorio |
 
 ---
 
 # Requisitos de portabilidad
 
-## Kubernetes estandar
+## Kubernetes estándar
 
 - `Namespace`;
 - `Deployment`;
@@ -689,80 +743,77 @@ No usar `platform/environment/microk8s/reset.sh --confirm-reset` como limpieza d
 - `Pod`;
 - `Service`;
 - labels y selectors;
-- `kubectl apply`, `get`, `describe`, `logs`, `rollout status`.
+- endpoints y EndpointSlice como resultado observado;
+- `kubectl apply`, `get`, `describe`, `logs`, `rollout status`;
+- DNS interno de Services como comportamiento estándar del clúster cuando DNS está disponible.
 
-## Especifico de MicroK8s
+## Específico de MicroK8s
 
-- validacion de disponibilidad del clúster local;
+- clúster local de un nodo;
 - contexto local heredado de Unidad 00;
-- posible fallback con `microk8s kubectl` para diagnostico.
+- datastore embebido de MicroK8s como implementación local frente a `etcd` distribuido en producción;
+- addon `dns` heredado como baseline.
 
-## Especifico de AKS
+## Específico de AKS
 
 No aplica en esta unidad.
 
-## Especifico de EKS
+## Específico de EKS
 
 No aplica en esta unidad.
 
 ## Estrategia de desacoplamiento
 
-- evitar APIs no estandar de MicroK8s;
-- mantener manifiestos compatibles con Kubernetes upstream;
-- documentar cualquier dependencia de imagen, puerto o contexto;
-- usar nombres y labels que puedan trasladarse posteriormente a Helm y Terraform;
-- no depender de addons MicroK8s salvo `dns` como baseline heredado.
+- usar APIs Kubernetes estándar;
+- conservar nombres y labels portables;
+- documentar qué parte es MicroK8s y qué parte es Kubernetes;
+- no depender de addons fuera del baseline heredado;
+- diferir storage, Ingress, identidad y balanceo cloud a unidades posteriores.
 
 ---
 
-# Restricciones de generacion
+# Restricciones de generación
 
 La IA no debe:
 
-- generar contenido de Unidad 02 o posteriores;
+- generar Unidad 08;
+- tocar `labs/01-kubernetes/`;
+- ejecutar validaciones funcionales nuevas;
+- crear workloads nuevos;
+- modificar manifiestos Kubernetes;
 - crear charts Helm;
-- crear modulos Terraform;
+- crear módulos Terraform;
 - instalar o configurar Tekton, Argo CD, Prometheus, Grafana, Loki, Tempo, OpenTelemetry, KEDA, AKS o EKS;
-- redefinir la plataforma local ni sustituir MicroK8s;
-- introducir Minikube, kind o Docker Desktop Kubernetes como plataforma paralela;
-- usar Secrets con valores reales;
-- crear dependencias obligatorias de servicios cloud o corporativos;
-- asumir que un recurso fue desplegado sin ejecutar validacion real o recibir evidencia del usuario;
-- modificar scripts de Unidad 00 salvo correccion justificada.
+- sustituir `platform-api`;
+- crear namespaces funcionales alternativos;
+- registrar validaciones no ejecutadas como superadas;
+- usar `.work/detail.md` como contrato o estructura.
 
-La IA si puede:
+La IA sí puede:
 
-- definir la aplicacion evolutiva inicial dentro del alcance de Unidad 01;
-- crear manifiestos Kubernetes declarativos;
-- crear scripts de validacion del laboratorio;
-- documentar comandos de diagnostico y recuperacion;
-- registrar decisiones, limitaciones y evidencias en `summary.md` y `project/project-state.md`;
-- usar `kubectl` contra MicroK8s validado.
+- regenerar este playbook contra el contrato documental;
+- regenerar `tutorial/01-kubernetes/student-reference.md`;
+- ajustar `tutorial/01-kubernetes/README.md`, `student-notes.md`, `summary.md` y `project/project-state.md`;
+- ajustar `project/content-gap-register.md` solo si cambia el tratamiento de `GAP-004`;
+- reportar cobertura punto por punto contra `.work/detail.md`.
 
 ---
 
-# Criterios de aceptacion
+# Criterios de aceptación
 
-La unidad se considerara completada cuando:
+La unidad saneada se considerará lista cuando:
 
-- [ ] exista `tutorial/01-kubernetes/README.md`;
-- [ ] exista `tutorial/01-kubernetes/instructor-notes.md`;
-- [ ] exista `tutorial/01-kubernetes/summary.md`;
-- [ ] exista `labs/01-kubernetes/README.md`;
-- [ ] existan los manifiestos previstos en `labs/01-kubernetes/starter/`;
-- [ ] existan los manifiestos previstos en `labs/01-kubernetes/solution/`;
-- [ ] exista una validacion ejecutable en `labs/01-kubernetes/validation/`;
-- [ ] la aplicacion evolutiva haya sido definida y registrada;
-- [ ] el namespace funcional de la unidad exista en manifiestos;
-- [ ] el Deployment y el Service se desplieguen correctamente en MicroK8s;
-- [ ] las rutas documentadas coincidan con el repositorio;
-- [ ] las validaciones estaticas y funcionales posibles hayan sido ejecutadas;
-- [ ] las validaciones no ejecutadas esten declaradas;
-- [ ] no existan secretos reales;
-- [ ] Helm y Terraform no gestionen todavia recursos del curso;
-- [ ] `project/project-state.md` este actualizado;
-- [ ] el resultado prepare la Unidad 02;
-- [ ] no existan contradicciones abiertas.
+- [ ] `playbooks/units/01-kubernetes.md` declare frontera, laguna, tipos de cobertura, simplificaciones, exclusiones y uso de `.work/detail.md`;
+- [ ] `tutorial/01-kubernetes/student-reference.md` siga la estructura canónica de `playbooks/student-reference-template.md`;
+- [ ] `student-reference.md` declare `GAP-004` y cubra el mapa de workloads sin crear práctica nueva;
+- [ ] `student-notes.md` conserve diagnóstico operativo del laboratorio y remita errores conceptuales a la referencia;
+- [ ] `README.md` funcione como puerta de entrada y no como segunda guía extensa de laboratorio;
+- [ ] `summary.md` registre el saneamiento documental y la ausencia de nuevas validaciones funcionales;
+- [ ] `project/project-state.md` refleje el incremento y mantenga Unidad 08 congelada;
+- [ ] `project/content-gap-register.md` quede coherente con `GAP-004`;
+- [ ] `labs/01-kubernetes/` no tenga cambios;
+- [ ] no se hayan ejecutado validaciones funcionales nuevas;
+- [ ] la cobertura de `.work/detail.md` se reporte punto por punto.
 
 ---
 
@@ -770,179 +821,149 @@ La unidad se considerara completada cuando:
 
 ## Plataforma
 
-- MicroK8s local sigue disponible y validado;
-- `kubectl` sigue siendo el cliente principal;
-- no se han introducido cambios estructurales en `platform/environment/`.
+- Sin cambios técnicos respecto al estado validado previamente.
 
-## Aplicacion
+## Aplicación
 
-- primera version funcional desplegada en un namespace del curso;
-- Deployment operativo;
-- ReplicaSet y Pods generados por el Deployment;
-- Service interno con endpoints;
-- logs y eventos inspeccionables.
+- `platform-api` sigue siendo la aplicación evolutiva.
+- `platform-training` sigue siendo el namespace funcional.
+- Deployment y Service permanecen definidos en `labs/01-kubernetes/solution/`.
 
-## Automatizacion
+## Automatización
 
-- manifiestos Kubernetes declarativos disponibles en `labs/01-kubernetes/solution/`;
-- validacion ejecutable disponible para comprobar el estado del laboratorio;
-- sin charts Helm, releases Helm, modulos Terraform ni estado Terraform.
+- Sin charts Helm ni módulos Terraform nuevos.
+- Sin cambios en scripts de validación.
 
 ## Seguridad
 
-- sin credenciales reales;
-- sin Secrets de aplicacion;
-- recursos aislados en namespace funcional.
+- Sin Secrets reales.
+- Sin credenciales nuevas.
 
 ## Artefactos principales
 
 ```text
+playbooks/units/01-kubernetes.md
 tutorial/01-kubernetes/README.md
-tutorial/01-kubernetes/instructor-notes.md
+tutorial/01-kubernetes/student-notes.md
+tutorial/01-kubernetes/student-reference.md
 tutorial/01-kubernetes/summary.md
-labs/01-kubernetes/README.md
-labs/01-kubernetes/starter/
-labs/01-kubernetes/solution/
-labs/01-kubernetes/validation/validate.sh
 project/project-state.md
+project/content-gap-register.md
 ```
 
 ---
 
-# Informacion obligatoria para el summary
+# Información obligatoria para el summary
 
-El `summary.md` debera destacar:
+El `summary.md` deberá destacar:
 
-- aplicacion evolutiva definida;
-- namespace creado;
-- manifiestos creados;
-- imagen y version utilizadas;
-- recursos desplegados;
-- comandos de validacion principales;
-- decisiones especificas;
-- dependencias nuevas;
-- validaciones ejecutadas y pendientes;
-- limitaciones;
-- deuda tecnica;
-- elementos que debe reutilizar la Unidad 02;
-- estado final verificable.
+- playbook regenerado contra contrato documental;
+- `student-reference.md` regenerado con estructura canónica;
+- `GAP-004` cerrado documentalmente para Unidad 01 y práctica de `StatefulSet` pendiente en Unidad 04 (`TD-023`);
+- documentos de alumno ajustados sin modificar laboratorio;
+- ausencia de validaciones funcionales nuevas;
+- Unidad 02 mantiene la misma base técnica de entrada.
 
 ---
 
 # Impacto esperado en project-state
 
-Al cerrar la unidad, actualizar como minimo:
+Actualizar como mínimo:
 
+- resumen ejecutivo;
 - fase actual;
-- ultimo incremento completado;
-- unidad activa;
-- ultima unidad completada;
-- siguiente incremento permitido;
-- estructura actual del repositorio;
-- estado de la Unidad 01;
-- namespaces funcionales;
-- workloads;
-- Services y endpoints;
-- estado de la aplicacion evolutiva;
-- decisiones especificas de Unidad 01;
-- riesgos y deuda tecnica;
-- validaciones globales disponibles.
+- último incremento completado;
+- artefactos de gobierno y Unidad 01;
+- registro narrativo de la fase 4;
+- siguiente incremento permitido.
 
-No registrar componentes previstos como si estuvieran implementados.
+No registrar componentes previstos como implementados ni validaciones funcionales como ejecutadas.
 
 ---
 
-# Conexion con la siguiente unidad
+# Conexión con la siguiente unidad
 
-## Siguiente unidad prevista
+## Siguiente unidad prevista tras este saneamiento
 
 ```text
-02 - Configuracion, secretos y ciclo de vida
+Continuar fase 4 con saneamiento documental de la Unidad 00
 ```
 
-## Capacidades que deja preparadas
+La Unidad 08 permanece congelada hasta cerrar las fases 4 y 5 del saneamiento.
 
-- aplicacion evolutiva desplegada;
+## Capacidades que deja preparadas para Unidad 02
+
+- aplicación evolutiva desplegada;
 - namespace funcional del curso;
 - manifiestos base de Kubernetes;
 - convenciones iniciales de labels y selectors;
-- validacion basica de estado, logs y eventos.
+- validación básica de estado, logs y eventos.
 
-## Elementos que la siguiente unidad debera reutilizar
+## Elementos que la Unidad 02 reutiliza
 
 | Elemento | Ruta o referencia | Motivo |
 |---|---|---|
-| Manifiestos de solucion | `labs/01-kubernetes/solution/` | Base para ConfigMaps, Secrets, probes y recursos |
+| Manifiestos de solución | `labs/01-kubernetes/solution/` | Base para ConfigMaps, Secrets, probes y recursos |
 | Summary Unidad 01 | `tutorial/01-kubernetes/summary.md` | Fuente de continuidad |
-| Namespace funcional | Registrado en `project/project-state.md` | Aislamiento de recursos del curso |
-| Aplicacion evolutiva | Registrada en `project/project-state.md` | Debe evolucionar sin reemplazarse |
-
-## Elementos que no deben modificarse todavia
-
-- charts Helm;
-- modulos Terraform;
-- pipelines Tekton;
-- aplicaciones Argo CD;
-- stacks de observabilidad;
-- recursos cloud.
+| Namespace funcional | `platform-training` | Aislamiento de recursos del curso |
+| Aplicación evolutiva | `platform-api` | Debe evolucionar sin reemplazarse |
 
 ---
 
-# Riesgos especificos
+# Riesgos específicos
 
-| Riesgo | Probabilidad | Impacto | Mitigacion |
+| Riesgo | Probabilidad | Impacto | Mitigación |
 |---|---|---|---|
-| La aplicacion elegida no evoluciona bien hacia unidades posteriores | Media | Alto | Aplicar criterios de D-01-02 antes de generar artefactos |
-| Imagen externa no disponible por red o rate limit | Media | Medio | Fijar imagen/version y documentar alternativa validada |
-| Selectors inconsistentes entre Deployment y Service | Media | Medio | Validacion explicita de endpoints |
-| Uso prematuro de Helm o Terraform | Baja | Medio | Restricciones explicitas y revision de artefactos |
-| Dependencia accidental de MicroK8s | Media | Medio | Usar APIs Kubernetes estandar y documentar excepciones |
-| Limpieza destructiva elimina continuidad para Unidad 02 | Media | Medio | Marcar limpieza como opcional y advertir impacto |
+| Confundir `.work/detail.md` con contrato | Media | Alto | Declarar su uso solo como checklist y reportar cobertura |
+| Reabrir alcance técnico de labs | Media | Alto | Mantener `labs/` sin cambios y no ejecutar validaciones funcionales |
+| Cerrar `GAP-004` como si la práctica estuviera implementada | Media | Alto | Registrar cierre documental de Unidad 01 y mantener `TD-023` en Unidad 04 |
+| Duplicar diagnóstico entre notas y referencia | Media | Medio | Notas para fallos de laboratorio; referencia para errores conceptuales |
+| Anticipar Unidad 08 | Baja | Alto | Mantenerla congelada en playbook y estado |
 
 ---
 
 # Cuestiones abiertas
 
-| Cuestion | Bloqueante | Momento de resolucion |
+| Cuestión | Bloqueante | Momento de resolución |
 |---|---|---|
-| Nombre definitivo de la aplicacion evolutiva | No para aprobar este playbook; si para generar/cerrar la Unidad 01 | Primera sesion de Unidad 01 |
-| Imagen o codigo inicial de la aplicacion | No para aprobar este playbook; si para validar el laboratorio | Primera sesion de Unidad 01 |
-| Nombre definitivo del namespace funcional | No para aprobar este playbook; si para generar manifiestos | Primera sesion de Unidad 01 |
-| Estrategia de conectividad inicial para validar el Service | No para aprobar este playbook; si para cerrar la Unidad 01 | Generacion y validacion de Unidad 01 |
+| Aprobación específica del saneamiento documental de Unidad 01 | No bloquea la entrega documental; sí el cierre pedagógico final | Revisión del usuario |
+| Práctica de `StatefulSet` y `Headless Service` asociada a `GAP-004` | No para Unidad 01 | Fase 5 / Unidad 04 (`TD-023`) |
 
 ---
 
-# Checklist de revision del playbook
+# Checklist de revisión del playbook
 
-Antes de aprobar este documento:
+Antes de cerrar el saneamiento:
 
 - [x] la unidad existe en `project/roadmap.md`;
 - [x] el identificador y las rutas son consistentes;
-- [x] el alcance no invade unidades posteriores;
-- [x] las dependencias son verificables;
-- [x] los artefactos previos estan identificados;
-- [x] los entregables estan definidos;
-- [x] las validaciones son suficientes;
-- [x] los escenarios de error son realistas;
-- [x] las restricciones de seguridad estan declaradas;
-- [x] la portabilidad esta considerada;
-- [x] los criterios de aceptacion son objetivos;
-- [x] el estado final esta claramente definido;
-- [x] la conexion con la siguiente unidad es explicita;
+- [x] la frontera entre notas y referencia está declarada;
+- [x] `GAP-004` está declarado con tratamiento y límite;
+- [x] los tipos de cobertura están declarados;
+- [x] las simplificaciones que obligan a práctica profesional están declaradas;
+- [x] las exclusiones tienen destino o quedan fuera del itinerario;
+- [x] `.work/detail.md` se usa solo como cobertura y checklist;
+- [x] el saneamiento no autoriza cambios de laboratorio;
 - [x] no contradice arquitectura, estado, roadmap ni playbook maestro.
 
 ---
 
 # Metadatos de mantenimiento
 
-## Fecha de creacion
+## Fecha de creación
 
 ```text
 2026-07-18
 ```
 
-## Ultima revision
+## Última revisión
 
 ```text
-2026-07-18
+2026-07-27
+```
+
+## Nota de saneamiento
+
+```text
+Regenerado en fase 4 contra el contrato documental cerrado. No modifica laboratorios ni estado técnico del clúster.
 ```

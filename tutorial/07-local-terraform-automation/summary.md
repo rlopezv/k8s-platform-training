@@ -8,9 +8,9 @@
 | Identificador | `07-local-terraform-automation` |
 | Fase del roadmap | Fase 3 - Empaquetado e infraestructura como código |
 | Estado | Completada, validada funcionalmente y aprobada pedagógicamente |
-| Fecha de cierre o actualización | 2026-07-26 |
+| Fecha de cierre o actualización | 2026-07-27 |
 | Revisión pedagógica del usuario | Aprobada el 2026-07-20 |
-| Actualización documental | Fase 4 de saneamiento documental; aprobación específica pendiente |
+| Actualización documental | Fase 4 de saneamiento documental; aprobación específica registrada el 2026-07-27 |
 
 ## Resumen ejecutivo
 
@@ -265,14 +265,14 @@ Las siguientes validaciones pertenecen al cierre funcional original de la Unidad
 ## Validaciones pendientes
 
 - `shellcheck` si esta disponible.
-- Revisión pedagógica específica del saneamiento documental de la Unidad 07 por parte del usuario.
+- Revisión pedagógica específica del saneamiento documental de la Unidad 07: aprobada por el usuario el 2026-07-27.
 - No se ejecutaron nuevas validaciones técnicas durante la fase 4.
 
 ## Aprobacion del usuario
 
 El usuario aprobó pedagógicamente la Unidad 07 el 2026-07-20.
 
-La aprobación específica del saneamiento documental de la Unidad 07 queda pendiente del usuario responsable del curso.
+El usuario confirmó la aprobación específica del saneamiento documental de la Unidad 07 el 2026-07-27.
 
 ## Limitaciones activas
 

@@ -1,12 +1,14 @@
 # Student notes - Unidad 01
 
-## Proposito
+## Propósito
 
 Estas notas explican lo que necesitas entender para completar la Unidad 01 con criterio, no solo siguiendo comandos. El laboratorio despliega `platform-api`; estas notas explican que piezas de Kubernetes aparecen, como se relacionan y como razonar cuando algo no queda como esperabas.
 
 La imagen usada por `platform-api` se apoya en la referencia de la Unidad 00 sobre contenedores, imagenes y registros: `tutorial/00-environment/student-reference.md`. El laboratorio de acompañamiento `platform/environment/container-images/README.md` ayuda a leer esa referencia de imagen antes de desplegar. Aqui se explica como Kubernetes consume esa imagen, no como se construye.
 
-Si quieres situar `Deployment` dentro del mapa completo de workloads de Kubernetes, lee `tutorial/01-kubernetes/student-reference.md`. Esa referencia explica cuándo aparecen `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, sin cambiar el laboratorio de esta unidad.
+Si quieres situar `Deployment` dentro del mapa completo de workloads de Kubernetes, lee `tutorial/01-kubernetes/student-reference.md`. Esa referencia explica cuándo aparecen `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, y también cubre labels frente a anotaciones, estrategias de Deployment, CoreDNS y FQDN internos como criterio profesional, sin cambiar el laboratorio de esta unidad.
+
+La frontera es sencilla: estas notas diagnostican fallos que puedes encontrar ejecutando el laboratorio; la referencia recoge errores de modelo mental y decisiones que necesitarás para elegir bien más adelante.
 
 La idea central es sencilla:
 
@@ -37,9 +39,9 @@ La Unidad 01 introduce Kubernetes como sistema declarativo para operar aplicacio
 | Labels y selectors | Conectan recursos sin depender de nombres efimeros | Practico |
 | Estado, eventos y logs | Primeras herramientas de diagnostico | Practico |
 
-No se implementan todavia ConfigMaps, Secrets, probes, requests, limits, Ingress, persistencia, Helm ni Terraform. Apareceran en unidades posteriores sobre la misma aplicacion.
+No se implementan todavía ConfigMaps, Secrets, probes, requests, limits, Ingress, persistencia, Helm ni Terraform. Tampoco se crean `StatefulSet`, `DaemonSet`, `Job`, `CronJob`, anotaciones corporativas ni ajustes avanzados de estrategia de despliegue. Esos elementos quedan cubiertos o anclados en `tutorial/01-kubernetes/student-reference.md` y aparecerán en unidades posteriores sobre la misma aplicación.
 
-## Que representa cada componente
+## Qué representa cada componente
 
 Antes de pensar en `platform-api`, conviene entender que representa cada pieza en Kubernetes. Esta seccion es academica: no describe todavia lo que vas a construir, sino el papel conceptual de cada componente.
 
