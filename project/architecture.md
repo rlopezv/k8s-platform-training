@@ -233,6 +233,12 @@ Debe permitir responder:
 
 No debe utilizarse como roadmap, manual operativo ni histórico detallado.
 
+### `project/documentation-cleanup-plan.md`
+
+Documento de gobierno temporal. Fija el plan de saneamiento de las Unidades 00-07 contra el contrato documental cerrado en la fase 2: qué se regenera, qué se ajusta, en qué orden y con qué modelo de sesión.
+
+Es la fuente del plan mientras el saneamiento esté en curso. La tabla de fases de `project/project-state.md` lo resume y no debe divergir de él. Se retira cuando el saneamiento cierre, dejando su rastro en el historial de incrementos y en las deudas cerradas.
+
 ### `project/roadmap.md`
 
 Define la evolución prevista del itinerario.
