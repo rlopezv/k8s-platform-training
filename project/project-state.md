@@ -23,7 +23,7 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Saneamiento documental tras revisión de coherencia de Unidades 00-07 |
-| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 en progreso con Unidades 07 y 06 saneadas; Unidad 08 congelada hasta cerrar el saneamiento completo |
+| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 en progreso con Unidad 06 saneada y aprobada, y Unidad 07 saneada como piloto con aprobación específica pendiente; Unidad 08 congelada hasta cerrar el saneamiento completo |
 | Último incremento completado | Fase 4 del saneamiento documental: Unidad 06 saneada contra el contrato cerrado |
 | Unidad activa | Ninguna |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
@@ -79,7 +79,7 @@ Entre el 2026-07-20 y el 2026-07-23 se registraron y trataron las lagunas de con
 
 El 2026-07-26 se inició la fase 4 del saneamiento documental con la Unidad 07 como piloto. Se regeneró `playbooks/units/07-local-terraform-automation.md` contra el contrato documental vigente, se regeneró `tutorial/07-local-terraform-automation/student-reference.md` con la estructura canónica de `playbooks/student-reference-template.md`, se ajustaron `README.md`, `student-notes.md` y `summary.md` de la unidad para respetar la frontera entre notas y referencia, y se cerró documentalmente `GAP-010` en `project/content-gap-register.md`. No se modificaron laboratorios, validaciones ni artefactos Terraform, y no se ejecutaron nuevas validaciones técnicas. La aprobación específica del saneamiento documental de la Unidad 07 queda pendiente del usuario.
 
-El 2026-07-26 se continuó la fase 4 con la Unidad 06. Se regeneró `playbooks/units/06-helm-packaging.md` contra el contrato documental vigente, se regeneró `tutorial/06-helm-packaging/student-reference.md` con la estructura canónica de `playbooks/student-reference-template.md`, y se ajustaron `README.md`, `student-notes.md` y `summary.md` de la unidad para respetar la frontera entre diagnóstico operativo y referencia profesional. `.work/detail.md` se usó solo como checklist de cobertura. No se modificaron laboratorios, chart Helm, scripts de validación ni estado técnico del clúster, y no se ejecutaron nuevas validaciones funcionales. La aprobación específica del saneamiento documental de la Unidad 06 queda pendiente del usuario.
+El 2026-07-26 se continuó la fase 4 con la Unidad 06. Se regeneró `playbooks/units/06-helm-packaging.md` contra el contrato documental vigente, se regeneró `tutorial/06-helm-packaging/student-reference.md` con la estructura canónica de `playbooks/student-reference-template.md`, y se ajustaron `README.md`, `student-notes.md` y `summary.md` de la unidad para respetar la frontera entre diagnóstico operativo y referencia profesional. `.work/detail.md` se usó solo como checklist de cobertura. No se modificaron laboratorios, chart Helm, scripts de validación ni estado técnico del clúster, y no se ejecutaron nuevas validaciones funcionales. El usuario confirmó la aprobación específica del saneamiento documental de la Unidad 06 el 2026-07-27.
 
 El 2026-07-22 se estableció `student-reference.md` como entregable obligatorio para todas las unidades y se creó `playbooks/student-reference-template.md` como plantilla global. En el mismo incremento se generó `tutorial/01-kubernetes/student-reference.md` para cubrir el mapa profesional de workloads de Kubernetes: `Pod`, `ReplicaSet`, `Deployment`, `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, sin cambiar manifiestos, scripts, laboratorio ni estado técnico del clúster. Las Unidades 02, 03, 04 y 05 quedaron inicialmente pendientes de backfill documental porque fueron generadas antes de que `student-reference.md` fuese obligatorio; ese backfill quedó completado posteriormente.
 
@@ -135,7 +135,7 @@ Todavía no se permite:
 | `playbooks/units/03-networking-ingress.md` | Completo y aprobado | Unit-03-Playbook-Approval | Gobierno de la Unidad 03 |
 | `playbooks/units/04-persistence-state.md` | Completo y aprobado por instrucción de generación | Unit-04-Generation | Gobierno de la Unidad 04 |
 | `playbooks/units/05-scheduling-resilience-maintenance.md` | Completo y aprobado | Unit-05-Playbook-Approval | Gobierno de la Unidad 05 |
-| `playbooks/units/06-helm-packaging.md` | Regenerado contra contrato documental; aprobación específica pendiente | Documentation-Cleanup-Unit-06 | Gobierno de la Unidad 06; declara frontera de `student-reference.md`, cobertura, simplificaciones y uso de `.work/detail.md` solo como checklist |
+| `playbooks/units/06-helm-packaging.md` | Regenerado contra contrato documental y aprobado | Documentation-Cleanup-Unit-06 | Gobierno de la Unidad 06; declara frontera de `student-reference.md`, cobertura, simplificaciones y uso de `.work/detail.md` solo como checklist |
 | `playbooks/units/07-local-terraform-automation.md` | Regenerado contra contrato documental; aprobación específica pendiente | Documentation-Cleanup-Unit-07 | Gobierno de la Unidad 07; declara frontera de `student-reference.md`, cobertura y cierre de `GAP-010` |
 | `AGENTS.md` | Completo | Unit-00-01 | Guía operativa para agentes con acceso al repositorio |
 
@@ -543,7 +543,7 @@ Limitaciones activas:
 
 | Campo | Estado |
 |---|---|
-| Estado | Completada, validada funcionalmente y aprobada pedagogicamente; saneamiento documental de fase 4 aplicado con aprobación específica pendiente |
+| Estado | Completada, validada funcionalmente y aprobada pedagogicamente; saneamiento documental de fase 4 aplicado y aprobado |
 | Fecha de inicio | 2026-07-19 |
 | Fecha de cierre | 2026-07-19; actualización documental 2026-07-26 |
 | Playbook | `playbooks/units/06-helm-packaging.md` |
@@ -570,7 +570,8 @@ Saneamiento documental aplicado el 2026-07-26:
 - `README.md`, `student-notes.md` y `summary.md` ajustados para respetar la frontera entre notas y referencia;
 - `.work/detail.md` usado solo como checklist de cobertura;
 - sin cambios en `labs/06-helm-packaging/`, chart Helm, scripts de validación ni estado técnico del clúster;
-- sin validaciones funcionales nuevas.
+- sin validaciones funcionales nuevas;
+- aprobación específica del usuario registrada el 2026-07-27.
 
 Limitaciones activas:
 
@@ -1184,7 +1185,7 @@ Validaciones no disponibles en esta sesión:
 | 68 | Revisión de coherencia de Unidades 00-07 | Documental | El 2026-07-23 se detecta que TD-018 cerró el backfill de `student-reference.md` contando solo las unidades que carecían del documento; 00, 01, 06 y 07 quedan no conformes. Se registran GAP-010 y GAP-011, se toman las decisiones D1-D5, se consolidan TD-009..TD-017 en TD-024 y se poda la prosa redundante de `content-gap-register.md`. La Unidad 08 queda congelada |
 | 69 | Fase 2 del saneamiento documental: contrato documental | Documental | El 2026-07-23 se amplía `playbooks/student-reference-template.md` con la frontera, la garantía de cobertura, la autosuficiencia y los criterios de cierre; se declara la frontera en `playbooks/unit-template.md` y `playbooks/master.md`; se acota el sujeto de la regla de ortografía; se registra la plantilla de referencia en `project/architecture.md`. Se cierra TD-021 y se cierra parcialmente TD-020 |
 | 70 | Fase 4 del saneamiento documental: Unidad 07 piloto | Documental | El 2026-07-26 se regenera el playbook de Unidad 07 contra el contrato cerrado, se regenera `student-reference.md` con estructura canónica, se ajustan README, notas y summary para respetar la frontera documental, y se cierra `GAP-010`. No se modifican laboratorios ni validaciones, y no se ejecutan validaciones técnicas nuevas |
-| 71 | Fase 4 del saneamiento documental: Unidad 06 | Documental | El 2026-07-26 se regenera el playbook de Unidad 06 contra el contrato cerrado, se regenera `student-reference.md` con estructura canónica y se ajustan README, notas y summary. `.work/detail.md` se usa solo como checklist de cobertura. No se modifican laboratorios, chart Helm ni validaciones, y no se ejecutan validaciones funcionales nuevas |
+| 71 | Fase 4 del saneamiento documental: Unidad 06 | Documental aprobado | El 2026-07-26 se regenera el playbook de Unidad 06 contra el contrato cerrado, se regenera `student-reference.md` con estructura canónica y se ajustan README, notas y summary. `.work/detail.md` se usa solo como checklist de cobertura. No se modifican laboratorios, chart Helm ni validaciones, no se ejecutan validaciones funcionales nuevas y el usuario aprueba el saneamiento el 2026-07-27 |
 
 ---
 
@@ -1201,14 +1202,14 @@ El plan de saneamiento vive en `project/documentation-cleanup-plan.md`. Su tabla
 | 1 | Compactación y saneamiento de registros de estado | Completada |
 | 2 | Contrato documental: ampliar `student-reference-template.md`, declarar la frontera en `unit-template.md`, regla ortográfica en `master.md` | Completada |
 | 3 | Diagnóstico de los ocho playbooks contra el contrato cerrado | Completada |
-| 4 | Saneamiento de las Unidades 00-07: por cada unidad, regenerar su playbook contra el contrato y, desde él, regenerar la `student-reference.md` (Unidades 00, 01, 06, 07) o ajustarla (Unidades 02, 03, 04, 05); alinear `student-notes.md`; barrido ortográfico; línea de summary | En progreso; Unidades 07 y 06 completadas, aprobación específica pendiente |
+| 4 | Saneamiento de las Unidades 00-07: por cada unidad, regenerar su playbook contra el contrato y, desde él, regenerar la `student-reference.md` (Unidades 00, 01, 06, 07) o ajustarla (Unidades 02, 03, 04, 05); alinear `student-notes.md`; barrido ortográfico; línea de summary | En progreso; Unidad 06 completada y aprobada; Unidad 07 completada como piloto con aprobación específica pendiente |
 | 5 | Cierre funcional de la Unidad 04 (`TD-023`), con validación ejecutada | Pendiente |
 
 ## Estado del saneamiento
 
 La fase 3 quedó cerrada el 2026-07-23. El diagnóstico concluyó que ninguno de los ocho playbooks es conforme: todos son anteriores al contrato, las Unidades 00 a 05 no declaran `student-reference.md` como entregable y los playbooks 06 y 07 prescriben un molde por módulos que contradice la plantilla y exige tabla de diagnóstico dentro de la referencia. El detalle por playbook está en `project/documentation-cleanup-plan.md`, apartado 4.
 
-La fase 4 está en progreso. La Unidad 07 se saneó como piloto el 2026-07-26: se regeneró su playbook y, desde él, su referencia. Después se saneó la Unidad 06: se regeneraron su playbook y su referencia, se ajustaron README, notas y summary, y no se tocaron laboratorios ni validaciones. Ambos incrementos quedan con aprobación específica pendiente del usuario.
+La fase 4 está en progreso. La Unidad 07 se saneó como piloto el 2026-07-26: se regeneró su playbook y, desde él, su referencia; queda pendiente su aprobación específica. Después se saneó la Unidad 06: se regeneraron su playbook y su referencia, se ajustaron README, notas y summary, y no se tocaron laboratorios ni validaciones. El usuario confirmó la aprobación específica de la Unidad 06 el 2026-07-27.
 
 Modelo de ejecución: una unidad por sesión, en el orden 07, 06, 01, 00, 02, 03, 05 y 04 documental. El siguiente incremento permitido es la Unidad 01. Después se ejecuta la auditoría de autosuficiencia `TD-022`. El cierre funcional de la Unidad 04 (`TD-023`) es la fase 5 y se ejecuta al final, con validación contra MicroK8s aportada por el usuario. Los laboratorios y sus validaciones existentes no se tocan durante la fase 4.
 
