@@ -243,7 +243,7 @@ El cierre de `TD-023` requiere validación ejecutada contra MicroK8s. No se decl
 |---|---|
 | `TD-019` | Se cierra al regenerar las referencias de 00, 01, 06 y 07 |
 | `TD-020` | Se cierra con el barrido ortográfico de las ocho unidades. Alcance limitado al material del alumno |
-| `TD-022` | Auditoría de autosuficiencia de las referencias conformes 02-05. Se ejecuta tras el ajuste de esas unidades y antes de desbloquear la 08 |
+| `TD-022` | Cerrada el 2026-07-27 con auditoría de red team aportada por el usuario: las referencias conformes 02-05 son autosuficientes y no se reclasifica ninguna como no conforme |
 | `TD-023` | Se cierra en la fase 5, con validación ejecutada |
 | `Q-010` | Se cierra al regenerar el playbook de la Unidad 04 |
 | `GAP-003` | Candidata a cierre al regenerar la referencia de la Unidad 03 |
@@ -256,7 +256,9 @@ Los cierres de laguna se registran en `project/content-gap-register.md` a medida
 
 # 10. Qué desbloquea el saneamiento
 
-La Unidad 08 espera al cierre completo de las fases 4 y 5, incluida la auditoría `TD-022`. Por decisión del usuario del 2026-07-23, el plan no se parte para adelantarla.
+La Unidad 08 espera al cierre completo de la fase 5, incluida la validación ejecutada de `TD-023`. Por decisión del usuario del 2026-07-23, el plan no se parte para adelantarla.
+
+La auditoría `TD-022` quedó cerrada el 2026-07-27. Como observación no bloqueante, las referencias auditadas tienen secciones de continuidad largas; si en el futuro se adelgazan referencias, esa será la primera zona candidata a recorte editorial.
 
 Las unidades 09 en adelante no dependen del saneamiento salvo por `GAP-010`, que la referencia de la Unidad 07 debe cerrar y que la Unidad 09 necesita.
 
