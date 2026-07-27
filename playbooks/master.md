@@ -185,6 +185,20 @@ La IA deberá definir:
 - impacto sobre el estado;
 - información necesaria para la siguiente unidad.
 
+## Paso 4bis — Clasificar la cobertura
+
+Cuando la unidad parta de una lista de cobertura, la IA deberá clasificar cada punto antes de generar:
+
+- **práctica**: se ejecuta en el laboratorio de esta unidad. Va al alcance incluido y a los procedimientos.
+- **criterio**: se explica en `student-reference.md` pero no se ejecuta. Va a las declaraciones de cobertura de la referencia.
+- **diferido**: pertenece a una unidad posterior, a un laboratorio avanzado o queda fuera del itinerario. Va a la tabla de diferidos y, si es candidato a laboratorio avanzado, a `project/advanced-labs-register.md`.
+
+La regla de reparto la fija el alcance declarado de la unidad. Una unidad introductoria practica lo mínimo que da visión general del tema y difiere lo avanzado; una unidad de profundización puede practicar más.
+
+Un punto redactado como práctica que el laboratorio no puede sostener, porque exige un entorno que la unidad no tiene o contradice una restricción activa, no se convierte en artefacto. Se reclasifica como criterio o diferido y se declara por qué. La IA no debe ampliar el alcance para acomodar la lista; es la lista la que se reparte contra el alcance.
+
+El resultado de esta clasificación se declara en el playbook de la unidad, en las declaraciones obligatorias de la referencia.
+
 ## Paso 5 — Generar los entregables
 
 Cada unidad deberá generar obligatoriamente:
@@ -620,6 +634,21 @@ Cuando una unidad dependa de una versión concreta, deberá registrar:
 
 Las versiones activas deberán reflejarse en `project/project-state.md`.
 
+## Componentes de clúster
+
+Un componente de clúster es una herramienta que se despliega dentro de Kubernetes como controlador, CRD u operador, frente a un CLI local que se instala en el sistema de ficheros. Tekton, Argo CD, Prometheus, Grafana, KEDA y Velero son componentes de clúster; Helm, Terraform y `kubectl` son CLIs locales.
+
+Los CLIs locales viven en `platform/environment/tools/` y se instalan en la Unidad 00. Los componentes de clúster se catalogan en `platform/tools/` y se instalan en la unidad cuyo tema es ese componente, nunca antes.
+
+Cada componente de clúster que una unidad instale deberá:
+
+- instalarse por su método oficial upstream, como `kubectl apply` de un release versionado, chart de Helm con versión fija o CLI propio, nunca con `latest`;
+- fijar la versión, verificada contra la documentación oficial en el momento de generar la unidad, y registrarla según la regla de versiones;
+- declararse en el README del laboratorio de la unidad como precondición de entorno, indicando método, versión, namespace, si persiste hacia unidades posteriores o se retira al cerrar, y la limpieza completa;
+- documentar la limpieza incluyendo los recursos que el componente genera después de instalarse, que un borrado del manifiesto de instalación no retira.
+
+El instalador o comando es una utilidad compartida catalogada en `platform/tools/`. La decisión de instalarlo, cuándo y con qué ciclo de vida pertenece al playbook y al README de la unidad, no al catálogo.
+
 ## Seguridad
 
 Está prohibido versionar:
@@ -661,6 +690,8 @@ Cualquier unidad que cree recursos cloud deberá incluir:
 - recursos que pueden permanecer;
 - comprobación final;
 - advertencias sobre servicios con coste residual.
+
+Cualquier unidad que instale un componente de clúster, aunque no sea cloud, deberá documentar su retirada completa: el comando de desinstalación, los recursos derivados que no se retiran automáticamente, la comprobación final de que no quedan huérfanos y el efecto sobre componentes ya presentes en el clúster.
 
 ---
 

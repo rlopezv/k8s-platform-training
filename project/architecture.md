@@ -409,6 +409,14 @@ Este directorio podrá incluir:
 - scripts de diagnóstico;
 - operaciones de reset o recuperación.
 
+Los componentes de clúster instalados por unidades posteriores se catalogan en:
+
+```text
+platform/tools/
+```
+
+Este catálogo distingue controladores, CRDs y operadores desplegados dentro de Kubernetes de los CLIs locales de `platform/environment/tools/`. La decisión de instalar un componente, su versión, namespace, persistencia y limpieza pertenece al playbook y al README del laboratorio de la unidad que lo introduce.
+
 Los artefactos de unidades posteriores deberán residir normalmente en `labs/`.
 
 ## `assets/`

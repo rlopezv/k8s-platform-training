@@ -22,15 +22,15 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Saneamiento documental y cierre funcional de Unidad 04 completados |
-| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 completada, aprobada y auditada con `TD-022`; fase 5 `TD-023` ejecutada, validada funcionalmente y aprobada |
-| Último incremento completado | Cierre funcional de la Unidad 04 (`TD-023`) |
+| Fase actual | Gobierno mínimo para Unidad 08 preparado tras saneamiento documental y cierre funcional de Unidad 04 |
+| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 completada, aprobada y auditada con `TD-022`; fase 5 `TD-023` ejecutada, validada funcionalmente y aprobada; framework extendido mínimamente para componentes de clúster y reparto de cobertura |
+| Último incremento completado | Framework mínimo para componentes de clúster y clasificación de cobertura antes de Unidad 08 |
 | Unidad activa | Ninguna |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
-| Framework de generación | Framework V1 validado; Framework V2 didactico simplificado; Framework V3 documental incorpora `student-reference.md` obligatorio y plantilla global |
+| Framework de generación | Framework V1 validado; Framework V2 didactico simplificado; Framework V3 documental incorpora `student-reference.md` obligatorio y plantilla global; Framework V4 mínimo declara componentes de clúster, `platform/tools/` y clasificación práctica/criterio/diferido |
 | Siguiente incremento permitido | Generar el playbook de la Unidad 08 - Integración continua con Tekton |
 
 ---
@@ -339,6 +339,7 @@ Todavía no se permite:
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
 | `labs/` | Materializado con Unidades 01, 02, 03, 04, 05, 06 y 07 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/`, `04-persistence-state/`, `05-scheduling-resilience-maintenance/`, `06-helm-packaging/` y `07-local-terraform-automation/` |
 | `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base; laboratorio de acompañamiento de imagenes de solo lectura |
+| `platform/tools/` | Catálogo de componentes de clúster preparado para Unidad 08 | README de convención para componentes instalados dentro de Kubernetes; no instala nada por sí mismo |
 | `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
 | `project/` | Operativo | Arquitectura, estado, roadmap y registro de lagunas de contenido |
 | `tutorial/` | Unidades 00, 01, 02, 03, 04, 05, 06 y 07 generadas | README de entrada, `student-notes.md`, `student-reference.md`, instructor notes y summaries en todas las unidades generadas |
@@ -1010,13 +1011,15 @@ Tras generar y validar funcionalmente la Unidad 07:
 - no crear recursos Gateway API como eje operativo salvo decisión explícita posterior;
 - no introducir TLS productivo, DNS público, LoadBalancer cloud ni NetworkPolicies antes de su unidad prevista;
 - no presentar `hostpath-storage` como almacenamiento productivo ni cloud;
-- no instalar Tekton;
+- Tekton Pipelines se instala únicamente en la Unidad 08 como componente de clúster y persiste hacia las Unidades 09 y 10; su instalación está prohibida en cualquier otra unidad;
 - no instalar Argo CD;
 - no desplegar observabilidad avanzada;
 - no introducir KEDA;
 - no crear recursos AKS o EKS;
 - no almacenar credenciales ni configuración corporativa sensible;
 - no utilizar Minikube, kind o Docker Desktop Kubernetes como plataforma paralela.
+
+Las herramientas de plataforma que son componentes de clúster, como Argo CD, Prometheus, Grafana, KEDA y Velero, siguen prohibidas hasta la unidad cuyo tema sean. Al llegar a esa unidad se instalarán según la convención de `platform/tools/`. La prohibición deja de ser global y pasa a ser no antes de su unidad.
 
 ---
 
@@ -1244,6 +1247,7 @@ Validaciones no disponibles en esta sesión:
 | 77 | Fase 4 del saneamiento documental: Unidad 04 | Documental aprobado | El 2026-07-27 se regenera el playbook de Unidad 04 contra el contrato cerrado y se ajustan `README.md`, `student-notes.md`, `student-reference.md` y `summary.md` desde ese playbook. `.work/detail.md` se usa solo como checklist de cobertura. Se cubren almacenamiento efímero y persistente, PVC, aprovisionamiento dinámico, `microk8s-hostpath`, access modes, reclaim, CSI, cloud, StatefulSet, headless Service y `volumeClaimTemplates` como práctica existente o criterio; `GAP-004` queda cubierto documentalmente pero `TD-023` sigue abierto como cierre funcional. No se modifican laboratorios, manifiestos Kubernetes, scripts ni workloads, no se ejecutan validaciones funcionales nuevas y el usuario aprueba el saneamiento el 2026-07-27 |
 | 78 | Auditoría de autosuficiencia `TD-022` | Documental aprobado | El 2026-07-27 el usuario aporta auditoría de red team: las referencias de Unidades 02, 03, 04 y 05 son autosuficientes, ninguna se reclasifica como no conforme. Se registra observación no bloqueante sobre secciones de continuidad largas |
 | 79 | Cierre funcional de Unidad 04 `TD-023` | Funcional validado y aprobado | El 2026-07-27 se crea `labs/04-persistence-state/statefulset-demo/` con `scratch-stateful`, headless Service y `volumeClaimTemplates`; tras reiniciar MicroK8s y corregir el comando del contenedor, se ejecuta validación independiente contra MicroK8s con 0 fallos y 0 avisos, incluida la comprobación de que ambos PVCs siguen `Bound` tras borrar el StatefulSet; se limpia la demo por nombre exacto sin tocar `platform-api-data`; el usuario aprueba `TD-023`; `GAP-004` queda cerrado funcionalmente |
+| 80 | Framework mínimo para Unidad 08 | Documental | Se actualizan `playbooks/master.md`, `playbooks/unit-template.md`, `project/architecture.md` y `project/project-state.md`, y se crea `platform/tools/README.md`. El framework declara componentes de clúster, localiza la restricción de Tekton en la Unidad 08, exige clasificar cobertura como práctica, criterio o diferido, y mantiene la Unidad 08 como siguiente incremento permitido sin instalar Tekton ni generar recursos de la unidad |
 
 ---
 

@@ -411,6 +411,7 @@ Declarar:
 - qué laguna de `project/content-gap-register.md` cubre, con su identificador, o que no cubre ninguna;
 - qué partes de `student-notes.md` amplía;
 - qué tipos de cobertura aplica: panorama, profundidad, criterio o práctica;
+- cómo se repartió la lista de cobertura de entrada entre práctica, criterio y diferido, y por qué; qué puntos redactados como práctica se reclasificaron a criterio o diferido por no caber en el alcance de la unidad;
 - qué relación tiene con el tema de la unidad, el ecosistema Kubernetes o las herramientas habituales;
 - qué contenido es conceptual o de referencia aunque no se ejecute en el laboratorio;
 - qué simplificaciones del laboratorio serían incorrectas en producción y obligan a bloque de práctica profesional;
@@ -466,6 +467,18 @@ Excepción de ruta, cuando corresponda:
 ```text
 [ruta excepcional]
 ```
+
+### Componentes de clúster
+
+Declarar los componentes de clúster que esta unidad instala, si los hay:
+
+- componente y versión fija;
+- método de instalación oficial, con referencia a `platform/tools/`;
+- namespace;
+- si persiste hacia unidades posteriores o se retira al cerrar la unidad;
+- procedimiento de limpieza completa, incluidos recursos derivados.
+
+Si la unidad no instala ningún componente de clúster, declararlo explícitamente.
 
 ## Estado del proyecto
 
