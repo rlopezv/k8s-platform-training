@@ -1,10 +1,10 @@
-# Referencia del alumno - Unidad 04
+# Referencia del alumno - Unidad 04: Persistencia y estado
 
 ## Propósito de la referencia
 
 Esta referencia amplía `tutorial/04-persistence-state/student-notes.md` con una visión profesional sobre almacenamiento en Kubernetes, persistencia, estado, `PersistentVolume`, `PersistentVolumeClaim`, `StorageClass`, CSI, backups, snapshots y workloads con identidad estable.
 
-El laboratorio de la Unidad 04 practica un PVC local montado en `platform-api`. Esta referencia explica qué decisiones aparecen cuando la persistencia deja de ser un fichero de laboratorio y pasa a formar parte de una plataforma real.
+El laboratorio de la Unidad 04 practica un PVC local montado en `platform-api`. Esta referencia aplica cobertura de panorama, profundidad, criterio y práctica profesional: explica qué decisiones aparecen cuando la persistencia deja de ser un fichero de laboratorio y pasa a formar parte de una plataforma real. También cubre el criterio profesional de `StatefulSet`, headless Service y volumen por réplica asociado a `GAP-004`, pero su práctica funcional queda diferida a `TD-023`.
 
 No es una segunda guía de laboratorio. No crea bases de datos, no migra `platform-api` a `StatefulSet`, no instala Velero, no crea snapshots CSI, no cambia la `StorageClass` local y no modifica el estado técnico del clúster.
 
@@ -37,7 +37,6 @@ Los artefactos principales para leer esta referencia son:
 | PVC | `labs/04-persistence-state/solution/pvc.yaml` | Solicitud de capacidad, StorageClass y access mode |
 | Deployment | `labs/04-persistence-state/solution/deployment.yaml` | `persistentVolumeClaim`, `volumeMount` y `fsGroup` |
 | Validación | `labs/04-persistence-state/validation/validate.sh` | Comprobación de PVC, mount, escritura, recreación y acceso HTTP |
-| Summary | `tutorial/04-persistence-state/summary.md` | Decisiones y límites de `hostpath-storage` |
 
 ## Mapa conceptual
 
@@ -97,6 +96,8 @@ El mismo concepto sirve para fuentes muy distintas:
 
 Un mount no convierte cualquier ruta en persistente. Solo persiste lo escrito dentro de la ruta respaldada por el volumen adecuado.
 
+`emptyDir` merece una mención aparte porque es útil, pero fácil de malinterpretar. Puede servir para scratch space, intercambio temporal entre contenedores del mismo Pod, descargas intermedias, sockets o ficheros generados durante una ejecución. No debe usarse para estado que deba sobrevivir a la recreación del Pod. Si el Pod desaparece, desaparece también el `emptyDir`; que el contenedor haya escrito ahí no cambia su ciclo de vida.
+
 ### PersistentVolumeClaim
 
 Un `PersistentVolumeClaim` es una solicitud de almacenamiento hecha por un workload. El PVC expresa qué necesita la aplicación sin obligarla a conocer el detalle físico del almacenamiento.
@@ -147,6 +148,12 @@ Algunas propiedades relevantes son:
 
 La API Kubernetes es común, pero el comportamiento real depende mucho del proveedor.
 
+`reclaimPolicy` decide qué ocurre con el `PersistentVolume` cuando el claim que lo usaba se elimina. Con `Delete`, el PV y el almacenamiento subyacente suelen eliminarse como parte de la limpieza. Es cómodo para entornos efímeros, pero peligroso si alguien borra un PVC pensando que solo retira el vínculo con el workload. Con `Retain`, Kubernetes conserva el PV y normalmente deja el soporte de almacenamiento detrás; el dato no desaparece automáticamente, pero el volumen queda fuera del flujo normal hasta que un operador lo revise, limpie, reasigne o retire.
+
+Ese estado intermedio es lo que suele llamarse PV huérfano: el objeto o el disco pueden seguir existiendo, pero ya no hay un PVC activo que lo consuma de forma normal. No es necesariamente un error; a veces es una decisión deliberada para proteger datos antes de una restauración o análisis. El riesgo aparece cuando nadie tiene ownership claro: se acumulan volúmenes, se paga almacenamiento olvidado, se exponen datos residuales o se intenta reutilizar un PV con contenido antiguo sin limpiar. Por eso una plataforma profesional define política de reclamación, etiquetas de ownership, procedimiento de borrado y revisión periódica de PV retenidos.
+
+El laboratorio no cambia la `reclaimPolicy` de `microk8s-hostpath`. La referencia sí debe dejar el criterio: borrar un Pod, borrar un Deployment y borrar un PVC no son operaciones equivalentes. El PVC es la frontera delicada; antes de eliminarlo hay que saber si el PV se borrará, quedará retenido o requerirá una acción manual posterior.
+
 ### Access modes
 
 Los access modes expresan cómo puede montarse un volumen desde el punto de vista de Kubernetes.
@@ -191,7 +198,9 @@ La Unidad 04 conserva `Deployment` porque `platform-api` no necesita identidad e
 
 Un headless Service permite descubrir Pods individuales sin una IP virtual de Service. Suele acompañar a StatefulSets cuando las réplicas deben encontrarse por identidad estable.
 
-No toda persistencia implica StatefulSet. Una aplicación puede usar un `Deployment` con PVC si el patrón de acceso, las réplicas y el almacenamiento son compatibles. En esta unidad, el objetivo es aprender PVC/PV/StorageClass antes de añadir identidad estable por réplica.
+`volumeClaimTemplates` permite que un StatefulSet cree un PVC por réplica siguiendo una plantilla común. En vez de compartir un único claim, cada Pod estable recibe su propio claim asociado a su identidad. Ese patrón encaja con sistemas que necesitan dato por miembro, como algunos motores de base de datos o colas, pero también aumenta el coste operativo: migración, backup, restore, escalado y eliminación deben considerar cada réplica y cada volumen.
+
+No toda persistencia implica StatefulSet. Una aplicación puede usar un `Deployment` con PVC si el patrón de acceso, las réplicas y el almacenamiento son compatibles. En esta unidad, el objetivo es aprender PVC/PV/StorageClass antes de añadir identidad estable por réplica. La práctica técnica de `StatefulSet`, headless Service y `volumeClaimTemplates` queda diferida a `TD-023`.
 
 ### Snapshots, backup y restore
 
@@ -264,6 +273,8 @@ Antes de elegir una StorageClass, pregunta:
 
 En MicroK8s, `microk8s-hostpath` sirve para aprender. En AKS/EKS, la elección dependerá de discos gestionados, sistemas de fichero, CSI drivers, zonas y requisitos de disponibilidad.
 
+En manifiestos planos, fijar `storageClassName: microk8s-hostpath` es aceptable para un laboratorio local porque hace explícita la dependencia. En un artefacto reutilizable entre entornos, ese valor no debería quedar incrustado sin una capa de parametrización. Helm, que aparece en la Unidad 06, permitirá convertir el nombre de la StorageClass en un valor por entorno; cloud lo resolverá después con clases gestionadas, políticas de cifrado, zonas y drivers CSI. El criterio no es ocultar la StorageClass, sino hacer visible que pertenece a la plataforma, no a la lógica de negocio de `platform-api`.
+
 ### Cómo pensar backup
 
 Una política mínima de backup debería responder:
@@ -296,6 +307,7 @@ El laboratorio menciona, pero no practica:
 
 - StatefulSet;
 - headless Service;
+- `volumeClaimTemplates`;
 - bases de datos reales;
 - CSI snapshots;
 - Velero;
@@ -324,6 +336,8 @@ No debe borrarse el PVC como limpieza rutinaria. El PVC representa una frontera 
 La Unidad 05 retomará la persistencia como restricción de scheduling y mantenimiento. Un PVC local puede condicionar dónde puede ejecutarse un Pod y qué ocurre durante interrupciones voluntarias.
 
 La Unidad 06 empaquetará el PVC y sus montajes en Helm, manteniendo la diferencia entre configuración, datos persistentes y recursos derivados del chart.
+
+`TD-023` retomará la Unidad 04 con una práctica funcional de `StatefulSet`, headless Service y `volumeClaimTemplates` sobre un workload auxiliar desechable, sin migrar `platform-api`.
 
 La Unidad 16 conectará almacenamiento con seguridad de workloads, ownership, RBAC, ServiceAccounts y políticas de acceso.
 
