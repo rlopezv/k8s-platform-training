@@ -1,10 +1,10 @@
-# Referencia del alumno - Unidad 03
+# Referencia del alumno - Unidad 03: Networking e ingreso
 
 ## Propósito de la referencia
 
 Esta referencia amplía `tutorial/03-networking-ingress/student-notes.md` con una visión profesional sobre networking de Kubernetes, entrada HTTP, TLS, certificados, `cert-manager` y Gateway API.
 
-El laboratorio de la Unidad 03 practica una entrada HTTP local con `Ingress`. Esta referencia explica qué hay alrededor de ese ejercicio cuando el mismo patrón se lleva a una plataforma real: DNS, controladores, balanceadores, certificados, terminación TLS, separación de responsabilidades y evolución hacia Gateway API.
+El laboratorio de la Unidad 03 practica una entrada HTTP local con `Ingress`. Esta referencia cierra documentalmente `GAP-003` y aplica cobertura de panorama, profundidad, criterio y práctica: explica qué hay alrededor de ese ejercicio cuando el mismo patrón se lleva a una plataforma real, incluyendo DNS, CNI, controladores, balanceadores, MetalLB, anotaciones de controlador, certificados, terminación TLS, separación de responsabilidades y evolución hacia Gateway API.
 
 No es una segunda guía de laboratorio. No instala `cert-manager`, no crea certificados, no cambia el recurso `Ingress`, no crea `GatewayClass`, `Gateway` ni `HTTPRoute`, y no modifica el estado técnico del clúster.
 
@@ -14,7 +14,7 @@ La Unidad 03 enseña la cadena que permite que una petición HTTP llegue a `plat
 
 ```text
 Cliente
-  -> punto de entrada
+  -> punto de entrada local
   -> Ingress Controller
   -> Ingress
   -> Service
@@ -54,6 +54,9 @@ EndpointSlice
 DNS interno
   nombres de Service dentro del clúster
 
+CNI
+  implementación de conectividad entre Pods y nodos
+
 Ingress
   reglas HTTP/HTTPS hacia Services
 
@@ -67,13 +70,15 @@ Gateway API
   modelo más expresivo y separado por roles para entrada y routing
 ```
 
-El laboratorio usa HTTP local porque primero interesa entender el recorrido de la petición. En producción, entrada significa también identidad de dominio, TLS, renovación de certificados, control de acceso, observabilidad, límites de exposición y operación del controlador.
+El laboratorio usa HTTP local porque primero interesa entender el recorrido de la petición. En producción, entrada significa también identidad de dominio, TLS, renovación de certificados, control de acceso, observabilidad, límites de exposición, operación del controlador y coste de la infraestructura de red.
 
 ## Conceptos y mecanismos
 
 ### Red de Pods y Service
 
 Los Pods tienen IPs propias dentro del clúster, pero son efímeros. Kubernetes puede reemplazarlos durante rollouts, reinicios, mantenimiento o recuperación. Por eso una IP de Pod no debe ser el contrato de un cliente.
+
+El modelo IP-per-Pod depende de una implementación CNI. Kubernetes define la expectativa de conectividad, pero la forma concreta de crear rutas, interfaces, encapsulación o políticas depende del plugin y de la distribución. En MicroK8s esa implementación queda gestionada por la plataforma local; la Unidad 03 no administra Calico, Flannel ni otro CNI como práctica. Lo importante para esta unidad es no confundir el principio estándar, "cada Pod obtiene una identidad de red", con la operación concreta del plugin que lo materializa.
 
 Un `Service` da una identidad estable para un conjunto de Pods seleccionados por labels. En la Unidad 03, `service/platform-api` conserva tipo `ClusterIP` y puerto `80`, y el `Ingress` lo usa como backend.
 
@@ -127,6 +132,14 @@ Kubernetes ofrece varias formas de exponer tráfico:
 
 Ingress no sustituye al Service. Normalmente apunta a un Service, y el Service conserva la relación con Pods y EndpointSlices.
 
+En clústeres cloud, un Service `LoadBalancer` suele pedir a la plataforma un balanceador real. En un laboratorio local esa integración puede no existir y el Service puede quedarse en estado `pending`. MetalLB es una implementación habitual para simular Services `LoadBalancer` en redes locales, normalmente anunciando direcciones en capa 2 o BGP. Es útil para aprender la frontera entre Kubernetes y red externa, pero no forma parte de la Unidad 03: instalarlo cambiaría el alcance del laboratorio y desplazaría el foco desde routing HTTP hacia operación de balanceo.
+
+### Anotaciones de controlador
+
+Muchos controladores de Ingress aceptan anotaciones para capacidades que no están en la API estándar de `Ingress`: reescritura de paths, CORS, límites de tamaño de petición, rate limiting, timeouts, redirecciones o afinidad de sesión.
+
+El detalle importante es que esas anotaciones pertenecen al controlador, no a Kubernetes como contrato universal. Una anotación de NGINX puede no tener efecto en Traefik, Contour, HAProxy o un controlador cloud. Por eso el laboratorio no enseña `nginx.ingress.kubernetes.io/rewrite-target`, CORS ni rate limiting como YAML portable. La práctica profesional es documentar qué controlador usa la plataforma, qué anotaciones están permitidas y qué políticas deben vivir en otro sitio, como un API gateway, un WAF, Gateway API o políticas de plataforma.
+
 ### TLS y terminación
 
 TLS resuelve tres problemas:
@@ -139,7 +152,7 @@ En Kubernetes, un `Ingress` puede declarar TLS con un bloque `spec.tls` que refe
 
 La terminación TLS suele ocurrir en el punto de entrada: Ingress Controller, balanceador cloud, API gateway o service mesh. Desde ahí hasta el Pod puede haber HTTP interno, TLS reemitido o mTLS, según la plataforma.
 
-La Unidad 03 no practica TLS porque introducir certificados implica dominios, confianza, renovación, claves privadas y decisiones de seguridad que no deben tratarse como un añadido superficial.
+La Unidad 03 no practica TLS porque introducir certificados implica dominios, confianza, renovación, claves privadas y decisiones de seguridad que no deben tratarse como un añadido superficial. Generar un certificado local y guardarlo como Secret puede enseñar la forma del objeto, pero también normalizaría copiar claves privadas en el repositorio si no se acompaña de un diseño completo. Por eso aquí se explica el mecanismo y se difiere la práctica.
 
 ### cert-manager
 
@@ -206,6 +219,12 @@ Gateway API empieza a tener más sentido cuando:
 
 No conviene migrar solo porque sea más moderno. La decisión debe considerar soporte del controlador, madurez operativa, observabilidad, documentación interna y coste de cambio.
 
+### Cuándo considerar LoadBalancer o MetalLB
+
+Un Service `LoadBalancer` tiene sentido cuando la plataforma puede entregar una dirección estable de entrada de capa 4 y operar el balanceador asociado. En cloud, esa pieza suele ser un recurso gestionado del proveedor. En bare metal o laboratorio local, Kubernetes no puede inventar por sí solo una IP externa; necesita una implementación como MetalLB o una integración equivalente.
+
+MetalLB no convierte el laboratorio local en cloud. Resuelve una necesidad concreta: anunciar direcciones para Services `LoadBalancer` en redes que Kubernetes no controla. Si el objetivo es routing HTTP por host y path, Ingress sigue siendo la abstracción más adecuada en esta unidad. Si el objetivo es practicar integración de red local o preparar una auditoría de acoplamientos antes de cloud, MetalLB encaja mejor como criterio de Unidad 19.
+
 ### Cuándo introducir TLS
 
 TLS debe introducirse cuando la entrada representa un servicio que otros clientes consumirán con una identidad real. Incluso en entornos internos, la pregunta correcta no es "si hace falta TLS", sino dónde termina, quién emite certificados, cómo se renuevan y quién puede leer claves privadas.
@@ -245,7 +264,9 @@ El laboratorio menciona, pero no practica:
 - `cert-manager`;
 - Gateway API aplicada;
 - DNS público;
+- MetalLB;
 - cloud load balancers;
+- anotaciones avanzadas de controlador;
 - políticas de entrada multi-equipo.
 
 No debe modificarse `labs/03-networking-ingress/solution/ingress.yaml` para añadir TLS en esta unidad. Esa decisión se deja para una unidad donde existan DNS, GitOps, cloud o estándares de plataforma suficientes.
@@ -259,6 +280,8 @@ No debe modificarse `labs/03-networking-ingress/solution/ingress.yaml` para aña
 | Exponer un Service cambiándolo a `NodePort` sin criterio | Se evita aprender la separación entre Service interno e ingreso HTTP |
 | Confundir `platform-api.local` con DNS interno | Es una cabecera de laboratorio, no el nombre DNS del Service |
 | Interpretar cualquier 404 como caída de la aplicación | Puede ser una regla de host/path que no coincide |
+| Copiar anotaciones de un controlador a otro | Las anotaciones de Ingress no son API portable de Kubernetes |
+| Instalar MetalLB para resolver cualquier entrada local | MetalLB resuelve Services `LoadBalancer`, no sustituye el criterio sobre Ingress, DNS y TLS |
 | Añadir TLS copiando certificados manualmente | Las claves privadas, renovación y confianza necesitan un diseño explícito |
 | Presentar Gateway API como reemplazo automático de Ingress | Depende del controlador, del modelo operativo y de la necesidad real |
 | Tratar MicroK8s como si fuera cloud | En cloud cambian balanceador, DNS, identidad, coste y operación |
@@ -273,7 +296,7 @@ La Unidad 10 podrá relacionar routing de entrada con promoción entre entornos,
 
 La Unidad 12 y la Unidad 15 aportarán SLI/SLO, alertas y observabilidad integrada para decidir si una ruta de entrada está funcionando de verdad.
 
-La Unidad 19 comparará supuestos locales de MicroK8s con AKS/EKS: Ingress Controller, LoadBalancer, DNS, identidad, certificados y coste.
+La Unidad 19 comparará supuestos locales de MicroK8s con AKS/EKS: CNI, Ingress Controller, `LoadBalancer`, MetalLB como patrón local, DNS, identidad, certificados y coste.
 
 La Unidad 20 y la Unidad 21 deberán decidir cómo se implementan entrada, certificados e identidad en AKS y EKS.
 
@@ -283,11 +306,11 @@ La Unidad 24 retomará Gateway API, estándares de entrada, ownership por equipo
 
 | Fuente | Qué leer | Pregunta que deberías poder responder |
 |---|---|---|
-| [Kubernetes - Services](https://kubernetes.io/docs/concepts/services-networking/service/) | Service, tipos de Service y relación con Pods | ¿Por qué Ingress apunta a un Service y no directamente a Pods? |
-| [Kubernetes - EndpointSlices](https://kubernetes.io/docs/concepts/services-networking/endpoint-slices/) | Cómo Kubernetes representa destinos de Service | ¿Cómo sabes si un Service tiene backends listos? |
-| [Kubernetes - DNS for Services and Pods](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/) | Nombres internos de Services | ¿Qué diferencia hay entre DNS interno y el host local del laboratorio? |
-| [Kubernetes - Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) | Recurso `Ingress`, reglas, backend y TLS | ¿Qué declara un Ingress y qué no ejecuta por sí mismo? |
-| [Kubernetes - Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) | Necesidad de un controlador | ¿Por qué un Ingress sin controlador no abre tráfico? |
+| [Kubernetes - Services](https://kubernetes.io/docs/concepts/services-networking/service/) | Secciones sobre tipos de Service y `LoadBalancer` | ¿Qué cambia entre `ClusterIP`, `NodePort`, `LoadBalancer` e Ingress? |
+| [Kubernetes - Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/) | Modelo de red y responsabilidades de CNI | ¿Qué parte del modelo IP-per-Pod es estándar y qué parte depende del plugin? |
+| [Kubernetes - Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) | Secciones sobre reglas, `pathType`, backend y TLS | ¿Qué declara un Ingress y qué no ejecuta por sí mismo? |
+| [Kubernetes - Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) | Relación entre API y controlador | ¿Por qué un Ingress sin controlador no abre tráfico? |
+| [MetalLB Documentation](https://metallb.io/) | Propósito de MetalLB en bare metal | ¿Por qué un Service `LoadBalancer` local puede necesitar una implementación externa? |
 | [Gateway API](https://gateway-api.sigs.k8s.io/) | Modelo, recursos y separación de roles | ¿Qué problema organizativo resuelve Gateway API frente a Ingress? |
 | [cert-manager Documentation](https://cert-manager.io/docs/) | `Issuer`, `ClusterIssuer`, `Certificate` y automatización de certificados | ¿Qué automatiza `cert-manager` y qué decisiones quedan fuera? |
 | [Canonical MicroK8s Ingress addon](https://canonical.com/microk8s/docs/ingress) | Funcionamiento del addon local de MicroK8s | ¿Qué parte del laboratorio es Kubernetes estándar y qué parte es específica de MicroK8s? |
