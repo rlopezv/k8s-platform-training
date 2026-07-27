@@ -9,7 +9,7 @@
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
 | Estado | Completada, validada funcionalmente y aprobada; saneamiento documental de fase 4 aplicado y aprobado; `TD-023` cerrado funcionalmente con validación ejecutada |
 | Fecha de cierre o actualización | 2026-07-27 |
-| Revisión pedagógica del usuario | Unidad aprobada el 2026-07-19; saneamiento documental de fase 4 aprobado el 2026-07-27 |
+| Revisión pedagógica del usuario | Unidad aprobada el 2026-07-19; saneamiento documental de fase 4 aprobado el 2026-07-27; cierre funcional `TD-023` aprobado el 2026-07-27 |
 
 ## Resumen ejecutivo
 
@@ -23,7 +23,7 @@ El 2026-07-22 se añadió `tutorial/04-persistence-state/student-reference.md` c
 
 El 2026-07-27 se aplicó y aprobó el saneamiento documental de fase 4 sobre la Unidad 04 antes de ejecutar `TD-022`. Se regeneró `playbooks/units/04-persistence-state.md` contra el contrato documental cerrado y se ajustaron `README.md`, `student-notes.md` y `student-reference.md` desde ese playbook. `.work/detail.md` se usó solo como checklist de cobertura. No se modificaron laboratorios, manifiestos Kubernetes, scripts ni estado técnico del clúster, y no se ejecutaron validaciones funcionales nuevas.
 
-El 2026-07-27 se implementó y validó `TD-023`. Se añadió `labs/04-persistence-state/statefulset-demo/` como práctica independiente de `StatefulSet`, headless Service y `volumeClaimTemplates` sobre el workload auxiliar desechable `scratch-stateful`. La práctica usa la misma imagen y tag que `platform-api`, crea dos réplicas con ordinales estables, genera un PVC por réplica y no migra ni modifica `platform-api`. Tras reiniciar MicroK8s fuera del asistente y corregir el comando del contenedor para no sobrescribir `index.html`, la validación independiente se ejecutó con 0 fallos y 0 avisos. La limpieza posterior borró solo `statefulset/scratch-stateful`, `service/scratch-stateful` y los PVCs `scratch-data-scratch-stateful-0` y `scratch-data-scratch-stateful-1`; `platform-api-data` quedó `Bound`. `GAP-004` queda cerrado funcionalmente para el tramo 00-07.
+El 2026-07-27 se implementó, validó y aprobó `TD-023`. Se añadió `labs/04-persistence-state/statefulset-demo/` como práctica independiente de `StatefulSet`, headless Service y `volumeClaimTemplates` sobre el workload auxiliar desechable `scratch-stateful`. La práctica usa la misma imagen y tag que `platform-api`, crea dos réplicas con ordinales estables, genera un PVC por réplica y no migra ni modifica `platform-api`. Tras reiniciar MicroK8s fuera del asistente y corregir el comando del contenedor para no sobrescribir `index.html`, la validación independiente se ejecutó con 0 fallos y 0 avisos. La validación borra solo `statefulset/scratch-stateful` y comprueba después que los PVCs `scratch-data-scratch-stateful-0` y `scratch-data-scratch-stateful-1` siguen existiendo y quedan `Bound`; la limpieza posterior borra solo `service/scratch-stateful` y esos dos PVCs por nombre exacto. `platform-api-data` quedó `Bound` y la validación principal de Unidad 04 volvió a finalizar con 0 fallos y 0 avisos. `GAP-004` queda cerrado funcionalmente para el tramo 00-07.
 
 ## Objetivos alcanzados
 
@@ -289,7 +289,7 @@ La práctica de `StatefulSet`, headless Service y `volumeClaimTemplates` se mant
 
 ## D-04-07 - `scratch-stateful` como práctica desechable y no acumulativa
 
-`TD-023` se implementa fuera de `solution/` para no propagar el workload auxiliar a Unidades 05, 06 y 07. `platform-api` sigue como Deployment porque no necesita identidad estable por réplica. La demo usa `scratch-stateful`, headless Service y `volumeClaimTemplates` solo para observar el patrón stateful con dos ordinales y un PVC por réplica. La limpieza se hace por nombres exactos y no toca `platform-api-data`.
+`TD-023` se implementa fuera de `solution/` para no propagar el workload auxiliar a Unidades 05, 06 y 07. `platform-api` sigue como Deployment porque no necesita identidad estable por réplica. La demo usa `scratch-stateful`, headless Service y `volumeClaimTemplates` solo para observar el patrón stateful con dos ordinales y un PVC por réplica. El manifiesto no define `podManagementPolicy`, por lo que conserva el comportamiento por defecto `OrderedReady`, coherente con la referencia profesional de la unidad. La limpieza se hace por nombres exactos y no toca `platform-api-data`.
 
 ## Cobertura de `.work/detail.md`
 
@@ -322,13 +322,62 @@ La práctica de `StatefulSet`, headless Service y `volumeClaimTemplates` se mant
 | Sintaxis Bash de demo StatefulSet | `bash -n labs/04-persistence-state/statefulset-demo/validate.sh`: 0 |
 | Dry-run cliente de demo StatefulSet | `kubectl apply --dry-run=client -f labs/04-persistence-state/statefulset-demo/`: aceptado |
 | Validación independiente de demo StatefulSet, antes de reiniciar MicroK8s | `bash labs/04-persistence-state/statefulset-demo/validate.sh`: fallida con 1 fallo, 0 avisos; `statefulset/scratch-stateful` aceptado, pero sin Pods, PVCs de demo ni ControllerRevision |
-| Segundo intento con `podManagementPolicy: Parallel`, antes de reiniciar MicroK8s | `bash labs/04-persistence-state/statefulset-demo/validate.sh`: fallida con 1 fallo, 0 avisos; mismo resultado de `status.replicas: 0` |
-| Validación independiente de demo StatefulSet, tras reinicio de MicroK8s y corrección del comando del contenedor | `bash labs/04-persistence-state/statefulset-demo/validate.sh`: 0 fallos, 0 avisos; StatefulSet Ready, headless Service, ordinales, DNS y PVC por réplica validados |
-| Limpieza precisa de demo StatefulSet | `bash labs/04-persistence-state/statefulset-demo/validate.sh --cleanup`: `statefulset/scratch-stateful`, `service/scratch-stateful` y PVCs `scratch-data-scratch-stateful-0/1` eliminados por nombre exacto; `platform-api-data` preservado |
+| Validación independiente de demo StatefulSet, tras reinicio de MicroK8s y corrección del comando del contenedor | `bash labs/04-persistence-state/statefulset-demo/validate.sh`: 0 fallos, 0 avisos; StatefulSet Ready, headless Service, ordinales, DNS, PVC por réplica y retención de PVCs tras borrar el StatefulSet validados |
+| Limpieza precisa de demo StatefulSet | `bash labs/04-persistence-state/statefulset-demo/validate.sh --cleanup`: `service/scratch-stateful` y PVCs `scratch-data-scratch-stateful-0/1` eliminados por nombre exacto; `statefulset/scratch-stateful` ya había sido borrado por la validación de retención; `platform-api-data` preservado |
+
+## Evidencia real de `TD-023`
+
+Salida relevante de la validación final ejecutada con el manifiesto en orden por defecto `OrderedReady`:
+
+```text
+kubectl -n platform-training rollout status statefulset/scratch-stateful
+Waiting for 2 pods to be ready...
+Waiting for 1 pods to be ready...
+Waiting for 1 pods to be ready...
+partitioned roll out complete: 2 new pods have been updated...
+[PASS] statefulset rollout - scratch-stateful is ready
+[PASS] headless service - scratch-stateful has clusterIP None
+[PASS] statefulset serviceName - scratch-stateful uses scratch-stateful
+[PASS] ready replicas - 2/2 replicas are ready
+
+scratch-stateful-0   1/1     Running   0
+scratch-data-scratch-stateful-0   Bound   256Mi   RWO   microk8s-hostpath
+pod=scratch-stateful-0
+claim=scratch-data-scratch-stateful-0
+[PASS] identity file scratch-stateful-0 - scratch-stateful-0 writes its own ordinal and claim
+
+scratch-stateful-1   1/1     Running   0
+scratch-data-scratch-stateful-1   Bound   256Mi   RWO   microk8s-hostpath
+pod=scratch-stateful-1
+claim=scratch-data-scratch-stateful-1
+[PASS] identity file scratch-stateful-1 - scratch-stateful-1 writes its own ordinal and claim
+
+[PASS] platform-api pvc preserved - platform-api-data still exists and was not targeted by this validation
+
+Name: scratch-stateful-0.scratch-stateful.platform-training.svc.cluster.local
+Name: scratch-stateful-1.scratch-stateful.platform-training.svc.cluster.local
+[PASS] headless dns - ordinal DNS names resolve
+
+kubectl -n platform-training delete statefulset scratch-stateful --wait=true
+statefulset.apps "scratch-stateful" deleted from platform-training namespace
+[PASS] statefulset deletion - scratch-stateful deleted so PVC retention can be observed
+
+kubectl -n platform-training get pvc scratch-data-scratch-stateful-0
+scratch-data-scratch-stateful-0   Bound   pvc-fddbde91-e6d0-411a-9d7c-6535565ba896   256Mi   RWO   microk8s-hostpath
+[PASS] pvc retained scratch-data-scratch-stateful-0 - scratch-data-scratch-stateful-0 still exists after StatefulSet deletion
+[PASS] pvc retained phase scratch-data-scratch-stateful-0 - scratch-data-scratch-stateful-0 remains Bound after StatefulSet deletion
+
+kubectl -n platform-training get pvc scratch-data-scratch-stateful-1
+scratch-data-scratch-stateful-1   Bound   pvc-76d3836f-9d74-47ba-ba91-5dd5172e44ed   256Mi   RWO   microk8s-hostpath
+[PASS] pvc retained scratch-data-scratch-stateful-1 - scratch-data-scratch-stateful-1 still exists after StatefulSet deletion
+[PASS] pvc retained phase scratch-data-scratch-stateful-1 - scratch-data-scratch-stateful-1 remains Bound after StatefulSet deletion
+
+Unit 04 StatefulSet demo validation summary: 0 failure(s), 0 warning(s).
+```
 
 ## Validaciones pendientes
 
-- Aprobación específica del usuario para el cierre funcional `TD-023`.
+- Ninguna pendiente para `TD-023`; el usuario aprobó el cierre funcional el 2026-07-27.
 - Las validaciones Windows/WSL desde PowerShell siguen siendo validaciones por equipo al replicar el laboratorio, como en unidades anteriores.
 
 ## Limitaciones activas

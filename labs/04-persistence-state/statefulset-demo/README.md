@@ -10,6 +10,8 @@ La demo muestra:
 - un headless Service con `clusterIP: None`;
 - identidad estable por ordinal: `scratch-stateful-0` y `scratch-stateful-1`;
 - un PVC independiente por replica mediante `volumeClaimTemplates`;
+- retencion observable de los PVC tras borrar el controlador `StatefulSet`;
+- orden por defecto `OrderedReady`, sin `podManagementPolicy: Parallel`;
 - validacion funcional separada del laboratorio principal de `platform-api`;
 - limpieza precisa de recursos de la demo.
 
@@ -73,7 +75,9 @@ Los PVC scratch-data-scratch-stateful-0 y scratch-data-scratch-stateful-1 quedan
 bash labs/04-persistence-state/statefulset-demo/validate.sh
 ```
 
-La validacion aplica solo la demo, comprueba el StatefulSet, el headless Service, los Pods por ordinal, los PVC por nombre exacto, el contenido persistente de cada replica y la resolucion DNS interna del headless Service.
+La validacion aplica solo la demo, comprueba el StatefulSet, el headless Service, los Pods por ordinal, los PVC por nombre exacto, el contenido persistente de cada replica, la resolucion DNS interna del headless Service y la retencion de los PVC tras borrar `statefulset/scratch-stateful`.
+
+Al finalizar correctamente, el validador borra solo el controlador `statefulset/scratch-stateful` para demostrar que los claims generados por `volumeClaimTemplates` siguen existiendo y quedan `Bound`. El headless Service y los PVC de demo permanecen hasta ejecutar la limpieza explicita.
 
 Para limpiar la demo despues de validar:
 

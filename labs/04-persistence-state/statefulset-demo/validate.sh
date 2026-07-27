@@ -53,8 +53,9 @@ if [ "${1:-}" = "--cleanup" ]; then
 fi
 
 echo "Unit 04 StatefulSet demo validation"
-echo "This validation deploys scratch-stateful, checks headless Service, stable Pod identities and one PVC per ordinal."
+echo "This validation deploys scratch-stateful, checks headless Service, stable Pod identities, one PVC per ordinal and PVC retention after deleting the StatefulSet."
 echo "It does not modify deployment/platform-api or persistentvolumeclaim/platform-api-data."
+echo "It deletes only statefulset/$STATEFULSET before finishing; use --cleanup to delete the headless Service and demo PVCs."
 echo
 
 if ! command_exists kubectl; then
@@ -228,6 +229,40 @@ if [ "$failures" -eq 0 ]; then
   fi
   kubectl -n "$NAMESPACE" delete pod "$dns_pod" --ignore-not-found=true --wait=true >/dev/null 2>&1
 fi
+
+if [ "$failures" -eq 0 ]; then
+  echo
+  echo "kubectl -n $NAMESPACE delete statefulset $STATEFULSET --wait=true"
+  if kubectl -n "$NAMESPACE" delete statefulset "$STATEFULSET" --wait=true; then
+    check PASS "statefulset deletion" "$STATEFULSET deleted so PVC retention can be observed"
+  else
+    check FAIL "statefulset deletion" "$STATEFULSET could not be deleted"
+  fi
+fi
+
+ordinal=0
+while [ "$ordinal" -lt "$REPLICAS" ] && [ "$failures" -eq 0 ]; do
+  claim="scratch-data-$STATEFULSET-$ordinal"
+
+  echo
+  echo "kubectl -n $NAMESPACE get pvc $claim"
+  if kubectl_get -n "$NAMESPACE" get pvc "$claim"; then
+    cat "$TMP_OUT"
+    check PASS "pvc retained $claim" "$claim still exists after StatefulSet deletion"
+  else
+    cat "$TMP_ERR"
+    check FAIL "pvc retained $claim" "$claim does not exist after StatefulSet deletion"
+  fi
+
+  pvc_phase="$(jsonpath pvc "$claim" '{.status.phase}')"
+  if [ "$pvc_phase" = "Bound" ]; then
+    check PASS "pvc retained phase $claim" "$claim remains Bound after StatefulSet deletion"
+  else
+    check FAIL "pvc retained phase $claim" "$claim is '$pvc_phase' after StatefulSet deletion, expected Bound"
+  fi
+
+  ordinal=$((ordinal + 1))
+done
 
 echo
 echo "Unit 04 StatefulSet demo validation summary: $failures failure(s), $warnings warning(s)."
