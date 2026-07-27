@@ -22,22 +22,22 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Saneamiento documental tras revisión de coherencia de Unidades 00-07 |
-| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 completada, aprobada y auditada con `TD-022`; Unidad 08 congelada hasta cerrar la fase 5 `TD-023` |
-| Último incremento completado | Auditoría de autosuficiencia `TD-022` |
+| Fase actual | Saneamiento documental y cierre funcional de Unidad 04 completados |
+| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 completada, aprobada y auditada con `TD-022`; fase 5 `TD-023` ejecutada y validada funcionalmente |
+| Último incremento completado | Cierre funcional de la Unidad 04 (`TD-023`) |
 | Unidad activa | Ninguna |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
 | Framework de generación | Framework V1 validado; Framework V2 didactico simplificado; Framework V3 documental incorpora `student-reference.md` obligatorio y plantilla global |
-| Siguiente incremento permitido | Cierre funcional de la Unidad 04 (`TD-023`), con validación ejecutada; Unidad 08 congelada hasta cerrar `TD-023` |
+| Siguiente incremento permitido | Generar el playbook de la Unidad 08 - Integración continua con Tekton |
 
 ---
 
 # Fase actual
 
-El proyecto tiene generadas y registradas las **Unidades 00-07**. Según el estado consolidado, la Unidad 04 fue aprobada por el usuario y validada funcionalmente el 2026-07-19, la Unidad 05 fue generada y validada funcionalmente el 2026-07-19, y las Unidades 06 y 07 fueron generadas, validadas funcionalmente y aprobadas pedagógicamente entre el 2026-07-19 y el 2026-07-20. El conjunto de Unidades 00-07 completó el saneamiento documental contra el contrato cerrado de `student-reference.md`; las Unidades 07, 06, 01, 00, 02, 03, 05 y 04 ya fueron saneadas y aprobadas específicamente. La auditoría `TD-022` revisó las referencias conformes de Unidades 02-05 y concluyó que las cuatro son autosuficientes, sin reclasificar ninguna como no conforme. La Unidad 08 permanece congelada hasta cerrar la fase 5 `TD-023`.
+El proyecto tiene generadas y registradas las **Unidades 00-07**. Según el estado consolidado, la Unidad 04 fue aprobada por el usuario y validada funcionalmente el 2026-07-19, la Unidad 05 fue generada y validada funcionalmente el 2026-07-19, y las Unidades 06 y 07 fueron generadas, validadas funcionalmente y aprobadas pedagógicamente entre el 2026-07-19 y el 2026-07-20. El conjunto de Unidades 00-07 completó el saneamiento documental contra el contrato cerrado de `student-reference.md`; las Unidades 07, 06, 01, 00, 02, 03, 05 y 04 ya fueron saneadas y aprobadas específicamente. La auditoría `TD-022` revisó las referencias conformes de Unidades 02-05 y concluyó que las cuatro son autosuficientes, sin reclasificar ninguna como no conforme. La fase 5 `TD-023` cerró funcionalmente la práctica de `StatefulSet`, headless Service y `volumeClaimTemplates` en Unidad 04, sin migrar `platform-api`.
 
 La Unidad 01 incorporó la primera aplicación evolutiva del curso, `platform-api`, desplegada sobre MicroK8s mediante manifiestos Kubernetes estándar. El laboratorio local ya contiene un namespace funcional, un Deployment, Pods gestionados por ReplicaSet y un Service interno.
 
@@ -75,7 +75,7 @@ El 2026-07-20 se genero la Unidad 07 por instruccion del usuario. La unidad crea
 
 Durante la validacion funcional de Unidad 07, Terraform descargo los providers `hashicorp/helm` `2.17.0` y `hashicorp/kubernetes` `2.38.0`, genero `.terraform.lock.hcl`, importo el release existente mediante `terraform import helm_release.platform_api platform-training/platform-api-local`, ejecuto `terraform apply` con resultado `0 added, 1 changed, 0 destroyed` y dejo `helm_release.platform_api` en el state local no versionado. La validacion de Unidad 07 finalizo con 0 fallos y 0 avisos. La validacion heredada de Unidad 06 tambien finalizo con 0 fallos y 0 avisos; `platform-api-local` quedo `deployed` en revision 4. El usuario aprobo pedagogicamente la Unidad 07 el 2026-07-20.
 
-Entre el 2026-07-20 y el 2026-07-23 se registraron y trataron las lagunas de contenido detectadas en la revisión de Unidades 00-07. El detalle de cada laguna, su tratamiento y su estado queda delegado exclusivamente en `project/content-gap-register.md` para evitar doble mantenimiento. Tras el saneamiento documental de Unidad 07, el estado consolidado actual es: 11 lagunas registradas, 5 cerradas, 6 abordadas y 0 abiertas.
+Entre el 2026-07-20 y el 2026-07-23 se registraron y trataron las lagunas de contenido detectadas en la revisión de Unidades 00-07. El detalle de cada laguna, su tratamiento y su estado queda delegado exclusivamente en `project/content-gap-register.md` para evitar doble mantenimiento. Tras el cierre funcional `TD-023`, el estado consolidado actual es: 11 lagunas registradas, 6 cerradas, 5 abordadas y 0 abiertas.
 
 El 2026-07-26 se inició la fase 4 del saneamiento documental con la Unidad 07 como piloto. Se regeneró `playbooks/units/07-local-terraform-automation.md` contra el contrato documental vigente, se regeneró `tutorial/07-local-terraform-automation/student-reference.md` con la estructura canónica de `playbooks/student-reference-template.md`, se ajustaron `README.md`, `student-notes.md` y `summary.md` de la unidad para respetar la frontera entre notas y referencia, y se cerró documentalmente `GAP-010` en `project/content-gap-register.md`. No se modificaron laboratorios, validaciones ni artefactos Terraform, y no se ejecutaron nuevas validaciones técnicas. El usuario confirmó la aprobación específica del saneamiento documental de la Unidad 07 el 2026-07-27.
 
@@ -93,6 +93,8 @@ El 2026-07-27 se continuó y aprobó la fase 4 con la Unidad 04 antes de ejecuta
 
 El usuario aportó el resultado de la auditoría `TD-022` el 2026-07-27. La auditoría de red team concluyó que las cuatro referencias conformes auditadas, Unidades 02, 03, 04 y 05, son autosuficientes: explican el criterio dentro de la referencia y anclan la práctica futura fuera de ella, sin depender de documentación externa ni del historial de conversación para responder a la prueba de suficiencia. No se reclasifica ninguna referencia como no conforme. Como observación no bloqueante, las secciones de continuidad de esas referencias son largas y podrían ser el primer punto de recorte en una futura sesión de adelgazamiento editorial; no se abre acción obligatoria.
 
+El 2026-07-27 se implementó y validó `TD-023` en la Unidad 04. Se añadió `labs/04-persistence-state/statefulset-demo/` con `service/scratch-stateful` headless, `statefulset/scratch-stateful` de dos réplicas y `volumeClaimTemplates` que generan los PVCs exactos `scratch-data-scratch-stateful-0` y `scratch-data-scratch-stateful-1`. La demo usa la misma imagen y tag que `platform-api`, sobrescribe el comando para escribir la identidad de cada réplica y permanece fuera de `solution/` para no propagarse a Unidades 05, 06 y 07. La primera validación detectó que MicroK8s aceptaba el StatefulSet pero no generaba Pods ni ControllerRevision; tras reiniciar MicroK8s fuera del asistente y corregir el comando del contenedor para no sobrescribir `index.html`, la validación independiente finalizó con 0 fallos y 0 avisos. La limpieza precisa borró `statefulset/scratch-stateful`, `service/scratch-stateful` y los PVCs de demo por nombre exacto, sin tocar `platform-api-data`. `GAP-004` queda cerrado funcionalmente para el tramo 00-07.
+
 El 2026-07-22 se estableció `student-reference.md` como entregable obligatorio para todas las unidades y se creó `playbooks/student-reference-template.md` como plantilla global. En el mismo incremento se generó `tutorial/01-kubernetes/student-reference.md` para cubrir el mapa profesional de workloads de Kubernetes: `Pod`, `ReplicaSet`, `Deployment`, `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, sin cambiar manifiestos, scripts, laboratorio ni estado técnico del clúster. Las Unidades 02, 03, 04 y 05 quedaron inicialmente pendientes de backfill documental porque fueron generadas antes de que `student-reference.md` fuese obligatorio; ese backfill quedó completado posteriormente.
 
 El 2026-07-22 se generó `tutorial/02-configuration-lifecycle/student-reference.md` como backfill documental de la Unidad 02. La referencia cubre configuración como contrato, límites de `Secret`, variables y volúmenes de configuración, probes, requests, limits, QoS, coste y continuidad hacia Helm, GitOps, seguridad, escalado y cloud. No cambia manifiestos, scripts, laboratorios ni estado técnico del clúster. La referencia fue ajustada y aprobada específicamente durante el saneamiento documental de la Unidad 02 el 2026-07-27.
@@ -107,14 +109,12 @@ El 2026-07-23 se cerró la fase 3 del saneamiento. Se diagnosticaron los ocho pl
 
 A partir de este estado se permite:
 
-- ejecutar el cierre funcional de la Unidad 04 (`TD-023`) con validación real contra MicroK8s;
-- modificar únicamente los artefactos de Unidad 04 necesarios para `TD-023`, respetando que `platform-api` no se migra a StatefulSet;
+- generar el playbook de la Unidad 08 - Integración continua con Tekton;
 - conservar `labs/07-local-terraform-automation/terraform/` como base técnica para CI/CD.
 
 Todavía no se permite:
 
-- generar la Unidad 08 hasta cerrar la fase 5 del saneamiento, incluida la validación de `TD-023`;
-- instalar Tekton;
+- instalar Tekton antes de aprobar el playbook de la Unidad 08;
 - instalar Argo CD;
 - desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
 - introducir KEDA;
@@ -353,7 +353,7 @@ Todavía no se permite:
 | 01 — Fundamentos operativos y primera aplicación | Completada y aprobada; saneamiento documental de fase 4 aplicado y aprobado | Sí | Sí | Sí | Sí, `labs/01-kubernetes/` | Sí | Sí |
 | 02 — Configuración, secretos y ciclo de vida | Completada y aprobada; saneamiento documental de fase 4 aplicado y aprobado | Sí | Sí | Sí | Sí, `labs/02-configuration-lifecycle/` | Sí | Sí |
 | 03 — Networking e ingreso | Completada, validada técnicamente y aprobada; saneamiento documental de fase 4 aplicado y aprobado | Sí | Sí | Sí | Sí, `labs/03-networking-ingress/` | Sí | Sí |
-| 04 — Persistencia y estado | Completada, validada funcionalmente y aprobada; saneamiento documental de fase 4 aplicado y aprobado | Sí | Sí | Sí | Sí, `labs/04-persistence-state/` | Sí | Sí |
+| 04 — Persistencia y estado | Completada, validada funcionalmente y aprobada; saneamiento documental de fase 4 aplicado y aprobado; `TD-023` cerrado funcionalmente | Sí | Sí | Sí | Sí, `labs/04-persistence-state/` | Sí | Sí |
 | 05 — Scheduling, resiliencia y mantenimiento | Completada, validada funcionalmente y aprobada pedagogicamente en sus guías del alumno; saneamiento documental de fase 4 aplicado y aprobado | Sí | Sí | Sí | Sí, `labs/05-scheduling-resilience-maintenance/` | Sí | Sí |
 | 06 — Empaquetado con Helm | Completada, validada funcionalmente y aprobada pedagogicamente | Sí | Sí | Sí | Sí, `labs/06-helm-packaging/` | Sí | Sí |
 | 07 — Automatizacion local con Terraform | Completada, validada funcionalmente y aprobada pedagogicamente | Sí | Sí | Sí | Sí, `labs/07-local-terraform-automation/` | Sí | Sí |
@@ -415,7 +415,7 @@ Limitaciones al cierre de la Unidad 01:
 - ShellCheck no está disponible en este entorno para validar scripts;
 - Windows/WSL desde PowerShell sigue pendiente de validación por equipo.
 - el usuario aprobó la unidad y considera que el nivel de entrada es exigente y que el contenido está más orientado a explicar el laboratorio que a proporcionar una visión amplia del tema; se difiere a una sesión de hardening pedagógico global.
-- `GAP-004` queda cerrado documentalmente para Unidad 01 como mapa de workloads; la práctica de `StatefulSet` y `Headless Service` sigue abierta en Unidad 04 como `TD-023`.
+- `GAP-004` queda cerrado documentalmente para Unidad 01 como mapa de workloads y cerrado funcionalmente en Unidad 04 mediante `TD-023`.
 - el saneamiento documental de 2026-07-27 no ejecutó validaciones funcionales nuevas ni modificó `labs/01-kubernetes/`.
 
 ## Unidad 02 — Configuración, secretos y ciclo de vida
@@ -491,7 +491,7 @@ Limitaciones activas:
 
 | Campo | Estado |
 |---|---|
-| Estado | Completada, validada funcionalmente y aprobada; saneamiento documental de fase 4 aplicado y aprobado |
+| Estado | Completada, validada funcionalmente y aprobada; saneamiento documental de fase 4 aplicado y aprobado; `TD-023` cerrado funcionalmente |
 | Fecha de inicio | 2026-07-19 |
 | Fecha de cierre | No aplica |
 | Playbook | `playbooks/units/04-persistence-state.md` |
@@ -511,7 +511,9 @@ Capacidades incorporadas:
 - explicación pedagógica de filesystem efímero, `Volume`, `PersistentVolume`, `PersistentVolumeClaim`, `StorageClass`, access modes, permisos y recuperación básica;
 - referencia profesional del alumno sobre almacenamiento Kubernetes, CSI, StatefulSet, headless Service, `volumeClaimTemplates`, snapshots, backup, restore y límites de `hostpath-storage`;
 - saneamiento documental de fase 4 aplicado el 2026-07-27 sin modificar laboratorios, manifiestos ni scripts;
-- `Q-010` resuelta en el playbook como diseño futuro de `TD-023`.
+- `Q-010` resuelta en el playbook como diseño de `TD-023`;
+- práctica independiente `scratch-stateful` con `StatefulSet`, headless Service y `volumeClaimTemplates`;
+- validación independiente de `scratch-stateful` ejecutada con 0 fallos y 0 avisos tras reinicio de MicroK8s y corrección del comando del contenedor.
 
 Limitaciones activas:
 
@@ -521,9 +523,11 @@ Limitaciones activas:
 - el montaje `/usr/share/nginx/html/persistent` fue validado como escribible;
 - el dato `message.txt` sobrevivió a la recreación de un Pod;
 - el dato persistente fue servido por Ingress en `/persistent/message.txt`;
+- `statefulset/scratch-stateful` fue desplegado y validado con dos réplicas, `service/scratch-stateful` headless y PVCs `scratch-data-scratch-stateful-0` y `scratch-data-scratch-stateful-1`;
+- la demo `scratch-stateful` fue limpiada por nombre exacto sin tocar `platform-api-data`;
 - la revisión pedagógica final del usuario fue aprobada el 2026-07-19;
 - la aprobación específica del saneamiento documental de fase 4 fue recibida el 2026-07-27;
-- `TD-023` sigue abierto como cierre funcional de la práctica de StatefulSet.
+- la aprobación específica del usuario para `TD-023` queda pendiente.
 
 ## Unidad 05 — Scheduling, resiliencia y mantenimiento
 
@@ -685,6 +689,7 @@ Limitaciones activas:
 | `deployment/platform-api` | `platform-training` | `2/2` replicas disponibles con PVC montado, estrategia `RollingUpdate` y scheduling seguro | `labs/05-scheduling-resilience-maintenance/solution/deployment.yaml` |
 | `replicaset/platform-api-678c7ddc89` | `platform-training` | 2 deseadas, 2 actuales, 2 ready observadas durante validacion de Unidad 05 | Generado por Deployment |
 | Pods `platform-api-678c7ddc89-*` | `platform-training` | 2 Pods `Running`, `1/1`, 0 restarts observados durante validacion | Generados por ReplicaSet |
+| `statefulset/scratch-stateful` | `platform-training` | Demo validada y limpiada en `TD-023`; no es estado acumulativo | `labs/04-persistence-state/statefulset-demo/statefulset.yaml` |
 | `poddisruptionbudget/platform-api` | `platform-training` | `minAvailable: 1`, `disruptionsAllowed: 1` observado | `labs/05-scheduling-resilience-maintenance/solution/pdb.yaml` |
 | `pod/traefik-rp75h` | `ingress` | `Running`, `1/1`, 0 restarts observado | Addon Ingress de MicroK8s |
 
@@ -794,7 +799,10 @@ Limitaciones activas:
 - `labs/04-persistence-state/solution/deployment.yaml`;
 - `labs/04-persistence-state/solution/service.yaml`;
 - `labs/04-persistence-state/solution/ingress.yaml`;
-- `labs/04-persistence-state/validation/validate.sh`.
+- `labs/04-persistence-state/validation/validate.sh`;
+- `labs/04-persistence-state/statefulset-demo/service.yaml`;
+- `labs/04-persistence-state/statefulset-demo/statefulset.yaml`;
+- `labs/04-persistence-state/statefulset-demo/validate.sh`.
 - `labs/05-scheduling-resilience-maintenance/solution/namespace.yaml`;
 - `labs/05-scheduling-resilience-maintenance/solution/configmap.yaml`;
 - `labs/05-scheduling-resilience-maintenance/solution/secret.yaml`;
@@ -1028,6 +1036,7 @@ Tras generar y validar funcionalmente la Unidad 07:
 | R-010 | Uso de `Endpoints` con advertencia de deprecación en Kubernetes 1.35 | Media | Bajo | Unidad 02 incorpora EndpointSlice como comprobación principal; mantener `Endpoints` solo como referencia histórica o fallback | Mitigado |
 | R-011 | Contenido pedagógico demasiado orientado al laboratorio y exigente como entrada | Alta | Alto | `student-notes.md` de Unidades 01-05 reestructurado como guia de aprendizaje con capa academica, desarrollo aplicado, diagnostico y fuentes; aprobado por el usuario | Mitigado |
 | R-012 | Futuras unidades especializadas pueden volverse difíciles de seguir si los materiales siguen asumiendo conocimiento previo | Media | Alto | Playbooks y plantillas actualizados para exigir `student-notes.md` como guia de aprendizaje academica y aplicada | Mitigado |
+| R-013 | MicroK8s local aceptó StatefulSet pero no creó Pods ni ControllerRevision antes de reinicio | Alta | Alto | Resuelto para `TD-023`: el usuario reinició MicroK8s, se corrigió el comando del contenedor y la validación independiente terminó con 0 fallos y 0 avisos | Mitigado |
 
 ## Cuestiones abiertas
 
@@ -1059,18 +1068,18 @@ Tras generar y validar funcionalmente la Unidad 07:
 | TD-007 | Reforzar prompts y plantillas de generación pedagógica | Alta | Feedback del usuario tras hardening mínimo y revisión de `student-notes.md` | `playbooks/master.md` y `playbooks/unit-template.md` actualizados para describir guías de aprendizaje academicas y aplicadas, evitando estructuras enciclopédicas por defecto | Cerrada |
 | TD-008 | Reabrir Framework V2 para reforzar contrato didactico y revisar lagunas de Unidades 00-07 | Alta | Feedback del usuario tras aprobar Unidad 07 | Framework simplificado inicialmente; `student-reference.md` queda elevado después a entregable obligatorio mediante `playbooks/student-reference-template.md` | Cerrada |
 | TD-018 | Backfill de `student-reference.md` obligatorio en unidades históricas | Alta | Student-Reference-Mandatory | Unidades 02, 03, 04 y 05 completadas siguiendo `playbooks/student-reference-template.md`. **Alcance limitado a las unidades que carecían del documento; las que ya lo tenían con molde previo quedan fuera y se tratan en TD-019** | Cerrada con alcance limitado |
-| TD-019 | Conformidad de `student-reference.md` en unidades 00, 01, 06 y 07 | Alta | Revisión de coherencia de Unidades 00-07 | Cerrada documentalmente: Unidades 07, 06, 01 y 00 tienen playbooks y referencias regenerados contra contrato y aprobación específica registrada. `GAP-010` cerrado en Unidad 07, `GAP-004` cerrado documentalmente para Unidad 01 con práctica pendiente en `TD-023`, y `GAP-001` confirmado cerrado en Unidad 00 | Cerrada |
+| TD-019 | Conformidad de `student-reference.md` en unidades 00, 01, 06 y 07 | Alta | Revisión de coherencia de Unidades 00-07 | Cerrada documentalmente: Unidades 07, 06, 01 y 00 tienen playbooks y referencias regenerados contra contrato y aprobación específica registrada. `GAP-010` cerrado en Unidad 07, `GAP-004` cerrado documentalmente para Unidad 01 y cerrado funcionalmente en Unidad 04 mediante `TD-023`, y `GAP-001` confirmado cerrado en Unidad 00 | Cerrada |
 | TD-020 | Ortografía incompleta en material del alumno | Media | Revisión de coherencia de Unidades 00-07 | Cerrada en fase 4: las Unidades 07, 06, 01, 00, 02, 03, 05 y 04 fueron tratadas durante el saneamiento documental contra el contrato cerrado y cuentan con aprobación específica registrada | Cerrada |
 | TD-021 | Frontera entre `student-notes.md` y `student-reference.md` no declarada | Alta | Revisión de coherencia de Unidades 00-07 | Declarada en `playbooks/master.md`, `playbooks/unit-template.md` y `playbooks/student-reference-template.md`, con alcance explícito sobre el par de documentos, remisión desde el `README.md` de la unidad y exención de `instructor-notes.md` | Cerrada |
 | TD-022 | Auditoría de autosuficiencia de las referencias conformes | Media | Revisión de coherencia de Unidades 00-07 | Cerrada con auditoría de red team aportada por el usuario el 2026-07-27: las referencias de Unidades 02, 03, 04 y 05 son autosuficientes, cero reclasificaciones. Aviso no bloqueante: las secciones de continuidad son largas y podrían recortarse en una futura sesión editorial | Cerrada |
-| TD-023 | Incremento funcional de la Unidad 04: práctica de StatefulSet | Alta | `project/content-gap-register.md` `GAP-004`, decisión D4 | Incorporar práctica de `StatefulSet`, `volumeClaimTemplates` y headless Service sobre un workload auxiliar desechable. **No es retroajuste editorial: modifica laboratorio, validación y summary, y requiere validación ejecutada.** No se toca `platform-api`, cuyo argumento de réplicas reemplazables debe conservarse. La Unidad 05 no se ve afectada. Se ejecuta como cierre del saneamiento de la Unidad 04, con validación ejecutada por el usuario | Abierta |
+| TD-023 | Incremento funcional de la Unidad 04: práctica de StatefulSet | Alta | `project/content-gap-register.md` `GAP-004`, decisión D4 | Cerrada funcionalmente: práctica de `StatefulSet`, `volumeClaimTemplates` y headless Service incorporada en `labs/04-persistence-state/statefulset-demo/` sobre `scratch-stateful`; no migra ni modifica `platform-api`; no afecta a `solution/` ni a Unidad 05; validación independiente ejecutada contra MicroK8s con 0 fallos y 0 avisos; limpieza precisa realizada por nombre exacto | Cerrada |
 | TD-024 | Tratamiento de las lagunas de contenido del itinerario | Alta | `project/content-gap-register.md` | Delegado: cada laguna se gestiona en su registro por ID. Consolida y sustituye a TD-009..TD-017, retiradas por duplicación | Delegada |
 
 ## Lagunas de contenido
 
 | Registro | Estado | Siguiente acción |
 |---|---|---|
-| `project/content-gap-register.md` | 11 lagunas: 5 cerradas, 6 abordadas, 0 abiertas | GAP-001 confirmado cerrado en Unidad 00; GAP-003 confirmado cerrado en Unidad 03; GAP-004 cerrado documentalmente para Unidad 01, pero requiere incremento funcional en Unidad 04 (`TD-023`); GAP-010 cerrado documentalmente y retomado operativamente en Unidad 09 |
+| `project/content-gap-register.md` | 11 lagunas: 6 cerradas, 5 abordadas, 0 abiertas | GAP-001 confirmado cerrado en Unidad 00; GAP-003 confirmado cerrado en Unidad 03; GAP-004 cerrado documental y funcionalmente mediante Unidad 01 y `TD-023` en Unidad 04; GAP-010 cerrado documentalmente y retomado operativamente en Unidad 09 |
 
 ---
 
@@ -1099,6 +1108,10 @@ Tras generar y validar funcionalmente la Unidad 07:
 | Addon storage MicroK8s | `microk8s enable hostpath-storage` | Addon habilitado; `storage` aparece como alias de `hostpath-storage` |
 | StorageClass Unidad 04 | `kubectl get storageclass` | `microk8s-hostpath (default)` disponible |
 | Estado de persistencia Unidad 04 | `bash labs/04-persistence-state/validation/validate.sh` | 0 fallos, 0 avisos; PVC `Bound`, PV, mount, escritura, recreación de Pod, Service e Ingress validados |
+| Sintaxis Bash demo StatefulSet Unidad 04 | `bash -n labs/04-persistence-state/statefulset-demo/validate.sh` | 0 |
+| Dry-run cliente demo StatefulSet Unidad 04 | `kubectl apply --dry-run=client -f labs/04-persistence-state/statefulset-demo/` | Manifiestos aceptados por el cliente |
+| Validación independiente demo StatefulSet Unidad 04 | `bash labs/04-persistence-state/statefulset-demo/validate.sh` | 0 fallos, 0 avisos; StatefulSet, headless Service, ordinales, DNS y PVC por réplica validados |
+| Limpieza demo StatefulSet Unidad 04 | `bash labs/04-persistence-state/statefulset-demo/validate.sh --cleanup` | `scratch-stateful` y PVCs de demo eliminados por nombre exacto; `platform-api-data` preservado |
 | Revisión pedagógica Unidad 04 | Aprobación del usuario el 2026-07-19 | Aprobada |
 | Sintaxis cliente de Unidad 05 | `kubectl apply --dry-run=client -f labs/05-scheduling-resilience-maintenance/solution/` | Manifiestos aceptados por el cliente |
 | Despliegue Unidad 05 | `kubectl apply -f labs/05-scheduling-resilience-maintenance/solution/` | Namespace, ConfigMap, Secret, PVC, PDB, Deployment, Service e Ingress aplicados |
@@ -1228,12 +1241,13 @@ Validaciones no disponibles en esta sesión:
 | 76 | Fase 4 del saneamiento documental: Unidad 05 | Documental aprobado | El 2026-07-27 se regenera el playbook de Unidad 05 contra el contrato cerrado y se ajustan `README.md`, `student-notes.md`, `student-reference.md` y `summary.md` desde ese playbook. `.work/detail.md` se usa solo como checklist de cobertura. Se cubren scheduler, filtrado, puntuación, affinity, anti-affinity, taints, tolerations, PDB y mantenimiento como práctica o criterio según contrato; `GAP-007` y `GAP-011` se revisan sin cambio de estado, no se modifican laboratorios, manifiestos Kubernetes, scripts ni workloads, y no se ejecutan validaciones funcionales nuevas |
 | 77 | Fase 4 del saneamiento documental: Unidad 04 | Documental aprobado | El 2026-07-27 se regenera el playbook de Unidad 04 contra el contrato cerrado y se ajustan `README.md`, `student-notes.md`, `student-reference.md` y `summary.md` desde ese playbook. `.work/detail.md` se usa solo como checklist de cobertura. Se cubren almacenamiento efímero y persistente, PVC, aprovisionamiento dinámico, `microk8s-hostpath`, access modes, reclaim, CSI, cloud, StatefulSet, headless Service y `volumeClaimTemplates` como práctica existente o criterio; `GAP-004` queda cubierto documentalmente pero `TD-023` sigue abierto como cierre funcional. No se modifican laboratorios, manifiestos Kubernetes, scripts ni workloads, no se ejecutan validaciones funcionales nuevas y el usuario aprueba el saneamiento el 2026-07-27 |
 | 78 | Auditoría de autosuficiencia `TD-022` | Documental aprobado | El 2026-07-27 el usuario aporta auditoría de red team: las referencias de Unidades 02, 03, 04 y 05 son autosuficientes, ninguna se reclasifica como no conforme. Se registra observación no bloqueante sobre secciones de continuidad largas |
+| 79 | Cierre funcional de Unidad 04 `TD-023` | Funcional validado | El 2026-07-27 se crea `labs/04-persistence-state/statefulset-demo/` con `scratch-stateful`, headless Service y `volumeClaimTemplates`; tras reiniciar MicroK8s y corregir el comando del contenedor, se ejecuta validación independiente contra MicroK8s con 0 fallos y 0 avisos; se limpia la demo por nombre exacto sin tocar `platform-api-data`; `GAP-004` queda cerrado funcionalmente |
 
 ---
 
 # Siguiente incremento permitido
 
-La Unidad 08 queda congelada. El trabajo autorizado es el cierre funcional de la Unidad 04 (`TD-023`), con validación ejecutada.
+La Unidad 08 queda desbloqueada. El trabajo autorizado es generar el playbook de la Unidad 08 - Integración continua con Tekton. No se debe instalar Tekton ni crear recursos de Unidad 08 antes de aprobar su playbook específico.
 
 El plan de saneamiento vive en `project/documentation-cleanup-plan.md`. Su tabla de fases es la fuente; el resumen de abajo no debe divergir de ella.
 
@@ -1244,7 +1258,7 @@ El plan de saneamiento vive en `project/documentation-cleanup-plan.md`. Su tabla
 | 2 | Contrato documental: ampliar `student-reference-template.md`, declarar la frontera en `unit-template.md`, regla ortográfica en `master.md` | Completada |
 | 3 | Diagnóstico de los ocho playbooks contra el contrato cerrado | Completada |
 | 4 | Saneamiento de las Unidades 00-07: por cada unidad, regenerar su playbook contra el contrato y, desde él, regenerar la `student-reference.md` (Unidades 00, 01, 06, 07) o ajustarla (Unidades 02, 03, 04, 05); alinear `student-notes.md`; barrido ortográfico; línea de summary; auditar autosuficiencia con `TD-022` | Completada, aprobada y auditada para Unidades 00-07 |
-| 5 | Cierre funcional de la Unidad 04 (`TD-023`), con validación ejecutada | Pendiente |
+| 5 | Cierre funcional de la Unidad 04 (`TD-023`), con validación ejecutada | Completada |
 
 ## Estado del saneamiento
 
@@ -1252,11 +1266,11 @@ La fase 3 quedó cerrada el 2026-07-23. El diagnóstico concluyó que ninguno de
 
 La fase 4 quedó completada y aprobada el 2026-07-27. La Unidad 07 se saneó como piloto el 2026-07-26: se regeneró su playbook y, desde él, su referencia; el usuario confirmó su aprobación específica el 2026-07-27. Después se saneó la Unidad 06: se regeneraron su playbook y su referencia, se ajustaron README, notas y summary, y no se tocaron laboratorios ni validaciones. El usuario confirmó la aprobación específica de la Unidad 06 el 2026-07-27. La Unidad 01 se saneó el 2026-07-27: se regeneraron su playbook y su referencia, se ajustaron README, notas, summary y `content-gap-register.md`, y no se tocaron laboratorios, manifiestos ni validaciones funcionales. El usuario confirmó la aprobación específica de la Unidad 01 el 2026-07-27. La Unidad 00 se saneó el 2026-07-27: se regeneraron su playbook y su referencia, se ajustaron README, notas, summary y `content-gap-register.md`, y no se tocaron scripts de `platform/environment/` ni se ejecutaron validaciones funcionales nuevas. El usuario confirmó su aprobación específica el 2026-07-27. La Unidad 02 se saneó el 2026-07-27: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, no se tocaron laboratorios ni manifiestos, no se ejecutaron validaciones funcionales nuevas y el usuario confirmó su aprobación específica el 2026-07-27. La Unidad 03 se saneó el 2026-07-27: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, no se tocaron laboratorios ni manifiestos, no se ejecutaron validaciones funcionales nuevas y el usuario confirmó su aprobación específica el 2026-07-27. La Unidad 05 se saneó el 2026-07-27: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, se revisaron `GAP-007` y `GAP-011` sin cambiar su estado, no se tocaron laboratorios ni manifiestos y no se ejecutaron validaciones funcionales nuevas. El usuario confirmó su aprobación específica el 2026-07-27. La Unidad 04 se saneó documentalmente el 2026-07-27 antes de ejecutar `TD-022`: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, se resolvió `Q-010` como diseño futuro de `TD-023`, no se tocaron laboratorios ni manifiestos y no se ejecutaron validaciones funcionales nuevas. El usuario confirmó su aprobación específica el 2026-07-27.
 
-Modelo de ejecución: una unidad por sesión, en el orden 07, 06, 01, 00, 02, 03, 05 y 04 documental. La auditoría de autosuficiencia `TD-022` quedó cerrada con cero reclasificaciones. El siguiente incremento permitido es el cierre funcional de la Unidad 04 (`TD-023`), con validación contra MicroK8s aportada por el usuario.
+Modelo de ejecución: una unidad por sesión, en el orden 07, 06, 01, 00, 02, 03, 05 y 04 documental. La auditoría de autosuficiencia `TD-022` quedó cerrada con cero reclasificaciones. El cierre funcional `TD-023` quedó ejecutado y validado contra MicroK8s. El siguiente incremento permitido es generar el playbook de la Unidad 08.
 
 ## Condición de desbloqueo de la Unidad 08
 
-Por decisión del usuario del 2026-07-23, el saneamiento no se parte para adelantar la Unidad 08. La Unidad 08 espera al cierre completo de la fase 5, incluida la validación ejecutada de `TD-023`.
+Por decisión del usuario del 2026-07-23, el saneamiento no se partía para adelantar la Unidad 08. Esa condición queda satisfecha tras el cierre de fase 5 con `TD-023`; la Unidad 08 puede iniciar por su playbook específico.
 
 ## Trabajo todavía prohibido
 

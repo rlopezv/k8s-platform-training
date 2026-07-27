@@ -4,9 +4,9 @@
 
 Esta referencia amplía `tutorial/04-persistence-state/student-notes.md` con una visión profesional sobre almacenamiento en Kubernetes, persistencia, estado, `PersistentVolume`, `PersistentVolumeClaim`, `StorageClass`, CSI, backups, snapshots y workloads con identidad estable.
 
-El laboratorio de la Unidad 04 practica un PVC local montado en `platform-api`. Esta referencia aplica cobertura de panorama, profundidad, criterio y práctica profesional: explica qué decisiones aparecen cuando la persistencia deja de ser un fichero de laboratorio y pasa a formar parte de una plataforma real. También cubre el criterio profesional de `StatefulSet`, headless Service y volumen por réplica asociado a `GAP-004`, pero su práctica funcional queda diferida a `TD-023`.
+El laboratorio de la Unidad 04 practica un PVC local montado en `platform-api`. Esta referencia aplica cobertura de panorama, profundidad, criterio y práctica profesional: explica qué decisiones aparecen cuando la persistencia deja de ser un fichero de laboratorio y pasa a formar parte de una plataforma real. También cubre el criterio profesional de `StatefulSet`, headless Service y volumen por réplica asociado a `GAP-004`; su práctica funcional independiente queda implementada y validada en `labs/04-persistence-state/statefulset-demo/` para `TD-023`.
 
-No es una segunda guía de laboratorio. No crea bases de datos, no migra `platform-api` a `StatefulSet`, no instala Velero, no crea snapshots CSI, no cambia la `StorageClass` local y no modifica el estado técnico del clúster.
+No es una segunda guía de laboratorio. No crea bases de datos, no migra `platform-api` a `StatefulSet`, no instala Velero, no crea snapshots CSI, no cambia la `StorageClass` local y no incorpora la demo `scratch-stateful` a la solución acumulativa de `platform-api`.
 
 ## Relación con la unidad
 
@@ -37,6 +37,8 @@ Los artefactos principales para leer esta referencia son:
 | PVC | `labs/04-persistence-state/solution/pvc.yaml` | Solicitud de capacidad, StorageClass y access mode |
 | Deployment | `labs/04-persistence-state/solution/deployment.yaml` | `persistentVolumeClaim`, `volumeMount` y `fsGroup` |
 | Validación | `labs/04-persistence-state/validation/validate.sh` | Comprobación de PVC, mount, escritura, recreación y acceso HTTP |
+| Demo StatefulSet | `labs/04-persistence-state/statefulset-demo/statefulset.yaml` | `serviceName`, ordinales y `volumeClaimTemplates` |
+| Headless Service | `labs/04-persistence-state/statefulset-demo/service.yaml` | `clusterIP: None` y selector de Pods con identidad estable |
 
 ## Mapa conceptual
 
@@ -200,7 +202,7 @@ Un headless Service permite descubrir Pods individuales sin una IP virtual de Se
 
 `volumeClaimTemplates` permite que un StatefulSet cree un PVC por réplica siguiendo una plantilla común. En vez de compartir un único claim, cada Pod estable recibe su propio claim asociado a su identidad. Ese patrón encaja con sistemas que necesitan dato por miembro, como algunos motores de base de datos o colas, pero también aumenta el coste operativo: migración, backup, restore, escalado y eliminación deben considerar cada réplica y cada volumen.
 
-No toda persistencia implica StatefulSet. Una aplicación puede usar un `Deployment` con PVC si el patrón de acceso, las réplicas y el almacenamiento son compatibles. En esta unidad, el objetivo es aprender PVC/PV/StorageClass antes de añadir identidad estable por réplica. La práctica técnica de `StatefulSet`, headless Service y `volumeClaimTemplates` queda diferida a `TD-023`.
+No toda persistencia implica StatefulSet. Una aplicación puede usar un `Deployment` con PVC si el patrón de acceso, las réplicas y el almacenamiento son compatibles. En esta unidad, el objetivo es aprender PVC/PV/StorageClass antes de añadir identidad estable por réplica. La práctica técnica de `StatefulSet`, headless Service y `volumeClaimTemplates` se ejecuta como demo independiente `scratch-stateful` en `labs/04-persistence-state/statefulset-demo/`. No sustituye `platform-api` porque la aplicación evolutiva del curso sigue representando un servicio web gestionado por Deployment.
 
 ### Snapshots, backup y restore
 
@@ -292,7 +294,7 @@ Sin prueba de restauración, el backup es una hipótesis.
 
 ## Relación con el laboratorio
 
-El laboratorio practica:
+El laboratorio principal practica:
 
 - inspección de StorageClasses;
 - habilitación o verificación de `hostpath-storage`;
@@ -303,11 +305,15 @@ El laboratorio practica:
 - validación del dato por `kubectl exec` y por Ingress;
 - copia y restauración básica de un fichero de laboratorio.
 
+La práctica independiente `statefulset-demo/` practica:
+
+- `StatefulSet` con dos ordinales estables;
+- headless Service para descubrimiento DNS por Pod;
+- `volumeClaimTemplates` con un PVC por réplica;
+- limpieza precisa de recursos desechables por nombre exacto.
+
 El laboratorio menciona, pero no practica:
 
-- StatefulSet;
-- headless Service;
-- `volumeClaimTemplates`;
 - bases de datos reales;
 - CSI snapshots;
 - Velero;
@@ -337,7 +343,7 @@ La Unidad 05 retomará la persistencia como restricción de scheduling y manteni
 
 La Unidad 06 empaquetará el PVC y sus montajes en Helm, manteniendo la diferencia entre configuración, datos persistentes y recursos derivados del chart.
 
-`TD-023` retomará la Unidad 04 con una práctica funcional de `StatefulSet`, headless Service y `volumeClaimTemplates` sobre un workload auxiliar desechable, sin migrar `platform-api`.
+`TD-023` deja implementada y validada en la Unidad 04 una práctica funcional de `StatefulSet`, headless Service y `volumeClaimTemplates` sobre un workload auxiliar desechable, sin migrar `platform-api`.
 
 La Unidad 16 conectará almacenamiento con seguridad de workloads, ownership, RBAC, ServiceAccounts y políticas de acceso.
 

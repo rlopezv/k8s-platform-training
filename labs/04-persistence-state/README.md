@@ -22,6 +22,11 @@ Helm y Terraform siguen disponibles como herramientas base, pero no gestionan ni
 ```text
 labs/04-persistence-state/
 ├── README.md
+├── statefulset-demo/
+│   ├── README.md
+│   ├── service.yaml
+│   ├── statefulset.yaml
+│   └── validate.sh
 ├── starter/
 │   ├── namespace.yaml
 │   ├── configmap.yaml
@@ -49,6 +54,7 @@ labs/04-persistence-state/
 | `starter/` | Punto de partida. Incluye el PVC, pero el Deployment todavia no monta el volumen persistente. |
 | `solution/` | Estado final de la unidad. Esta ruta es la base que debe reutilizar la Unidad 05. |
 | `validation/validate.sh` | Validacion del estado esperado. Escribe un dato de laboratorio y elimina un Pod para comprobar persistencia tras recreacion. |
+| `statefulset-demo/` | Practica independiente de `StatefulSet`, headless Service y `volumeClaimTemplates` sobre `scratch-stateful`. No forma parte de `solution/`. |
 
 ## Precondiciones
 
@@ -239,6 +245,34 @@ Puede parametrizarse:
 ```bash
 INGRESS_URL=http://<direccion-del-nodo>/ bash labs/04-persistence-state/validation/validate.sh
 ```
+
+## Practica independiente de StatefulSet
+
+`statefulset-demo/` contiene la practica implementada para `TD-023`. Es una practica auxiliar y desechable para observar identidad estable y volumen por replica sin migrar `platform-api`.
+
+Ejecutar:
+
+```bash
+bash labs/04-persistence-state/statefulset-demo/validate.sh
+```
+
+La validacion independiente comprueba:
+
+- `statefulset/scratch-stateful` con dos replicas;
+- `service/scratch-stateful` como headless Service con `clusterIP: None`;
+- Pods estables `scratch-stateful-0` y `scratch-stateful-1`;
+- PVCs exactos `scratch-data-scratch-stateful-0` y `scratch-data-scratch-stateful-1`;
+- escritura de identidad propia en el volumen de cada replica;
+- resolucion DNS interna de los ordinales del StatefulSet;
+- preservacion de `persistentvolumeclaim/platform-api-data`.
+
+Limpiar solo la demo:
+
+```bash
+bash labs/04-persistence-state/statefulset-demo/validate.sh --cleanup
+```
+
+La limpieza borra recursos por nombre exacto y no toca `platform-api`, `platform-api-data`, `solution/` ni los artefactos reutilizados por unidades posteriores.
 
 ## Diagnostico rapido
 

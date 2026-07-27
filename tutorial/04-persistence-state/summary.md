@@ -7,7 +7,7 @@
 | Unidad | 04 - Persistencia y estado |
 | Identificador | `04-persistence-state` |
 | Fase del roadmap | Fase 2 - Fundamentos Kubernetes |
-| Estado | Completada, validada funcionalmente y aprobada; saneamiento documental de fase 4 aplicado y aprobado |
+| Estado | Completada, validada funcionalmente y aprobada; saneamiento documental de fase 4 aplicado y aprobado; `TD-023` cerrado funcionalmente con validación ejecutada |
 | Fecha de cierre o actualización | 2026-07-27 |
 | Revisión pedagógica del usuario | Unidad aprobada el 2026-07-19; saneamiento documental de fase 4 aprobado el 2026-07-27 |
 
@@ -21,7 +21,9 @@ La validación funcional se ejecutó correctamente en MicroK8s. El addon `hostpa
 
 El 2026-07-22 se añadió `tutorial/04-persistence-state/student-reference.md` como backfill documental del nuevo contrato global de unidades. La referencia profundiza en almacenamiento Kubernetes, PV, PVC, StorageClass, access modes, CSI, StatefulSet, headless Service, snapshots, backup, restore, límites de `hostpath-storage` y continuidad hacia cloud y fiabilidad. No modifica manifiestos, scripts, laboratorios ni estado técnico del clúster.
 
-El 2026-07-27 se aplicó y aprobó el saneamiento documental de fase 4 sobre la Unidad 04 antes de ejecutar `TD-022`. Se regeneró `playbooks/units/04-persistence-state.md` contra el contrato documental cerrado y se ajustaron `README.md`, `student-notes.md` y `student-reference.md` desde ese playbook. `.work/detail.md` se usó solo como checklist de cobertura. No se modificaron laboratorios, manifiestos Kubernetes, scripts ni estado técnico del clúster, y no se ejecutaron validaciones funcionales nuevas. `GAP-004` queda cubierto documentalmente en cuanto a criterio de `StatefulSet`, headless Service y volumen por réplica, pero no cerrado funcionalmente hasta implementar y validar `TD-023`.
+El 2026-07-27 se aplicó y aprobó el saneamiento documental de fase 4 sobre la Unidad 04 antes de ejecutar `TD-022`. Se regeneró `playbooks/units/04-persistence-state.md` contra el contrato documental cerrado y se ajustaron `README.md`, `student-notes.md` y `student-reference.md` desde ese playbook. `.work/detail.md` se usó solo como checklist de cobertura. No se modificaron laboratorios, manifiestos Kubernetes, scripts ni estado técnico del clúster, y no se ejecutaron validaciones funcionales nuevas.
+
+El 2026-07-27 se implementó y validó `TD-023`. Se añadió `labs/04-persistence-state/statefulset-demo/` como práctica independiente de `StatefulSet`, headless Service y `volumeClaimTemplates` sobre el workload auxiliar desechable `scratch-stateful`. La práctica usa la misma imagen y tag que `platform-api`, crea dos réplicas con ordinales estables, genera un PVC por réplica y no migra ni modifica `platform-api`. Tras reiniciar MicroK8s fuera del asistente y corregir el comando del contenedor para no sobrescribir `index.html`, la validación independiente se ejecutó con 0 fallos y 0 avisos. La limpieza posterior borró solo `statefulset/scratch-stateful`, `service/scratch-stateful` y los PVCs `scratch-data-scratch-stateful-0` y `scratch-data-scratch-stateful-1`; `platform-api-data` quedó `Bound`. `GAP-004` queda cerrado funcionalmente para el tramo 00-07.
 
 ## Objetivos alcanzados
 
@@ -31,7 +33,7 @@ El 2026-07-27 se aplicó y aprobó el saneamiento documental de fase 4 sobre la 
 | Crear tutorial de entrada | Alcanzado | `tutorial/04-persistence-state/README.md` |
 | Crear material pedagógico profundo | Alcanzado | `tutorial/04-persistence-state/student-notes.md` |
 | Crear referencia profesional del alumno | Alcanzado documentalmente | `tutorial/04-persistence-state/student-reference.md` |
-| Ajustar referencia profesional del alumno al contrato documental | Alcanzado documentalmente y aprobado | `tutorial/04-persistence-state/student-reference.md`; `GAP-004` cubierto como criterio y `TD-023` diferido como práctica |
+| Ajustar referencia profesional del alumno al contrato documental | Alcanzado documentalmente y aprobado | `tutorial/04-persistence-state/student-reference.md`; `GAP-004` cubierto como criterio y `TD-023` validado como práctica independiente |
 | Crear notas del instructor | Alcanzado | `tutorial/04-persistence-state/instructor-notes.md` |
 | Crear laboratorio operativo | Alcanzado | `labs/04-persistence-state/README.md` |
 | Crear PVC de laboratorio | Alcanzado | `labs/04-persistence-state/solution/pvc.yaml` |
@@ -39,6 +41,8 @@ El 2026-07-27 se aplicó y aprobó el saneamiento documental de fase 4 sobre la 
 | Conservar Service `ClusterIP` e Ingress local | Alcanzado | `labs/04-persistence-state/solution/service.yaml`, `labs/04-persistence-state/solution/ingress.yaml` |
 | Crear validación de Unidad 04 | Alcanzado | `labs/04-persistence-state/validation/validate.sh` |
 | Validar funcionalmente persistencia en MicroK8s | Alcanzado | `bash labs/04-persistence-state/validation/validate.sh`: 0 fallos, 0 avisos |
+| Implementar práctica independiente de StatefulSet | Alcanzado | `labs/04-persistence-state/statefulset-demo/` |
+| Validar StatefulSet, headless Service y PVC por réplica | Alcanzado funcionalmente | `bash labs/04-persistence-state/statefulset-demo/validate.sh`: 0 fallos, 0 avisos |
 
 ## Estado inicial utilizado
 
@@ -108,6 +112,8 @@ El 2026-07-27 se aplicó y aprobó el saneamiento documental de fase 4 sobre la 
 | Solution | `labs/04-persistence-state/solution/` | Estado final reutilizable por Unidad 05 |
 | PVC | `labs/04-persistence-state/solution/pvc.yaml` | Solicitud de almacenamiento persistente |
 | Validación | `labs/04-persistence-state/validation/validate.sh` | Comprobación de estado esperado y persistencia |
+| Demo StatefulSet | `labs/04-persistence-state/statefulset-demo/` | Práctica independiente de `StatefulSet`, headless Service y `volumeClaimTemplates` |
+| Validación demo StatefulSet | `labs/04-persistence-state/statefulset-demo/validate.sh` | Comprobación independiente de ordinales, DNS y PVC por réplica |
 
 ## Componentes modificados
 
@@ -133,6 +139,11 @@ tutorial/04-persistence-state/
 
 labs/04-persistence-state/
 ├── README.md
+├── statefulset-demo/
+│   ├── README.md
+│   ├── service.yaml
+│   ├── statefulset.yaml
+│   └── validate.sh
 ├── starter/
 │   ├── namespace.yaml
 │   ├── configmap.yaml
@@ -217,12 +228,15 @@ labs/04-persistence-state/
 |---|---|---|---|
 | `deployment/platform-api` | `platform-training` | `labs/04-persistence-state/solution/deployment.yaml` | 2 réplicas disponibles cuando se aplique |
 | Pods `platform-api-*` | `platform-training` | Generados por ReplicaSet | `Running` y `Ready` cuando PVC este Bound |
+| `statefulset/scratch-stateful` | `platform-training` | `labs/04-persistence-state/statefulset-demo/statefulset.yaml` | 2 réplicas disponibles durante la práctica independiente |
+| Pods `scratch-stateful-0` y `scratch-stateful-1` | `platform-training` | Generados por StatefulSet | Identidad estable por ordinal y volumen propio durante la práctica independiente |
 
 ## Servicios y endpoints
 
 | Servicio o endpoint | Acceso | Proposito |
 |---|---|---|
 | `service/platform-api` | `ClusterIP`, puerto 80 hacia contenedor 8080 | Acceso interno estable |
+| `service/scratch-stateful` | Headless Service, `clusterIP: None` | DNS directo a Pods estables de la práctica independiente |
 | EndpointSlice de `platform-api` | Interno del clúster | Evidencia de Pods Ready |
 | `ingress/platform-api` | Host `platform-api.local`, path `/` | Entrada HTTP local hacia el Service |
 | `/persistent/message.txt` | HTTP por Ingress cuando exista dato | Validar dato persistente desde fuera del clúster |
@@ -234,6 +248,7 @@ labs/04-persistence-state/
 | ConfigMap | `platform-api-config`, `labs/04-persistence-state/solution/configmap.yaml` | Configuración no sensible y contenido HTML |
 | Secret | `platform-api-secret`, `labs/04-persistence-state/solution/secret.yaml` | Valores ficticios; no contiene credenciales reales |
 | PVC | `platform-api-data`, `labs/04-persistence-state/solution/pvc.yaml` | Solicitud de almacenamiento local de laboratorio |
+| PVCs de demo | `scratch-data-scratch-stateful-0` y `scratch-data-scratch-stateful-1` | Claims generados por `volumeClaimTemplates`; desechables y limpiados por nombre exacto |
 | Mount | `/usr/share/nginx/html/persistent` | Ruta de datos persistentes de laboratorio |
 
 ## Herramientas y versiones
@@ -272,6 +287,10 @@ No se migra a StatefulSet porque `platform-api` no requiere identidad estable po
 
 La práctica de `StatefulSet`, headless Service y `volumeClaimTemplates` se mantiene como cierre funcional posterior de `GAP-004`. No forma parte del saneamiento documental de fase 4 porque implica crear un workload auxiliar, modificar laboratorio y ejecutar validación funcional.
 
+## D-04-07 - `scratch-stateful` como práctica desechable y no acumulativa
+
+`TD-023` se implementa fuera de `solution/` para no propagar el workload auxiliar a Unidades 05, 06 y 07. `platform-api` sigue como Deployment porque no necesita identidad estable por réplica. La demo usa `scratch-stateful`, headless Service y `volumeClaimTemplates` solo para observar el patrón stateful con dos ordinales y un PVC por réplica. La limpieza se hace por nombres exactos y no toca `platform-api-data`.
+
 ## Cobertura de `.work/detail.md`
 
 | Punto de cobertura | Estado | Evidencia |
@@ -293,17 +312,23 @@ La práctica de `StatefulSet`, headless Service y `volumeClaimTemplates` se mant
 | Despliegue Unidad 04 | `kubectl apply -f labs/04-persistence-state/solution/`: recursos aplicados |
 | Estado PVC/PV | PVC `platform-api-data` `Bound` a PV `pvc-d7b0bce5-dab0-40e4-9542-2bd9b4f3b638` |
 | Persistencia funcional | `bash labs/04-persistence-state/validation/validate.sh`: 0 fallos, 0 avisos |
+| Persistencia funcional tras limpiar demo `TD-023` | `bash labs/04-persistence-state/validation/validate.sh`: 0 fallos, 0 avisos; `platform-api-data` siguió `Bound` y el dato persistente fue servido por Ingress |
 | Sintaxis Bash | `bash -n labs/04-persistence-state/validation/validate.sh`: 0 |
 | Dry-run cliente | `kubectl apply --dry-run=client -f labs/04-persistence-state/solution/`: aceptado |
 | Ausencia de charts Helm | Sin resultados |
 | Ausencia de Terraform | Sin resultados |
 | Búsqueda de secretos reales | Solo referencias a Secret ficticio heredado y texto pedagógico |
 | Saneamiento documental de fase 4 | `git diff --check`: sin errores |
+| Sintaxis Bash de demo StatefulSet | `bash -n labs/04-persistence-state/statefulset-demo/validate.sh`: 0 |
+| Dry-run cliente de demo StatefulSet | `kubectl apply --dry-run=client -f labs/04-persistence-state/statefulset-demo/`: aceptado |
+| Validación independiente de demo StatefulSet, antes de reiniciar MicroK8s | `bash labs/04-persistence-state/statefulset-demo/validate.sh`: fallida con 1 fallo, 0 avisos; `statefulset/scratch-stateful` aceptado, pero sin Pods, PVCs de demo ni ControllerRevision |
+| Segundo intento con `podManagementPolicy: Parallel`, antes de reiniciar MicroK8s | `bash labs/04-persistence-state/statefulset-demo/validate.sh`: fallida con 1 fallo, 0 avisos; mismo resultado de `status.replicas: 0` |
+| Validación independiente de demo StatefulSet, tras reinicio de MicroK8s y corrección del comando del contenedor | `bash labs/04-persistence-state/statefulset-demo/validate.sh`: 0 fallos, 0 avisos; StatefulSet Ready, headless Service, ordinales, DNS y PVC por réplica validados |
+| Limpieza precisa de demo StatefulSet | `bash labs/04-persistence-state/statefulset-demo/validate.sh --cleanup`: `statefulset/scratch-stateful`, `service/scratch-stateful` y PVCs `scratch-data-scratch-stateful-0/1` eliminados por nombre exacto; `platform-api-data` preservado |
 
 ## Validaciones pendientes
 
-- Ninguna validación funcional nueva se ejecutó durante el saneamiento documental de fase 4.
-- Aprobación específica del usuario para el saneamiento documental de Unidad 04.
+- Aprobación específica del usuario para el cierre funcional `TD-023`.
 - Las validaciones Windows/WSL desde PowerShell siguen siendo validaciones por equipo al replicar el laboratorio, como en unidades anteriores.
 
 ## Limitaciones activas
@@ -311,6 +336,7 @@ La práctica de `StatefulSet`, headless Service y `volumeClaimTemplates` se mant
 - `hostpath-storage` es específico de MicroK8s y no portable a cloud.
 - Los datos del laboratorio quedan ligados al nodo local.
 - No se incorporan backups productivos, snapshots, cifrado, políticas de datos ni storage cloud.
+- La primera validación de `scratch-stateful` quedó bloqueada por una anomalía del MicroK8s local; tras reinicio de MicroK8s y corrección del comando del contenedor, la validación independiente pasó correctamente.
 - La aprobación pedagógica original de la unidad fue recibida el 2026-07-19; la aprobación específica del saneamiento documental fue recibida el 2026-07-27.
 
 ## Continuidad para Unidad 05
@@ -324,6 +350,6 @@ tutorial/04-persistence-state/summary.md
 
 La Unidad 05 ya reutiliza la solución validada de Unidad 04 como base para scheduling, resiliencia y mantenimiento.
 
-## Continuidad para el saneamiento
+## Continuidad tras `TD-023`
 
-Tras aprobar el saneamiento documental de Unidad 04, el siguiente incremento permitido es la auditoría de autosuficiencia `TD-022`. La práctica funcional `TD-023` queda después de esa auditoría y antes de desbloquear la Unidad 08.
+Tras cerrar `TD-023`, la Unidad 04 queda cerrada también en su práctica funcional de StatefulSet. La Unidad 08 puede retomarse desde `tutorial/07-local-terraform-automation/summary.md` mediante la generación de su playbook específico, sin instalar Tekton todavía hasta que ese playbook esté aprobado.

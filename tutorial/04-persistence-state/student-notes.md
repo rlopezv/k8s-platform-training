@@ -28,7 +28,7 @@ El PVC es la solicitud que conecta el workload con almacenamiento persistente.
 | Mount path | Ruta que ve la aplicación | Práctico |
 | Copia y restauración | Verificación básica de datos de laboratorio | Práctico |
 
-No se cubren bases de datos reales, práctica de StatefulSet, headless Service, `volumeClaimTemplates`, snapshots CSI, Velero, backups productivos, cifrado, replicación ni almacenamiento cloud gestionado. Esos temas quedan explicados o anclados en `tutorial/04-persistence-state/student-reference.md`; la práctica de StatefulSet queda diferida a `TD-023`.
+No se cubren bases de datos reales, snapshots CSI, Velero, backups productivos, cifrado, replicación ni almacenamiento cloud gestionado. Esos temas quedan explicados o anclados en `tutorial/04-persistence-state/student-reference.md`. La práctica independiente de StatefulSet, headless Service y `volumeClaimTemplates` queda implementada y validada en `labs/04-persistence-state/statefulset-demo/` para `TD-023`, sin migrar `platform-api`.
 
 ## Qué representa cada componente
 

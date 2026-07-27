@@ -1,5 +1,7 @@
 # Playbook de la Unidad 04 - Persistencia y estado
 
+> Nota de estado: `TD-023` fue implementado y validado el 2026-07-27 como incremento funcional posterior al saneamiento documental. La sección de diseño se conserva como decisión aplicada.
+
 ## Identificación
 
 ### Unidad
@@ -114,7 +116,7 @@ Al completar la unidad, el alumno deberá ser capaz de:
 - uso de `microk8s-hostpath` como detalle local ya existente del laboratorio;
 - criterio profesional sobre CSI, discos cloud, topología, snapshots, backup y restore;
 - cobertura documental de `StatefulSet`, headless Service y `volumeClaimTemplates` como parte de `GAP-004`;
-- registro explícito de que la práctica funcional de `StatefulSet` queda diferida a `TD-023`;
+- registro explícito de que la práctica funcional de `StatefulSet` queda implementada y validada en `TD-023`;
 - actualización de `README.md`, `student-notes.md`, `student-reference.md`, `summary.md` y `project/project-state.md` al cierre documental.
 
 ## Excluido
@@ -149,7 +151,7 @@ Al completar la unidad, el alumno deberá ser capaz de:
 
 ## Diseño acordado para `TD-023`
 
-`TD-023` queda fuera del saneamiento documental, pero su diseño funcional ya está decidido para que la futura sesión no reabra `Q-010`:
+`TD-023` queda fuera del saneamiento documental, pero su diseño funcional ya está decidido y aplicado para que futuras sesiones no reabran `Q-010`:
 
 - el workload auxiliar se llamará `scratch-stateful`, con prefijo que lo señale como desechable;
 - usará la misma imagen y tag que `platform-api`, con comando sobrescrito para escribir la identidad de la réplica;
@@ -177,7 +179,7 @@ No debe duplicarse contenido. Si ambos documentos necesitan un tema, uno lo desa
 GAP-004 - Workloads no Deployment
 ```
 
-La Unidad 04 cubre documentalmente el criterio profesional de `StatefulSet`, headless Service y volumen por réplica en `tutorial/04-persistence-state/student-reference.md`, pero no cierra funcionalmente `GAP-004`. La práctica de `StatefulSet`, headless Service y `volumeClaimTemplates` queda registrada como `TD-023` y se ejecutará después de `TD-022`, con validación técnica específica.
+La Unidad 04 cubre documentalmente el criterio profesional de `StatefulSet`, headless Service y volumen por réplica en `tutorial/04-persistence-state/student-reference.md`. La práctica de `StatefulSet`, headless Service y `volumeClaimTemplates` quedó registrada como `TD-023` y fue implementada y validada en `labs/04-persistence-state/statefulset-demo/`.
 
 ## Tipos de cobertura requeridos para `student-reference.md`
 
@@ -342,8 +344,8 @@ Cambios limitados a documentación permitida; sin modificaciones funcionales.
 - conservar `platform-training` como namespace funcional;
 - no modificar `labs/04-persistence-state/` durante fase 4;
 - no cambiar `storageClassName: microk8s-hostpath` ni los manifiestos existentes;
-- no crear práctica de `StatefulSet` hasta `TD-023`;
-- no declarar `GAP-004` como cerrada funcionalmente antes de validar `TD-023`.
+- conservar la práctica de `StatefulSet` fuera de `solution/`;
+- no declarar `GAP-004` como cerrada funcionalmente sin evidencia de validación de `TD-023`.
 
 ---
 
@@ -376,15 +378,15 @@ No se modifica durante fase 4:
 labs/04-persistence-state/
 ```
 
-`TD-023` podrá modificar el laboratorio después de `TD-022`, cuando se ejecute la práctica funcional de `StatefulSet`, headless Service y `volumeClaimTemplates`.
+`TD-023` modifica el laboratorio después de `TD-022` mediante la práctica funcional de `StatefulSet`, headless Service y `volumeClaimTemplates`, situada fuera de `solution/`.
 
 ## Estado del proyecto
 
 Actualizar `project/project-state.md` para registrar:
 
 - Unidad 04 saneada documentalmente;
-- `GAP-004` cubierto documentalmente en Unidad 04 pero no cerrado funcionalmente;
-- `TD-023` pendiente como fase funcional posterior;
+- `GAP-004` cubierto documentalmente en Unidad 04 y cerrado funcionalmente en `TD-023`;
+- `TD-023` como fase funcional posterior cerrada con validación real;
 - siguiente incremento permitido: auditoría de autosuficiencia `TD-022`.
 
 ---
@@ -437,4 +439,4 @@ Al cerrar el saneamiento documental:
 5. reportar cobertura punto por punto contra `.work/detail.md`;
 6. declarar que la aprobación específica del usuario queda pendiente hasta que el usuario la confirme.
 
-La Unidad 08 continúa congelada hasta cerrar `TD-022` y ejecutar la fase 5 `TD-023`.
+La Unidad 08 continúa congelada hasta cerrar `TD-022` y ejecutar con éxito la fase 5 `TD-023`; ambas condiciones quedaron satisfechas el 2026-07-27.
