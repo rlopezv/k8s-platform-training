@@ -1,10 +1,10 @@
-# Referencia del alumno - Unidad 05
+# Referencia del alumno - Unidad 05: Scheduling, resiliencia y mantenimiento
 
 ## Propósito de la referencia
 
 Esta referencia amplía `tutorial/05-scheduling-resilience-maintenance/student-notes.md` con una visión profesional sobre scheduling, resiliencia, mantenimiento, `PodDisruptionBudget`, rollouts, disponibilidad y límites de un laboratorio local.
 
-El laboratorio de la Unidad 05 practica constraints seguros, `RollingUpdate`, rollback y PDB sobre `platform-api`. Esta referencia explica cómo razonar sobre esas piezas cuando existen varios nodos, zonas, almacenamiento, mantenimiento planificado, políticas de plataforma y expectativas reales de disponibilidad.
+El laboratorio de la Unidad 05 practica constraints seguros, `RollingUpdate`, rollback y PDB sobre `platform-api`. Esta referencia no cierra una laguna nueva del registro, pero aplica cobertura de panorama, profundidad, criterio y práctica: explica cómo razonar sobre esas piezas cuando existen varios nodos, zonas, almacenamiento, mantenimiento planificado, políticas de plataforma y expectativas reales de disponibilidad.
 
 No es una segunda guía de laboratorio. No ejecuta `kubectl drain`, no modifica labels ni taints de nodos, no cambia el PDB, no introduce autoscaling, no instala herramientas de progressive delivery y no modifica el estado técnico del clúster.
 
@@ -30,7 +30,6 @@ Los artefactos principales para leer esta referencia son:
 | Deployment | `labs/05-scheduling-resilience-maintenance/solution/deployment.yaml` | Estrategia, scheduling, affinity, probes, resources y PVC |
 | PDB | `labs/05-scheduling-resilience-maintenance/solution/pdb.yaml` | Selector y `minAvailable: 1` |
 | Validación | `labs/05-scheduling-resilience-maintenance/validation/validate.sh` | Comprobación no destructiva y recuperación de Pod |
-| Summary | `tutorial/05-scheduling-resilience-maintenance/summary.md` | Decisiones y límites de la unidad |
 
 Parte del contenido se practica en la unidad. Otra parte queda como referencia para cloud, gobierno de recursos, escalado, progressive delivery y operación avanzada.
 
@@ -79,6 +78,10 @@ La decisión combina:
 - volúmenes y restricciones de topología;
 - políticas internas del scheduler;
 - capacidad disponible.
+
+El scheduler decide en dos fases. Primero **filtra**: descarta los nodos que no pueden alojar el Pod porque incumplen una condición obligatoria, como `requests` que no caben, un `nodeSelector` que no coincide, una regla `required...` o un taint sin toleration. Si tras filtrar no queda ningún nodo, el Pod permanece `Pending`. Después **puntúa**: entre los nodos que sobrevivieron al filtro, asigna una puntuación según las preferencias, como reglas `preferred...`, reparto de carga o affinity blanda, y elige el de mayor puntuación.
+
+La diferencia entre las dos fases explica el comportamiento que practica esta unidad. Una condición `required...` o un `nodeSelector` actúan en el filtrado: si nadie las cumple, no hay nodo y el Pod no arranca. Una condición `preferred...`, como la anti-affinity de la solución, actúa en la puntuación: si no puede satisfacerse, el nodo pierde puntos pero no queda descartado, y el Pod se programa igual. Por eso la anti-affinity preferida no bloquea un clúster de un solo nodo.
 
 Cuando un Pod queda `Pending`, los logs de la aplicación rara vez ayudan. El contenedor todavía no se ha ejecutado. La evidencia principal está en `kubectl describe pod` y en eventos de scheduling.
 
@@ -191,7 +194,7 @@ Un `PodDisruptionBudget` limita interrupciones voluntarias. En esta unidad:
 minAvailable: 1
 ```
 
-El PDB intenta impedir que operaciones voluntarias, como evictions durante mantenimiento, reduzcan la disponibilidad por debajo del presupuesto.
+El PDB intenta impedir que operaciones voluntarias, como evictions durante mantenimiento, reduzcan la disponibilidad por debajo del presupuesto. Su nombre puede llevar a una expectativa excesiva: no mitiga caídas imprevistas del servicio por sí solo; limita desalojos voluntarios cuando Kubernetes usa la API de eviction y hay Pods disponibles suficientes.
 
 No protege frente a:
 
@@ -313,6 +316,7 @@ El laboratorio menciona, pero no practica:
 
 - alta disponibilidad real multi-nodo;
 - `kubectl drain`;
+- `kubectl cordon` y `kubectl uncordon`;
 - taints aplicados a nodos;
 - autoscaling;
 - topology spread constraints;
@@ -344,13 +348,15 @@ La Unidad 10 retomará promoción entre entornos. Progressive delivery deberá c
 
 La Unidad 12 y la Unidad 15 aportarán métricas, alertas, SLI/SLO y observabilidad integrada para decidir si un rollout o una operación de mantenimiento fue saludable.
 
-La Unidad 16 retomará scheduling y recursos desde gobierno: ResourceQuota, LimitRange, namespaces, ownership y políticas.
+La Unidad 16 retomará scheduling y recursos desde gobierno: ResourceQuota, LimitRange, namespaces, ownership, políticas y segregación de workloads por equipo.
 
-La Unidad 18 conectará requests, limits, HPA, KEDA, capacidad y coste.
+La Unidad 18 conectará requests, limits, HPA, KEDA, capacidad, coste y topology spread constraints.
 
 La Unidad 19 separará supuestos locales de MicroK8s frente a AKS/EKS, incluyendo node pools, zonas, storage, Ingress, identidad, coste y operación.
 
-La Unidad 23 deberá tratar mantenimiento del clúster, upgrades, deprecaciones, node pools, backup previo, rollback realista y validación posterior.
+La Unidad 22 comparará mantenimiento y upgrades entre MicroK8s, AKS y EKS, incluyendo diferencias de node pools gestionados y ventanas de operación.
+
+La Unidad 23 deberá tratar ciclo de vida del clúster, upgrades, deprecaciones, node pools, backup previo, rollback realista, runbooks y validación posterior.
 
 ## Fuentes de referencia
 

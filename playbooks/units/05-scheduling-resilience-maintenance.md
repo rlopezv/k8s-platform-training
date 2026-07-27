@@ -1,6 +1,6 @@
 # Playbook de la Unidad 05 - Scheduling, resiliencia y mantenimiento
 
-## Identificacion
+## Identificación
 
 ### Unidad
 
@@ -23,10 +23,10 @@ Fase 2 - Fundamentos Kubernetes
 ### Estado del playbook
 
 ```text
-Aprobado
+Aprobado; regenerado contra el contrato documental en fase 4
 ```
 
-### Propietario logico
+### Propietario lógico
 
 ```text
 Fundamentos Kubernetes
@@ -34,74 +34,74 @@ Fundamentos Kubernetes
 
 ---
 
-# Proposito de la unidad
+# Propósito de la unidad
 
-La Unidad 05 introduce como Kubernetes decide donde ejecutar los Pods, como una aplicacion se comporta durante fallos controlados y como se realizan operaciones basicas de mantenimiento sin perder de vista la continuidad del servicio. La unidad parte de `platform-api` con configuracion externa, Secret ficticio, probes, requests/limits, Service, Ingress y persistencia local de laboratorio ya validados en la Unidad 04.
+La Unidad 05 evoluciona `platform-api` desde una aplicación con configuración, entrada HTTP y persistencia local hacia una aplicación que declara decisiones básicas de colocación, actualización gradual, recuperación de Pods y mantenimiento responsable.
 
-La unidad aparece en este punto porque el alumno ya puede desplegar, configurar, exponer, observar y persistir datos de laboratorio. Ahora debe aprender que la disponibilidad no depende solo de tener replicas: tambien depende de scheduling, capacidad del cluster, probes, estrategia de despliegue, interrupciones voluntarias, limites de recursos, persistencia local y procedimientos de recuperacion.
+La unidad aparece después de persistencia porque, una vez que el alumno ha visto Pods reemplazables y un PVC local, debe entender que la disponibilidad no nace solo de tener réplicas. Depende de dónde puede arrancar cada Pod, qué capacidad declara, qué ocurre durante un rollout, cuándo entra o sale de los endpoints y qué límites tiene un laboratorio MicroK8s de un solo nodo.
 
-## Supuesto pedagogico
+## Supuesto pedagógico
 
-La unidad debe escribirse para alumnos con perfil tecnico que todavia no dominan scheduling ni operacion de resiliencia en Kubernetes.
+La unidad se escribe para alumnos con perfil técnico que ya han practicado `Deployment`, `Service`, `Ingress`, `ConfigMap`, `Secret`, probes, `resources` y PVC, pero que todavía no dominan scheduling, resiliencia ni mantenimiento operativo.
 
-Se explicaran desde cero:
+Se explican desde cero:
 
-- scheduler, nodo candidato y decision de colocacion;
-- diferencia entre fallo involuntario e interrupcion voluntaria;
-- `nodeSelector`, node affinity y pod anti-affinity;
-- taints y tolerations como mecanismo de rechazo o aceptacion de Pods;
-- `PodDisruptionBudget` y limites de disponibilidad durante mantenimiento;
-- `strategy`, `rollingUpdate`, rollout y rollback de un Deployment;
-- relacion entre replicas, probes, resources, EndpointSlice, Service e Ingress durante cambios;
-- limites de resiliencia en un cluster local de un solo nodo;
-- impacto de PVC local sobre scheduling, replicas y mantenimiento.
+- cómo `kube-scheduler` pasa de un Pod `Pending` a un Pod asignado a nodo;
+- filtrado y puntuación como modelo mental del scheduler, sin convertir la unidad en administración interna del control plane;
+- `nodeSelector`, node affinity, pod affinity y pod anti-affinity;
+- reglas estrictas y preferidas, especialmente `requiredDuringSchedulingIgnoredDuringExecution` y `preferredDuringSchedulingIgnoredDuringExecution`;
+- taints y tolerations como rechazo desde el nodo y permiso desde el Pod;
+- relación entre `requests`, capacidad disponible y Pods `Pending`;
+- diferencia entre fallo involuntario, interrupción voluntaria, rollout, rollback y eviction;
+- `PodDisruptionBudget` como límite para interrupciones voluntarias, no como protección ante caídas imprevistas;
+- límites de resiliencia en un clúster local de un solo nodo con `hostpath-storage`.
 
-Se retomaran de unidades anteriores:
+Se retoman de unidades anteriores:
 
-- `platform-api` como aplicacion evolutiva;
-- namespace `platform-training`;
-- Deployment, ReplicaSet, Pods, labels, selectors, ConfigMap, Secret ficticio, probes y resources;
-- Service `ClusterIP`, EndpointSlice e Ingress HTTP local;
-- PVC `platform-api-data` montado en `/usr/share/nginx/html/persistent`;
-- diagnostico con `kubectl get`, `describe`, `logs`, `exec`, eventos y rollout;
-- separacion entre README de entrada, `student-notes.md` y README operativo del laboratorio.
+- MicroK8s local y `kubectl`;
+- namespace funcional `platform-training`;
+- aplicación evolutiva `platform-api`;
+- manifiestos finales de `labs/05-scheduling-resilience-maintenance/solution/`;
+- ConfigMap, Secret ficticio, probes, requests, limits, Service `ClusterIP`, Ingress HTTP local y PVC `platform-api-data`;
+- diagnóstico con `kubectl get`, `describe`, eventos, EndpointSlice, logs y `rollout`.
 
-Se mencionaran y diferiran:
+Se mencionan solo para continuidad:
 
-- escalado automatico con HPA o KEDA;
-- observabilidad avanzada con Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
-- estrategias blue/green, canary y progressive delivery;
-- chaos engineering;
-- mantenimiento multi-nodo real y drain productivo;
-- alta disponibilidad cloud en AKS/EKS;
-- politicas avanzadas de seguridad, admision y gobernanza.
+- Helm en Unidad 06;
+- Terraform en Unidad 07;
+- progressive delivery en Unidad 10;
+- observabilidad, SLI/SLO y señales de rollout en Unidades 12 y 15;
+- gobierno de recursos y aislamiento por equipo en Unidad 16;
+- autoscaling, KEDA, capacidad y coste en Unidad 18;
+- desacoplamiento de MicroK8s y cloud en Unidad 19;
+- mantenimiento de clúster, upgrades, node pools y ciclo de vida en Unidades 22 y 23.
 
-Errores de razonamiento que deben prevenirse:
+Errores de razonamiento que debe prevenir `student-reference.md`:
 
-- creer que dos replicas garantizan alta disponibilidad en un cluster de un solo nodo;
-- usar anti-affinity estricta en un entorno donde no hay nodos suficientes;
-- confundir taints/tolerations con una forma de forzar colocacion;
-- asumir que un PDB evita todos los fallos, cuando solo limita interrupciones voluntarias;
-- ejecutar `drain` o borrar nodos como si fuera una limpieza inocua;
-- ignorar que un PVC local puede condicionar donde puede arrancar un Pod;
-- declarar resiliencia sin observar endpoints, rollout, eventos y recuperacion.
+- creer que dos réplicas garantizan alta disponibilidad en un clúster de un solo nodo;
+- usar reglas estrictas de affinity cuando una preferencia sería suficiente;
+- interpretar tolerations como una forma de atraer Pods;
+- presentar un PDB como protección ante fallos involuntarios;
+- diagnosticar logs de aplicación cuando el Pod ni siquiera fue programado;
+- ignorar que un PVC local condiciona dónde puede arrancar un Pod;
+- tratar `kubectl drain`, `cordon` o `uncordon` como operaciones inocuas de laboratorio.
 
 ---
 
-# Resultados de aprendizaje
+# Resultado de aprendizaje
 
-Al completar la unidad, el alumno debera ser capaz de:
+Al completar la unidad, el alumno deberá ser capaz de:
 
-- explicar como el scheduler decide si un Pod puede ejecutarse en un nodo;
-- aplicar constraints simples de scheduling sin romper `platform-api`;
-- comparar `nodeSelector`, affinity, anti-affinity, taints y tolerations;
-- configurar una estrategia de rolling update verificable para `platform-api`;
-- ejecutar y diagnosticar un rollout y un rollback controlado;
-- definir un `PodDisruptionBudget` coherente con replicas y entorno local;
-- simular fallos controlados de Pod y validar recuperacion por Deployment;
-- distinguir limites de resiliencia de MicroK8s local frente a un cluster multi-nodo;
-- diagnosticar Pods `Pending`, rollouts bloqueados y disponibilidad degradada;
-- registrar en `summary.md` el estado estable que reutilizara la Unidad 06.
+- explicar cómo el scheduler filtra y puntúa nodos candidatos para un Pod;
+- observar labels de nodo, `nodeName`, eventos de scheduling y Pods `Pending`;
+- comparar `nodeSelector`, node affinity, pod anti-affinity, taints y tolerations;
+- justificar por qué el laboratorio usa anti-affinity preferida y no obligatoria;
+- interpretar cómo `requests` y PVC afectan a la colocación;
+- describir qué controla `RollingUpdate` y qué no garantiza;
+- ejecutar y razonar sobre rollout y rollback nativos de un Deployment;
+- explicar qué protege un `PodDisruptionBudget` y qué no protege;
+- distinguir resiliencia local de laboratorio frente a alta disponibilidad real multi-nodo;
+- dejar preparada la base declarativa que la Unidad 06 empaqueta con Helm.
 
 ---
 
@@ -109,53 +109,107 @@ Al completar la unidad, el alumno debera ser capaz de:
 
 ## Incluido
 
-- reutilizacion de `platform-api`, `platform-training` y `labs/04-persistence-state/solution/`;
-- laboratorio de Unidad 05 en `labs/05-scheduling-resilience-maintenance/`;
-- tutorial, `student-notes.md`, notas del instructor y summary de continuidad;
-- explicacion de scheduler, constraints de colocacion y eventos de scheduling;
-- uso controlado de labels de nodo para observar `nodeSelector` o node affinity;
-- uso pedagogico de pod anti-affinity preferida, no obligatoria, para no bloquear el cluster local;
-- introduccion de taints y tolerations como concepto y demostracion acotada cuando sea seguro;
-- creacion de un `PodDisruptionBudget` para `platform-api`;
-- ajuste explicito de estrategia de `RollingUpdate` en el Deployment;
-- procedimientos de rollout, rollback, recreacion de Pods y diagnostico;
-- simulacion controlada de fallos de Pods sin destruir el entorno;
-- comparacion entre resiliencia local de un nodo y disponibilidad multi-nodo futura;
-- validacion estatica y funcional de los manifiestos generados;
-- actualizacion de `project/project-state.md` al generar y cerrar la unidad, no durante la creacion de este playbook.
+- saneamiento documental de la Unidad 05 contra el contrato cerrado;
+- reutilización de `platform-api`, `platform-training` y `labs/05-scheduling-resilience-maintenance/solution/`;
+- laboratorio existente en `labs/05-scheduling-resilience-maintenance/`, sin cambios durante fase 4;
+- explicación de scheduler, filtrado, puntuación, eventos y nodo elegido;
+- explicación de `nodeSelector`, node affinity, pod affinity y pod anti-affinity;
+- cobertura de expresiones estrictas y preferidas de affinity como criterio, conservando preferencias no bloqueantes en el laboratorio;
+- explicación de taints y tolerations como criterio profesional de segregación de workloads;
+- cobertura de PDB como protección limitada ante interrupciones voluntarias;
+- explicación de rollout, rollback, EndpointSlice, readiness y recuperación controlada de Pod;
+- documentación de límites de MicroK8s local, nodo único, `hostpath-storage` y PVC local;
+- actualización de `README.md`, `student-notes.md`, `student-reference.md`, `summary.md` y `project/project-state.md` al cierre documental.
 
 ## Excluido
 
-- charts Helm;
-- modulos Terraform;
-- pipelines Tekton;
-- aplicaciones Argo CD;
-- Prometheus, Grafana, Loki, Tempo, OpenTelemetry u observabilidad avanzada;
-- KEDA, HPA o escalado automatico;
-- NetworkPolicies, service mesh, mTLS o seguridad avanzada de red;
-- TLS productivo, DNS publico o LoadBalancer cloud;
-- estrategias canary, blue/green o progressive delivery con controladores externos;
-- chaos engineering destructivo o pruebas de carga;
-- mantenimiento real de nodos productivos;
-- creacion de clusters multi-nodo, AKS o EKS;
-- sustitucion de `platform-api` por otra aplicacion;
-- cambio de namespace funcional;
-- eliminacion de PVC o datos persistentes como parte normal de la unidad;
-- introduccion de Minikube, kind o Docker Desktop Kubernetes.
+- generación de Unidad 08;
+- modificación de laboratorios de Unidades 01-07;
+- modificación de manifiestos Kubernetes;
+- modificación de scripts de `platform/environment`;
+- ejecución de validaciones funcionales nuevas durante el saneamiento;
+- creación de workloads nuevos;
+- creación de charts Helm o módulos Terraform;
+- instalación o configuración de Tekton, Argo CD, Prometheus, Grafana, Loki, Tempo, OpenTelemetry, KEDA, AKS o EKS;
+- práctica real de `kubectl drain`, `cordon` o `uncordon`;
+- modificación de labels o taints de nodos como estado final;
+- autoscaling con HPA o KEDA;
+- progressive delivery con canary, blue/green, Argo Rollouts o Flagger;
+- chaos engineering;
+- alta disponibilidad multi-nodo real;
+- mantenimiento productivo de node pools;
+- sustitución de `platform-api` o creación de namespaces funcionales alternativos;
+- introducción de Minikube, kind o Docker Desktop Kubernetes como plataforma paralela.
 
 ## Diferido a unidades posteriores
 
 | Capacidad | Unidad prevista | Motivo |
 |---|---|---|
-| Helm | Unidad 06 | La Unidad 05 debe estabilizar manifiestos antes de empaquetarlos |
-| Terraform | Unidad 07 | Requiere chart y limites claros entre infraestructura y despliegue |
-| Tekton | Unidad 08 | Requiere validaciones y artefactos versionados consolidados |
-| Argo CD | Unidad 09 | Requiere layout declarativo estable y Helm |
-| Promocion entre entornos | Unidad 10 | Requiere empaquetado y automatizacion previos |
-| Observabilidad avanzada | Unidades 11-14 | La Unidad 05 usa senales nativas antes de stacks dedicados |
-| Seguridad avanzada | Unidades 16-18 | Requiere baseline operativo estable |
-| Autoscaling y KEDA | Unidades posteriores | Requiere metricas y observabilidad previas |
-| AKS/EKS y mantenimiento cloud | Unidades 20-25 | Requiere decisiones de plataforma gestionada |
+| Empaquetado con Helm | Unidad 06 | La Unidad 05 deja manifiestos estabilizados para empaquetar |
+| Automatización local con Terraform | Unidad 07 | Requiere chart Helm funcional |
+| CI/CD con Tekton | Unidad 08 | Requiere cierre del saneamiento documental antes de avanzar |
+| GitOps y secretos reales | Unidad 09 | Requiere definir propiedad declarativa y gestión segura desde Git |
+| Progressive delivery | Unidad 10 | Requiere automatización y señales operativas suficientes |
+| Métricas, alertas, SLI/SLO y observabilidad integrada | Unidades 12 y 15 | Necesarias para evaluar rollouts y mantenimiento con criterio |
+| Gobierno de recursos, namespaces y ownership | Unidad 16 | Retoma capacidad, cuotas, límites y segregación operativa |
+| Autoscaling, KEDA, topology spread constraints, capacidad y coste | Unidad 18 | Requiere métricas y modelo de escalado |
+| Desacoplamiento de MicroK8s y portabilidad cloud | Unidad 19 | Separa supuestos locales de Kubernetes estándar y AKS/EKS |
+| Mantenimiento cloud, node pools, upgrades y ciclo de vida del clúster | Unidades 22 y 23 | Encaja en operación de plataformas gestionadas y fiabilidad avanzada |
+
+---
+
+# Cobertura documental de la unidad
+
+## Frontera entre `student-notes.md` y `student-reference.md`
+
+`student-notes.md` explica lo que el alumno necesita para completar y diagnosticar el laboratorio: scheduler observado, labels de nodo, Pods `Pending`, rollout, rollback, EndpointSlice, PDB del laboratorio, eliminación controlada de un Pod y recuperación mediante Deployment.
+
+`student-reference.md` explica lo que existe fuera del laboratorio y corrige modelos mentales: filtrado y puntuación del scheduler, affinity estricta frente a preferida, taints/tolerations como segregación, límites reales del PDB, alta disponibilidad multi-nodo, mantenimiento con `drain`/`cordon`/`uncordon`, topology spread constraints, cloud, node pools y límites de MicroK8s local.
+
+No debe duplicarse contenido. Si ambos documentos necesitan un tema, uno lo desarrolla y el otro lo cita por ruta. El diagnóstico de fallos del laboratorio pertenece a `student-notes.md`; los errores de concepto pertenecen a `student-reference.md`.
+
+## Laguna asignada
+
+```text
+Ninguna
+```
+
+La Unidad 05 no cierra una laguna nueva del registro. Sí debe respetar dos anclajes existentes:
+
+- `GAP-007`: el ciclo de vida real del clúster, upgrades y mantenimiento fuerte quedan anclados a Unidades 22 y 23;
+- `GAP-011`: topology spread constraints quedan anclados a Unidad 18, y chaos engineering a Unidad 15.
+
+## Tipos de cobertura requeridos para `student-reference.md`
+
+| Tipo | Aplicación en la Unidad 05 |
+|---|---|
+| Panorama | Situar scheduling, resiliencia, mantenimiento, alta disponibilidad, cloud y operación de nodos |
+| Profundidad | Explicar la cadena Pod `Pending` -> nodo elegido -> kubelet -> probes -> EndpointSlice -> Service/Ingress |
+| Criterio | Decidir entre constraints estrictos y preferidos, affinity frente a taints, PDB, rollout y mantenimiento |
+| Práctica | Nombrar distancias con producción: nodo único, `hostpath-storage`, PDB limitado, sin drain real, sin HA multi-zona ni node pools |
+
+## Simplificaciones que obligan a práctica profesional
+
+| Simplificación del laboratorio | Riesgo fuera del laboratorio | Alternativa profesional que debe explicar la referencia |
+|---|---|---|
+| MicroK8s de un solo nodo | Confundir recuperación de Pod con alta disponibilidad | Múltiples nodos, zonas, capacidad suficiente, PDB, probes, observabilidad y procedimientos |
+| Anti-affinity preferida | Creer que la intención garantiza reparto | Reglas estrictas solo cuando haya capacidad y dominios suficientes; topology spread constraints en Unidad 18 |
+| PDB `minAvailable: 1` con dos réplicas | Presentarlo como protección ante caídas imprevistas | PDB solo limita interrupciones voluntarias; fallos involuntarios requieren arquitectura resiliente y recuperación |
+| No se practica `drain`/`cordon`/`uncordon` | Convertir mantenimiento de nodo en comando mecánico | Runbooks, ventana de cambio, revisión de PDB, capacidad, PVC, observabilidad y rollback |
+| PVC con `microk8s-hostpath` | Ignorar que el dato ata el Pod al nodo local | Storage cloud o CSI con topología entendida, backups y diseño de estado |
+| Sin autoscaling ni observabilidad avanzada | Decidir rollouts o mantenimiento sin señales suficientes | HPA/KEDA y SLI/SLO en unidades posteriores |
+
+## Uso de `.work/detail.md`
+
+La sección de Unidad 05 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
+
+| Punto de `.work/detail.md` | Clasificación | Tratamiento |
+|---|---|---|
+| Mecánica interna del planificador, filtrado, puntuación y `nodeSelector` | Criterio conceptual y práctica existente | Cubierto en referencia y notas; el laboratorio ya declara `nodeSelector` Linux |
+| Reglas complejas de affinity y anti-affinity con expresiones estrictas y blandas | Criterio conceptual; práctica parcial existente | El laboratorio usa preferencias; la referencia explica `required...` y `preferred...` sin endurecer manifiestos |
+| Taints y tolerations para segregación de workloads | Criterio conceptual | Cubierto en referencia; no se aplican taints a nodos ni se crean workloads nuevos |
+| PDB para disponibilidad durante mantenimiento | Práctica existente con corrección conceptual | `pdb.yaml` existe; la referencia corrige que no mitiga caídas imprevistas, solo interrupciones voluntarias |
+| `drain`, `cordon` y `uncordon` | Diagnóstico operativo y exclusión anclada | Explicados como mantenimiento profesional; no se ejecutan en fase 4 ni en la validación de laboratorio |
 
 ---
 
@@ -163,32 +217,32 @@ Al completar la unidad, el alumno debera ser capaz de:
 
 Antes de generar o modificar esta unidad, leer:
 
-1. `playbooks/master.md`;
-2. `project/architecture.md`;
-3. `project/project-state.md`;
-4. `project/roadmap.md`;
-5. `project/project-planning.md`;
+1. `project/documentation-cleanup-plan.md`;
+2. `README.md`;
+3. `project/architecture.md`;
+4. `project/project-state.md`;
+5. `project/roadmap.md`;
 6. `project/how-to.md`;
-7. `playbooks/unit-template.md`;
-8. `playbooks/summary-template.md`;
-9. `playbooks/project-state-template.md`;
-10. `tutorial/04-persistence-state/README.md`;
-11. `tutorial/04-persistence-state/student-notes.md`;
-12. `tutorial/04-persistence-state/summary.md`;
-13. este playbook;
-14. `labs/04-persistence-state/README.md`;
-15. `labs/04-persistence-state/solution/namespace.yaml`;
-16. `labs/04-persistence-state/solution/configmap.yaml`;
-17. `labs/04-persistence-state/solution/secret.yaml`;
-18. `labs/04-persistence-state/solution/pvc.yaml`;
-19. `labs/04-persistence-state/solution/deployment.yaml`;
-20. `labs/04-persistence-state/solution/service.yaml`;
-21. `labs/04-persistence-state/solution/ingress.yaml`;
-22. `labs/04-persistence-state/validation/validate.sh`.
+7. `project/project-planning.md`;
+8. `project/content-gap-register.md`;
+9. `playbooks/master.md`;
+10. `playbooks/unit-template.md`;
+11. `playbooks/student-reference-template.md`;
+12. `playbooks/summary-template.md`;
+13. `playbooks/project-state-template.md`;
+14. `playbooks/units/05-scheduling-resilience-maintenance.md`;
+15. sección de Unidad 05 en `.work/detail.md`;
+16. `tutorial/04-persistence-state/summary.md`;
+17. `tutorial/05-scheduling-resilience-maintenance/README.md`;
+18. `tutorial/05-scheduling-resilience-maintenance/student-notes.md`;
+19. `tutorial/05-scheduling-resilience-maintenance/student-reference.md`;
+20. `tutorial/05-scheduling-resilience-maintenance/summary.md`;
+21. `labs/05-scheduling-resilience-maintenance/README.md`;
+22. `labs/05-scheduling-resilience-maintenance/solution/`.
 
 ## Excepciones
 
-Ninguna. La Unidad 04 esta cerrada, validada funcionalmente, aprobada por el usuario y existe `tutorial/04-persistence-state/summary.md`.
+Ninguna. La Unidad 04 está cerrada, existe `tutorial/04-persistence-state/summary.md` y la Unidad 05 ya dispone de laboratorio y documentos de alumno.
 
 ---
 
@@ -196,423 +250,60 @@ Ninguna. La Unidad 04 esta cerrada, validada funcionalmente, aprobada por el usu
 
 ## Dependencias documentales
 
-Deben existir y estar revisados:
+- contrato documental cerrado en `playbooks/student-reference-template.md`;
+- plan de saneamiento vigente en `project/documentation-cleanup-plan.md`;
+- `tutorial/04-persistence-state/summary.md`;
+- artefactos actuales de la Unidad 05;
+- registro de lagunas `project/content-gap-register.md`;
+- `.work/detail.md` como checklist, no como estructura.
 
-```text
-README.md
-project/architecture.md
-project/project-state.md
-project/roadmap.md
-project/project-planning.md
-project/how-to.md
-playbooks/master.md
-playbooks/unit-template.md
-playbooks/summary-template.md
-playbooks/project-state-template.md
-playbooks/units/05-scheduling-resilience-maintenance.md
-tutorial/04-persistence-state/summary.md
-tutorial/04-persistence-state/student-notes.md
-```
+## Dependencias técnicas
 
-## Dependencias tecnicas
-
-| Dependencia | Estado requerido | Metodo de comprobacion |
+| Dependencia | Estado requerido | Método de comprobación |
 |---|---|---|
-| Ubuntu WSL objetivo | Validado como Ubuntu 24.04 LTS | `cat /etc/os-release` o validacion heredada |
-| MicroK8s | Instalado y operativo | `microk8s status --wait-ready` |
-| Kubernetes local | Nodo `Ready` | `kubectl get nodes` |
-| `kubectl` | Cliente principal operativo | `kubectl version --client` |
-| Addon DNS | Habilitado | `microk8s status --wait-ready` y validacion heredada |
-| Addon Ingress de MicroK8s | Activo para validar HTTP heredado | `bash labs/04-persistence-state/validation/validate.sh` |
-| Addon `hostpath-storage` | Activo si se valida persistencia heredada | `kubectl get storageclass` |
-| Namespace `platform-training` | Existente o aplicable desde manifiesto | `kubectl get namespace platform-training` |
-| Deployment `platform-api` | Definido y desplegable desde Unidad 04 | `kubectl -n platform-training rollout status deployment/platform-api` |
-| Service `platform-api` | `ClusterIP` interno con endpoints | `kubectl -n platform-training get service platform-api` y EndpointSlice |
-| Ingress `platform-api` | Recurso HTTP local heredado | `kubectl -n platform-training get ingress platform-api` |
-| PVC `platform-api-data` | `Bound` cuando la Unidad 04 este aplicada | `kubectl -n platform-training get pvc platform-api-data` |
-| Helm | Instalado, pero no usado para desplegar la unidad | `helm version --short` |
-| Terraform | Instalado, pero no usado para gestionar recursos | `terraform version` |
+| Entorno local | Heredado de Unidad 00 | Evidencia registrada en `tutorial/00-environment/summary.md` y `project/project-state.md` |
+| `platform-api` persistente | Generada en Unidad 04 | Evidencia registrada en `tutorial/04-persistence-state/summary.md` |
+| Namespace `platform-training` | Conservado | `labs/05-scheduling-resilience-maintenance/solution/namespace.yaml` |
+| Deployment `platform-api` | Disponible como manifiesto de solución | `labs/05-scheduling-resilience-maintenance/solution/deployment.yaml` |
+| PDB `platform-api` | Disponible como manifiesto de solución | `labs/05-scheduling-resilience-maintenance/solution/pdb.yaml` |
+| Validación de Unidad 05 | Existente, no ejecutada en saneamiento | `labs/05-scheduling-resilience-maintenance/validation/validate.sh` |
 
-## Dependencias pedagogicas
+Durante el saneamiento documental de fase 4 no se ejecutan validaciones funcionales nuevas.
 
-El alumno debe haber completado o dominar:
+## Dependencias pedagógicas
 
-- Unidad 00 y validacion del entorno local;
-- Unidad 01 y relacion entre Deployment, ReplicaSet, Pod, Service, labels y selectors;
-- Unidad 02 y uso de ConfigMap, Secret ficticio, probes, requests y limits;
-- Unidad 03 y relacion entre Service, EndpointSlice e Ingress;
-- Unidad 04 y relacion entre PVC, PV, StorageClass, volumen montado y persistencia local;
-- lectura basica de YAML;
-- uso basico de `kubectl apply`, `get`, `describe`, `logs`, `exec`, `rollout status`, `rollout history`, `rollout undo` y `delete pod` con alcance controlado.
-
-## Dependencias del laboratorio
-
-Artefactos que deben existir antes de comenzar:
-
-```text
-tutorial/04-persistence-state/summary.md
-tutorial/04-persistence-state/student-notes.md
-labs/04-persistence-state/README.md
-labs/04-persistence-state/solution/namespace.yaml
-labs/04-persistence-state/solution/configmap.yaml
-labs/04-persistence-state/solution/secret.yaml
-labs/04-persistence-state/solution/pvc.yaml
-labs/04-persistence-state/solution/deployment.yaml
-labs/04-persistence-state/solution/service.yaml
-labs/04-persistence-state/solution/ingress.yaml
-labs/04-persistence-state/validation/validate.sh
-```
+- el alumno entiende el modelo declarativo básico de Unidades 01 a 04;
+- el alumno puede leer YAML de Kubernetes con guía;
+- el alumno distingue configuración, salud, Service, Ingress y PVC;
+- la referencia debe corregir extrapolaciones inseguras del laboratorio local.
 
 ---
 
-# Estado inicial esperado
+# Entregables
 
-La unidad parte de `platform-api` desplegada sobre MicroK8s en el namespace `platform-training`, con configuracion externa, Secret ficticio, probes, resources, Service interno, Ingress HTTP local y PVC de laboratorio.
+## Documentación del alumno
 
-Estado verificable esperado:
-
-- MicroK8s `v1.35.6` y Kubernetes `v1.35.6` disponibles segun estado heredado;
-- `kubectl` `v1.35.6` configurado como cliente principal;
-- addon `dns` de MicroK8s habilitado;
-- Ingress Controller local de MicroK8s activo;
-- addon `hostpath-storage` habilitado y StorageClass `microk8s-hostpath` disponible si se valida la Unidad 04 aplicada;
-- namespace `platform-training` definido en `labs/04-persistence-state/solution/namespace.yaml`;
-- Deployment `platform-api` definido con dos replicas, imagen `nginxinc/nginx-unprivileged:1.27.4-alpine`, ConfigMap, Secret de laboratorio, probes, resources y montaje de PVC;
-- PVC `platform-api-data` definido y montado en `/usr/share/nginx/html/persistent`;
-- Service `platform-api` de tipo `ClusterIP`;
-- Ingress `platform-api` para host `platform-api.local`;
-- no existen PDB, Jobs, CronJobs, charts Helm, modulos Terraform, pipelines ni recursos cloud del curso.
-
-No debe asumirse que el laboratorio esta desplegado en el cluster si no se ejecuta validacion real o el usuario aporta evidencia.
-
-## Validacion del estado inicial
-
-Ejecutar desde Ubuntu WSL objetivo cuando se vaya a generar o validar funcionalmente la unidad:
-
-```bash
-bash platform/environment/validation/validate-environment.sh
-bash labs/04-persistence-state/validation/validate.sh
-kubectl -n platform-training get deploy,rs,pods,svc,endpointslice,ingress,pvc
-kubectl get nodes --show-labels
-kubectl -n platform-training get events --sort-by=.lastTimestamp
-```
-
-Resultado esperado:
-
-```text
-La validacion heredada no muestra fallos bloqueantes.
-deployment/platform-api esta disponible.
-service/platform-api existe como ClusterIP y selecciona Pods Ready.
-ingress/platform-api conserva host platform-api.local.
-persistentvolumeclaim/platform-api-data esta Bound.
-El cluster local muestra al menos un nodo Ready.
-```
-
-Si la Unidad 04 no esta aplicada, la unidad puede documentar la recuperacion aplicando `labs/04-persistence-state/solution/`, sin declarar validacion funcional hasta ejecutarla.
-
----
-
-# Artefactos que deben reutilizarse
-
-| Artefacto | Ruta | Uso en esta unidad |
+| Entregable | Ruta | Responsabilidad |
 |---|---|---|
-| Summary Unidad 04 | `tutorial/04-persistence-state/summary.md` | Continuidad tecnica, decisiones y limitaciones |
-| Student notes Unidad 04 | `tutorial/04-persistence-state/student-notes.md` | Continuidad pedagogica sobre persistencia y estado |
-| Namespace base | `labs/04-persistence-state/solution/namespace.yaml` | Mantener `platform-training` como namespace funcional |
-| ConfigMap base | `labs/04-persistence-state/solution/configmap.yaml` | Conservar configuracion no sensible y contenido HTML base |
-| Secret de laboratorio | `labs/04-persistence-state/solution/secret.yaml` | Conservar valores ficticios sin imprimirlos |
-| PVC de laboratorio | `labs/04-persistence-state/solution/pvc.yaml` | Mantener persistencia heredada y explicar impacto en scheduling |
-| Deployment evolucionado | `labs/04-persistence-state/solution/deployment.yaml` | Base de `platform-api` para incorporar estrategia de rollout y constraints seguros |
-| Service interno | `labs/04-persistence-state/solution/service.yaml` | Mantener contrato interno y backend del Ingress |
-| Ingress local | `labs/04-persistence-state/solution/ingress.yaml` | Mantener acceso HTTP local a la aplicacion |
-| Validacion Unidad 04 | `labs/04-persistence-state/validation/validate.sh` | Precondicion funcional |
-| Labels base | `app.kubernetes.io/name=platform-api`, `app.kubernetes.io/instance=platform-api-local` | Selectors, continuidad operativa y diagnostico |
-| Estado del proyecto | `project/project-state.md` | Registro de hechos generados y validados cuando se genere la unidad |
+| Tutorial principal | `tutorial/05-scheduling-resilience-maintenance/README.md` | Puerta de entrada conceptual de la unidad |
+| Student notes | `tutorial/05-scheduling-resilience-maintenance/student-notes.md` | Acompañamiento del laboratorio, observación y diagnóstico |
+| Student reference | `tutorial/05-scheduling-resilience-maintenance/student-reference.md` | Referencia profesional autosuficiente según contrato |
+| Summary | `tutorial/05-scheduling-resilience-maintenance/summary.md` | Contrato de continuidad con Unidad 06 y saneamiento |
 
-## Reglas de reutilizacion
+## Artefactos de laboratorio existentes
 
-- mantener `platform-api` como aplicacion evolutiva;
-- mantener `platform-training` como namespace funcional;
-- conservar `service/platform-api` como `ClusterIP`;
-- conservar `ingress/platform-api` como punto de entrada HTTP local salvo defecto real y documentado;
-- no cambiar selectors del Service salvo defecto real y documentado;
-- no sustituir la imagen de `platform-api` salvo decision explicita y justificada;
-- no exponer ni decodificar valores del Secret de laboratorio;
-- conservar el PVC heredado y explicar sus limites de scheduling en MicroK8s local;
-- crear artefactos de Unidad 05 en una ruta propia y declarar que extienden la solucion de Unidad 04;
-- no usar Helm ni Terraform para aplicar los recursos;
-- no ejecutar operaciones destructivas de nodos o almacenamiento como parte automatica de la validacion.
-
----
-
-# Cambios previstos sobre la solucion
-
-## Componentes nuevos
-
-| Componente | Responsabilidad | Ubicacion prevista |
+| Entregable | Ruta | Responsabilidad |
 |---|---|---|
-| Tutorial de la Unidad 05 | Guiar conceptos de scheduling, resiliencia y mantenimiento | `tutorial/05-scheduling-resilience-maintenance/README.md` |
-| Student notes | Guia de aprendizaje sobre scheduling, resiliencia, mantenimiento, diagnostico y continuidad | `tutorial/05-scheduling-resilience-maintenance/student-notes.md` |
-| Notas del instructor | Facilitar imparticion, simulaciones y evaluacion | `tutorial/05-scheduling-resilience-maintenance/instructor-notes.md` |
-| Summary | Registrar continuidad tecnica y pedagogica | `tutorial/05-scheduling-resilience-maintenance/summary.md` |
-| Laboratorio | Contener instrucciones y artefactos declarativos | `labs/05-scheduling-resilience-maintenance/README.md` |
-| PodDisruptionBudget | Proteger disponibilidad minima durante interrupciones voluntarias | `labs/05-scheduling-resilience-maintenance/solution/pdb.yaml` |
-| Manifiestos heredados versionados para Unidad 05 | Nueva base acumulativa con resiliencia declarada | `labs/05-scheduling-resilience-maintenance/solution/` |
-| Validacion del laboratorio | Comprobacion del estado esperado y recuperacion controlada | `labs/05-scheduling-resilience-maintenance/validation/validate.sh` |
-
-## Componentes modificados
-
-| Componente | Cambio | Compatibilidad esperada |
-|---|---|---|
-| `project/project-state.md` | Registrar existencia, generacion y cierre de Unidad 05 segun corresponda | Mantiene estado real como fuente de verdad |
-| Deployment `platform-api` | Declarar estrategia de rolling update, revision history y constraints seguros | Debe conservar nombre, labels, PVC, probes, resources y variables heredadas |
-| ConfigMap `platform-api-config` | Puede ajustar texto visible para reflejar Unidad 05 | Debe seguir siendo configuracion no sensible |
-| Service `platform-api` | Debe conservarse como `ClusterIP` | Mantiene backend del Ingress |
-| Ingress `platform-api` | Debe conservar host y backend salvo defecto documentado | Mantiene acceso HTTP local |
-
-## Componentes retirados
-
-```text
-Ninguno
-```
-
----
-
-# Decisiones de diseno de la unidad
-
-## D-05-01 - Resiliencia explicada desde el Deployment existente
-
-### Decision
-
-La unidad incorporara scheduling y resiliencia extendiendo el Deployment `platform-api`, sin sustituir la aplicacion ni crear un workload alternativo como eje principal.
-
-### Motivo
-
-La continuidad del itinerario exige que el alumno observe como una misma aplicacion cambia de comportamiento operativo al introducir decisiones de scheduling, rollout y mantenimiento.
-
-### Consecuencias
-
-- `platform-api` conserva su contrato de red y persistencia;
-- los cambios deben ser auditables en el Deployment;
-- cualquier limitacion por PVC local o nodo unico debe explicarse como parte del modelo.
-
-### Alternativas descartadas
-
-- Crear una aplicacion nueva para scheduling: rompe continuidad pedagogica.
-- Usar solo Pods sueltos: evita observar rollout, ReplicaSet y recuperacion real.
-
-## D-05-02 - Preferir constraints no bloqueantes en laboratorio local
-
-### Decision
-
-La unidad usara constraints seguros para MicroK8s local. Cuando se muestre anti-affinity, debera ser preferida (`preferredDuringSchedulingIgnoredDuringExecution`) o demostrarse de forma controlada como fallo esperado, no como configuracion final que bloquee el despliegue.
-
-### Motivo
-
-El entorno validado es local y puede tener un solo nodo. Una anti-affinity obligatoria entre replicas puede dejar Pods `Pending` y convertir un concepto de resiliencia en una rotura permanente del laboratorio.
-
-### Consecuencias
-
-- el alumno aprende la diferencia entre preferencia y requisito;
-- la validacion funcional debe poder completarse en un nodo;
-- el summary debe registrar que la resiliencia multi-nodo queda limitada en MicroK8s local.
-
-### Alternativas descartadas
-
-- Exigir multi-nodo: anticipa infraestructura fuera de alcance.
-- Omitir anti-affinity: deja sin marco una capacidad prevista en el roadmap.
-
-## D-05-03 - PDB como proteccion ante interrupciones voluntarias
-
-### Decision
-
-La unidad creara un `PodDisruptionBudget` para `platform-api` y explicara que protege frente a interrupciones voluntarias compatibles con la API, no frente a fallos espontaneos de nodo o procesos.
-
-### Motivo
-
-El PDB permite introducir mantenimiento responsable antes de Helm y cloud, pero suele malinterpretarse como garantia absoluta de disponibilidad.
-
-### Consecuencias
-
-- el laboratorio debe comprobar el PDB sin depender de un drain destructivo;
-- las notas deben distinguir `delete pod`, rollout, eviction y fallo involuntario;
-- en un cluster de un nodo, el PDB puede limitar operaciones de mantenimiento y debe explicarse.
-
-### Alternativas descartadas
-
-- Ejecutar `kubectl drain` como validacion automatica: puede ser destructivo y poco portable.
-- Diferir PDB: perderia una pieza esencial de mantenimiento seguro.
-
-## D-05-04 - Rollout y rollback antes de Helm
-
-### Decision
-
-La unidad usara `kubectl rollout` y cambios declarativos de manifiestos para explicar actualizacion y rollback antes de introducir Helm en la Unidad 06.
-
-### Motivo
-
-El alumno necesita comprender el comportamiento nativo de Deployment y ReplicaSet antes de delegarlo en releases Helm.
-
-### Consecuencias
-
-- el laboratorio debe mostrar `rollout status`, `rollout history` y `rollout undo`;
-- no se crearan charts ni releases;
-- la Unidad 06 podra empaquetar un conjunto de manifiestos ya estabilizado.
-
-### Alternativas descartadas
-
-- Usar Helm rollback: anticipa Unidad 06.
-- Usar Argo CD o Tekton: anticipa unidades posteriores.
-
-## D-05-05 - Mantenimiento seguro, no destruccion del entorno
-
-### Decision
-
-La unidad documentara mantenimiento con simulaciones controladas, revision de PDB y recreacion de Pods, evitando automatizar `drain`, eliminacion de nodos, reset de MicroK8s o borrado de PVC.
-
-### Motivo
-
-El objetivo es aprender el modelo operativo sin poner en riesgo el entorno local ni los datos persistentes de laboratorio.
-
-### Consecuencias
-
-- cualquier operacion potencialmente destructiva debe quedar marcada como demostracion opcional y manual;
-- `validate.sh` no debe drenar nodos ni borrar PVC;
-- la recuperacion debe basarse en reaplicar manifiestos y observar eventos.
-
-### Alternativas descartadas
-
-- Usar reset de MicroK8s como prueba de resiliencia: pertenece a recuperacion de entorno, no a esta unidad.
-- Borrar PVC para simular fallo: mezcla resiliencia de workload con perdida de datos.
-
-## D-05-06 - Laboratorio acumulativo con ruta propia
-
-### Decision
-
-La Unidad 05 tendra su propio directorio `labs/05-scheduling-resilience-maintenance/` con la solucion evolucionada, reutilizando semanticamente los manifiestos de Unidad 04.
-
-### Motivo
-
-Mantiene trazabilidad por unidad sin modificar retroactivamente el estado final de la Unidad 04.
-
-### Consecuencias
-
-- `labs/04-persistence-state/solution/` queda como evidencia de salida de Unidad 04;
-- `labs/05-scheduling-resilience-maintenance/solution/` sera la nueva base para Unidad 06;
-- el summary debera indicar claramente que Unidad 06 reutiliza la solucion de Unidad 05.
-
-### Alternativas descartadas
-
-- Editar solo `labs/04-persistence-state/solution/`: dificulta auditar la evolucion entre unidades.
-- Crear manifiestos sin relacion con la solucion previa: rompe continuidad.
-
----
-
-# Estructura de entregables
-
-## Tutorial
-
-Ruta:
-
-```text
-tutorial/05-scheduling-resilience-maintenance/README.md
-```
-
-Debe actuar como puerta de entrada de la unidad. Debe incluir:
-
-1. problema real que resuelve la unidad: colocacion, actualizacion y mantenimiento sin perder servicio;
-2. por que aparece despues de persistencia;
-3. contexto;
-4. objetivos;
-5. conocimientos previos;
-6. relacion con la Unidad 04;
-7. estado inicial;
-8. mapa de aprendizaje;
-9. modelo mental de scheduling, resiliencia e interrupciones;
-10. conceptos explicados con profundidad progresiva;
-11. como usar `student-notes.md`;
-12. como usar el README del laboratorio;
-13. decisiones de diseno y trade-offs;
-14. validaciones conceptuales y tecnicas;
-15. errores de razonamiento frecuentes;
-16. resolucion de problemas de scheduling y rollout;
-17. recuperacion y limpieza;
-18. conclusion;
-19. lectura guiada con referencias oficiales, conceptuales y complementarias;
-20. conexion con la Unidad 06.
-
-Las referencias deberan priorizar documentacion oficial de Kubernetes sobre scheduling, node affinity, inter-pod affinity, taints and tolerations, PodDisruptionBudget, Deployments, rolling updates, rollbacks, Jobs y CronJobs. Cualquier material secundario debera complementar esas fuentes, no sustituirlas.
-
-El tutorial no debe escribirse como una guia de laboratorio extendida. Los comandos repetitivos, secuencias completas de despliegue, recuperacion operacional y validacion mecanica pertenecen al README del laboratorio, salvo comandos puntuales que ayuden a observar o razonar sobre un concepto.
-
-## Notas del alumno
-
-Ruta:
-
-```text
-tutorial/05-scheduling-resilience-maintenance/student-notes.md
-```
-
-Debe ser la guia de aprendizaje de la unidad. Debe construir comprension antes de pedir ejecucion y seguir una estructura equivalente a:
-
-- proposito;
-- que se va a cubrir;
-- que representa cada componente de scheduling, resiliencia y mantenimiento;
-- que se va a construir;
-- como se relacionan scheduler, nodos, constraints, rollout, readiness, PDB y PVC local;
-- que ocurre al aplicar los manifiestos;
-- como comprobar que funciona;
-- como diagnosticar fallos tipicos;
-- que debe recordarse para la Unidad 06;
-- fuentes de referencia oficiales.
-
-No debe duplicar el README del laboratorio. Puede incluir comandos puntuales de observacion, pero no secuencias operativas completas.
-
-## Notas del instructor
-
-Ruta:
-
-```text
-tutorial/05-scheduling-resilience-maintenance/instructor-notes.md
-```
-
-Debe incluir:
-
-- intencion pedagogica;
-- puntos de enfasis;
-- demostraciones recomendadas;
-- errores frecuentes;
-- errores de razonamiento;
-- preguntas de comprobacion;
-- criterios de evaluacion;
-- riesgos tecnicos;
-- limites de alcance para no anticipar Helm, Terraform, autoscaling, observabilidad avanzada, progressive delivery, seguridad avanzada ni cloud.
-
-## Resumen
-
-Ruta:
-
-```text
-tutorial/05-scheduling-resilience-maintenance/summary.md
-```
-
-Debe seguir:
-
-```text
-playbooks/summary-template.md
-```
-
-## Laboratorio
-
-Ruta normal:
-
-```text
-labs/05-scheduling-resilience-maintenance/
-```
+| Laboratorio | `labs/05-scheduling-resilience-maintenance/README.md` | Instrucciones operativas |
+| Starter | `labs/05-scheduling-resilience-maintenance/starter/` | Punto de partida guiado |
+| Solution | `labs/05-scheduling-resilience-maintenance/solution/` | Estado final reutilizado por Unidad 06 |
+| Validación | `labs/05-scheduling-resilience-maintenance/validation/validate.sh` | Comprobación no destructiva existente |
+
+Durante esta fase no deben modificarse estos artefactos de laboratorio.
 
 ## Estado del proyecto
 
-Actualizar durante la generacion y cierre de la unidad:
+Actualizar:
 
 ```text
 project/project-state.md
@@ -624,431 +315,69 @@ siguiendo:
 playbooks/project-state-template.md
 ```
 
+`project/content-gap-register.md` solo debe cambiar si se ajusta una laguna existente. Para Unidad 05 no se prevé cambio obligatorio: `GAP-007` y `GAP-011` ya tienen destino asignado y se confirman sin reabrirlas.
+
 ---
 
-# Estructura prevista del laboratorio
+# Criterios de aceptación del saneamiento
 
-```text
-labs/05-scheduling-resilience-maintenance/
-├── README.md
-├── starter/
-│   ├── namespace.yaml
-│   ├── configmap.yaml
-│   ├── secret.yaml
-│   ├── pvc.yaml
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   └── ingress.yaml
-├── solution/
-│   ├── namespace.yaml
-│   ├── configmap.yaml
-│   ├── secret.yaml
-│   ├── pvc.yaml
-│   ├── pdb.yaml
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   └── ingress.yaml
-└── validation/
-    └── validate.sh
+La Unidad 05 queda conforme cuando:
+
+- el playbook declara `student-reference.md` como entregable y respeta la plantilla global;
+- el playbook declara la frontera entre `student-notes.md` y `student-reference.md`;
+- el playbook declara que no cierra una laguna nueva y que respeta los anclajes de `GAP-007` y `GAP-011`;
+- la referencia conserva la estructura canónica de `playbooks/student-reference-template.md`;
+- la referencia cubre scheduler, filtrado, puntuación, `nodeSelector`, affinity, anti-affinity, taints, tolerations, PDB, rollouts, rollback, mantenimiento, HA real, cloud y límites de MicroK8s local;
+- la referencia no incluye `summary.md` como material didáctico en la tabla de artefactos;
+- `student-notes.md` queda centrado en la práctica y diagnóstico del laboratorio;
+- el `README.md` remite claramente a notas y referencia sin desarrollar errores conceptuales;
+- `summary.md` registra el saneamiento documental y distingue validaciones históricas de validaciones no ejecutadas en esta fase;
+- `project/project-state.md` registra el incremento y el siguiente paso permitido;
+- no se modifica `labs/05-scheduling-resilience-maintenance/` ni laboratorios de otras unidades;
+- no se modifican manifiestos Kubernetes ni scripts;
+- no se crean workloads nuevos;
+- no se ejecutan validaciones funcionales nuevas.
+
+---
+
+# Validaciones permitidas durante fase 4
+
+Permitidas:
+
+```bash
+git diff --check
+git status --short
+rg -n "..." <rutas documentales>
 ```
 
-## Responsabilidad de cada artefacto
-
-| Ruta | Responsabilidad |
-|---|---|
-| `labs/05-scheduling-resilience-maintenance/README.md` | Referencia operativa del laboratorio |
-| `labs/05-scheduling-resilience-maintenance/starter/` | Punto de partida guiado con manifiestos heredados y resiliencia incompleta |
-| `labs/05-scheduling-resilience-maintenance/solution/` | Estado final reutilizable por Unidad 06 |
-| `labs/05-scheduling-resilience-maintenance/solution/pdb.yaml` | Presupuesto de interrupcion para `platform-api` |
-| `labs/05-scheduling-resilience-maintenance/solution/deployment.yaml` | Workload `platform-api` evolucionado con estrategia de rollout y constraints seguros |
-| `labs/05-scheduling-resilience-maintenance/solution/service.yaml` | Service interno conservado |
-| `labs/05-scheduling-resilience-maintenance/solution/ingress.yaml` | Ingress local conservado |
-| `labs/05-scheduling-resilience-maintenance/validation/validate.sh` | Validacion de recursos, rollout, PDB y recuperacion controlada |
-
----
-
-# Flujo pedagogico obligatorio
-
-La unidad debera seguir este orden conceptual:
-
-1. recuperar el estado final de Unidad 04;
-2. explicar que tener replicas no equivale automaticamente a alta disponibilidad;
-3. construir el modelo del scheduler: Pod pendiente, nodos candidatos, constraints y eventos;
-4. observar labels del nodo local y estado de Pods;
-5. explicar constraints seguros: `nodeSelector`, affinity y anti-affinity preferida;
-6. explicar taints y tolerations como rechazo/aceptacion, no como seleccion directa;
-7. introducir PDB y diferencia entre fallo involuntario e interrupcion voluntaria;
-8. revisar estrategia de rolling update del Deployment;
-9. ejecutar rollout, observar ReplicaSets, endpoints y HTTP;
-10. ejecutar rollback controlado;
-11. simular fallo de Pod y comprobar recuperacion;
-12. diagnosticar al menos un fallo realista de scheduling o rollout;
-13. consolidar limites de MicroK8s local y estado que reutilizara Unidad 06.
-
-Este orden es necesario porque el alumno debe entender primero que problema operativo intenta resolver. Saltar directamente a affinity o PDB convierte la unidad en una lista de campos YAML y oculta la relacion entre colocacion, disponibilidad, interrupciones, red, persistencia y actualizaciones.
-
----
-
-# Procedimientos obligatorios
-
-## Preparacion
-
-- validar entorno heredado;
-- validar que `platform-api` de Unidad 04 esta disponible o reaplicar `labs/04-persistence-state/solution/`;
-- confirmar contexto actual de `kubectl`;
-- revisar nodos y labels disponibles;
-- revisar Pods, EndpointSlice, Service, Ingress y PVC;
-- confirmar que no existen PDB previos de `platform-api`;
-- documentar limitaciones del cluster local de un nodo.
-
-## Implementacion
-
-- copiar o evolucionar los manifiestos de Unidad 04 hacia `labs/05-scheduling-resilience-maintenance/solution/`;
-- mantener `platform-api`, `platform-training`, labels principales, Service `ClusterIP`, Ingress local y PVC;
-- anadir `pdb.yaml` para `platform-api`;
-- ajustar el Deployment con estrategia de rolling update explicita;
-- incorporar constraints de scheduling seguros y compatibles con MicroK8s local;
-- mantener constraints que puedan bloquear el laboratorio solo como ejemplo diagnostico, no como estado final;
-- aplicar manifiestos en orden explicito;
-- documentar comandos exactos y resultados esperados.
-
-## Validacion
-
-- comprobar Deployment disponible;
-- comprobar ReplicaSets durante rollout;
-- comprobar Service `ClusterIP`;
-- comprobar EndpointSlice con endpoints Ready;
-- comprobar Ingress heredado;
-- comprobar PVC `Bound` y persistencia heredada;
-- comprobar PDB creado y estado esperado;
-- comprobar que los Pods estan asignados a nodos;
-- simular eliminacion controlada de un Pod y validar recreacion;
-- ejecutar rollout y rollback controlados;
-- ejecutar script de validacion de Unidad 05.
-
-## Diagnostico
-
-- identificar Pod `Pending` por constraints imposibles;
-- revisar eventos del scheduler;
-- distinguir falta de recursos de mismatch de labels o taints;
-- diagnosticar rollout bloqueado por readiness, PDB o imagen incorrecta;
-- diagnosticar perdida de endpoints durante actualizacion;
-- distinguir fallo de aplicacion de fallo de Service o Ingress;
-- revisar impacto del PVC local en scheduling.
-
-## Recuperacion
-
-- reaplicar manifiestos declarativos de Unidad 05;
-- volver a la solucion de Unidad 04 si el laboratorio queda en un estado incoherente;
-- eliminar o corregir constraints imposibles;
-- ejecutar `kubectl rollout undo` cuando el rollout falle;
-- recrear Pods de forma controlada;
-- volver a ejecutar la validacion.
-
-## Limpieza
-
-- documentar limpieza de cambios temporales de diagnostico;
-- documentar eliminacion del PDB como operacion reversible;
-- no borrar PVC ni datos persistentes como limpieza normal;
-- no ejecutar reset de MicroK8s;
-- no automatizar `kubectl drain`;
-- no eliminar nodos, namespaces completos ni addons compartidos sin confirmacion explicita.
-
----
-
-# Validaciones obligatorias
-
-## Validaciones estaticas
-
-| Validacion | Herramienta o comando | Resultado esperado |
-|---|---|---|
-| Sintaxis YAML | `kubectl apply --dry-run=client -f labs/05-scheduling-resilience-maintenance/solution/` | Manifiestos aceptados por el cliente |
-| Ausencia de secretos reales | Revision de manifiestos y busqueda de patrones sensibles | Sin tokens, passwords reales, claves privadas, kubeconfigs ni datos sensibles |
-| Sintaxis Bash de validacion | `bash -n labs/05-scheduling-resilience-maintenance/validation/validate.sh` | Codigo de salida 0 |
-| Ausencia de Helm charts | `find . -path ./.git -prune -o -type f -name 'Chart.yaml' -print` | Sin resultados |
-| Ausencia de Terraform | `find . -path ./.git -prune -o -type f \( -name '*.tf' -o -name '*.tfvars' \) -print` | Sin resultados |
-
-## Validaciones funcionales
-
-| Validacion | Procedimiento | Resultado esperado |
-|---|---|---|
-| Entorno heredado | `bash platform/environment/validation/validate-environment.sh` | Sin fallos bloqueantes |
-| Estado Unidad 04 | `bash labs/04-persistence-state/validation/validate.sh` | Sin fallos antes de evolucionar la solucion |
-| Nodos disponibles | `kubectl get nodes --show-labels` | Al menos un nodo `Ready` |
-| Aplicacion de manifiestos | `kubectl apply -f labs/05-scheduling-resilience-maintenance/solution/` | Recursos aplicados sin errores |
-| Deployment disponible | `kubectl -n platform-training rollout status deployment/platform-api` | Rollout completado |
-| PDB creado | `kubectl -n platform-training get pdb platform-api` | PDB visible con estado coherente |
-| Pods asignados | `kubectl -n platform-training get pods -o wide` | Pods de `platform-api` asignados a nodo |
-| Eventos de scheduling | `kubectl -n platform-training get events --sort-by=.lastTimestamp` | Sin errores bloqueantes persistentes |
-| Service interno | `kubectl -n platform-training get service platform-api` | `TYPE` igual a `ClusterIP` |
-| EndpointSlice | `kubectl -n platform-training get endpointslice -l kubernetes.io/service-name=platform-api` | Endpoints Ready para Pods disponibles |
-| Ingress heredado | `kubectl -n platform-training get ingress platform-api` | Host y backend esperados |
-| HTTP por Ingress | `curl` contra el punto de entrada local con host esperado | Respuesta de `platform-api` coherente con Unidad 05 |
-| Persistencia heredada | Comprobacion de `/usr/share/nginx/html/persistent/message.txt` cuando exista dato de laboratorio | Dato accesible o ausencia explicada sin perdida accidental |
-| Recuperacion de Pod | Eliminar un Pod de `platform-api` | Deployment recrea Pod y recupera disponibilidad |
-| Rollout controlado | Cambio declarativo inocuo y `kubectl rollout status` | Nueva revision completada |
-| Rollback controlado | `kubectl rollout undo deployment/platform-api` | Revision anterior restaurada |
-| Validacion del laboratorio | `bash labs/05-scheduling-resilience-maintenance/validation/validate.sh` | Sin fallos |
-
-## Validaciones de continuidad
-
-Comprobar que:
-
-- `labs/04-persistence-state/solution/` permanece como evidencia de Unidad 04;
-- `labs/05-scheduling-resilience-maintenance/solution/` contiene el estado que reutilizara Unidad 06;
-- `platform-api` conserva nombre, namespace, selector, ConfigMap, Secret de laboratorio, probes, resources, PVC, Service e Ingress salvo ajuste documentado;
-- el Service conserva tipo `ClusterIP`;
-- el Ingress conserva backend hacia el Service existente;
-- el PDB y la estrategia de rollout estan registrados en los manifiestos de Unidad 05;
-- Helm y Terraform siguen sin gestionar recursos del curso;
-- no existen credenciales reales ni datos sensibles versionados;
-- `tutorial/05-scheduling-resilience-maintenance/summary.md` registra constraints, PDB, rollout, rollback, validaciones y limitaciones;
-- `project/project-state.md` refleja solo recursos realmente creados y validados.
-
-## Validaciones no ejecutables en el entorno de generacion
-
-Declarar como pendientes cualquier validacion funcional que no se ejecute realmente en MicroK8s.
-
-No afirmar que scheduling, PDB, rollout, rollback, recuperacion, persistencia heredada o HTTP funcionan si solo se revisaron los archivos.
-
----
-
-# Escenarios de error obligatorios
-
-| Escenario | Sintoma | Diagnostico | Recuperacion |
-|---|---|---|---|
-| Selector de nodo imposible | Pod queda `Pending` | `kubectl describe pod`, eventos del scheduler, labels de nodo | Corregir selector o label, reaplicar Deployment |
-| Anti-affinity obligatoria en un solo nodo | Una replica queda `Pending` | Eventos del scheduler y numero de nodos | Cambiar a preferida o reducir constraint |
-| Taint no tolerado | Pod no se programa | `kubectl describe node`, `kubectl describe pod` | Eliminar taint de laboratorio o anadir toleration justificada |
-| Recursos insuficientes | Pod queda `Pending` por CPU o memoria | Eventos, `kubectl describe pod`, requests/limits | Ajustar requests de laboratorio o liberar recursos |
-| Rollout bloqueado por readiness | `rollout status` no completa | `kubectl describe pod`, logs, probes | Corregir cambio, esperar startup o hacer rollback |
-| Imagen erronea en prueba de rollout | Pods en `ImagePullBackOff` | `kubectl describe pod`, eventos | `kubectl rollout undo` y corregir imagen |
-| PDB demasiado restrictivo | Eviction o mantenimiento no procede | `kubectl get pdb`, eventos de eviction | Ajustar `minAvailable` o replicas, explicar trade-off |
-| Endpoints desaparecen durante actualizacion | Ingress responde error o timeout | EndpointSlice, Service, Pods Ready | Revisar estrategia rolling update y probes |
-| PVC local condiciona scheduling | Pod no puede arrancar donde se espera | Eventos, PVC/PV, nodo asociado | Explicar limitacion local y volver a configuracion compatible |
-| Contexto `kubectl` equivocado | Recursos no aparecen o se aplican a otro cluster | `kubectl config current-context` y `kubectl get nodes` | Cambiar contexto o reconfigurar desde Unidad 00 |
-
----
-
-# Requisitos de seguridad
-
-## Datos sensibles
-
-La Unidad 05 no debe introducir credenciales reales ni datos reales de negocio.
-
-Solo se permiten:
-
-- datos de laboratorio no sensibles;
-- placeholders no corporativos;
-- valores ficticios ya heredados;
-- configuracion publica de ejemplo.
-
-No versionar:
-
-- tokens;
-- passwords reales;
-- claves privadas;
-- kubeconfigs personales;
-- certificados privados;
-- credenciales de proxy;
-- datos corporativos;
-- dumps de bases de datos reales;
-- backups reales;
-- informacion personal.
-
-## Privilegios
-
-Documentar:
-
-- que `kubectl` opera contra el cluster local;
-- que modificar labels o taints de nodos afecta al scheduling de otros Pods del cluster local;
-- que cualquier cambio de taints debe ser acotado, reversible y explicado;
-- que no se requieren credenciales cloud;
-- que no deben usarse privilegios de administrador para introducir credenciales ni modificar recursos externos.
-
-## Operaciones destructivas
-
-| Operacion | Advertencia | Alcance | Recuperacion | Confirmacion requerida |
-|---|---|---|---|---|
-| `kubectl delete pod` de `platform-api` | Recrea Pods gestionados por Deployment | Pods de la aplicacion | Deployment crea nuevos Pods | No, si esta dentro de validacion guiada |
-| `kubectl rollout undo` | Cambia revision activa del Deployment | Deployment `platform-api` | Reaplicar manifiestos de solution | No, si esta dentro del laboratorio |
-| Modificar labels de nodo | Puede afectar a scheduling de otros Pods | Nodo local | Restaurar labels originales documentadas | Confirmacion explicita si afecta labels existentes |
-| Anadir taints de laboratorio | Puede impedir scheduling de Pods | Nodo local | Eliminar taint aplicado | Confirmacion explicita |
-| `kubectl drain` | Puede desalojar workloads y bloquearse por PDB/PVC | Nodo local y workloads | `kubectl uncordon` y reaplicar manifiestos | Confirmacion explicita; no automatizar |
-| `kubectl delete pvc` | Puede eliminar o desconectar datos persistentes | PVC y datos asociados | Reaplicar PVC y restaurar copia si existe | Confirmacion explicita |
-| `kubectl delete namespace platform-training` | Elimina aplicacion, configuracion, PVC y datos | Recursos funcionales del curso | Reaplicar solution y restaurar copia si existe | Confirmacion explicita |
-
-No usar `platform/environment/microk8s/reset.sh --confirm-reset` como limpieza de Unidad 05.
-
----
-
-# Requisitos de portabilidad
-
-## Kubernetes estandar
-
-- scheduler;
-- node labels;
-- `nodeSelector`;
-- node affinity;
-- pod affinity y anti-affinity;
-- taints y tolerations;
-- `PodDisruptionBudget`;
-- Deployments, ReplicaSets, rolling updates y rollback;
-- Jobs y CronJobs cuando se incluyan como demostracion acotada;
-- eventos de scheduling;
-- `kubectl apply`, `get`, `describe`, `logs`, `exec`, `rollout status`, `rollout history`, `rollout undo`.
-
-## Especifico de MicroK8s
-
-- cluster local normalmente de un solo nodo;
-- labels y taints concretos pueden variar segun instalacion;
-- `hostpath-storage` condiciona persistencia local y portabilidad;
-- recursos disponibles dependen de WSL2 y del host;
-- no representa alta disponibilidad multi-zona ni mantenimiento cloud.
-
-## Especifico de AKS
-
-No aplica en esta unidad. Mencionar solo de forma comparativa que AKS introduce node pools, zonas, upgrade de nodos, drain gestionado, storage classes cloud y restricciones de plataforma propias.
-
-## Especifico de EKS
-
-No aplica en esta unidad. Mencionar solo de forma comparativa que EKS introduce managed node groups, taints/labels de node groups, zonas, upgrades, storage classes CSI y restricciones de plataforma propias.
-
-## Estrategia de desacoplamiento
-
-- usar APIs Kubernetes estandar para scheduling, PDB y rollouts;
-- no depender de nombres de nodo concretos como contrato permanente;
-- usar labels de laboratorio claramente identificadas si se necesitan;
-- preferir constraints no bloqueantes como estado final local;
-- aislar pasos de MicroK8s en secciones especificas;
-- mantener nombres y labels preparados para Helm futuro;
-- registrar en summary cualquier dependencia concreta del entorno local.
-
----
-
-# Restricciones de generacion
-
-La IA no debe:
-
-- generar contenido de Unidad 06 o posteriores;
-- crear charts Helm;
-- crear modulos Terraform;
-- instalar Tekton;
-- instalar Argo CD;
-- desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
-- introducir KEDA, HPA o escalado automatico;
-- crear recursos AKS o EKS;
-- sustituir `platform-api`;
-- crear namespaces funcionales alternativos;
-- eliminar PVC, PV, namespace o datos persistentes como parte automatica del laboratorio;
-- automatizar `kubectl drain`, reset de MicroK8s o modificacion destructiva de nodos;
-- guardar credenciales reales, kubeconfigs, certificados privados ni secretos corporativos.
-
-La IA si puede:
-
-- extender manifiestos de `labs/04-persistence-state/solution/` en una ruta propia de Unidad 05;
-- crear `pdb.yaml`;
-- ajustar `deployment.yaml` con estrategia de rolling update, revision history y constraints seguros;
-- documentar ejemplos de fallo controlado;
-- crear validaciones no destructivas;
-- actualizar `tutorial/05-scheduling-resilience-maintenance/summary.md` y `project/project-state.md` cuando se genere la unidad.
-
----
-
-# Criterios de aceptacion
-
-La unidad se considerara completada cuando:
-
-- [ ] exista `tutorial/05-scheduling-resilience-maintenance/README.md`;
-- [ ] exista `tutorial/05-scheduling-resilience-maintenance/student-notes.md`;
-- [ ] exista `tutorial/05-scheduling-resilience-maintenance/instructor-notes.md`;
-- [ ] exista `tutorial/05-scheduling-resilience-maintenance/summary.md`;
-- [ ] exista `labs/05-scheduling-resilience-maintenance/README.md`;
-- [ ] existan `starter/`, `solution/` y `validation/validate.sh`;
-- [ ] `solution/` reutilice semanticamente la salida validada de Unidad 04;
-- [ ] exista un `PodDisruptionBudget` coherente con las replicas;
-- [ ] el Deployment conserve probes, resources, PVC y red heredada;
-- [ ] la estrategia de rolling update este declarada y validada;
-- [ ] los constraints de scheduling finales no bloqueen MicroK8s local;
-- [ ] las rutas documentadas coincidan con el repositorio;
-- [ ] las validaciones estaticas posibles se hayan ejecutado;
-- [ ] las validaciones funcionales posibles se hayan ejecutado o declarado pendientes;
-- [ ] no existan secretos reales;
-- [ ] no existan charts Helm ni modulos Terraform;
-- [ ] el tutorial incluya referencias oficiales o fuentes primarias relevantes;
-- [ ] `project/project-state.md` este actualizado;
-- [ ] el resultado prepare la Unidad 06;
-- [ ] no existan contradicciones abiertas.
-
----
-
-# Estado final esperado
-
-## Plataforma
-
-- MicroK8s local sigue siendo la plataforma activa.
-- DNS, Ingress y hostpath-storage heredados se conservan si estaban habilitados.
-- No se crean clusters, node pools, recursos cloud ni plataformas paralelas.
-
-## Aplicacion
-
-- `platform-api` sigue desplegada en `platform-training`.
-- Deployment conserva dos replicas salvo decision documentada.
-- PVC `platform-api-data`, Service `ClusterIP` e Ingress local se conservan.
-- PDB protege disponibilidad minima durante interrupciones voluntarias.
-- Estrategia de rollout y rollback queda documentada y validada.
-
-## Automatizacion
-
-- Manifiestos Kubernetes disponibles en `labs/05-scheduling-resilience-maintenance/solution/`.
-- Script de validacion disponible en `labs/05-scheduling-resilience-maintenance/validation/validate.sh`.
-- No existen charts Helm ni modulos Terraform del curso.
-
-## Observabilidad
-
-- Diagnostico mediante estado Kubernetes, eventos, logs, EndpointSlice, rollout history y PDB.
-- No existe stack de observabilidad avanzada.
-
-## Seguridad
-
-- Secret heredado sigue siendo ficticio.
-- No se versionan credenciales reales.
-- Operaciones de nodo potencialmente destructivas quedan fuera de validacion automatica.
-
-## Artefactos principales
-
-```text
-tutorial/05-scheduling-resilience-maintenance/README.md
-tutorial/05-scheduling-resilience-maintenance/student-notes.md
-tutorial/05-scheduling-resilience-maintenance/instructor-notes.md
-tutorial/05-scheduling-resilience-maintenance/summary.md
-labs/05-scheduling-resilience-maintenance/README.md
-labs/05-scheduling-resilience-maintenance/starter/
-labs/05-scheduling-resilience-maintenance/solution/
-labs/05-scheduling-resilience-maintenance/validation/validate.sh
-project/project-state.md
+No permitidas en este incremento salvo instrucción posterior explícita:
+
+```bash
+bash labs/05-scheduling-resilience-maintenance/validation/validate.sh
+kubectl apply -f labs/05-scheduling-resilience-maintenance/solution/
+kubectl -n platform-training rollout status deployment/platform-api
+kubectl drain <node>
+kubectl cordon <node>
+kubectl uncordon <node>
+microk8s status --wait-ready
+kubectl get nodes
 ```
 
 ---
 
-# Informacion obligatoria para el summary
+# Cierre esperado
 
-El `summary.md` debera destacar:
+Al cerrar el saneamiento de la Unidad 05:
 
-- capacidad incorporada;
-- artefactos creados;
-- artefactos modificados;
-- manifiestos reutilizados de Unidad 04;
-- PDB creado y valores elegidos;
-- estrategia de rolling update declarada;
-- constraints de scheduling usados y motivo;
-- comandos de validacion principales;
-- resultados reales de validacion, si se ejecutan;
-- operaciones no ejecutadas por seguridad;
-- decisiones especificas;
-- referencias principales utilizadas;
-- limitaciones de MicroK8s local y PVC hostpath;
-- estado que reutilizara Unidad 06.
+- `playbooks/units/05-scheduling-resilience-maintenance.md` queda regenerado contra contrato documental;
+- `tutorial/05-scheduling-resilience-maintenance/README.md` queda alineado con el playbook;
+- `tutorial/05-scheduling-resilience-maintenance/student-notes.md` queda alineado con la frontera de notas;
+- `tutorial/05-scheduling-resilience-maintenance/student-reference.md` queda ajustado contra la plantilla global;
+- `tutorial/05-scheduling-resilience-maintenance/summary.md` registra el saneamiento y sus límites;
+- `project/project-state.md` registra el incremento;
+- `project/content-gap-register.md` queda sin cambios salvo que se detecte una laguna que deba ajustarse;
+- Unidad 08 sigue congelada;
+- el siguiente paso permitido es la auditoría de autosuficiencia `TD-022` y, después, el cierre funcional de Unidad 04 `TD-023` según `project/documentation-cleanup-plan.md`.
 
 ---
 
@@ -1056,7 +385,7 @@ El `summary.md` debera destacar:
 
 | Campo | Valor |
 |---|---|
-| Fecha de creacion | 2026-07-19 |
-| Ultima revision | 2026-07-19 |
-| Estado | Aprobado |
-| Siguiente accion esperada | Generar la Unidad 05 |
+| Fecha de creación | 2026-07-19 |
+| Última revisión | 2026-07-27 |
+| Estado | Regenerado contra contrato documental |
+| Siguiente acción esperada | Revisar y aprobar el saneamiento documental de Unidad 05; continuar con `TD-022` |

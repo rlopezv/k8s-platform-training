@@ -1,22 +1,22 @@
 # Unidad 05 - Scheduling, resiliencia y mantenimiento
 
-## Guia pedagogica de la unidad
+## Guía pedagógica de la unidad
 
-Esta unidad trata sobre que ocurre cuando Kubernetes tiene que decidir donde ejecutar los Pods, como mantener una aplicacion disponible durante cambios y que limites reales tiene un laboratorio local.
+Esta unidad trata sobre qué ocurre cuando Kubernetes tiene que decidir dónde ejecutar los Pods, cómo mantener una aplicación disponible durante cambios y qué límites reales tiene un laboratorio local.
 
-Hasta la Unidad 04 `platform-api` podia desplegarse, configurarse, exponerse por Ingress y conservar un dato de laboratorio en un PVC. Ahora la pregunta cambia: que pasa cuando hay que actualizar la aplicacion, recrear Pods, respetar capacidad del cluster o preparar una interrupcion voluntaria?
+Hasta la Unidad 04 `platform-api` podía desplegarse, configurarse, exponerse por Ingress y conservar un dato de laboratorio en un PVC. Ahora la pregunta cambia: ¿qué pasa cuando hay que actualizar la aplicación, recrear Pods, respetar capacidad del clúster o preparar una interrupción voluntaria?
 
 La Unidad 05 cubre:
 
-- como el scheduler convierte un Pod pendiente en un Pod asignado a un nodo;
-- por que dos replicas no garantizan alta disponibilidad si todo ocurre en un solo nodo;
-- como usar constraints seguros de scheduling sin romper MicroK8s local;
-- que diferencia hay entre fallo involuntario e interrupcion voluntaria;
-- que protege y que no protege un `PodDisruptionBudget`;
-- como un Deployment realiza rolling updates y rollbacks;
-- como observar Service, EndpointSlice, probes e Ingress durante cambios;
-- como diagnosticar Pods `Pending` y rollouts bloqueados;
-- por que el PVC local condiciona la resiliencia que puede demostrarse.
+- cómo el scheduler convierte un Pod pendiente en un Pod asignado a un nodo;
+- por qué dos réplicas no garantizan alta disponibilidad si todo ocurre en un solo nodo;
+- cómo usar constraints seguros de scheduling sin romper MicroK8s local;
+- qué diferencia hay entre fallo involuntario e interrupción voluntaria;
+- qué protege y qué no protege un `PodDisruptionBudget`;
+- cómo un Deployment realiza rolling updates y rollbacks;
+- cómo observar Service, EndpointSlice, probes e Ingress durante cambios;
+- cómo diagnosticar Pods `Pending` y rollouts bloqueados;
+- por qué el PVC local condiciona la resiliencia que puede demostrarse.
 
 Para estudiar el modelo mental completo, usa `tutorial/05-scheduling-resilience-maintenance/student-notes.md`.
 
@@ -27,36 +27,36 @@ Para profundizar en criterios profesionales sobre scheduling, affinity, taints, 
 La pregunta de la unidad es:
 
 ```text
-Que condiciones deben cumplirse para que platform-api siga disponible mientras Kubernetes coloca, actualiza o reemplaza Pods?
+¿Qué condiciones deben cumplirse para que platform-api siga disponible mientras Kubernetes coloca, actualiza o reemplaza Pods?
 ```
 
-Si el alumno puede responderla, dejara de confundir replicas con disponibilidad garantizada, PDB con proteccion absoluta o affinity con una receta universal.
+Si el alumno puede responderla, dejará de confundir réplicas con disponibilidad garantizada, PDB con protección absoluta o affinity con una receta universal. Esos errores de modelo mental se desarrollan en `tutorial/05-scheduling-resilience-maintenance/student-reference.md`.
 
 ## Problema real
 
-Kubernetes no ejecuta Pods "en el cluster" de forma abstracta. Cada Pod acaba en un nodo concreto. Ese nodo tiene labels, capacidad, taints, volumenes disponibles y fallos posibles.
+Kubernetes no ejecuta Pods "en el clúster" de forma abstracta. Cada Pod acaba en un nodo concreto. Ese nodo tiene labels, capacidad, taints, volúmenes disponibles y fallos posibles.
 
-Ademas, una aplicacion no se mantiene disponible solo porque exista un Deployment. Durante un rollout pueden coexistir ReplicaSets antiguos y nuevos. Durante una recreacion, los Pods deben pasar probes antes de entrar en los EndpointSlices del Service. Durante mantenimiento, Kubernetes puede necesitar desalojar Pods, pero no todos los desalojos son seguros.
+Además, una aplicación no se mantiene disponible solo porque exista un Deployment. Durante un rollout pueden coexistir ReplicaSets antiguos y nuevos. Durante una recreación, los Pods deben pasar probes antes de entrar en los EndpointSlices del Service. Durante mantenimiento, Kubernetes puede necesitar desalojar Pods, pero no todos los desalojos son seguros.
 
 La unidad une tres ideas que suelen estudiarse por separado:
 
-- colocacion: donde puede arrancar un Pod;
-- resiliencia: que ocurre cuando se reemplaza o falla una instancia;
-- mantenimiento: como reducir impacto durante cambios voluntarios.
+- colocación: dónde puede arrancar un Pod;
+- resiliencia: qué ocurre cuando se reemplaza o falla una instancia;
+- mantenimiento: cómo reducir impacto durante cambios voluntarios.
 
 ## Objetivos
 
-Al finalizar la unidad podras:
+Al finalizar la unidad podrás:
 
-- explicar como el scheduler filtra y prioriza nodos candidatos;
+- explicar cómo el scheduler filtra y prioriza nodos candidatos;
 - observar labels de nodo, `nodeName`, eventos de scheduling y Pods `Pending`;
 - comparar `nodeSelector`, node affinity, pod anti-affinity, taints y tolerations;
-- justificar por que la solucion final usa anti-affinity preferida y no obligatoria;
-- aplicar un `PodDisruptionBudget` coherente con dos replicas;
+- justificar por qué la solución final usa anti-affinity preferida y no obligatoria;
+- aplicar un `PodDisruptionBudget` coherente con dos réplicas;
 - ejecutar un rollout y un rollback de `platform-api`;
 - validar que el Deployment recupera un Pod eliminado de forma controlada;
 - relacionar probes, EndpointSlice, Service e Ingress con disponibilidad observable;
-- explicar los limites de resiliencia de MicroK8s local y `hostpath-storage`;
+- explicar los límites de resiliencia de MicroK8s local y `hostpath-storage`;
 - preparar los manifiestos para empaquetado Helm en la Unidad 06.
 
 ## Conocimientos previos
@@ -66,14 +66,14 @@ Debes venir de las Unidades 00 a 04. En particular:
 - sabes aplicar manifiestos con `kubectl apply`;
 - has visto Deployment, ReplicaSet, Pod, Service, ConfigMap, Secret, Ingress y PVC;
 - entiendes que los Pods son reemplazables;
-- sabes que `platform-api` tiene dos replicas;
+- sabes que `platform-api` tiene dos réplicas;
 - has usado probes, requests y limits;
-- has validado EndpointSlice como evidencia de Pods listos detras del Service;
+- has validado EndpointSlice como evidencia de Pods listos detrás del Service;
 - has probado HTTP por Ingress local;
 - has montado `platform-api-data` en `/usr/share/nginx/html/persistent`;
 - has usado `kubectl get`, `describe`, `logs`, `exec`, `delete pod` y `rollout status`.
 
-## Relacion con la Unidad 04
+## Relación con la Unidad 04
 
 La Unidad 04 introdujo persistencia mediante:
 
@@ -83,7 +83,7 @@ mount /usr/share/nginx/html/persistent
 StorageClass microk8s-hostpath
 ```
 
-Esto cambia el analisis de resiliencia. Un Pod ya no es solo una instancia stateless: ahora monta almacenamiento local de laboratorio. En un cluster de un nodo funciona para aprender, pero no permite prometer disponibilidad multi-nodo ni recuperacion ante perdida del nodo.
+Esto cambia el análisis de resiliencia. Un Pod ya no es solo una instancia stateless: ahora monta almacenamiento local de laboratorio. En un clúster de un nodo funciona para aprender, pero no permite prometer disponibilidad multi-nodo ni recuperación ante pérdida del nodo.
 
 La base reutilizada es:
 
@@ -102,7 +102,7 @@ labs/05-scheduling-resilience-maintenance/solution/
 La unidad parte de:
 
 - namespace `platform-training`;
-- Deployment `platform-api` con dos replicas;
+- Deployment `platform-api` con dos réplicas;
 - imagen `nginxinc/nginx-unprivileged:1.27.4-alpine`;
 - ConfigMap `platform-api-config`;
 - Secret ficticio `platform-api-secret`;
@@ -112,22 +112,22 @@ La unidad parte de:
 - PVC `platform-api-data` montado en `/usr/share/nginx/html/persistent`;
 - MicroK8s local con `dns`, `ingress` y `hostpath-storage`.
 
-No se asume que el cluster este desplegado si no se ejecuta la validacion real.
+No se asume que el clúster esté desplegado si no se ejecuta la validación real.
 
 ## Mapa de aprendizaje
 
-| Concepto | Responsabilidad | Pregunta de diagnostico |
+| Concepto | Responsabilidad | Pregunta de diagnóstico |
 |---|---|---|
-| Scheduler | Asigna Pods pendientes a nodos | Por que este Pod fue o no fue asignado? |
-| Node labels | Describen propiedades del nodo | Que labels estoy usando como contrato? |
-| `nodeSelector` | Exige labels concretas | Existe algun nodo que cumpla el selector? |
-| Node affinity | Expresa reglas mas ricas sobre nodos | Es requisito o preferencia? |
+| Scheduler | Asigna Pods pendientes a nodos | ¿Por qué este Pod fue o no fue asignado? |
+| Node labels | Describen propiedades del nodo | ¿Qué labels estoy usando como contrato? |
+| `nodeSelector` | Exige labels concretas | ¿Existe algún nodo que cumpla el selector? |
+| Node affinity | Expresa reglas más ricas sobre nodos | Es requisito o preferencia? |
 | Pod anti-affinity | Intenta separar Pods entre dominios | Hay suficientes nodos para cumplirla? |
-| Taints/tolerations | Rechazan Pods salvo tolerancia | Estoy seleccionando nodo o aceptando una restriccion? |
-| PDB | Limita interrupciones voluntarias | Cuantos Pods deben permanecer disponibles? |
-| RollingUpdate | Sustituye Pods gradualmente | Cuantos Pods pueden caer o crearse durante el cambio? |
-| EndpointSlice | Lista backends listos del Service | El trafico tiene Pods Ready detras? |
-| PVC local | Ata datos al almacenamiento del nodo | Que pasa si el nodo no esta disponible? |
+| Taints/tolerations | Rechazan Pods salvo tolerancia | ¿Estoy seleccionando nodo o aceptando una restricción? |
+| PDB | Limita interrupciones voluntarias | Cuántos Pods deben permanecer disponibles? |
+| RollingUpdate | Sustituye Pods gradualmente | Cuántos Pods pueden caer o crearse durante el cambio? |
+| EndpointSlice | Lista backends listos del Service | El tráfico tiene Pods Ready detrás? |
+| PVC local | Ata datos al almacenamiento del nodo | ¿Qué pasa si el nodo no está disponible? |
 
 ## Modelo mental
 
@@ -143,14 +143,14 @@ Deployment
         -> kubelet arranca contenedor
           -> probes declaran salud
             -> EndpointSlice lo incluye
-              -> Service e Ingress pueden enviar trafico
+              -> Service e Ingress pueden enviar tráfico
 ```
 
-La disponibilidad observable aparece al final de ese camino. Si el Pod esta `Running` pero no `Ready`, no debe recibir trafico normal del Service. Si los constraints de scheduling son imposibles, el Pod ni siquiera llega al kubelet. Si el PVC no puede montarse, el contenedor no arranca correctamente.
+La disponibilidad observable aparece al final de ese camino. Si el Pod está `Running` pero no `Ready`, no debe recibir tráfico normal del Service. Si los constraints de scheduling son imposibles, el Pod ni siquiera llega al kubelet. Si el PVC no puede montarse, el contenedor no arranca correctamente.
 
-## Diseno del laboratorio
+## Diseño del laboratorio
 
-La solucion final conserva `platform-api` y anade:
+La solución final conserva `platform-api` y añade:
 
 - `pdb.yaml` con `minAvailable: 1`;
 - `strategy: RollingUpdate`;
@@ -162,17 +162,17 @@ La solucion final conserva `platform-api` y anade:
 - affinity preferida de nodo;
 - pod anti-affinity preferida por `kubernetes.io/hostname`.
 
-La anti-affinity es preferida, no obligatoria, porque el laboratorio local puede tener un solo nodo. En un cluster multi-nodo intentaria repartir replicas; en un nodo unico no bloquea el despliegue.
+La anti-affinity es preferida, no obligatoria, porque el laboratorio local puede tener un solo nodo. En un clúster multi-nodo intentaría repartir réplicas; en un nodo único no bloquea el despliegue.
 
-## Como usar los materiales
+## Cómo usar los materiales
 
-Lee primero `tutorial/05-scheduling-resilience-maintenance/student-notes.md` si no dominas scheduler, PDB o rollout. Despues ejecuta el laboratorio desde `labs/05-scheduling-resilience-maintenance/README.md`.
+Lee primero `tutorial/05-scheduling-resilience-maintenance/student-notes.md` si no dominas scheduler, PDB o rollout. Después ejecuta el laboratorio desde `labs/05-scheduling-resilience-maintenance/README.md`.
 
-El README del laboratorio contiene comandos completos, recuperacion y validacion. Este README mantiene el mapa conceptual de la unidad.
+El README del laboratorio contiene comandos completos, recuperación y validación. Este README mantiene el mapa conceptual de la unidad.
 
 ## Validaciones
 
-La unidad incluye validaciones estaticas y funcionales:
+La unidad incluye validaciones estáticas y funcionales:
 
 ```bash
 bash -n labs/05-scheduling-resilience-maintenance/validation/validate.sh
@@ -180,20 +180,13 @@ kubectl apply --dry-run=client -f labs/05-scheduling-resilience-maintenance/solu
 bash labs/05-scheduling-resilience-maintenance/validation/validate.sh
 ```
 
-La validacion funcional elimina un Pod de `platform-api` para comprobar recuperacion por Deployment. No ejecuta `kubectl drain`, no borra PVC y no modifica labels ni taints de nodo.
+La validación funcional elimina un Pod de `platform-api` para comprobar recuperación por Deployment. No ejecuta `kubectl drain`, no borra PVC y no modifica labels ni taints de nodo.
 
 ## Errores de razonamiento frecuentes
 
-- Creer que dos replicas son alta disponibilidad en un cluster de un nodo.
-- Usar anti-affinity obligatoria sin suficientes nodos.
-- Pensar que tolerar un taint equivale a forzar colocacion.
-- Presentar un PDB como proteccion ante todos los fallos.
-- Diagnosticar Ingress antes de revisar Pods Ready y EndpointSlices.
-- Ignorar que un PVC local puede limitar donde puede arrancar una replica.
-- Hacer rollback sin comprobar que revision queda activa.
-- Ejecutar `drain` como si fuera una limpieza inocua.
+La referencia profesional de la unidad recoge los errores conceptuales que suelen aparecer al extrapolar este laboratorio: réplicas frente a alta disponibilidad, affinity estricta frente a preferida, tolerations frente a selección, PDB frente a fallos involuntarios, PVC local frente a topología real y `drain` como operación de mantenimiento. Consúltalos en `tutorial/05-scheduling-resilience-maintenance/student-reference.md`.
 
-## Recuperacion
+## Recuperación
 
 Si el laboratorio queda inconsistente:
 
@@ -213,9 +206,9 @@ No borrar el PVC como limpieza normal. No usar reset de MicroK8s para cerrar la 
 
 ## Resultado final
 
-Al cierre de la unidad, `platform-api` conserva configuracion, Secret ficticio, probes, resources, Service, Ingress y PVC heredados. Ademas, declara scheduling seguro, estrategia de rollout y PDB.
+Al cierre de la unidad, `platform-api` conserva configuración, Secret ficticio, probes, resources, Service, Ingress y PVC heredados. Además, declara scheduling seguro, estrategia de rollout y PDB.
 
-La Unidad 06 podra empaquetar con Helm un conjunto de manifiestos mas estable, con decisiones de disponibilidad y mantenimiento ya visibles.
+La Unidad 06 podrá empaquetar con Helm un conjunto de manifiestos más estable, con decisiones de disponibilidad y mantenimiento ya visibles.
 
 ## Lectura guiada
 
