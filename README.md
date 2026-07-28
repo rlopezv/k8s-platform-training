@@ -86,7 +86,8 @@ El procedimiento operativo se define en `project/how-to.md`.
 ├── assets/
 ├── labs/
 ├── platform/
-│   └── environment/
+│   ├── environment/
+│   └── tools/
 ├── playbooks/
 │   ├── generate-session-handoff.md
 │   ├── master.md
@@ -129,6 +130,8 @@ Contiene los documentos de gobierno, arquitectura, planificación, operación y 
 - `how-to.md`: mecanismo operativo para trabajar con el repositorio y asistentes de IA.
 - `project-state.md`: estado actual y verificable del laboratorio y del contenido generado.
 - `roadmap.md`: secuencia prevista de unidades, capacidades y dependencias.
+- `content-gap-register.md`: registro ligero de lagunas de contenido detectadas.
+- `advanced-labs-register.md`: registro de candidatos a laboratorios avanzados cuando una cobertura queda fuera de la práctica principal.
 
 ### `tutorial/`
 
@@ -170,6 +173,14 @@ platform/environment/
 ```
 
 El contenido formativo de esa unidad seguirá residiendo en `tutorial/`, mientras que sus artefactos de plataforma se mantendrán en `platform/environment/`.
+
+Los componentes de clúster introducidos por unidades posteriores, como controladores, CRDs u operadores, se catalogan en:
+
+```text
+platform/tools/
+```
+
+El catálogo no instala nada por sí mismo. La unidad propietaria declara en su playbook y en el README de su laboratorio cuándo se instala el componente, con qué versión, en qué namespace, si persiste y cómo se limpia.
 
 ### `assets/`
 
@@ -250,6 +261,8 @@ platform/environment/
 ```
 
 en lugar de `labs/`.
+
+Cuando una unidad instale un componente de clúster, el instalador o referencia compartida se catalogará en `platform/tools/`, pero la práctica seguirá gobernada por el playbook y el laboratorio de esa unidad.
 
 ## Flujo de trabajo
 
@@ -368,7 +381,7 @@ El repositorio dispone de:
 - contenido y laboratorios de las Unidades 00, 01, 02, 03, 04 y 05;
 - procedimiento de generación de handoffs.
 
-El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es revisar y aprobar el playbook de la **Unidad 06 — Empaquetado con Helm**.
+El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es generar el playbook de la **Unidad 08 — Integración continua con Tekton**.
 
 El Framework V1 ya ha validado:
 

@@ -22,9 +22,9 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Gobierno mínimo para Unidad 08 preparado tras saneamiento documental y cierre funcional de Unidad 04 |
-| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 completada, aprobada y auditada con `TD-022`; fase 5 `TD-023` ejecutada, validada funcionalmente y aprobada; framework extendido mínimamente para componentes de clúster y reparto de cobertura |
-| Último incremento completado | Framework mínimo para componentes de clúster y clasificación de cobertura antes de Unidad 08 |
+| Fase actual | Gobierno y documentos de uso alineados para iniciar Unidad 08 |
+| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 completada, aprobada y auditada con `TD-022`; fase 5 `TD-023` ejecutada, validada funcionalmente y aprobada; framework extendido mínimamente para componentes de clúster y reparto de cobertura; documentos de gobierno y uso alineados con Unidad 08 |
+| Último incremento completado | Alineación de documentos de gobierno y uso tras Framework V4 mínimo |
 | Unidad activa | Ninguna |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
@@ -127,18 +127,19 @@ Todavía no se permite:
 
 | Artefacto | Estado | Última modificación relevante | Responsabilidad |
 |---|---|---|---|
-| `README.md` | Actualizado | Student-Reference-Mandatory | Punto de entrada y visión general; refleja `student-notes.md` y `student-reference.md` como artefactos por unidad |
-| `project/architecture.md` | Actualizado | Documentary-Contract-Phase-2 | Arquitectura y decisiones estructurales; registra `playbooks/student-reference-template.md` como contrato de referencia del alumno |
-| `project/project-state.md` | Actualizado | Documentation-Cleanup-Unit-04 | Estado consolidado; registra fase 4 sobre Unidad 04 y siguiente revisión permitida |
+| `README.md` | Actualizado | Framework-V4-Governance-Consistency | Punto de entrada y visión general; refleja `student-notes.md`, `student-reference.md`, `platform/tools/` y siguiente incremento de Unidad 08 |
+| `project/architecture.md` | Actualizado | Framework-V4-Governance-Consistency | Arquitectura y decisiones estructurales; registra `playbooks/student-reference-template.md`, `project/content-gap-register.md`, `project/advanced-labs-register.md` y `platform/tools/` |
+| `project/project-state.md` | Actualizado | Framework-V4-Governance-Consistency | Estado consolidado; registra Framework V4 mínimo, restricciones localizadas y siguiente incremento permitido |
 | `project/content-gap-register.md` | Actualizado | Documentation-Cleanup-Unit-00 | Registro ligero de lagunas; `GAP-001` confirmado como cierre documental de Unidad 00 |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
-| `project/project-planning.md` | Actualizado | Framework-V2-Didactic-Review | Planificación incremental del trabajo; incluye sesiones de reapertura de framework didactico y revisión transversal |
+| `project/advanced-labs-register.md` | Disponible en workspace; pendiente de versionar | Framework-V4-Governance-Consistency | Registro de candidatos a laboratorios avanzados derivados del reparto de cobertura; no es plan de trabajo |
+| `project/project-planning.md` | Actualizado | Framework-V4-Governance-Consistency | Planificación incremental del trabajo; recomienda generar el playbook de Unidad 08 aplicando clasificación de cobertura y convención `platform/tools/` |
 | `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
-| `playbooks/master.md` | Actualizado | Documentary-Contract-Phase-2 | Reglas globales; declara frontera entre notas y referencia, regla ortográfica acotada y criterios de bloqueo asociados |
-| `playbooks/unit-template.md` | Actualizado | Documentary-Contract-Phase-2 | Plantilla de playbooks específicos; exige declarar cobertura y frontera de `student-reference.md` |
+| `playbooks/master.md` | Actualizado | Framework-V4-Minimal-Unit-08 | Reglas globales; declara frontera entre notas y referencia, clasificación de cobertura, componentes de clúster y criterios de bloqueo asociados |
+| `playbooks/unit-template.md` | Actualizado | Framework-V4-Minimal-Unit-08 | Plantilla de playbooks específicos; exige declarar cobertura, frontera de `student-reference.md` y componentes de clúster |
 | `playbooks/student-reference-template.md` | Actualizado | Documentary-Contract-Phase-2 | Plantilla global para referencias profesionales del alumno; define estructura canónica y obligaciones comprobables |
 | `playbooks/summary-template.md` | Actualizado | Student-Reference-Mandatory | Contrato de continuidad; registra `student-reference.md` como entregable obligatorio |
-| `playbooks/project-state-template.md` | Actualizado | Student-Reference-Mandatory | Reglas de mantenimiento del estado; exige registrar `student-reference.md` como Sí/No/Parcial/Pendiente |
+| `playbooks/project-state-template.md` | Actualizado | Framework-V4-Governance-Consistency | Reglas de mantenimiento del estado; exige registrar `student-reference.md`, framework vigente y componentes de clúster separados de CLIs |
 | `playbooks/generate-session-handoff.md` | Completo y aprobado | Framework-03 | Generación del handoff derivado de sesión |
 | `playbooks/units/00-environment.md` | Regenerado contra contrato documental y aprobado | Documentation-Cleanup-Unit-00 | Gobierno de la Unidad 00; declara frontera de `student-reference.md`, cobertura, simplificaciones, `GAP-001` y uso de `.work/detail.md` solo como checklist |
 | `playbooks/units/01-kubernetes.md` | Regenerado contra contrato documental y aprobado | Documentation-Cleanup-Unit-01 | Gobierno de la Unidad 01; declara frontera de `student-reference.md`, cobertura, simplificaciones, `GAP-004` y uso de `.work/detail.md` solo como checklist |
@@ -250,25 +251,27 @@ Todavía no se permite:
 │           └── validate.sh
 ├── platform/
 │   ├── .gitkeep
-│   └── environment/
-│       ├── .gitkeep
-│       ├── README.md
-│       ├── linux/
-│       │   └── check-prerequisites.sh
-│       ├── microk8s/
-│       │   ├── configure.sh
-│       │   ├── install.sh
-│       │   ├── reset.sh
-│       │   └── validate.sh
-│       ├── tools/
-│       │   ├── install-helm.sh
-│       │   ├── install-terraform.sh
-│       │   └── validate-tools.sh
-│       ├── validation/
-│       │   └── validate-environment.sh
-│       └── windows/
-│           ├── check-prerequisites.ps1
-│           └── prepare-ubuntu-wsl.ps1
+│   ├── environment/
+│   │   ├── .gitkeep
+│   │   ├── README.md
+│   │   ├── linux/
+│   │   │   └── check-prerequisites.sh
+│   │   ├── microk8s/
+│   │   │   ├── configure.sh
+│   │   │   ├── install.sh
+│   │   │   ├── reset.sh
+│   │   │   └── validate.sh
+│   │   ├── tools/
+│   │   │   ├── install-helm.sh
+│   │   │   ├── install-terraform.sh
+│   │   │   └── validate-tools.sh
+│   │   ├── validation/
+│   │   │   └── validate-environment.sh
+│   │   └── windows/
+│   │       ├── check-prerequisites.ps1
+│   │       └── prepare-ubuntu-wsl.ps1
+│   └── tools/
+│       └── README.md
 ├── playbooks/
 │   ├── generate-session-handoff.md
 │   ├── master.md
@@ -287,6 +290,7 @@ Todavía no se permite:
 │       └── 07-local-terraform-automation.md
 ├── project/
 │   ├── architecture.md
+│   ├── advanced-labs-register.md
 │   ├── content-gap-register.md
 │   ├── how-to.md
 │   ├── project-planning.md
@@ -1248,6 +1252,7 @@ Validaciones no disponibles en esta sesión:
 | 78 | Auditoría de autosuficiencia `TD-022` | Documental aprobado | El 2026-07-27 el usuario aporta auditoría de red team: las referencias de Unidades 02, 03, 04 y 05 son autosuficientes, ninguna se reclasifica como no conforme. Se registra observación no bloqueante sobre secciones de continuidad largas |
 | 79 | Cierre funcional de Unidad 04 `TD-023` | Funcional validado y aprobado | El 2026-07-27 se crea `labs/04-persistence-state/statefulset-demo/` con `scratch-stateful`, headless Service y `volumeClaimTemplates`; tras reiniciar MicroK8s y corregir el comando del contenedor, se ejecuta validación independiente contra MicroK8s con 0 fallos y 0 avisos, incluida la comprobación de que ambos PVCs siguen `Bound` tras borrar el StatefulSet; se limpia la demo por nombre exacto sin tocar `platform-api-data`; el usuario aprueba `TD-023`; `GAP-004` queda cerrado funcionalmente |
 | 80 | Framework mínimo para Unidad 08 | Documental | Se actualizan `playbooks/master.md`, `playbooks/unit-template.md`, `project/architecture.md` y `project/project-state.md`, y se crea `platform/tools/README.md`. El framework declara componentes de clúster, localiza la restricción de Tekton en la Unidad 08, exige clasificar cobertura como práctica, criterio o diferido, y mantiene la Unidad 08 como siguiente incremento permitido sin instalar Tekton ni generar recursos de la unidad |
+| 81 | Alineación de documentos de gobierno y uso | Documental | Se actualizan `README.md`, `project/architecture.md`, `project/project-planning.md`, `playbooks/project-state-template.md`, `AGENTS.md` y `project/project-state.md` para eliminar referencias operativas antiguas a Unidad 02/06, registrar `platform/tools/`, distinguir componentes de clúster de CLIs locales, reconocer `project/advanced-labs-register.md` como registro de candidatos pendiente de versionar y mantener Unidad 08 como siguiente incremento permitido |
 
 ---
 

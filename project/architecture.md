@@ -239,6 +239,14 @@ Documento de gobierno temporal. Fija el plan de saneamiento de las Unidades 00-0
 
 Es la fuente del plan mientras el saneamiento esté en curso. La tabla de fases de `project/project-state.md` lo resume y no debe divergir de él. Se retira cuando el saneamiento cierre, dejando su rastro en el historial de incrementos y en las deudas cerradas.
 
+### `project/content-gap-register.md`
+
+Registro ligero de lagunas de contenido. Debe contener la laguna, su unidad o zona responsable, su tratamiento y su estado. No sustituye al roadmap ni al estado consolidado.
+
+### `project/advanced-labs-register.md`
+
+Registro de candidatos a laboratorios avanzados. Recoge prácticas que quedaron fuera del alcance de una unidad porque fueron resueltas como criterio profesional, diferidas o dependientes de un entorno más complejo. No es un plan de trabajo ni convierte un candidato en unidad aprobada.
+
 ### `project/roadmap.md`
 
 Define la evolución prevista del itinerario.

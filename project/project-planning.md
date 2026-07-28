@@ -666,15 +666,12 @@ Debe comprobarse que:
 
 El siguiente incremento recomendado vigente se registra en `project/project-state.md`, que debe prevalecer sobre esta sección cuando el itinerario avance.
 
-Tras completar, validar funcionalmente y aprobar pedagógicamente la Unidad 07, el siguiente incremento recomendado es reabrir el framework como **Framework V2 — Refuerzo didáctico y revisión pedagógica transversal**.
+Tras completar el saneamiento documental de Unidades 00-07, cerrar funcionalmente `TD-023` en Unidad 04 y preparar el framework mínimo para componentes de clúster, el siguiente incremento recomendado es generar el playbook de la **Unidad 08 — Integración continua con Tekton**.
 
-Esa sesión debe mantenerse deliberadamente ligera y centrarse en:
+La sesión de Unidad 08 debe:
 
-1. revisar `playbooks/master.md`;
-2. revisar `playbooks/unit-template.md`;
-3. revisar `playbooks/summary-template.md`;
-4. revisar `playbooks/project-state-template.md`;
-5. revisar `project/architecture.md` si el contrato de artefactos pedagógicos necesita elevarse a decisión estructural;
-6. crear o actualizar `project/content-gap-register.md`;
-7. registrar en `project/project-state.md` que la Unidad 08 queda pausada hasta decidir el tratamiento de las lagunas bloqueantes;
-8. decidir si hace falta una unidad de contenedores, imagen y registro antes de instalar Tekton o crear recursos de Unidad 08.
+1. partir del estado consolidado en `project/project-state.md`;
+2. aplicar el reparto de cobertura definido en `playbooks/master.md`: práctica, criterio y diferido;
+3. declarar Tekton Pipelines como componente de clúster de la unidad, usando la convención de `platform/tools/`;
+4. verificar la versión vigente contra documentación oficial al generar el playbook;
+5. no instalar Tekton ni crear recursos ejecutables hasta que el playbook específico esté aprobado.

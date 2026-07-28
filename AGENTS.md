@@ -8,22 +8,23 @@ El repositorio es la fuente unica de verdad. No dependas del historial de conver
 
 ## Estado Actual
 
-Segun `project/project-state.md`, el proyecto ha completado Bootstrap, ha cerrado Framework V1 y ha completado y aprobado la Unidad 01 con deuda pedagogica registrada para una futura sesion de hardening global. El siguiente incremento permitido es:
+Segun `project/project-state.md`, el proyecto tiene generadas, validadas y aprobadas las Unidades 00-07, cerro el saneamiento documental contra el contrato de `student-reference.md`, cerro funcionalmente `TD-023` en la Unidad 04 y preparo el framework minimo para componentes de cluster. El siguiente incremento permitido es:
 
 ```text
-Generar el playbook de la Unidad 02 - Configuracion, secretos y ciclo de vida
+Generar el playbook de la Unidad 08 - Integracion continua con Tekton
 ```
 
 Estado verificable actual:
 
 - la Unidad 00 existe en `tutorial/00-environment/` y `platform/environment/`;
-- la Unidad 01 existe en `tutorial/01-kubernetes/` y `labs/01-kubernetes/`;
+- las Unidades 01-07 existen en `tutorial/` y `labs/`;
 - MicroK8s, Kubernetes, `kubectl`, Helm y Terraform estan validados en el entorno local registrado;
-- la aplicacion evolutiva inicial se llama `platform-api`;
+- la aplicacion evolutiva se llama `platform-api`;
 - el namespace funcional del curso es `platform-training`;
-- existe un Deployment `platform-api` y un Service `platform-api` definidos en `labs/01-kubernetes/solution/`;
-- la Unidad 02 debe reutilizar `tutorial/01-kubernetes/summary.md` y `labs/01-kubernetes/solution/`;
-- queda registrada una deuda de hardening pedagogico global para reforzar vision conceptual, progresion didactica y referencias cuando haya varias unidades generadas.
+- el chart local vigente vive en `labs/06-helm-packaging/chart/platform-api/`;
+- Terraform gestiona localmente el release Helm `platform-api-local` desde `labs/07-local-terraform-automation/terraform/`;
+- `platform/tools/` cataloga componentes de cluster instalables por unidades posteriores;
+- Tekton Pipelines solo puede instalarse dentro del alcance aprobado de la Unidad 08.
 
 ## Lectura Obligatoria
 
@@ -78,11 +79,13 @@ No resuelvas contradicciones relevantes en silencio. Identifica la contradiccion
 
 ## Restricciones Activas
 
-Durante la generacion del playbook de Unidad 02, no debes:
+Durante la generacion del playbook de Unidad 08, no debes:
 
-- crear charts Helm;
-- crear modulos Terraform;
-- instalar o configurar Tekton, Argo CD, Prometheus, Grafana, Loki, Tempo, OpenTelemetry, KEDA, AKS o EKS;
+- instalar Tekton ni crear recursos Tekton antes de que el playbook especifico de Unidad 08 este aprobado;
+- instalar o configurar Argo CD, Prometheus, Grafana, Loki, Tempo, OpenTelemetry, KEDA, AKS o EKS antes de sus unidades propietarias;
+- fijar versiones de componentes de cluster de memoria; deben verificarse contra fuentes oficiales al generar la unidad;
+- omitir la clasificacion de cobertura como practica, criterio o diferido;
+- crear modulos Terraform o backends remotos fuera del alcance aprobado;
 - sustituir `platform-api` por otra aplicacion sin decision documentada;
 - crear namespaces funcionales alternativos sin justificacion;
 - asumir versiones de herramientas sin validarlas;
@@ -90,24 +93,29 @@ Durante la generacion del playbook de Unidad 02, no debes:
 - guardar credenciales reales, tokens, kubeconfigs, claves privadas, credenciales de proxy, certificados o secretos corporativos;
 - introducir Minikube, kind o Docker Desktop Kubernetes como plataforma paralela.
 
-La Unidad 02, cuando exista su playbook aprobado, si podra:
+La Unidad 08, cuando exista su playbook aprobado, si podra:
 
-- extender los manifiestos de `labs/01-kubernetes/solution/`;
-- incorporar ConfigMaps, Secrets de laboratorio, variables de entorno, volumenes de configuracion, probes y primeros requests/limits;
-- actualizar `tutorial/02-.../summary.md`;
+- instalar Tekton Pipelines como componente de cluster con version fija verificada;
+- crear Tasks, Pipelines, Workspaces, Params, Results y PipelineRuns segun el alcance aprobado;
+- reutilizar el chart Helm de Unidad 06 y el proyecto Terraform de Unidad 07;
+- actualizar `tutorial/08-.../summary.md`;
 - actualizar `project/project-state.md` con estado real y verificable.
 
-## Salidas Esperadas de la Unidad 02
+## Salidas Esperadas de la Unidad 08
 
-La estructura exacta de la Unidad 02 debera gobernarse por su playbook especifico. Como minimo, una unidad debe producir:
+La estructura exacta de la Unidad 08 debera gobernarse por su playbook especifico. Como minimo, una unidad debe producir:
 
 ```text
 tutorial/<unidad>/README.md
+tutorial/<unidad>/student-notes.md
+tutorial/<unidad>/student-reference.md
 tutorial/<unidad>/instructor-notes.md
 tutorial/<unidad>/summary.md
 labs/<unidad>/
 project/project-state.md
 ```
+
+Si la unidad instala un componente de cluster, debe declarar su ciclo de vida en el README del laboratorio y catalogarlo en `platform/tools/`.
 
 No crees scripts vacios ni placeholders sin comportamiento util.
 

@@ -131,6 +131,7 @@ Utilizar una tabla equivalente a:
 | Laboratorio disponible | Sí/No/Parcial |
 | Plataforma local desplegada | Sí/No/Parcial |
 | Contenido formativo generado | Sí/No/Parcial |
+| Framework de generación | [versión o contrato vigente] |
 | Siguiente incremento permitido | `[ruta o acción]` |
 
 ### Valores recomendados para estado general
@@ -297,6 +298,23 @@ Reglas:
 - registrar la versión observada, no solo la deseada;
 - diferenciar instalación local de componente desplegado;
 - indicar versiones pendientes de fijar.
+
+---
+
+# Componentes de clúster
+
+Registrar únicamente componentes desplegados o decisiones localizadas ya aprobadas. No registrar componentes previstos como si estuvieran instalados.
+
+| Componente | Estado | Versión activa | Namespace | Método de instalación | Persistencia | Incorporado en |
+|---|---|---|---|---|---|---|
+| [componente] | Instalado/No incorporado/Pendiente de unidad aprobada | [versión o No aplica] | [namespace o No aplica] | [método o No aplica] | [sí/no/pendiente] | [unidad] |
+
+Reglas:
+
+- los CLIs locales pertenecen a la sección de herramientas y versiones;
+- los controladores, CRDs y operadores pertenecen a esta sección;
+- las versiones de componentes de clúster se fijan solo al generar la unidad propietaria y tras verificar fuentes oficiales;
+- si una restricción permite instalar un componente solo en su unidad, registrar la restricción como decisión, no como componente instalado.
 
 ---
 
@@ -742,6 +760,7 @@ El siguiente esquema puede utilizarse para inicializar o reconstruir `project/pr
 | Laboratorio disponible | [estado] |
 | Plataforma local desplegada | [estado] |
 | Contenido formativo generado | [estado] |
+| Framework de generación | [estado] |
 | Siguiente incremento permitido | `[acción]` |
 
 # Fase actual
@@ -761,6 +780,10 @@ El siguiente esquema puede utilizarse para inicializar o reconstruir `project/pr
 [estado]
 
 # Herramientas y versiones
+
+[inventario]
+
+# Componentes de clúster
 
 [inventario]
 
