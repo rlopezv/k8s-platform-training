@@ -8,10 +8,10 @@ El repositorio es la fuente unica de verdad. No dependas del historial de conver
 
 ## Estado Actual
 
-Segun `project/project-state.md`, el proyecto tiene generadas, validadas y aprobadas las Unidades 00-07, cerro el saneamiento documental contra el contrato de `student-reference.md`, cerro funcionalmente `TD-023` en la Unidad 04 y preparo el framework minimo para componentes de cluster. El siguiente incremento permitido es:
+Segun `project/project-state.md`, el proyecto tiene generadas, validadas y aprobadas las Unidades 00-07, cerro el saneamiento documental contra el contrato de `student-reference.md`, cerro funcionalmente `TD-023` en la Unidad 04, preparo el framework minimo para componentes de cluster y aprobo el playbook especifico de la Unidad 08. El siguiente incremento permitido es:
 
 ```text
-Generar el playbook de la Unidad 08 - Integracion continua con Tekton
+Generar la Unidad 08 - Integracion continua con Tekton
 ```
 
 Estado verificable actual:
@@ -79,9 +79,9 @@ No resuelvas contradicciones relevantes en silencio. Identifica la contradiccion
 
 ## Restricciones Activas
 
-Durante la generacion del playbook de Unidad 08, no debes:
+Durante la generacion de la Unidad 08, no debes:
 
-- instalar Tekton ni crear recursos Tekton antes de que el playbook especifico de Unidad 08 este aprobado;
+- instalar Tekton ni crear recursos Tekton fuera del alcance aprobado por el playbook especifico de Unidad 08;
 - instalar o configurar Argo CD, Prometheus, Grafana, Loki, Tempo, OpenTelemetry, KEDA, AKS o EKS antes de sus unidades propietarias;
 - fijar versiones de componentes de cluster de memoria; deben verificarse contra fuentes oficiales al generar la unidad;
 - omitir la clasificacion de cobertura como practica, criterio o diferido;
@@ -93,7 +93,7 @@ Durante la generacion del playbook de Unidad 08, no debes:
 - guardar credenciales reales, tokens, kubeconfigs, claves privadas, credenciales de proxy, certificados o secretos corporativos;
 - introducir Minikube, kind o Docker Desktop Kubernetes como plataforma paralela.
 
-La Unidad 08, cuando exista su playbook aprobado, si podra:
+La Unidad 08, con su playbook aprobado, si podra:
 
 - instalar Tekton Pipelines como componente de cluster con version fija verificada;
 - crear Tasks, Pipelines, Workspaces, Params, Results y PipelineRuns segun el alcance aprobado;

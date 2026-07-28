@@ -379,11 +379,11 @@ El repositorio dispone de:
 - roadmap;
 - playbook maestro;
 - plantillas comunes;
-- playbooks de las Unidades 00, 01, 02, 03, 04, 05 y 06;
-- contenido y laboratorios de las Unidades 00, 01, 02, 03, 04 y 05;
+- playbooks de las Unidades 00, 01, 02, 03, 04, 05, 06, 07 y 08;
+- contenido formativo y laboratorios de las Unidades 00, 01, 02, 03, 04, 05, 06 y 07;
 - procedimiento de generación de handoffs.
 
-El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es generar el playbook de la **Unidad 08 — Integración continua con Tekton**.
+El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es generar la **Unidad 08 — Integración continua con Tekton** respetando su playbook aprobado.
 
 El Framework V1 ya ha validado:
 

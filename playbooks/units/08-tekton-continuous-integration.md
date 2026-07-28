@@ -23,7 +23,7 @@ Fase 4 - Entrega continua y GitOps
 ### Estado del playbook
 
 ```text
-Borrador generado; pendiente de revision y aprobacion del usuario
+Aprobado
 ```
 
 ### Propietario logico
@@ -130,8 +130,8 @@ Al completar la unidad, el alumno debera ser capaz de:
 
 ## Excluido
 
-- instalacion de Tekton antes de aprobar este playbook;
-- creacion de recursos ejecutables de Unidad 08 antes de aprobar este playbook;
+- instalacion de Tekton fuera del alcance aprobado de la Unidad 08;
+- creacion de recursos ejecutables de Unidad 08 fuera del alcance aprobado de la unidad;
 - Argo CD, GitOps y reconciliacion continua;
 - Tekton Triggers, EventListeners, TriggerTemplates y webhooks reales;
 - Tekton Chains, firma, attestations, provenance y SBOM;
@@ -291,10 +291,10 @@ Ninguna. La Unidad 07 existe y deja `tutorial/07-local-terraform-automation/summ
 | Terraform | CLI disponible y proyecto de Unidad 07 validable | `terraform version` y `terraform -chdir=labs/07-local-terraform-automation/terraform validate` |
 | Chart `platform-api` | Disponible | `test -f labs/06-helm-packaging/chart/platform-api/Chart.yaml` |
 | Proyecto Terraform Unidad 07 | Disponible | `test -f labs/07-local-terraform-automation/terraform/main.tf` |
-| Tekton Pipelines | No instalado antes de aprobar el playbook | `kubectl get namespace tekton-pipelines` debe fallar o quedar documentado como no incorporado antes de la unidad |
+| Tekton Pipelines | No incorporado antes de generar la unidad | `kubectl get namespace tekton-pipelines` debe fallar o quedar documentado como no incorporado antes de la unidad |
 | Version Tekton | LTS vigente verificada contra fuente oficial antes de fijar artefactos | Documentacion oficial de Tekton y release oficial versionado |
 
-Durante la generacion de este playbook no se instala Tekton ni se crean recursos ejecutables de Unidad 08.
+Durante la generacion del playbook no se instalo Tekton ni se crearon recursos ejecutables de Unidad 08.
 
 ## Dependencias pedagogicas
 
@@ -336,12 +336,12 @@ Estado verificable esperado:
 - `labs/07-local-terraform-automation/validation/validate.sh` existe;
 - `platform/tools/README.md` contiene la fila de Tekton Pipelines como componente pendiente de Unidad 08;
 - no existe contenido versionado en `tutorial/08-tekton-continuous-integration/` ni `labs/08-tekton-continuous-integration/` antes de generar la unidad;
-- no se han creado recursos Tekton de Unidad 08 antes de aprobar este playbook;
+- no se han creado recursos Tekton de Unidad 08 antes de generar la unidad;
 - los secretos versionados son ficticios y no se introducen credenciales reales.
 
 ## Validacion del estado inicial
 
-Comprobaciones documentales y estaticas permitidas antes de aprobar este playbook:
+Comprobaciones documentales y estaticas permitidas antes de generar la unidad:
 
 ```bash
 test -f tutorial/07-local-terraform-automation/summary.md
@@ -603,7 +603,7 @@ La estructura puede ajustarse durante la generacion si el README del laboratorio
 
 ## Validaciones funcionales
 
-Solo se ejecutan cuando el playbook este aprobado y se genere la unidad:
+Solo se ejecutan al generar la unidad:
 
 - comprobar MicroK8s Ready;
 - instalar Tekton Pipelines con version fija verificada;

@@ -667,12 +667,12 @@ Debe comprobarse que:
 
 El siguiente incremento recomendado vigente se registra en `project/project-state.md`, que debe prevalecer sobre esta sección cuando el itinerario avance.
 
-Tras completar el saneamiento documental de Unidades 00-07, cerrar funcionalmente `TD-023` en Unidad 04 y preparar el framework mínimo para componentes de clúster, el siguiente incremento recomendado es generar el playbook de la **Unidad 08 — Integración continua con Tekton**.
+Tras completar el saneamiento documental de Unidades 00-07, cerrar funcionalmente `TD-023` en Unidad 04, preparar el framework mínimo para componentes de clúster y aprobar el playbook específico de Unidad 08, el siguiente incremento recomendado es generar la **Unidad 08 — Integración continua con Tekton**.
 
 La sesión de Unidad 08 debe:
 
 1. partir del estado consolidado en `project/project-state.md`;
 2. aplicar el reparto de cobertura definido en `playbooks/master.md`: práctica, criterio y diferido;
 3. declarar Tekton Pipelines como componente de clúster de la unidad, usando la convención de `platform/tools/`;
-4. verificar la versión vigente contra documentación oficial al generar el playbook;
-5. no instalar Tekton ni crear recursos ejecutables hasta que el playbook específico esté aprobado.
+4. revalidar la versión vigente contra documentación oficial antes de fijar artefactos, comandos o `platform/tools/README.md`;
+5. instalar Tekton y crear recursos ejecutables solo dentro del alcance aprobado de la Unidad 08.
