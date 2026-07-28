@@ -409,6 +409,7 @@ Esta frontera gobierna el par `student-notes.md` / `student-reference.md`. El `R
 Declarar:
 
 - qué laguna de `project/content-gap-register.md` cubre, con su identificador, o que no cubre ninguna;
+- de qué fuentes versionadas o instrucciones explícitas del usuario procede la lista de cobertura de entrada;
 - qué partes de `student-notes.md` amplía;
 - qué tipos de cobertura aplica: panorama, profundidad, criterio o práctica;
 - cómo se repartió la lista de cobertura de entrada entre práctica, criterio y diferido, y por qué; qué puntos redactados como práctica se reclasificaron a criterio o diferido por no caber en el alcance de la unidad;

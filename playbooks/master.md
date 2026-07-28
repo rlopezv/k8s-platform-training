@@ -187,7 +187,20 @@ La IA deberá definir:
 
 ## Paso 4bis — Clasificar la cobertura
 
-Cuando la unidad parta de una lista de cobertura, la IA deberá clasificar cada punto antes de generar:
+Cuando la unidad parta de una lista de cobertura, la IA deberá clasificar cada punto antes de generar.
+
+La lista de cobertura de entrada solo puede construirse a partir de:
+
+- el alcance y las capacidades previstas en `project/roadmap.md`;
+- el estado, restricciones, decisiones, lagunas y siguiente incremento permitido en `project/project-state.md`;
+- la continuidad declarada en el `summary.md` de la unidad anterior;
+- `project/content-gap-register.md`, cuando asigne una laguna o continuidad a la unidad;
+- `project/advanced-labs-register.md`, cuando exista un candidato relacionado;
+- instrucciones explícitas del usuario para la sesión, siempre que queden incorporadas al playbook o al estado si condicionan el resultado.
+
+Los documentos privados o auxiliares, como `.work/detail.md`, pueden usarse como checklist de trabajo, pero no son fuente de verdad. Si un punto de un documento auxiliar condiciona la unidad, deberá trazarse hacia una de las fuentes anteriores o declararse como entrada explícita del usuario antes de entrar en el playbook.
+
+Cada punto se clasifica como:
 
 - **práctica**: se ejecuta en el laboratorio de esta unidad. Va al alcance incluido y a los procedimientos.
 - **criterio**: se explica en `student-reference.md` pero no se ejecuta. Va a las declaraciones de cobertura de la referencia.
