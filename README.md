@@ -369,19 +369,7 @@ Los ejemplos utilizarán placeholders, secretos locales ignorados por Git o meca
 
 La fase de **Bootstrap** está completada y el **Framework V1** está cerrado.
 
-El repositorio dispone de:
-
-- estructura base;
-- arquitectura;
-- planificación;
-- mecanismo operativo;
-- estado consolidado;
-- roadmap;
-- playbook maestro;
-- plantillas comunes;
-- playbooks de las Unidades 00, 01, 02, 03, 04, 05, 06, 07 y 08;
-- contenido formativo y laboratorios de las Unidades 00, 01, 02, 03, 04, 05, 06 y 07;
-- procedimiento de generación de handoffs.
+El repositorio dispone de documentos de gobierno, playbooks versionados, contenido formativo, laboratorios acumulativos, catálogo de componentes de clúster, validaciones técnicas y procedimiento de generación de handoffs.
 
 El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es generar la **Unidad 08 — Integración continua con Tekton** respetando su playbook aprobado.
 

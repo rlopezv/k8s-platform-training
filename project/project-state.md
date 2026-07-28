@@ -23,14 +23,14 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 | Campo | Estado |
 |---|---|
 | Fase actual | Playbook de Unidad 08 aprobado; plan temporal de saneamiento retirado |
-| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 completada, aprobada y auditada con `TD-022`; fase 5 `TD-023` ejecutada, validada funcionalmente y aprobada; framework extendido mínimamente para componentes de clúster y reparto de cobertura; playbook de Unidad 08 generado y aprobado sin instalar Tekton; `project/coverage-map.md` institucionalizado como mapa versionado de cobertura candidata; plan temporal de saneamiento documental retirado |
-| Último incremento completado | Retirada del plan temporal de saneamiento documental |
+| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 completada, aprobada y auditada con `TD-022`; fase 5 `TD-023` ejecutada, validada funcionalmente y aprobada; framework extendido mínimamente para componentes de clúster y reparto de cobertura; playbook de Unidad 08 generado y aprobado sin instalar Tekton; `project/coverage-map.md` institucionalizado como mapa versionado de cobertura candidata; plan temporal de saneamiento documental retirado; validación automática de gobierno incorporada |
+| Último incremento completado | Alineación del gobierno tras aprobar el playbook de Unidad 08 e incorporación de `project/validation/validate-governance.sh` |
 | Unidad activa | 08 — Integración continua con Tekton, playbook aprobado; unidad pendiente de generar |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
-| Framework de generación | Framework V1 validado; Framework V2 didactico simplificado; Framework V3 documental incorpora `student-reference.md` obligatorio y plantilla global; Framework V4 mínimo declara componentes de clúster, `platform/tools/` y clasificación práctica/criterio/diferido |
+| Framework de generación | Framework V1 validado; Framework V2 didactico simplificado; Framework V3 documental incorpora `student-reference.md` obligatorio y plantilla global; Framework V4 mínimo declara componentes de clúster, `platform/tools/` y clasificación práctica/criterio/diferido; validación automática de gobierno disponible |
 | Siguiente incremento permitido | Generar la Unidad 08 respetando el playbook aprobado |
 
 ---
@@ -101,6 +101,8 @@ El 2026-07-28 se institucionalizó `project/coverage-map.md` como mapa versionad
 
 El 2026-07-28 se retiró el plan temporal de saneamiento documental de Unidades 00-07 tras quedar completado, auditado y aprobado el proceso. Su rastro permanece consolidado en este archivo, en los resúmenes de unidad y en el historial de incrementos. Las referencias activas al plan temporal se sustituyeron por `project/project-state.md` como estado consolidado.
 
+El 2026-07-28 se alineó el gobierno del repositorio tras confirmar la aprobación del playbook de Unidad 08. Se actualizó el estado del playbook a `Aprobado`, se corrigieron referencias operativas obsoletas en `README.md`, `project/project-planning.md`, `AGENTS.md` y este archivo, y se incorporó `project/validation/validate-governance.sh` como validación automática para detectar contradicciones entre estado consolidado, documentos de arranque, playbooks y registros auxiliares. La causa identificada fue una promoción parcial de `project/project-state.md` a "playbook aprobado" en un incremento posterior a la generación del playbook, sin propagar la aprobación al playbook ni a los documentos de entrada.
+
 El 2026-07-22 se estableció `student-reference.md` como entregable obligatorio para todas las unidades y se creó `playbooks/student-reference-template.md` como plantilla global. En el mismo incremento se generó `tutorial/01-kubernetes/student-reference.md` para cubrir el mapa profesional de workloads de Kubernetes: `Pod`, `ReplicaSet`, `Deployment`, `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, sin cambiar manifiestos, scripts, laboratorio ni estado técnico del clúster. Las Unidades 02, 03, 04 y 05 quedaron inicialmente pendientes de backfill documental porque fueron generadas antes de que `student-reference.md` fuese obligatorio; ese backfill quedó completado posteriormente.
 
 El 2026-07-22 se generó `tutorial/02-configuration-lifecycle/student-reference.md` como backfill documental de la Unidad 02. La referencia cubre configuración como contrato, límites de `Secret`, variables y volúmenes de configuración, probes, requests, limits, QoS, coste y continuidad hacia Helm, GitOps, seguridad, escalado y cloud. No cambia manifiestos, scripts, laboratorios ni estado técnico del clúster. La referencia fue ajustada y aprobada específicamente durante el saneamiento documental de la Unidad 02 el 2026-07-27.
@@ -133,16 +135,17 @@ Todavía no se permite:
 
 | Artefacto | Estado | Última modificación relevante | Responsabilidad |
 |---|---|---|---|
-| `README.md` | Actualizado | Framework-V4-Governance-Consistency | Punto de entrada y visión general; refleja `student-notes.md`, `student-reference.md`, `platform/tools/` y siguiente incremento de Unidad 08 |
-| `project/architecture.md` | Actualizado | Framework-V4-Governance-Consistency | Arquitectura y decisiones estructurales; registra `playbooks/student-reference-template.md`, `project/content-gap-register.md`, `project/advanced-labs-register.md` y `platform/tools/` |
-| `project/project-state.md` | Actualizado | Retire-Documentation-Cleanup-Plan | Estado consolidado; registra Framework V4 mínimo, restricciones localizadas, `project/coverage-map.md`, retirada del plan temporal y siguiente incremento permitido |
+| `README.md` | Actualizado | Unit-08-Governance-Validation | Punto de entrada y visión general; reduce duplicación de estado vivo y remite a `project/project-state.md` |
+| `project/architecture.md` | Actualizado | Unit-08-Governance-Validation | Arquitectura y decisiones estructurales; registra `playbooks/student-reference-template.md`, `project/content-gap-register.md`, `project/advanced-labs-register.md`, `project/validation/` y `platform/tools/` |
+| `project/project-state.md` | Actualizado | Unit-08-Governance-Validation | Estado consolidado; registra Framework V4 mínimo, restricciones localizadas, `project/coverage-map.md`, retirada del plan temporal, validación automática de gobierno y siguiente incremento permitido |
 | `project/content-gap-register.md` | Actualizado | Unit-08-Playbook | Registro ligero de lagunas; `GAP-004` reclasifica `Job`/`CronJob` como criterio comparativo de Unidad 08 y práctica diferida a Unidad 23 |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
 | `project/coverage-map.md` | Institucionalizado | Coverage-Map-Institutionalization | Mapa versionado de cobertura candidata; aporta granularidad y checklist de reparto subordinado al roadmap, estado y playbooks |
 | `project/advanced-labs-register.md` | Versionado | Unit-08-Playbook | Registro de candidatos a laboratorios avanzados derivados del reparto de cobertura; no es plan de trabajo |
 | `project/project-planning.md` | Actualizado | Unit-08-Governance-Alignment | Planificación incremental del trabajo; remite al estado consolidado y reconoce que el siguiente incremento es generar la Unidad 08 desde su playbook aprobado |
-| `project/how-to.md` | Actualizado | Unit-01-Review-Flow | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario |
-| `playbooks/master.md` | Actualizado | Framework-V4-Coverage-Sources | Reglas globales; declara frontera entre notas y referencia, fuentes válidas de cobertura, clasificación de cobertura, componentes de clúster y criterios de bloqueo asociados |
+| `project/how-to.md` | Actualizado | Unit-08-Governance-Validation | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario y añade validación automática de gobierno antes del handoff |
+| `project/validation/validate-governance.sh` | Nuevo | Unit-08-Governance-Validation | Validación automática de consistencia entre estado consolidado, documentos de arranque, playbook de Unidad 08 y registros auxiliares |
+| `playbooks/master.md` | Actualizado | Unit-08-Governance-Validation | Reglas globales; declara frontera entre notas y referencia, fuentes válidas de cobertura, clasificación de cobertura, componentes de clúster, criterios de bloqueo y ejecución del validador de gobierno cuando aplique |
 | `playbooks/unit-template.md` | Actualizado | Framework-V4-Coverage-Sources | Plantilla de playbooks específicos; exige declarar fuentes de cobertura, reparto, frontera de `student-reference.md` y componentes de clúster |
 | `playbooks/student-reference-template.md` | Actualizado | Documentary-Contract-Phase-2 | Plantilla global para referencias profesionales del alumno; define estructura canónica y obligaciones comprobables |
 | `playbooks/summary-template.md` | Actualizado | Student-Reference-Mandatory | Contrato de continuidad; registra `student-reference.md` como entregable obligatorio |
@@ -1265,6 +1268,7 @@ Validaciones no disponibles en esta sesión:
 | 83 | Playbook Unidad 08 | Documental aprobado | El 2026-07-28 se genera y aprueba `playbooks/units/08-tekton-continuous-integration.md` como playbook de Unidad 08. La sección 08 de `project/coverage-map.md` se reparte como práctica, criterio, diferido y candidato avanzado; se fija que Unidad 08 ejecuta `terraform plan` pero no `terraform apply`; tras revisión del usuario, `Job`/`CronJob` queda como criterio comparativo en Unidad 08 y práctica diferida a Unidad 23; se registran `LAB-08-01` y `LAB-08-02` en `project/advanced-labs-register.md`. No se instala Tekton ni se crean recursos ejecutables durante el playbook |
 | 84 | Institucionalización del mapa de cobertura | Documental | Se mueve el checklist privado de cobertura a `project/coverage-map.md`, se añade cabecera de propósito, se actualizan referencias hacia `project/coverage-map.md`, y `playbooks/master.md`/`playbooks/unit-template.md` lo reconocen como mapa versionado subordinado al roadmap, estado y playbooks específicos |
 | 85 | Retirada del plan temporal de saneamiento | Documental | Se elimina el plan temporal de saneamiento documental tras completarse y aprobarse las fases 00-07, `TD-022` y `TD-023`; su rastro queda consolidado en `project/project-state.md`, summaries e historial de incrementos. El playbook de Unidad 08 queda aprobado y el siguiente incremento permitido pasa a ser generar la Unidad 08 |
+| 86 | Validación automática de gobierno | Documental validado | Se alinean `README.md`, `AGENTS.md`, `project/project-planning.md`, `project/project-state.md` y `playbooks/units/08-tekton-continuous-integration.md` con la aprobación del playbook de Unidad 08; se normaliza `Estado del playbook` en Unidades 00-08 a valores enumerados; se crea `project/validation/validate-governance.sh`; `project/architecture.md`, `project/how-to.md` y `playbooks/master.md` registran su uso; la validación automática se ejecuta correctamente |
 
 ---
 
@@ -1305,7 +1309,7 @@ Se conserva la lista vigente, con la adición de las restricciones activas de es
 
 Este documento deberá actualizarse:
 
-1. al generar el playbook de la siguiente unidad permitida;
+1. al generar o aprobar el playbook de la siguiente unidad permitida;
 2. al iniciar formalmente una nueva unidad;
 3. después de generar artefactos;
 4. después de recibir resultados reales de validación;

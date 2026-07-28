@@ -958,6 +958,7 @@ Esto exige que:
 - el resumen de la unidad esté completo;
 - las limitaciones estén registradas;
 - el siguiente paso esté identificado;
+- `bash project/validation/validate-governance.sh` se haya ejecutado cuando exista y el incremento cambie estado, siguiente paso permitido o gobierno documental;
 - no existan decisiones relevantes únicamente en el chat.
 
 ---

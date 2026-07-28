@@ -23,7 +23,7 @@ Fase 1 - Plataforma local
 ### Estado del playbook
 
 ```text
-Aprobado; regenerado contra el contrato documental en fase 4
+Aprobado
 ```
 
 ### Propietario lógico

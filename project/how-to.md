@@ -708,9 +708,10 @@ Comienza revisando la consistencia del paquete de contexto.
 1. Confirmar que `project-state.md` está actualizado.
 2. Confirmar que el resumen activo está actualizado.
 3. Definir el objetivo de la siguiente sesión.
-4. Ejecutar `playbooks/generate-session-handoff.md`.
-5. Revisar que el handoff no incluya información obsoleta.
-6. Utilizarlo como entrada de la nueva conversación.
+4. Ejecutar `bash project/validation/validate-governance.sh` cuando exista.
+5. Ejecutar `playbooks/generate-session-handoff.md`.
+6. Revisar que el handoff no incluya información obsoleta.
+7. Utilizarlo como entrada de la nueva conversación.
 
 ---
 

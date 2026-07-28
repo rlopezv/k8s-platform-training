@@ -248,6 +248,12 @@ Mapa versionado de cobertura candidata. Aporta granularidad técnica y profundid
 
 Cada punto del mapa debe repartirse contra el alcance real de la unidad como práctica, criterio, diferido, candidato a laboratorio avanzado o fuera del itinerario. El mapa no puede ampliar por sí solo el alcance ejecutable de una unidad ni imponer estructura documental.
 
+### `project/validation/`
+
+Contiene validaciones automáticas de gobierno del repositorio.
+
+Estas validaciones comprueban coherencia entre estado consolidado, documentos de arranque, playbooks y registros auxiliares. No sustituyen la revisión de contenido ni la validación funcional de los laboratorios, pero deben ejecutarse antes de cerrar incrementos que cambien estado, siguiente trabajo permitido o gobierno documental.
+
 ### `project/roadmap.md`
 
 Define la evolución prevista del itinerario.
