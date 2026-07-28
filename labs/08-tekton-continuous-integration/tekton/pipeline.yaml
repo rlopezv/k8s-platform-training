@@ -1,0 +1,106 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: platform-api-ci
+  namespace: platform-training
+  labels:
+    app.kubernetes.io/part-of: k8s-platform-training
+    training.k8s-platform.io/unit: "08"
+spec:
+  params:
+    - name: source_configmap
+      type: string
+      default: platform-api-ci-source
+    - name: target_namespace
+      type: string
+      default: platform-training
+    - name: release_name
+      type: string
+      default: platform-api-local
+    - name: chart_path
+      type: string
+      default: labs/06-helm-packaging/chart/platform-api
+    - name: terraform_dir
+      type: string
+      default: labs/07-local-terraform-automation/terraform
+    - name: execution_mode
+      type: string
+      default: plan
+  workspaces:
+    - name: shared-source
+  results:
+    - name: source-revision
+      value: $(tasks.prepare-source.results.source-revision)
+    - name: checked-files
+      value: $(tasks.repository-preflight.results.checked-files)
+    - name: helm-status
+      value: $(tasks.helm-validate.results.helm-status)
+    - name: terraform-plan-summary
+      value: $(tasks.terraform-plan.results.plan-summary)
+  tasks:
+    - name: prepare-source
+      taskRef:
+        name: platform-api-prepare-source
+      params:
+        - name: source_configmap
+          value: $(params.source_configmap)
+        - name: target_namespace
+          value: $(params.target_namespace)
+      workspaces:
+        - name: source
+          workspace: shared-source
+    - name: repository-preflight
+      runAfter:
+        - prepare-source
+      taskRef:
+        name: platform-api-repository-preflight
+      params:
+        - name: chart_path
+          value: $(params.chart_path)
+        - name: terraform_dir
+          value: $(params.terraform_dir)
+      workspaces:
+        - name: source
+          workspace: shared-source
+    - name: helm-validate
+      runAfter:
+        - repository-preflight
+      taskRef:
+        name: platform-api-helm-validate
+      params:
+        - name: release_name
+          value: $(params.release_name)
+        - name: target_namespace
+          value: $(params.target_namespace)
+        - name: chart_path
+          value: $(params.chart_path)
+      workspaces:
+        - name: source
+          workspace: shared-source
+    - name: terraform-plan
+      runAfter:
+        - helm-validate
+      when:
+        - input: $(params.execution_mode)
+          operator: in
+          values: ["plan"]
+      taskRef:
+        name: platform-api-terraform-plan
+      params:
+        - name: terraform_dir
+          value: $(params.terraform_dir)
+      workspaces:
+        - name: source
+          workspace: shared-source
+    - name: apply-blocked
+      runAfter:
+        - repository-preflight
+      when:
+        - input: $(params.execution_mode)
+          operator: in
+          values: ["apply"]
+      taskRef:
+        name: platform-api-apply-blocked
+      params:
+        - name: execution_mode
+          value: $(params.execution_mode)

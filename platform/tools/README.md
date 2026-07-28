@@ -17,7 +17,7 @@ El catálogo provee la referencia de instalación. La decisión de instalar, cu�
 
 | Componente | Unidad | Método oficial | Versión | Namespace | Persiste | Estado |
 |---|---|---|---|---|---|---|
-| Tekton Pipelines | 08 | `kubectl apply -f` del `release.yaml` versionado | LTS vigente; verificar en `tekton.dev` al generar la Unidad 08 | `tekton-pipelines` | Sí, hacia Unidades 09-10 | Pendiente de generar la Unidad 08 |
+| Tekton Pipelines | 08 | `kubectl apply -f https://infra.tekton.dev/tekton-releases/pipeline/previous/v1.12.2/release.yaml` | `v1.12.2` LTS, verificada el 2026-07-28 contra fuentes oficiales de Tekton; soportada hasta mayo de 2027 | `tekton-pipelines` | Sí, hacia Unidades 09-10 | Manifiesto aplicado; CRDs presentes; controladores no `Available` por error Calico `ClusterInformation: connection is unauthorized` |
 | Argo CD | 09 | Por definir al generar la Unidad 09 | Por definir | Por definir | Por definir | Esperado |
 | Prometheus | 11 | Por definir al generar la Unidad 11 | Por definir | Por definir | Por definir | Esperado |
 | Grafana | 12 | Por definir al generar la Unidad 12 | Por definir | Por definir | Por definir | Esperado |
@@ -31,3 +31,17 @@ Las filas marcadas `Por definir` se completan al generar su unidad, con datos ve
 Los CLIs locales, como Helm, Terraform y `kubectl`, no son componentes de clúster. Viven en `platform/environment/tools/` y se instalan en la Unidad 00.
 
 El operador de Tekton, Argo CD u otros no es la vía de instalación de este curso salvo decisión explícita posterior. La gestión mediante operador es criterio de referencia y candidata a laboratorio avanzado, no la vía del tronco.
+
+## Limpieza de Tekton Pipelines
+
+La Unidad 08 documenta la limpieza precisa de recursos de laboratorio en:
+
+```text
+labs/08-tekton-continuous-integration/README.md
+```
+
+La retirada completa del componente, cuando el instructor decida no conservarlo hacia Unidades 09-10, utiliza el mismo manifiesto oficial versionado:
+
+```bash
+kubectl delete -f https://infra.tekton.dev/tekton-releases/pipeline/previous/v1.12.2/release.yaml
+```

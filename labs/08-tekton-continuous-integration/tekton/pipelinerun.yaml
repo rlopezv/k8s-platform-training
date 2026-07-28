@@ -1,0 +1,39 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: platform-api-ci-run
+  namespace: platform-training
+  labels:
+    app.kubernetes.io/part-of: k8s-platform-training
+    training.k8s-platform.io/unit: "08"
+spec:
+  serviceAccountName: platform-api-ci
+  pipelineRef:
+    name: platform-api-ci
+  params:
+    - name: source_configmap
+      value: platform-api-ci-source
+    - name: target_namespace
+      value: platform-training
+    - name: release_name
+      value: platform-api-local
+    - name: chart_path
+      value: labs/06-helm-packaging/chart/platform-api
+    - name: terraform_dir
+      value: labs/07-local-terraform-automation/terraform
+    - name: execution_mode
+      value: plan
+  workspaces:
+    - name: shared-source
+      volumeClaimTemplate:
+        metadata:
+          labels:
+            app.kubernetes.io/part-of: k8s-platform-training
+            training.k8s-platform.io/unit: "08"
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          storageClassName: microk8s-hostpath
+          resources:
+            requests:
+              storage: 1Gi

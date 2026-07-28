@@ -128,8 +128,15 @@ if [ "$failures" -eq 0 ]; then
     not_contains_any "$README_FILE" "generar el playbook de la **Unidad 08"
     not_contains_any "$PLANNING_FILE" "generar el playbook de la **Unidad 08"
     not_contains_any "$AGENTS_FILE" "Generar el playbook de la Unidad 08"
+  elif contains "$STATE_FILE" "Siguiente incremento permitido | Revisar y validar funcionalmente la Unidad 08"; then
+    check PASS "next increment" "$STATE_FILE authorizes reviewing and validating generated Unit 08"
+    if [ -f "$TUTORIAL08_DIR/summary.md" ] && [ -f "$LAB08_DIR/README.md" ]; then
+      check PASS "unit 08 generated artifacts" "$TUTORIAL08_DIR and $LAB08_DIR exist"
+    else
+      check FAIL "unit 08 generated artifacts" "Unit 08 state is generated but tutorial or lab artifacts are missing"
+    fi
   else
-    check WARN "next increment" "$STATE_FILE does not currently authorize generating Unit 08"
+    check WARN "next increment" "$STATE_FILE does not declare a recognized Unit 08 next increment"
   fi
 
   not_contains_any "$STATE_FILE" \

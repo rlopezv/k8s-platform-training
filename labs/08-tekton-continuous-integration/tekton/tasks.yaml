@@ -1,0 +1,162 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: platform-api-prepare-source
+  namespace: platform-training
+  labels:
+    app.kubernetes.io/part-of: k8s-platform-training
+    training.k8s-platform.io/unit: "08"
+spec:
+  params:
+    - name: source_configmap
+      type: string
+    - name: target_namespace
+      type: string
+  workspaces:
+    - name: source
+  results:
+    - name: source-revision
+      description: Identificador no sensible de la fuente usada por la ejecucion.
+  steps:
+    - name: unpack
+      image: docker.io/bitnami/kubectl:1.31.4
+      script: |
+        #!/bin/sh
+        set -eu
+        rm -rf "$(workspaces.source.path)"/*
+        encoded="$(kubectl -n "$(params.target_namespace)" get configmap "$(params.source_configmap)" -o jsonpath='{.binaryData.source\.tar\.gz}')"
+        if [ -z "$encoded" ]; then
+          encoded="$(kubectl -n "$(params.target_namespace)" get configmap "$(params.source_configmap)" -o jsonpath='{.data.source\.tar\.gz}')"
+        fi
+        if [ -z "$encoded" ]; then
+          echo "source bundle not found in ConfigMap $(params.source_configmap)" >&2
+          exit 1
+        fi
+        echo "$encoded" | base64 -d > /tmp/source.tar.gz
+        tar -xzf /tmp/source.tar.gz -C "$(workspaces.source.path)"
+        printf 'local-configmap:%s\n' "$(params.source_configmap)" > "$(results.source-revision.path)"
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: platform-api-repository-preflight
+  namespace: platform-training
+  labels:
+    app.kubernetes.io/part-of: k8s-platform-training
+    training.k8s-platform.io/unit: "08"
+spec:
+  params:
+    - name: chart_path
+      type: string
+    - name: terraform_dir
+      type: string
+  workspaces:
+    - name: source
+  results:
+    - name: checked-files
+      description: Numero de artefactos principales encontrados.
+  steps:
+    - name: check-files
+      image: docker.io/library/alpine:3.20
+      script: |
+        #!/bin/sh
+        set -eu
+        cd "$(workspaces.source.path)"
+        count=0
+        for file in \
+          "$(params.chart_path)/Chart.yaml" \
+          "$(params.chart_path)/values.yaml" \
+          "$(params.terraform_dir)/versions.tf" \
+          "$(params.terraform_dir)/providers.tf" \
+          "$(params.terraform_dir)/main.tf" \
+          "$(params.terraform_dir)/terraform.tfvars.example"
+        do
+          test -f "$file"
+          count=$((count + 1))
+        done
+        printf '%s\n' "$count" > "$(results.checked-files.path)"
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: platform-api-helm-validate
+  namespace: platform-training
+  labels:
+    app.kubernetes.io/part-of: k8s-platform-training
+    training.k8s-platform.io/unit: "08"
+spec:
+  params:
+    - name: release_name
+      type: string
+    - name: target_namespace
+      type: string
+    - name: chart_path
+      type: string
+  workspaces:
+    - name: source
+  results:
+    - name: helm-status
+      description: Resultado resumido de la validacion Helm.
+  steps:
+    - name: helm-lint-template
+      image: docker.io/alpine/helm:3.17.3
+      script: |
+        #!/bin/sh
+        set -eu
+        cd "$(workspaces.source.path)"
+        helm lint "$(params.chart_path)"
+        helm template "$(params.release_name)" "$(params.chart_path)" --namespace "$(params.target_namespace)" -f "$(params.chart_path)/values-local.yaml" >/tmp/platform-api-rendered.yaml
+        printf 'helm-ok\n' > "$(results.helm-status.path)"
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: platform-api-terraform-plan
+  namespace: platform-training
+  labels:
+    app.kubernetes.io/part-of: k8s-platform-training
+    training.k8s-platform.io/unit: "08"
+spec:
+  params:
+    - name: terraform_dir
+      type: string
+  workspaces:
+    - name: source
+  results:
+    - name: plan-summary
+      description: Resultado resumido del plan Terraform no mutante.
+  steps:
+    - name: terraform-plan
+      image: docker.io/hashicorp/terraform:1.15.7
+      script: |
+        #!/bin/sh
+        set -eu
+        cd "$(workspaces.source.path)/$(params.terraform_dir)"
+        terraform fmt -check -recursive
+        terraform init -backend=false
+        terraform validate
+        terraform plan -refresh=false -var-file=terraform.tfvars.example -out=/tmp/platform-api-ci.tfplan
+        terraform show -no-color /tmp/platform-api-ci.tfplan | sed -n '1,40p' >/tmp/platform-api-ci-plan.txt
+        printf 'terraform-plan-ok\n' > "$(results.plan-summary.path)"
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: platform-api-apply-blocked
+  namespace: platform-training
+  labels:
+    app.kubernetes.io/part-of: k8s-platform-training
+    training.k8s-platform.io/unit: "08"
+spec:
+  params:
+    - name: execution_mode
+      type: string
+  steps:
+    - name: explain
+      image: docker.io/library/alpine:3.20
+      script: |
+        #!/bin/sh
+        set -eu
+        echo "execution_mode=$(params.execution_mode) solicita una accion mutante."
+        echo "La Unidad 08 bloquea acciones mutantes desde Tekton; use execution_mode=plan."
+        exit 1

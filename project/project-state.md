@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Playbook de Unidad 08 aprobado; plan temporal de saneamiento retirado |
-| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 completada, aprobada y auditada con `TD-022`; fase 5 `TD-023` ejecutada, validada funcionalmente y aprobada; framework extendido mínimamente para componentes de clúster y reparto de cobertura; playbook de Unidad 08 generado y aprobado sin instalar Tekton; `project/coverage-map.md` institucionalizado como mapa versionado de cobertura candidata; plan temporal de saneamiento documental retirado; validación automática de gobierno incorporada; interacción previa obligatoria para cerrar nuevos playbooks de unidad |
-| Último incremento completado | Incorporación de interacción previa obligatoria para cerrar playbooks de unidad |
-| Unidad activa | 08 — Integración continua con Tekton, playbook aprobado; unidad pendiente de generar |
+| Fase actual | Unidad 08 generada; Tekton aplicado parcialmente; validación funcional bloqueada por CNI y revisión pedagógica pendiente |
+| Estado general | Unidades 00-07 completadas y aprobadas; Unidad 08 generada con tutorial, referencia, laboratorio Tekton, manifests, validación estática/funcional opcional y catálogo actualizado; Tekton Pipelines fijado en `v1.12.2` LTS verificado contra fuentes oficiales; el manifiesto oficial se aplicó y los CRDs están presentes, pero los controladores no llegan a `Available` porque Calico falla con `ClusterInformation: connection is unauthorized`; no se creó PipelineRun funcional, no se instaló Argo CD ni se creó `terraform apply` desde CI |
+| Último incremento completado | Generación de la Unidad 08 - Integración continua con Tekton |
+| Unidad activa | 08 — Integración continua con Tekton, generada; validación funcional bloqueada por Calico y aprobación del usuario pendiente |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
-| Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
+| Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06, 07 y 08 |
 | Framework de generación | Framework V1 validado; Framework V2 didactico simplificado; Framework V3 documental incorpora `student-reference.md` obligatorio y plantilla global; Framework V4 mínimo declara componentes de clúster, `platform/tools/` y clasificación práctica/criterio/diferido; validación automática de gobierno disponible; revisión humana previa del reparto de cobertura exigida para aprobar playbooks |
-| Siguiente incremento permitido | Generar la Unidad 08 respetando el playbook aprobado |
+| Siguiente incremento permitido | Revisar y validar funcionalmente la Unidad 08; tras aprobación, generar el playbook de Unidad 09 |
 
 ---
 
@@ -97,6 +97,8 @@ El 2026-07-27 se implementó, validó y aprobó `TD-023` en la Unidad 04. Se añ
 
 El 2026-07-28 se generó y aprobó `playbooks/units/08-tekton-continuous-integration.md` como playbook específico de la Unidad 08. El playbook reparte la sección `08 | Integración continua con Tekton` de `project/coverage-map.md` como práctica, criterio, diferido y candidato a laboratorio avanzado contra el contrato mínimo del roadmap. El tronco propuesto practica Tekton Pipelines, Tasks, PipelineRuns, Workspaces con `volumeClaimTemplate`, Params, Results, `when`, RBAC local mínimo, validación Helm/Terraform heredada y `terraform plan`; excluye `terraform apply` desde Tekton para dejar ownership, aprobaciones y frontera GitOps a Unidad 09 o posterior. Deja build de imagen, Tekton Triggers y ServiceAccounts corporativas reales fuera del tronco inicial. Tras revisión del usuario, `Job` y `CronJob` quedan reclasificados como criterio comparativo frente a Tekton en Unidad 08 y práctica diferida a Unidad 23, donde encajan con backup, restore, runbooks y validaciones periódicas. Se registran `LAB-08-01` y `LAB-08-02` en `project/advanced-labs-register.md`. No se instaló Tekton ni se crearon recursos ejecutables de Unidad 08 durante la generación del playbook.
 
+El 2026-07-28 se generó la Unidad 08 por instrucción del usuario. La unidad crea `tutorial/08-tekton-continuous-integration/`, `labs/08-tekton-continuous-integration/`, manifests Tekton para `Task`, `Pipeline`, `PipelineRun`, Workspace con `volumeClaimTemplate`, Params, Results, `when`, ServiceAccount y RBAC local mínimo, además de un script idempotente para empaquetar los artefactos heredados en un `ConfigMap` local sin credenciales. La versión de Tekton Pipelines se fijó en `v1.12.2` tras verificar fuentes oficiales el 2026-07-28: `v1.12.2` es el patch seleccionado de la línea LTS `v1.12`, soportada hasta mayo de 2027, y `v1.14.1` era la release general más reciente publicada. El pipeline ejecuta validación Helm y Terraform y `terraform plan -refresh=false`; no ejecuta `terraform apply`, no instala Argo CD, no crea Triggers, no construye imágenes y no introduce credenciales reales. La validación funcional se intentó: el manifiesto oficial de Tekton se aplicó, los CRDs quedaron presentes, pero los controladores no llegaron a `Available` porque los Pods fallaron al crear sandbox con Calico `ClusterInformation: connection is unauthorized`. No se creó `PipelineRun` funcional. La revisión pedagógica del usuario queda pendiente.
+
 El 2026-07-28 se institucionalizó `project/coverage-map.md` como mapa versionado de cobertura candidata del proyecto. Su contenido procede del antiguo checklist privado no versionado, sin cambios de cobertura salvo una cabecera de propósito y límites. Se actualizaron las referencias documentales para apuntar a `project/coverage-map.md`, y `playbooks/master.md` y `playbooks/unit-template.md` declaran que el mapa aporta granularidad para repartir cobertura, pero no prevalece sobre `project/roadmap.md`, `project/project-state.md`, registros de lagunas ni playbooks específicos.
 
 El 2026-07-28 se retiró el plan temporal de saneamiento documental de Unidades 00-07 tras quedar completado, auditado y aprobado el proceso. Su rastro permanece consolidado en este archivo, en los resúmenes de unidad y en el historial de incrementos. Las referencias activas al plan temporal se sustituyeron por `project/project-state.md` como estado consolidado.
@@ -119,12 +121,13 @@ El 2026-07-23 se cerró la fase 3 del saneamiento. Se diagnosticaron los ocho pl
 
 A partir de este estado se permite:
 
-- generar la Unidad 08 - Integración continua con Tekton respetando el playbook aprobado;
-- conservar `labs/07-local-terraform-automation/terraform/` como base técnica para CI/CD.
+- validar funcionalmente la Unidad 08 si MicroK8s, red y permisos locales lo permiten;
+- revisar pedagógicamente la Unidad 08;
+- tras aprobación de la Unidad 08, generar el playbook de Unidad 09 - GitOps con Argo CD;
+- conservar `labs/07-local-terraform-automation/terraform/` y `labs/08-tekton-continuous-integration/tekton/` como base técnica para CI/CD y GitOps.
 
 Todavía no se permite:
 
-- instalar Tekton fuera del alcance aprobado de la Unidad 08;
 - instalar Argo CD;
 - desplegar Prometheus, Grafana, Loki, Tempo u OpenTelemetry;
 - introducir KEDA;
@@ -139,7 +142,7 @@ Todavía no se permite:
 |---|---|---|---|
 | `README.md` | Actualizado | Unit-08-Governance-Validation | Punto de entrada y visión general; reduce duplicación de estado vivo y remite a `project/project-state.md` |
 | `project/architecture.md` | Actualizado | Unit-08-Governance-Validation | Arquitectura y decisiones estructurales; registra `playbooks/student-reference-template.md`, `project/content-gap-register.md`, `project/advanced-labs-register.md`, `project/validation/` y `platform/tools/` |
-| `project/project-state.md` | Actualizado | Unit-08-Governance-Validation | Estado consolidado; registra Framework V4 mínimo, restricciones localizadas, `project/coverage-map.md`, retirada del plan temporal, validación automática de gobierno y siguiente incremento permitido |
+| `project/project-state.md` | Actualizado | Unit-08-Generation | Estado consolidado; registra Unidad 08 generada, Tekton Pipelines `v1.12.2` LTS, validaciones y siguiente incremento permitido |
 | `project/content-gap-register.md` | Actualizado | Unit-08-Playbook | Registro ligero de lagunas; `GAP-004` reclasifica `Job`/`CronJob` como criterio comparativo de Unidad 08 y práctica diferida a Unidad 23 |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
 | `project/coverage-map.md` | Institucionalizado | Coverage-Map-Institutionalization | Mapa versionado de cobertura candidata; aporta granularidad y checklist de reparto subordinado al roadmap, estado y playbooks |
@@ -147,6 +150,7 @@ Todavía no se permite:
 | `project/project-planning.md` | Actualizado | Unit-08-Governance-Alignment | Planificación incremental del trabajo; remite al estado consolidado y reconoce que el siguiente incremento es generar la Unidad 08 desde su playbook aprobado |
 | `project/how-to.md` | Actualizado | Unit-08-Governance-Validation | Mecanismo operativo de trabajo con asistentes de IA; distingue validación técnica de aprobación del usuario y añade validación automática de gobierno antes del handoff |
 | `project/validation/validate-governance.sh` | Nuevo | Unit-08-Governance-Validation | Validación automática de consistencia entre estado consolidado, documentos de arranque, playbook de Unidad 08 y registros auxiliares |
+| `platform/tools/README.md` | Actualizado | Unit-08-Generation | Catálogo de componentes de clúster; registra Tekton Pipelines `v1.12.2` LTS, método oficial, namespace, persistencia y limpieza |
 | `playbooks/master.md` | Actualizado | Unit-Playbook-Coverage-Interaction | Reglas globales; declara frontera entre notas y referencia, fuentes válidas de cobertura, clasificación de cobertura, interacción previa obligatoria para cerrar playbooks, componentes de clúster, criterios de bloqueo y ejecución del validador de gobierno cuando aplique |
 | `playbooks/unit-template.md` | Actualizado | Unit-Playbook-Coverage-Interaction | Plantilla de playbooks específicos; exige declarar fuentes de cobertura, reparto, interacción previa con el usuario, frontera de `student-reference.md` y componentes de clúster |
 | `playbooks/student-reference-template.md` | Actualizado | Documentary-Contract-Phase-2 | Plantilla global para referencias profesionales del alumno; define estructura canónica y obligaciones comprobables |
@@ -354,12 +358,12 @@ Todavía no se permite:
 | Directorio | Estado | Contenido actual |
 |---|---|---|
 | `assets/` | Previsto y materializado | Solo `.gitkeep`; sin artefactos formativos |
-| `labs/` | Materializado con Unidades 01, 02, 03, 04, 05, 06 y 07 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/`, `04-persistence-state/`, `05-scheduling-resilience-maintenance/`, `06-helm-packaging/` y `07-local-terraform-automation/` |
+| `labs/` | Materializado con Unidades 01, 02, 03, 04, 05, 06, 07 y 08 | `.gitkeep`, `01-kubernetes/`, `02-configuration-lifecycle/`, `03-networking-ingress/`, `04-persistence-state/`, `05-scheduling-resilience-maintenance/`, `06-helm-packaging/`, `07-local-terraform-automation/` y `08-tekton-continuous-integration/` |
 | `platform/environment/` | Completo para la Unidad 00 | Scripts de preparación, validación y herramientas base; laboratorio de acompañamiento de imagenes de solo lectura |
-| `platform/tools/` | Catálogo de componentes de clúster preparado para Unidad 08 | README de convención para componentes instalados dentro de Kubernetes; no instala nada por sí mismo |
-| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
+| `platform/tools/` | Catálogo de componentes de clúster actualizado con Tekton Pipelines | README de convención para componentes instalados dentro de Kubernetes; no instala nada por sí mismo |
+| `playbooks/` | Operativo | Framework completo y playbooks de Unidades 00, 01, 02, 03, 04, 05, 06, 07 y 08 |
 | `project/` | Operativo | Arquitectura, estado, roadmap y registro de lagunas de contenido |
-| `tutorial/` | Unidades 00, 01, 02, 03, 04, 05, 06 y 07 generadas | README de entrada, `student-notes.md`, `student-reference.md`, instructor notes y summaries en todas las unidades generadas |
+| `tutorial/` | Unidades 00, 01, 02, 03, 04, 05, 06, 07 y 08 generadas | README de entrada, `student-notes.md`, `student-reference.md`, instructor notes y summaries en todas las unidades generadas |
 
 ---
 
@@ -375,7 +379,8 @@ Todavía no se permite:
 | 05 — Scheduling, resiliencia y mantenimiento | Completada, validada funcionalmente y aprobada pedagogicamente en sus guías del alumno; saneamiento documental de fase 4 aplicado y aprobado | Sí | Sí | Sí | Sí, `labs/05-scheduling-resilience-maintenance/` | Sí | Sí |
 | 06 — Empaquetado con Helm | Completada, validada funcionalmente y aprobada pedagogicamente | Sí | Sí | Sí | Sí, `labs/06-helm-packaging/` | Sí | Sí |
 | 07 — Automatizacion local con Terraform | Completada, validada funcionalmente y aprobada pedagogicamente | Sí | Sí | Sí | Sí, `labs/07-local-terraform-automation/` | Sí | Sí |
-| 08–25 | Previstas en roadmap | No | No | No | No | No | No |
+| 08 — Integración continua con Tekton | Generada; validación funcional bloqueada por Calico y aprobación pendiente | Sí | Sí | Sí | Sí, `labs/08-tekton-continuous-integration/` | Sí | Sí |
+| 09–25 | Previstas en roadmap | No | No | No | No | No | No |
 
 ## Unidad 00 — Preparación del entorno
 
@@ -671,6 +676,45 @@ Limitaciones activas:
 
 ---
 
+## Unidad 08 — Integración continua con Tekton
+
+| Campo | Estado |
+|---|---|
+| Estado | Generada; validación funcional bloqueada por Calico y aprobación pedagógica pendiente |
+| Fecha de inicio | 2026-07-28 |
+| Fecha de cierre | Pendiente |
+| Playbook | `playbooks/units/08-tekton-continuous-integration.md` |
+| Tutorial | `tutorial/08-tekton-continuous-integration/README.md` |
+| Student notes | `tutorial/08-tekton-continuous-integration/student-notes.md` |
+| Student reference | `tutorial/08-tekton-continuous-integration/student-reference.md` |
+| Laboratorio | `labs/08-tekton-continuous-integration/` |
+| Instructor notes | `tutorial/08-tekton-continuous-integration/instructor-notes.md` |
+| Summary | `tutorial/08-tekton-continuous-integration/summary.md` |
+
+Capacidades incorporadas:
+
+- Tekton Pipelines fijado en `v1.12.2` LTS tras verificación oficial el 2026-07-28;
+- manifiesto oficial de Tekton aplicado; CRDs `tekton.dev` presentes;
+- manifests Tekton para `Task`, `Pipeline`, `PipelineRun`, `TaskRun` observable, Workspace con `volumeClaimTemplate`, Params, Results y `when`;
+- ServiceAccount `platform-api-ci` y RBAC local de lectura en `platform-training`;
+- pipeline `platform-api-ci` que valida Helm, valida Terraform y ejecuta `terraform plan -refresh=false`;
+- script `create-source-configmap.sh` para empaquetar fuente local sin `.terraform/`, state, planes ni `tfvars` locales;
+- validación estática por defecto y funcional opcional con `RUN_FUNCTIONAL=true`;
+- comparación documental de `Job` y `CronJob` frente a Tekton, con práctica diferida a Unidad 23;
+- continuidad explícita hacia Unidad 09 para GitOps y ownership.
+
+Limitaciones activas:
+
+- controladores de Tekton no `Available`: rollout con Pods antiguos `v1.12.0` y nuevos `v1.12.2`, varios en `ContainerCreating` por Calico `ClusterInformation: connection is unauthorized`;
+- validación funcional bloqueada antes de crear `PipelineRun`;
+- revisión y aprobación pedagógica del usuario pendientes;
+- `terraform apply` no se ejecuta desde Tekton;
+- fuente local por `ConfigMap`, no Git remoto ni webhook;
+- no se construyen imágenes, no se usa registry y no se introducen credenciales reales;
+- no se instala Argo CD, Tekton Triggers, Tekton Chains, Tekton Results, dashboard, KEDA, observabilidad avanzada, AKS ni EKS.
+
+---
+
 # Estado del laboratorio
 
 ## Host
@@ -733,13 +777,19 @@ Limitaciones activas:
 | Helm | Instalado y validado como CLI; Unidad 06 crea el primer chart local del curso | `v3.21.0+ge0878d4` | `platform/environment/tools/validate-tools.sh`, `helm version --short`, `helm lint` | Unidad 00; chart en Unidad 06 |
 | Terraform | Instalado y validado como CLI; gestiona el release Helm local desde Unidad 07 | `1.15.7`; providers Helm `2.17.0` y Kubernetes `2.38.0` | `platform/environment/tools/validate-tools.sh`, `terraform init`, `terraform validate`, `terraform state list` | Unidad 00; gestion de release en Unidad 07 |
 | Argo CD | No incorporado | No aplica | No aplica | Unidad 09 |
-| Tekton | No incorporado | No aplica | No aplica | Unidad 08 |
+| Tekton | Manifiesto oficial aplicado; CRDs presentes; controladores no `Available` por fallo Calico | Tekton Pipelines `v1.12.2` LTS | `kubectl api-resources --api-group=tekton.dev`; `RUN_FUNCTIONAL=true bash labs/08-tekton-continuous-integration/validation/validate.sh` con 1 fallo | Unidad 08 |
 | Prometheus | No incorporado | No aplica | No aplica | Unidad 11 |
 | Grafana | No incorporado | No aplica | No aplica | Unidad 12 |
 | Loki | No incorporado | No aplica | No aplica | Unidad 13 |
 | Tempo | No incorporado | No aplica | No aplica | Unidad 14 |
 | OpenTelemetry | No incorporado | No aplica | No aplica | Unidad 14 |
 | KEDA | No incorporado | No aplica | No aplica | Unidad 18 |
+
+## Componentes de clúster
+
+| Componente | Estado | Versión activa | Namespace | Método de instalación | Persistencia | Incorporado en |
+|---|---|---|---|---|---|---|
+| Tekton Pipelines | Manifiesto aplicado; CRDs presentes; controladores no `Available` | `v1.12.2` LTS verificada el 2026-07-28 | `tekton-pipelines` y `tekton-pipelines-resolvers` | `kubectl apply -f https://infra.tekton.dev/tekton-releases/pipeline/previous/v1.12.2/release.yaml` | Sí, hacia Unidades 09-10 tras recuperar controladores | Unidad 08 |
 
 ---
 
@@ -790,7 +840,8 @@ Limitaciones activas:
 ## Capacidades todavía no incorporadas
 
 - Gateway API operativa como artefacto del curso;
-- CI/CD, GitOps, observabilidad avanzada, seguridad avanzada, KEDA, AKS y EKS.
+- GitOps, observabilidad avanzada, seguridad avanzada, KEDA, AKS y EKS;
+- CI/CD con Tekton está generado en Unidad 08, pero su validación funcional queda bloqueada hasta recuperar la red/CNI de MicroK8s y reintentar el laboratorio.
 
 ---
 
@@ -832,6 +883,13 @@ Limitaciones activas:
 - `labs/05-scheduling-resilience-maintenance/solution/service.yaml`;
 - `labs/05-scheduling-resilience-maintenance/solution/ingress.yaml`;
 - `labs/05-scheduling-resilience-maintenance/validation/validate.sh`.
+- `labs/08-tekton-continuous-integration/tekton/serviceaccount.yaml`;
+- `labs/08-tekton-continuous-integration/tekton/rbac.yaml`;
+- `labs/08-tekton-continuous-integration/tekton/tasks.yaml`;
+- `labs/08-tekton-continuous-integration/tekton/pipeline.yaml`;
+- `labs/08-tekton-continuous-integration/tekton/pipelinerun.yaml`;
+- `labs/08-tekton-continuous-integration/scripts/create-source-configmap.sh`;
+- `labs/08-tekton-continuous-integration/validation/validate.sh`.
 
 ## Helm
 
@@ -850,6 +908,17 @@ Limitaciones activas:
 - El state local existe como artefacto de ejecucion no versionado; `.terraform/`, `terraform.tfstate`, `terraform.tfvars` locales y planes binarios estan ignorados por Git.
 - `.terraform.lock.hcl` queda versionable para fijar providers.
 - No existen módulos Terraform cloud ni backends remotos del curso.
+
+## Tekton
+
+- Existe laboratorio de Unidad 08 en `labs/08-tekton-continuous-integration/`.
+- Tekton Pipelines se fija en `v1.12.2` LTS, verificada contra fuentes oficiales el 2026-07-28.
+- El método de instalación es `kubectl apply -f https://infra.tekton.dev/tekton-releases/pipeline/previous/v1.12.2/release.yaml`.
+- El manifiesto oficial fue aplicado; los namespaces `tekton-pipelines` y `tekton-pipelines-resolvers` existen y los CRDs `tekton.dev/v1` para `Task`, `TaskRun`, `Pipeline` y `PipelineRun` están presentes.
+- Los controladores de Tekton no están `Available` porque sus Pods quedan `ContainerCreating` con eventos `FailedCreatePodSandBox`: Calico no puede leer `ClusterInformation` por `Unauthorized`.
+- La pipeline `platform-api-ci` valida artefactos de Unidad 06 y Unidad 07 y ejecuta `terraform plan -refresh=false`.
+- La pipeline no ejecuta `terraform apply`.
+- La ejecución funcional del `PipelineRun` queda pendiente hasta recuperar la CNI y reintentar `RUN_FUNCTIONAL=true bash labs/08-tekton-continuous-integration/validation/validate.sh`.
 
 ---
 
@@ -1006,13 +1075,24 @@ No existen actualmente:
 | D-07-05 — Plan antes de apply | Activa | `playbooks/units/07-local-terraform-automation.md` y `labs/07-local-terraform-automation/README.md` | El apply se ejecuto tras plan sin destrucciones |
 | D-07-06 — Sin modulo local ejecutable inicial | Activa | `tutorial/07-local-terraform-automation/summary.md` | El proyecto Terraform queda plano para favorecer trazabilidad pedagogica |
 
+## Decisiones específicas de la Unidad 08
+
+| Decisión | Estado | Documento fuente | Impacto actual |
+|---|---|---|---|
+| D-08-01 — Tekton ejecuta validación y plan, no apply | Activa | `playbooks/units/08-tekton-continuous-integration.md` y `tutorial/08-tekton-continuous-integration/summary.md` | `platform-api-ci` ejecuta validaciones Helm/Terraform y `terraform plan -refresh=false`; no muta el release |
+| D-08-02 — Tekton Pipelines `v1.12.2` LTS | Activa | `platform/tools/README.md` y fuentes oficiales verificadas el 2026-07-28 | El componente se instala por release oficial versionada, no por `latest` ni operador |
+| D-08-03 — Fuente local mediante ConfigMap | Activa | `labs/08-tekton-continuous-integration/scripts/create-source-configmap.sh` | Evita credenciales Git y webhooks reales antes de Triggers; excluye state y planes locales |
+| D-08-04 — Build de imagen diferido | Activa | `playbooks/units/08-tekton-continuous-integration.md` y `project/advanced-labs-register.md` | No se crea Dockerfile, registry ni credenciales; `LAB-08-01` sigue como candidato avanzado |
+| D-08-05 — Workspaces temporales por ejecución | Activa | `labs/08-tekton-continuous-integration/tekton/pipelinerun.yaml` | Cada `PipelineRun` usa PVC temporal con `volumeClaimTemplate` |
+| D-08-06 — RBAC local mínimo | Activa | `labs/08-tekton-continuous-integration/tekton/rbac.yaml` | La ServiceAccount de CI tiene permisos de lectura acotados en `platform-training` |
+
 ---
 
 # Restricciones activas
 
-Tras generar y validar funcionalmente la Unidad 07 y aprobar el playbook de Unidad 08:
+Tras generar la Unidad 08:
 
-- la Unidad 08 queda habilitada para generación, siguiendo estrictamente su playbook aprobado;
+- la Unidad 08 queda pendiente de reintento de validación funcional tras recuperar Calico y de aprobación pedagógica del usuario;
 - la Unidad 06 conserva `platform-api`, `platform-training` y la evolucion acumulativa desde `labs/05-scheduling-resilience-maintenance/solution/`;
 - `labs/06-helm-packaging/chart/platform-api/` sigue siendo el chart local de aplicacion;
 - `labs/07-local-terraform-automation/terraform/` gestiona el release Helm local mediante Terraform;
@@ -1028,7 +1108,8 @@ Tras generar y validar funcionalmente la Unidad 07 y aprobar el playbook de Unid
 - no crear recursos Gateway API como eje operativo salvo decisión explícita posterior;
 - no introducir TLS productivo, DNS público, LoadBalancer cloud ni NetworkPolicies antes de su unidad prevista;
 - no presentar `hostpath-storage` como almacenamiento productivo ni cloud;
-- Tekton Pipelines se instala únicamente en la Unidad 08 como componente de clúster y persiste hacia las Unidades 09 y 10; su instalación está prohibida en cualquier otra unidad;
+- Tekton Pipelines se instala únicamente dentro del alcance de la Unidad 08 como componente de clúster y persiste hacia las Unidades 09 y 10 cuando la validación funcional lo confirme;
+- la Unidad 08 no ejecuta `terraform apply` desde Tekton;
 - no instalar Argo CD;
 - no desplegar observabilidad avanzada;
 - no introducir KEDA;
@@ -1161,6 +1242,10 @@ Las herramientas de plataforma que son componentes de clúster, como Argo CD, Pr
 | Terraform output Unidad 07 | `terraform -chdir=labs/07-local-terraform-automation/terraform output` | `release_status = "deployed"`, `release_namespace = "platform-training"` |
 | Validacion funcional Unidad 07 | `bash labs/07-local-terraform-automation/validation/validate.sh` | 0 fallos, 0 avisos; Terraform, Helm release, Deployment, Service, Ingress, PVC, PDB y secret scan validados |
 | Validacion heredada tras Unidad 07 | `bash labs/06-helm-packaging/validation/validate.sh` | 0 fallos, 0 avisos; `platform-api-local` revision 4 `deployed` |
+| Sintaxis Bash Unidad 08 | `bash -n labs/08-tekton-continuous-integration/scripts/create-source-configmap.sh` y `bash -n labs/08-tekton-continuous-integration/validation/validate.sh` | 0 |
+| `shellcheck` Unidad 08 | `shellcheck labs/08-tekton-continuous-integration/scripts/create-source-configmap.sh labs/08-tekton-continuous-integration/validation/validate.sh` | 0 |
+| Validación estática Unidad 08 | `bash labs/08-tekton-continuous-integration/validation/validate.sh` | 0 fallos, 1 aviso tras instalar CRDs: funcional omitida por no usar `RUN_FUNCTIONAL=true` |
+| Validación funcional Unidad 08 | `TEKTON_VERSION=v1.12.2 RUN_FUNCTIONAL=true bash labs/08-tekton-continuous-integration/validation/validate.sh` | 1 fallo, 0 avisos; Tekton `v1.12.2` aplicado y CRDs presentes, pero controladores no `Available` por Calico `ClusterInformation: connection is unauthorized`; no se creó `PipelineRun` funcional |
 | Revision pedagogica Unidad 07 | Aprobacion del usuario el 2026-07-20 | Aprobada |
 | Revisión pedagógica `student-notes.md` Unidades 01-05 | Aprobación del usuario el 2026-07-19 tras reestructuración como guías de aprendizaje | Aprobada |
 | Revisión pedagógica Unidad 01 | Aprobación del usuario con observación sobre nivel de entrada y enfoque del contenido | Aprobada; deuda registrada para hardening global |
@@ -1272,12 +1357,13 @@ Validaciones no disponibles en esta sesión:
 | 85 | Retirada del plan temporal de saneamiento | Documental | Se elimina el plan temporal de saneamiento documental tras completarse y aprobarse las fases 00-07, `TD-022` y `TD-023`; su rastro queda consolidado en `project/project-state.md`, summaries e historial de incrementos. El playbook de Unidad 08 queda aprobado y el siguiente incremento permitido pasa a ser generar la Unidad 08 |
 | 86 | Validación automática de gobierno | Documental validado | Se alinean `README.md`, `AGENTS.md`, `project/project-planning.md`, `project/project-state.md` y `playbooks/units/08-tekton-continuous-integration.md` con la aprobación del playbook de Unidad 08; se normaliza `Estado del playbook` en Unidades 00-08 a valores enumerados; se crea `project/validation/validate-governance.sh`; `project/architecture.md`, `project/how-to.md` y `playbooks/master.md` registran su uso; la validación automática se ejecuta correctamente |
 | 87 | Interacción previa de cobertura para playbooks | Documental | Se actualizan `playbooks/master.md`, `playbooks/unit-template.md`, `project/how-to.md` y `project/project-state.md` para exigir que, antes de cerrar un playbook de unidad, la IA presente al usuario el reparto de cobertura propuesto y registre la decisión antes de marcar el playbook como aprobado |
+| 88 | Generación de Unidad 08 | Generada; validación funcional bloqueada por Calico | Se crean tutorial, notas, referencia, notas del instructor, summary y laboratorio de Tekton; se fija Tekton Pipelines `v1.12.2` LTS tras verificación oficial; se generan Tasks, Pipeline, PipelineRun, Workspace con `volumeClaimTemplate`, Params, Results, `when`, ServiceAccount y RBAC local; el pipeline ejecuta validaciones Helm/Terraform y `terraform plan -refresh=false`, no `terraform apply`; se actualiza `platform/tools/README.md`; el intento funcional aplica Tekton y deja CRDs presentes, pero no ejecuta PipelineRun porque los controladores no llegan a `Available` por Calico |
 
 ---
 
 # Siguiente incremento permitido
 
-El playbook de la Unidad 08 queda generado y aprobado. El siguiente trabajo autorizado es generar la Unidad 08 respetando `playbooks/units/08-tekton-continuous-integration.md`. Tekton solo puede instalarse dentro del alcance de esa unidad; no se deben crear componentes fuera del playbook aprobado.
+La Unidad 08 queda generada. El siguiente trabajo autorizado es recuperar la red/CNI de MicroK8s, reintentar la validación funcional de la Unidad 08, revisar pedagógicamente el contenido y registrar la aprobación o correcciones necesarias. Tras esa aprobación, el siguiente incremento natural será generar el playbook de la Unidad 09 - GitOps con Argo CD.
 
 El plan temporal de saneamiento documental ya fue retirado. El resumen consolidado queda en este archivo para continuidad histórica.
 
@@ -1296,7 +1382,7 @@ La fase 3 quedó cerrada el 2026-07-23. El diagnóstico concluyó que ninguno de
 
 La fase 4 quedó completada y aprobada el 2026-07-27. La Unidad 07 se saneó como piloto el 2026-07-26: se regeneró su playbook y, desde él, su referencia; el usuario confirmó su aprobación específica el 2026-07-27. Después se saneó la Unidad 06: se regeneraron su playbook y su referencia, se ajustaron README, notas y summary, y no se tocaron laboratorios ni validaciones. El usuario confirmó la aprobación específica de la Unidad 06 el 2026-07-27. La Unidad 01 se saneó el 2026-07-27: se regeneraron su playbook y su referencia, se ajustaron README, notas, summary y `content-gap-register.md`, y no se tocaron laboratorios, manifiestos ni validaciones funcionales. El usuario confirmó la aprobación específica de la Unidad 01 el 2026-07-27. La Unidad 00 se saneó el 2026-07-27: se regeneraron su playbook y su referencia, se ajustaron README, notas, summary y `content-gap-register.md`, y no se tocaron scripts de `platform/environment/` ni se ejecutaron validaciones funcionales nuevas. El usuario confirmó su aprobación específica el 2026-07-27. La Unidad 02 se saneó el 2026-07-27: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, no se tocaron laboratorios ni manifiestos, no se ejecutaron validaciones funcionales nuevas y el usuario confirmó su aprobación específica el 2026-07-27. La Unidad 03 se saneó el 2026-07-27: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, no se tocaron laboratorios ni manifiestos, no se ejecutaron validaciones funcionales nuevas y el usuario confirmó su aprobación específica el 2026-07-27. La Unidad 05 se saneó el 2026-07-27: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, se revisaron `GAP-007` y `GAP-011` sin cambiar su estado, no se tocaron laboratorios ni manifiestos y no se ejecutaron validaciones funcionales nuevas. El usuario confirmó su aprobación específica el 2026-07-27. La Unidad 04 se saneó documentalmente el 2026-07-27 antes de ejecutar `TD-022`: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, se resolvió `Q-010` como diseño futuro de `TD-023`, no se tocaron laboratorios ni manifiestos y no se ejecutaron validaciones funcionales nuevas. El usuario confirmó su aprobación específica el 2026-07-27.
 
-Modelo de ejecución aplicado: una unidad por sesión, en el orden 07, 06, 01, 00, 02, 03, 05 y 04 documental. La auditoría de autosuficiencia `TD-022` quedó cerrada con cero reclasificaciones. El cierre funcional `TD-023` quedó ejecutado, validado contra MicroK8s y aprobado por el usuario. El playbook de la Unidad 08 ya está generado y aprobado; el siguiente incremento permitido es generar la unidad.
+Modelo de ejecución aplicado: una unidad por sesión, en el orden 07, 06, 01, 00, 02, 03, 05 y 04 documental. La auditoría de autosuficiencia `TD-022` quedó cerrada con cero reclasificaciones. El cierre funcional `TD-023` quedó ejecutado, validado contra MicroK8s y aprobado por el usuario. El playbook de la Unidad 08 ya está generado y aprobado; la Unidad 08 está generada y pendiente de reintento funcional tras recuperar Calico.
 
 ## Condición de desbloqueo de la Unidad 08
 
