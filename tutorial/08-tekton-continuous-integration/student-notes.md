@@ -177,7 +177,7 @@ Comprueba:
 ```bash
 kubectl -n platform-training describe pipelinerun platform-api-ci-run
 kubectl -n platform-training get taskrun -l tekton.dev/pipelineRun=platform-api-ci-run
-kubectl -n platform-training logs taskrun/<taskrun-name> --all-containers=true
+kubectl -n platform-training logs -l tekton.dev/taskRun=<taskrun-name> --all-containers=true
 ```
 
 Idea clave: la unidad de diagnóstico real suele ser el `TaskRun`, no solo la Pipeline.

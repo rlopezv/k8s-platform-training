@@ -99,7 +99,7 @@ else
 fi
 
 if grep -R --line-number --ignore-case \
-  -E '(BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY|password=|client_secret|api[_-]?key|kubeconfig|token:)' \
+  -E '(BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY|password=|client_secret|api[_-]?key|token:|client-certificate-data|client-key-data)' \
   "$LAB_DIR/tekton" "$LAB_DIR/scripts" >/tmp/unit08-secret-scan.out 2>/dev/null; then
   cat /tmp/unit08-secret-scan.out
   check WARN "secret scan" "review findings above; lab placeholders and explanatory text can be valid, real secrets are not"

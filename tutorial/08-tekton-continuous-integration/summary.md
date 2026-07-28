@@ -7,7 +7,7 @@
 | Unidad | 08 - Integración continua con Tekton |
 | Identificador | `08-tekton-continuous-integration` |
 | Fase del roadmap | Fase 4 - Entrega continua y GitOps |
-| Estado | Generada; validación funcional bloqueada por estado de red Calico del clúster |
+| Estado | Generada y validada funcionalmente; aprobación pedagógica pendiente |
 | Fecha de cierre o actualización | 2026-07-28 |
 | Revisión pedagógica del usuario | Pendiente |
 
@@ -139,22 +139,23 @@ labs/08-tekton-continuous-integration/
 | Sintaxis Bash del validador | `bash -n labs/08-tekton-continuous-integration/validation/validate.sh` | 0 |
 | `shellcheck` | `shellcheck labs/08-tekton-continuous-integration/scripts/create-source-configmap.sh labs/08-tekton-continuous-integration/validation/validate.sh` | 0 |
 | Validación estática de Unidad 08 antes de instalar CRDs | `bash labs/08-tekton-continuous-integration/validation/validate.sh` | 0 fallos, 2 avisos: dry-run Tekton no resolvía CRDs y validación funcional omitida |
-| Validación funcional de Unidad 08 | `TEKTON_VERSION=v1.12.2 RUN_FUNCTIONAL=true bash labs/08-tekton-continuous-integration/validation/validate.sh` | 1 fallo, 0 avisos: Tekton `v1.12.2` se aplicó, pero los controladores no llegaron a `Available` |
-| Diagnóstico de Pods Tekton | `kubectl -n tekton-pipelines get pods,deploy,rs` y `kubectl -n tekton-pipelines get events --sort-by=.lastTimestamp` | Pods `v1.12.2` creados durante rollout; deployments sin `Available`; eventos `FailedCreatePodSandBox` por Calico `ClusterInformation: connection is unauthorized` |
+| Validación funcional inicial de Unidad 08 | `TEKTON_VERSION=v1.12.2 RUN_FUNCTIONAL=true bash labs/08-tekton-continuous-integration/validation/validate.sh` | Primer intento bloqueado por controladores Tekton no `Available`; posteriormente resuelto |
+| Diagnóstico de Pods Tekton | `kubectl -n tekton-pipelines get deployment` | `tekton-events-controller`, `tekton-pipelines-controller` y `tekton-pipelines-webhook` quedaron `1/1 Available` |
 | CRDs Tekton | `kubectl api-resources --api-group=tekton.dev` | `tasks`, `taskruns`, `pipelines`, `pipelineruns`, `customruns`, `stepactions` y `verificationpolicies` presentes |
 | Validación estática tras CRDs | `bash labs/08-tekton-continuous-integration/validation/validate.sh` | 0 fallos, 1 aviso: manifests Tekton aceptados por dry-run; funcional omitida |
 | Validación estática final de Unidad 08 | `bash labs/08-tekton-continuous-integration/validation/validate.sh` | 0 fallos, 1 aviso: funcional omitida sin `RUN_FUNCTIONAL=true` |
+| Validación funcional final de Unidad 08 | `TEKTON_VERSION=v1.12.2 RUN_FUNCTIONAL=true bash labs/08-tekton-continuous-integration/validation/validate.sh` | 0 fallos, 0 avisos; `PipelineRun` y `TaskRuns` completados |
 | Helm heredado | `helm lint labs/06-helm-packaging/chart/platform-api` | 1 chart linted, 0 failed; aviso informativo de icon recomendado |
 | Terraform heredado | `terraform -chdir=labs/07-local-terraform-automation/terraform validate` | `Success! The configuration is valid.` |
 | Gobierno documental | `bash project/validation/validate-governance.sh` | 0 fallos, 0 avisos |
 
-## Validaciones no ejecutadas
+## Validaciones funcionales verificadas
 
-| Validación pendiente | Motivo | Responsable o momento |
+| Validación | Evidencia | Estado |
 |---|---|---|
-| `PipelineRun` completo hasta `Succeeded` | Los controladores de Tekton no están `Available`; los Pods fallan al crear sandbox por Calico `ClusterInformation: connection is unauthorized` y el rollout mantiene Pods antiguos `v1.12.0` y nuevos `v1.12.2` pendientes | Reintentar tras recuperar la red/CNI del MicroK8s local |
-| Logs y Results reales del `PipelineRun` | No se llegó a crear la ejecución porque la validación funcional se detuvo al fallar controladores | Reintento funcional de Unidad 08 |
-| PVC temporal del `PipelineRun` | No hubo `PipelineRun` ejecutado | Reintento funcional de Unidad 08 |
+| `PipelineRun` completo hasta `Succeeded` | `platform-api-ci-run` completó con `prepare-source`, `repository-preflight`, `helm-validate` y `terraform-plan` en `Succeeded` | Validado |
+| Logs y Results reales del `PipelineRun` | Results observados: `source-revision`, `checked-files`, `helm-status=helm-ok`, `terraform-plan-summary=terraform-plan-ok` | Validado |
+| PVC temporal del `PipelineRun` | `PipelineRun` ejecutado con Workspace por `volumeClaimTemplate` y fuente montada desde `ConfigMap` | Validado |
 
 ## Decisiones tomadas
 

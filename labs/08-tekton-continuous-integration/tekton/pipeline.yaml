@@ -28,6 +28,7 @@ spec:
       default: plan
   workspaces:
     - name: shared-source
+    - name: source-bundle
   results:
     - name: source-revision
       value: $(tasks.prepare-source.results.source-revision)
@@ -44,11 +45,11 @@ spec:
       params:
         - name: source_configmap
           value: $(params.source_configmap)
-        - name: target_namespace
-          value: $(params.target_namespace)
       workspaces:
         - name: source
           workspace: shared-source
+        - name: source-bundle
+          workspace: source-bundle
     - name: repository-preflight
       runAfter:
         - prepare-source

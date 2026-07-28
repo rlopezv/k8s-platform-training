@@ -10,30 +10,25 @@ spec:
   params:
     - name: source_configmap
       type: string
-    - name: target_namespace
-      type: string
   workspaces:
     - name: source
+    - name: source-bundle
   results:
     - name: source-revision
       description: Identificador no sensible de la fuente usada por la ejecucion.
   steps:
     - name: unpack
-      image: docker.io/bitnami/kubectl:1.31.4
+      image: docker.io/library/alpine:3.20
       script: |
         #!/bin/sh
         set -eu
         rm -rf "$(workspaces.source.path)"/*
-        encoded="$(kubectl -n "$(params.target_namespace)" get configmap "$(params.source_configmap)" -o jsonpath='{.binaryData.source\.tar\.gz}')"
-        if [ -z "$encoded" ]; then
-          encoded="$(kubectl -n "$(params.target_namespace)" get configmap "$(params.source_configmap)" -o jsonpath='{.data.source\.tar\.gz}')"
-        fi
-        if [ -z "$encoded" ]; then
-          echo "source bundle not found in ConfigMap $(params.source_configmap)" >&2
+        bundle="$(workspaces.source-bundle.path)/source.tar.gz"
+        if [ ! -f "$bundle" ]; then
+          echo "source bundle not mounted from ConfigMap $(params.source_configmap)" >&2
           exit 1
         fi
-        echo "$encoded" | base64 -d > /tmp/source.tar.gz
-        tar -xzf /tmp/source.tar.gz -C "$(workspaces.source.path)"
+        tar -xzf "$bundle" -C "$(workspaces.source.path)"
         printf 'local-configmap:%s\n' "$(params.source_configmap)" > "$(results.source-revision.path)"
 ---
 apiVersion: tekton.dev/v1
@@ -131,11 +126,31 @@ spec:
       script: |
         #!/bin/sh
         set -eu
+        cat > /tmp/in-cluster-kubeconfig <<'KUBECONFIG'
+        apiVersion: v1
+        kind: Config
+        clusters:
+          - name: in-cluster
+            cluster:
+              certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+              server: https://kubernetes.default.svc
+        contexts:
+          - name: in-cluster
+            context:
+              cluster: in-cluster
+              namespace: platform-training
+              user: platform-api-ci
+        current-context: in-cluster
+        users:
+          - name: platform-api-ci
+            user:
+              tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+        KUBECONFIG
         cd "$(workspaces.source.path)/$(params.terraform_dir)"
         terraform fmt -check -recursive
         terraform init -backend=false
         terraform validate
-        terraform plan -refresh=false -var-file=terraform.tfvars.example -out=/tmp/platform-api-ci.tfplan
+        terraform plan -refresh=false -var-file=terraform.tfvars.example -var="kubeconfig_path=/tmp/in-cluster-kubeconfig" -var="kube_context=in-cluster" -out=/tmp/platform-api-ci.tfplan
         terraform show -no-color /tmp/platform-api-ci.tfplan | sed -n '1,40p' >/tmp/platform-api-ci-plan.txt
         printf 'terraform-plan-ok\n' > "$(results.plan-summary.path)"
 ---

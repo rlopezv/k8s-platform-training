@@ -135,6 +135,13 @@ if [ "$failures" -eq 0 ]; then
     else
       check FAIL "unit 08 generated artifacts" "Unit 08 state is generated but tutorial or lab artifacts are missing"
     fi
+  elif contains "$STATE_FILE" "Siguiente incremento permitido | Revisar pedagógicamente la Unidad 08"; then
+    check PASS "next increment" "$STATE_FILE authorizes pedagogical review of validated Unit 08"
+    if [ -f "$TUTORIAL08_DIR/summary.md" ] && [ -f "$LAB08_DIR/README.md" ]; then
+      check PASS "unit 08 generated artifacts" "$TUTORIAL08_DIR and $LAB08_DIR exist"
+    else
+      check FAIL "unit 08 generated artifacts" "Unit 08 state is generated but tutorial or lab artifacts are missing"
+    fi
   else
     check WARN "next increment" "$STATE_FILE does not declare a recognized Unit 08 next increment"
   fi

@@ -17,7 +17,7 @@ El catálogo provee la referencia de instalación. La decisión de instalar, cu�
 
 | Componente | Unidad | Método oficial | Versión | Namespace | Persiste | Estado |
 |---|---|---|---|---|---|---|
-| Tekton Pipelines | 08 | `kubectl apply -f https://infra.tekton.dev/tekton-releases/pipeline/previous/v1.12.2/release.yaml` | `v1.12.2` LTS, verificada el 2026-07-28 contra fuentes oficiales de Tekton; soportada hasta mayo de 2027 | `tekton-pipelines` | Sí, hacia Unidades 09-10 | Manifiesto aplicado; CRDs presentes; controladores no `Available` por error Calico `ClusterInformation: connection is unauthorized` |
+| Tekton Pipelines | 08 | `kubectl apply -f https://infra.tekton.dev/tekton-releases/pipeline/previous/v1.12.2/release.yaml` | `v1.12.2` LTS, verificada el 2026-07-28 contra fuentes oficiales de Tekton; soportada hasta mayo de 2027 | `tekton-pipelines` | Sí, hacia Unidades 09-10 | Instalado; controladores `Available`; CRDs presentes; `PipelineRun` de Unidad 08 completado |
 | Argo CD | 09 | Por definir al generar la Unidad 09 | Por definir | Por definir | Por definir | Esperado |
 | Prometheus | 11 | Por definir al generar la Unidad 11 | Por definir | Por definir | Por definir | Esperado |
 | Grafana | 12 | Por definir al generar la Unidad 12 | Por definir | Por definir | Por definir | Esperado |

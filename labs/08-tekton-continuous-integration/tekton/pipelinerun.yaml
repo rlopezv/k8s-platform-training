@@ -7,7 +7,8 @@ metadata:
     app.kubernetes.io/part-of: k8s-platform-training
     training.k8s-platform.io/unit: "08"
 spec:
-  serviceAccountName: platform-api-ci
+  taskRunTemplate:
+    serviceAccountName: platform-api-ci
   pipelineRef:
     name: platform-api-ci
   params:
@@ -24,6 +25,9 @@ spec:
     - name: execution_mode
       value: plan
   workspaces:
+    - name: source-bundle
+      configMap:
+        name: platform-api-ci-source
     - name: shared-source
       volumeClaimTemplate:
         metadata:

@@ -158,7 +158,7 @@ Para una Task concreta:
 
 ```bash
 kubectl -n platform-training get taskrun -l tekton.dev/pipelineTask=terraform-plan
-kubectl -n platform-training logs taskrun/<taskrun-name> --all-containers=true
+kubectl -n platform-training logs -l tekton.dev/taskRun=<taskrun-name> --all-containers=true
 ```
 
 ## Comprobar el Workspace temporal
