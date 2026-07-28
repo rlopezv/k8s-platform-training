@@ -22,16 +22,16 @@ Este archivo describe el estado real del proyecto. No sustituye al roadmap ni de
 
 | Campo | Estado |
 |---|---|
-| Fase actual | Gobierno y documentos de uso alineados para iniciar Unidad 08 |
-| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 completada, aprobada y auditada con `TD-022`; fase 5 `TD-023` ejecutada, validada funcionalmente y aprobada; framework extendido mínimamente para componentes de clúster y reparto de cobertura; documentos de gobierno y uso alineados con Unidad 08 |
-| Último incremento completado | Alineación de documentos de gobierno y uso tras Framework V4 mínimo |
-| Unidad activa | Ninguna |
+| Fase actual | Playbook de Unidad 08 generado y pendiente de revisión |
+| Estado general | Unidades 00-07 completadas; contrato documental cerrado; fase 4 completada, aprobada y auditada con `TD-022`; fase 5 `TD-023` ejecutada, validada funcionalmente y aprobada; framework extendido mínimamente para componentes de clúster y reparto de cobertura; playbook de Unidad 08 generado como borrador/en revisión sin instalar Tekton |
+| Último incremento completado | Generación del playbook de Unidad 08 - Integración continua con Tekton |
+| Unidad activa | 08 — Integración continua con Tekton, solo playbook pendiente de aprobación |
 | Última unidad completada | 07 — Automatizacion local con Terraform, generada, validada funcionalmente y aprobada pedagogicamente |
 | Laboratorio disponible | Sí, entorno base local y primera aplicación |
 | Plataforma local desplegada | Sí, MicroK8s local validado |
 | Contenido formativo generado | Sí, Unidades 00, 01, 02, 03, 04, 05, 06 y 07 |
 | Framework de generación | Framework V1 validado; Framework V2 didactico simplificado; Framework V3 documental incorpora `student-reference.md` obligatorio y plantilla global; Framework V4 mínimo declara componentes de clúster, `platform/tools/` y clasificación práctica/criterio/diferido |
-| Siguiente incremento permitido | Generar el playbook de la Unidad 08 - Integración continua con Tekton |
+| Siguiente incremento permitido | Revisar y aprobar el playbook de la Unidad 08; después, generar la unidad sin instalar componentes fuera de alcance |
 
 ---
 
@@ -95,6 +95,8 @@ El usuario aportó el resultado de la auditoría `TD-022` el 2026-07-27. La audi
 
 El 2026-07-27 se implementó, validó y aprobó `TD-023` en la Unidad 04. Se añadió `labs/04-persistence-state/statefulset-demo/` con `service/scratch-stateful` headless, `statefulset/scratch-stateful` de dos réplicas y `volumeClaimTemplates` que generan los PVCs exactos `scratch-data-scratch-stateful-0` y `scratch-data-scratch-stateful-1`. La demo usa la misma imagen y tag que `platform-api`, sobrescribe el comando para escribir la identidad de cada réplica y permanece fuera de `solution/` para no propagarse a Unidades 05, 06 y 07. El manifiesto conserva el orden por defecto `OrderedReady`; no declara `podManagementPolicy: Parallel`. La primera validación detectó que MicroK8s aceptaba el StatefulSet pero no generaba Pods ni ControllerRevision; tras reiniciar MicroK8s fuera del asistente y corregir el comando del contenedor para no sobrescribir `index.html`, la validación independiente finalizó con 0 fallos y 0 avisos. Esa validación borró solo `statefulset/scratch-stateful` y comprobó después que `scratch-data-scratch-stateful-0` y `scratch-data-scratch-stateful-1` seguían `Bound`. La limpieza precisa borró `service/scratch-stateful` y los PVCs de demo por nombre exacto, sin tocar `platform-api-data`; la validación principal de Unidad 04 volvió a finalizar con 0 fallos y 0 avisos. El usuario aprobó el cierre funcional el 2026-07-27. `GAP-004` queda cerrado funcionalmente para el tramo 00-07.
 
+El 2026-07-28 se generó `playbooks/units/08-tekton-continuous-integration.md` como playbook específico de la Unidad 08. El playbook reparte la sección `08 | Integración continua con Tekton` de `.work/detail.md` como práctica, criterio, diferido y candidato a laboratorio avanzado contra el contrato mínimo del roadmap. El tronco propuesto practica Tekton Pipelines, Tasks, PipelineRuns, Workspaces con `volumeClaimTemplate`, Params, Results, `when`, RBAC local mínimo, validación Helm/Terraform heredada y `terraform plan`; excluye `terraform apply` desde Tekton para dejar ownership, aprobaciones y frontera GitOps a Unidad 09 o posterior. Deja build de imagen, Tekton Triggers y ServiceAccounts corporativas reales fuera del tronco inicial. Tras revisión del usuario, `Job` y `CronJob` quedan reclasificados como criterio comparativo frente a Tekton en Unidad 08 y práctica diferida a Unidad 23, donde encajan con backup, restore, runbooks y validaciones periódicas. Se registran `LAB-08-01` y `LAB-08-02` en `project/advanced-labs-register.md`. No se instaló Tekton, no se crearon recursos ejecutables de Unidad 08 y la aprobación del playbook queda pendiente.
+
 El 2026-07-22 se estableció `student-reference.md` como entregable obligatorio para todas las unidades y se creó `playbooks/student-reference-template.md` como plantilla global. En el mismo incremento se generó `tutorial/01-kubernetes/student-reference.md` para cubrir el mapa profesional de workloads de Kubernetes: `Pod`, `ReplicaSet`, `Deployment`, `StatefulSet`, `DaemonSet`, `Job` y `CronJob`, sin cambiar manifiestos, scripts, laboratorio ni estado técnico del clúster. Las Unidades 02, 03, 04 y 05 quedaron inicialmente pendientes de backfill documental porque fueron generadas antes de que `student-reference.md` fuese obligatorio; ese backfill quedó completado posteriormente.
 
 El 2026-07-22 se generó `tutorial/02-configuration-lifecycle/student-reference.md` como backfill documental de la Unidad 02. La referencia cubre configuración como contrato, límites de `Secret`, variables y volúmenes de configuración, probes, requests, limits, QoS, coste y continuidad hacia Helm, GitOps, seguridad, escalado y cloud. No cambia manifiestos, scripts, laboratorios ni estado técnico del clúster. La referencia fue ajustada y aprobada específicamente durante el saneamiento documental de la Unidad 02 el 2026-07-27.
@@ -109,7 +111,8 @@ El 2026-07-23 se cerró la fase 3 del saneamiento. Se diagnosticaron los ocho pl
 
 A partir de este estado se permite:
 
-- generar el playbook de la Unidad 08 - Integración continua con Tekton;
+- revisar y aprobar el playbook de la Unidad 08 - Integración continua con Tekton;
+- una vez aprobado, generar la Unidad 08 respetando el reparto declarado;
 - conservar `labs/07-local-terraform-automation/terraform/` como base técnica para CI/CD.
 
 Todavía no se permite:
@@ -130,7 +133,7 @@ Todavía no se permite:
 | `README.md` | Actualizado | Framework-V4-Governance-Consistency | Punto de entrada y visión general; refleja `student-notes.md`, `student-reference.md`, `platform/tools/` y siguiente incremento de Unidad 08 |
 | `project/architecture.md` | Actualizado | Framework-V4-Governance-Consistency | Arquitectura y decisiones estructurales; registra `playbooks/student-reference-template.md`, `project/content-gap-register.md`, `project/advanced-labs-register.md` y `platform/tools/` |
 | `project/project-state.md` | Actualizado | Framework-V4-Governance-Consistency | Estado consolidado; registra Framework V4 mínimo, restricciones localizadas y siguiente incremento permitido |
-| `project/content-gap-register.md` | Actualizado | Documentation-Cleanup-Unit-00 | Registro ligero de lagunas; `GAP-001` confirmado como cierre documental de Unidad 00 |
+| `project/content-gap-register.md` | Actualizado | Unit-08-Playbook | Registro ligero de lagunas; `GAP-004` reclasifica `Job`/`CronJob` como criterio comparativo de Unidad 08 y práctica diferida a Unidad 23 |
 | `project/roadmap.md` | Completo y aprobado | Unit-00-01 | Evolución prevista del itinerario |
 | `project/advanced-labs-register.md` | Disponible en workspace; pendiente de versionar | Framework-V4-Governance-Consistency | Registro de candidatos a laboratorios avanzados derivados del reparto de cobertura; no es plan de trabajo |
 | `project/project-planning.md` | Actualizado | Framework-V4-Governance-Consistency | Planificación incremental del trabajo; recomienda generar el playbook de Unidad 08 aplicando clasificación de cobertura y convención `platform/tools/` |
@@ -149,6 +152,7 @@ Todavía no se permite:
 | `playbooks/units/05-scheduling-resilience-maintenance.md` | Regenerado contra contrato documental y aprobado | Documentation-Cleanup-Unit-05 | Gobierno de la Unidad 05; declara frontera de `student-reference.md`, cobertura, simplificaciones y uso de `.work/detail.md` solo como checklist |
 | `playbooks/units/06-helm-packaging.md` | Regenerado contra contrato documental y aprobado | Documentation-Cleanup-Unit-06 | Gobierno de la Unidad 06; declara frontera de `student-reference.md`, cobertura, simplificaciones y uso de `.work/detail.md` solo como checklist |
 | `playbooks/units/07-local-terraform-automation.md` | Regenerado contra contrato documental y aprobado | Documentation-Cleanup-Unit-07 | Gobierno de la Unidad 07; declara frontera de `student-reference.md`, cobertura y cierre de `GAP-010` |
+| `playbooks/units/08-tekton-continuous-integration.md` | Generado; pendiente de revisión y aprobación | Unit-08-Playbook | Gobierno propuesto de la Unidad 08; reparte cobertura de `.work/detail.md`, fija restricciones para Tekton y declara candidatos avanzados |
 | `AGENTS.md` | Completo | Unit-00-01 | Guía operativa para agentes con acceso al repositorio |
 
 ---
@@ -1254,12 +1258,13 @@ Validaciones no disponibles en esta sesión:
 | 80 | Framework mínimo para Unidad 08 | Documental | Se actualizan `playbooks/master.md`, `playbooks/unit-template.md`, `project/architecture.md` y `project/project-state.md`, y se crea `platform/tools/README.md`. El framework declara componentes de clúster, localiza la restricción de Tekton en la Unidad 08, exige clasificar cobertura como práctica, criterio o diferido, y mantiene la Unidad 08 como siguiente incremento permitido sin instalar Tekton ni generar recursos de la unidad |
 | 81 | Alineación de documentos de gobierno y uso | Documental | Se actualizan `README.md`, `project/architecture.md`, `project/project-planning.md`, `playbooks/project-state-template.md`, `AGENTS.md` y `project/project-state.md` para eliminar referencias operativas antiguas a Unidad 02/06, registrar `platform/tools/`, distinguir componentes de clúster de CLIs locales, reconocer `project/advanced-labs-register.md` como registro de candidatos pendiente de versionar y mantener Unidad 08 como siguiente incremento permitido |
 | 82 | Fuentes de cobertura de entrada | Documental | Se actualizan `playbooks/master.md`, `playbooks/unit-template.md` y `project/project-state.md` para definir de dónde puede salir la lista de cobertura antes de repartirla como práctica, criterio o diferido. `.work/detail.md` queda explícitamente limitado a checklist auxiliar y no puede actuar como fuente de verdad |
+| 83 | Playbook Unidad 08 | Documental en revisión | El 2026-07-28 se genera `playbooks/units/08-tekton-continuous-integration.md` como playbook de Unidad 08. La sección 08 de `.work/detail.md` se reparte como práctica, criterio, diferido y candidato avanzado; se fija que Unidad 08 ejecuta `terraform plan` pero no `terraform apply`; tras revisión del usuario, `Job`/`CronJob` queda como criterio comparativo en Unidad 08 y práctica diferida a Unidad 23; se registran `LAB-08-01` y `LAB-08-02` en `project/advanced-labs-register.md`. No se instala Tekton, no se crean recursos ejecutables y la aprobación del usuario queda pendiente |
 
 ---
 
 # Siguiente incremento permitido
 
-La Unidad 08 queda desbloqueada. El trabajo autorizado es generar el playbook de la Unidad 08 - Integración continua con Tekton. No se debe instalar Tekton ni crear recursos de Unidad 08 antes de aprobar su playbook específico.
+El playbook de la Unidad 08 queda generado y pendiente de revisión. El siguiente trabajo autorizado es revisar y aprobar `playbooks/units/08-tekton-continuous-integration.md`; solo después podrá generarse la unidad y crear recursos Tekton dentro del alcance aprobado. No se debe instalar Tekton ni crear recursos de Unidad 08 antes de aprobar su playbook específico.
 
 El plan de saneamiento vive en `project/documentation-cleanup-plan.md`. Su tabla de fases es la fuente; el resumen de abajo no debe divergir de ella.
 
@@ -1278,11 +1283,11 @@ La fase 3 quedó cerrada el 2026-07-23. El diagnóstico concluyó que ninguno de
 
 La fase 4 quedó completada y aprobada el 2026-07-27. La Unidad 07 se saneó como piloto el 2026-07-26: se regeneró su playbook y, desde él, su referencia; el usuario confirmó su aprobación específica el 2026-07-27. Después se saneó la Unidad 06: se regeneraron su playbook y su referencia, se ajustaron README, notas y summary, y no se tocaron laboratorios ni validaciones. El usuario confirmó la aprobación específica de la Unidad 06 el 2026-07-27. La Unidad 01 se saneó el 2026-07-27: se regeneraron su playbook y su referencia, se ajustaron README, notas, summary y `content-gap-register.md`, y no se tocaron laboratorios, manifiestos ni validaciones funcionales. El usuario confirmó la aprobación específica de la Unidad 01 el 2026-07-27. La Unidad 00 se saneó el 2026-07-27: se regeneraron su playbook y su referencia, se ajustaron README, notas, summary y `content-gap-register.md`, y no se tocaron scripts de `platform/environment/` ni se ejecutaron validaciones funcionales nuevas. El usuario confirmó su aprobación específica el 2026-07-27. La Unidad 02 se saneó el 2026-07-27: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, no se tocaron laboratorios ni manifiestos, no se ejecutaron validaciones funcionales nuevas y el usuario confirmó su aprobación específica el 2026-07-27. La Unidad 03 se saneó el 2026-07-27: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, no se tocaron laboratorios ni manifiestos, no se ejecutaron validaciones funcionales nuevas y el usuario confirmó su aprobación específica el 2026-07-27. La Unidad 05 se saneó el 2026-07-27: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, se revisaron `GAP-007` y `GAP-011` sin cambiar su estado, no se tocaron laboratorios ni manifiestos y no se ejecutaron validaciones funcionales nuevas. El usuario confirmó su aprobación específica el 2026-07-27. La Unidad 04 se saneó documentalmente el 2026-07-27 antes de ejecutar `TD-022`: se regeneró su playbook contra contrato, se ajustaron README, notas, referencia y summary, se resolvió `Q-010` como diseño futuro de `TD-023`, no se tocaron laboratorios ni manifiestos y no se ejecutaron validaciones funcionales nuevas. El usuario confirmó su aprobación específica el 2026-07-27.
 
-Modelo de ejecución: una unidad por sesión, en el orden 07, 06, 01, 00, 02, 03, 05 y 04 documental. La auditoría de autosuficiencia `TD-022` quedó cerrada con cero reclasificaciones. El cierre funcional `TD-023` quedó ejecutado, validado contra MicroK8s y aprobado por el usuario. El siguiente incremento permitido es generar el playbook de la Unidad 08.
+Modelo de ejecución: una unidad por sesión, en el orden 07, 06, 01, 00, 02, 03, 05 y 04 documental. La auditoría de autosuficiencia `TD-022` quedó cerrada con cero reclasificaciones. El cierre funcional `TD-023` quedó ejecutado, validado contra MicroK8s y aprobado por el usuario. El playbook de la Unidad 08 ya está generado; el siguiente incremento permitido es revisarlo y aprobarlo antes de generar la unidad.
 
 ## Condición de desbloqueo de la Unidad 08
 
-Por decisión del usuario del 2026-07-23, el saneamiento no se partía para adelantar la Unidad 08. Esa condición queda satisfecha tras el cierre de fase 5 con `TD-023`; la Unidad 08 puede iniciar por su playbook específico.
+Por decisión del usuario del 2026-07-23, el saneamiento no se partía para adelantar la Unidad 08. Esa condición queda satisfecha tras el cierre de fase 5 con `TD-023`; la Unidad 08 inició con la generación de su playbook específico, pendiente de revisión y aprobación.
 
 ## Trabajo todavía prohibido
 
