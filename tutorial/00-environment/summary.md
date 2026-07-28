@@ -56,7 +56,7 @@ No se han ejecutado validaciones funcionales nuevas durante este saneamiento. No
 | Plan de saneamiento | `project/documentation-cleanup-plan.md` | Gobernar fase 4 |
 | Contrato de referencia | `playbooks/student-reference-template.md` | Regenerar `student-reference.md` |
 | Registro de lagunas | `project/content-gap-register.md` | Confirmar `GAP-001` |
-| Checklist de cobertura | `.work/detail.md` | Verificación de Unidad 00; no contrato ni estructura |
+| Checklist de cobertura | `project/coverage-map.md` | Verificación de Unidad 00; no contrato ni estructura |
 | Documentación actual de Unidad 00 | `tutorial/00-environment/` | Base ajustada |
 | Artefactos de entorno | `platform/environment/` | Reutilizados sin cambios funcionales |
 
@@ -67,7 +67,7 @@ No se han ejecutado validaciones funcionales nuevas durante este saneamiento. No
 - Conformidad documental de Unidad 00 contra contrato de fase 4.
 - Referencia canónica del alumno para `GAP-001`.
 - Frontera explícita entre `student-notes.md` y `student-reference.md`.
-- Cobertura explícita de `.work/detail.md` dentro del playbook.
+- Cobertura explícita de `project/coverage-map.md` dentro del playbook.
 - Registro de que el saneamiento no ejecutó validaciones funcionales nuevas.
 
 ## Componentes creados
@@ -80,7 +80,7 @@ Ninguno
 
 | Componente | Ruta | Cambio realizado |
 |---|---|---|
-| Playbook de Unidad 00 | `playbooks/units/00-environment.md` | Regenerado contra contrato documental; declara frontera, `GAP-001`, cobertura, simplificaciones y uso limitado de `.work/detail.md` |
+| Playbook de Unidad 00 | `playbooks/units/00-environment.md` | Regenerado contra contrato documental; declara frontera, `GAP-001`, cobertura, simplificaciones y uso limitado de `project/coverage-map.md` |
 | README de alumno | `tutorial/00-environment/README.md` | Ajustado como puerta de entrada y con ortografía completa |
 | Notas del alumno | `tutorial/00-environment/student-notes.md` | Ajustadas para diagnóstico del entorno y sin duplicar la referencia |
 | Referencia del alumno | `tutorial/00-environment/student-reference.md` | Regenerada con estructura canónica y cierre de `GAP-001` |
@@ -211,7 +211,7 @@ La Unidad 00 conserva las evidencias históricas ya registradas:
 - Revisión documental contra `playbooks/student-reference-template.md`.
 - Revisión de rutas mediante inspección del repositorio.
 - Revisión de `GAP-001` en `project/content-gap-register.md`.
-- Revisión de cobertura contra la sección de Unidad 00 de `.work/detail.md`.
+- Revisión de cobertura contra la sección de Unidad 00 de `project/coverage-map.md`.
 
 ## Validaciones no ejecutadas en el saneamiento documental
 

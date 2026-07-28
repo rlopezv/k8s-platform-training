@@ -73,6 +73,7 @@ README.md
 
 project/
 ├── architecture.md
+├── coverage-map.md
 ├── roadmap.md
 ├── project-state.md
 ├── project-planning.md

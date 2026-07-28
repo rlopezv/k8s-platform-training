@@ -143,6 +143,7 @@ El acceso directo al repositorio mejora la automatización, pero no constituye u
 │       └── 00-environment.md
 ├── project/
 │   ├── architecture.md
+│   ├── coverage-map.md
 │   ├── how-to.md
 │   ├── project-planning.md
 │   ├── project-state.md
@@ -246,6 +247,12 @@ Registro ligero de lagunas de contenido. Debe contener la laguna, su unidad o zo
 ### `project/advanced-labs-register.md`
 
 Registro de candidatos a laboratorios avanzados. Recoge prácticas que quedaron fuera del alcance de una unidad porque fueron resueltas como criterio profesional, diferidas o dependientes de un entorno más complejo. No es un plan de trabajo ni convierte un candidato en unidad aprobada.
+
+### `project/coverage-map.md`
+
+Mapa versionado de cobertura candidata. Aporta granularidad técnica y profundidad posible para cada unidad, pero no sustituye a `project/roadmap.md`, `project/project-state.md`, los registros de lagunas o los playbooks específicos.
+
+Cada punto del mapa debe repartirse contra el alcance real de la unidad como práctica, criterio, diferido, candidato a laboratorio avanzado o fuera del itinerario. El mapa no puede ampliar por sí solo el alcance ejecutable de una unidad ni imponer estructura documental.
 
 ### `project/roadmap.md`
 

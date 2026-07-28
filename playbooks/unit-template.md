@@ -165,9 +165,10 @@ Antes de generar o modificar esta unidad, leer:
 3. `project/project-state.md`;
 4. `project/roadmap.md`;
 5. `playbooks/student-reference-template.md`;
-6. `tutorial/<unidad-anterior>/summary.md`;
-7. este playbook;
-8. [artefactos previos concretos].
+6. `project/coverage-map.md`, cuando exista sección de cobertura para la unidad;
+7. `tutorial/<unidad-anterior>/summary.md`;
+8. este playbook;
+9. [artefactos previos concretos].
 
 ## Excepciones
 
@@ -410,6 +411,7 @@ Declarar:
 
 - qué laguna de `project/content-gap-register.md` cubre, con su identificador, o que no cubre ninguna;
 - de qué fuentes versionadas o instrucciones explícitas del usuario procede la lista de cobertura de entrada;
+- qué sección de `project/coverage-map.md` se usó, cuando exista, y cómo se subordinó al roadmap y al estado consolidado;
 - qué partes de `student-notes.md` amplía;
 - qué tipos de cobertura aplica: panorama, profundidad, criterio o práctica;
 - cómo se repartió la lista de cobertura de entrada entre práctica, criterio y diferido, y por qué; qué puntos redactados como práctica se reclasificaron a criterio o diferido por no caber en el alcance de la unidad;

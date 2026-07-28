@@ -203,11 +203,11 @@ La Unidad 04 cubre documentalmente el criterio profesional de `StatefulSet`, hea
 | Sin práctica de `reclaimPolicy` `Retain` | No detectar PV retenidos o huérfanos tras borrar claims | Explicar diferencia entre `Delete`, `Retain`, dato residual, ownership y limpieza operada |
 | `emptyDir` solo como contraste conceptual | Usarlo por error para estado que debe sobrevivir al Pod | Explicar cuándo sirve para scratch space y por qué no es persistencia |
 
-## Uso de `.work/detail.md`
+## Uso de `project/coverage-map.md`
 
-La sección de Unidad 04 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
+La sección de Unidad 04 de `project/coverage-map.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
 
-| Punto de `.work/detail.md` | Clasificación | Tratamiento |
+| Punto de `project/coverage-map.md` | Clasificación | Tratamiento |
 |---|---|---|
 | Diferencias entre almacenamiento efímero y persistente; `emptyDir`; access modes | Práctica existente y criterio conceptual | Cubierto en notas y referencia; access modes se explican como contrato Kubernetes, no como garantía de concurrencia |
 | PVC y aprovisionamiento dinámico mediante `microk8s-hostpath` | Práctica existente del laboratorio | Cubierto por `pvc.yaml`, notas y referencia; se declara como detalle local de MicroK8s |
@@ -235,7 +235,7 @@ Antes de generar o modificar esta unidad, leer:
 12. `playbooks/summary-template.md`;
 13. `playbooks/project-state-template.md`;
 14. `playbooks/units/04-persistence-state.md`;
-15. sección de Unidad 04 en `.work/detail.md`;
+15. sección de Unidad 04 en `project/coverage-map.md`;
 16. `tutorial/03-networking-ingress/summary.md`;
 17. `tutorial/04-persistence-state/README.md`;
 18. `tutorial/04-persistence-state/student-notes.md`;
@@ -259,7 +259,7 @@ Ninguna. La Unidad 03 está cerrada y existe `tutorial/03-networking-ingress/sum
 - `tutorial/03-networking-ingress/summary.md`;
 - artefactos actuales de la Unidad 04;
 - registro de lagunas `project/content-gap-register.md`;
-- `.work/detail.md` como checklist, no como estructura.
+- `project/coverage-map.md` como checklist, no como estructura.
 
 ## Dependencias técnicas
 
@@ -397,7 +397,7 @@ La unidad queda saneada documentalmente cuando:
 
 - el playbook declara frontera entre `student-notes.md` y `student-reference.md`;
 - el playbook declara `GAP-004` y `TD-023`;
-- `.work/detail.md` queda cubierto punto por punto como checklist;
+- `project/coverage-map.md` queda cubierto punto por punto como checklist;
 - `student-reference.md` no incluye `summary.md` en la tabla de artefactos del alumno;
 - `student-reference.md` explica `reclaimPolicy`, access modes, CSI, StatefulSet, headless Service, `volumeClaimTemplates`, snapshots, backup y restore sin proponer cambios ejecutables;
 - `student-notes.md` mantiene el diagnóstico del laboratorio y ancla sus exclusiones a la referencia;
@@ -436,7 +436,7 @@ Al cerrar el saneamiento documental:
 2. actualizar `project/project-state.md`;
 3. revisar `git diff --check`;
 4. revisar que `git diff -- labs/04-persistence-state platform/environment` no muestra cambios;
-5. reportar cobertura punto por punto contra `.work/detail.md`;
+5. reportar cobertura punto por punto contra `project/coverage-map.md`;
 6. declarar que la aprobación específica del usuario queda pendiente hasta que el usuario la confirme.
 
 La Unidad 08 continúa congelada hasta cerrar `TD-022` y ejecutar con éxito la fase 5 `TD-023`; ambas condiciones quedaron satisfechas el 2026-07-27.

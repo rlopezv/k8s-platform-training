@@ -199,11 +199,11 @@ La Unidad 05 no cierra una laguna nueva del registro. Sí debe respetar dos ancl
 | PVC con `microk8s-hostpath` | Ignorar que el dato ata el Pod al nodo local | Storage cloud o CSI con topología entendida, backups y diseño de estado |
 | Sin autoscaling ni observabilidad avanzada | Decidir rollouts o mantenimiento sin señales suficientes | HPA/KEDA y SLI/SLO en unidades posteriores |
 
-## Uso de `.work/detail.md`
+## Uso de `project/coverage-map.md`
 
-La sección de Unidad 05 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
+La sección de Unidad 05 de `project/coverage-map.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
 
-| Punto de `.work/detail.md` | Clasificación | Tratamiento |
+| Punto de `project/coverage-map.md` | Clasificación | Tratamiento |
 |---|---|---|
 | Mecánica interna del planificador, filtrado, puntuación y `nodeSelector` | Criterio conceptual y práctica existente | Cubierto en referencia y notas; el laboratorio ya declara `nodeSelector` Linux |
 | Reglas complejas de affinity y anti-affinity con expresiones estrictas y blandas | Criterio conceptual; práctica parcial existente | El laboratorio usa preferencias; la referencia explica `required...` y `preferred...` sin endurecer manifiestos |
@@ -231,7 +231,7 @@ Antes de generar o modificar esta unidad, leer:
 12. `playbooks/summary-template.md`;
 13. `playbooks/project-state-template.md`;
 14. `playbooks/units/05-scheduling-resilience-maintenance.md`;
-15. sección de Unidad 05 en `.work/detail.md`;
+15. sección de Unidad 05 en `project/coverage-map.md`;
 16. `tutorial/04-persistence-state/summary.md`;
 17. `tutorial/05-scheduling-resilience-maintenance/README.md`;
 18. `tutorial/05-scheduling-resilience-maintenance/student-notes.md`;
@@ -255,7 +255,7 @@ Ninguna. La Unidad 04 está cerrada, existe `tutorial/04-persistence-state/summa
 - `tutorial/04-persistence-state/summary.md`;
 - artefactos actuales de la Unidad 05;
 - registro de lagunas `project/content-gap-register.md`;
-- `.work/detail.md` como checklist, no como estructura.
+- `project/coverage-map.md` como checklist, no como estructura.
 
 ## Dependencias técnicas
 

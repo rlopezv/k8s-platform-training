@@ -190,9 +190,9 @@ No debe duplicarse contenido. Si ambos documentos necesitan un tema, uno lo desa
 | Estrategia de Deployment no ajustada | Un rollout puede no cumplir expectativas de disponibilidad sin probes ni presupuesto | Estrategias revisadas junto a probes, PDB, observabilidad y progressive delivery |
 | Labels básicos sin anotaciones de gobierno | No codifican ownership, ciclo de vida ni integración con herramientas corporativas | Convenciones de metadata, anotaciones de tooling y gobierno de plataforma |
 
-## Uso de `.work/detail.md`
+## Uso de `project/coverage-map.md`
 
-La sección de Unidad 01 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
+La sección de Unidad 01 de `project/coverage-map.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
 
 - arquitectura del plano de control, flujo de `kubectl` hacia la API y diferencia entre datastore local embebido y `etcd` distribuido;
 - namespaces, labels y anotaciones como aislamiento lógico y metadata de ciclo de vida;
@@ -222,7 +222,7 @@ Antes de generar o modificar esta unidad, leer:
 13. `playbooks/project-state-template.md`;
 14. `playbooks/units/01-kubernetes.md`;
 15. `tutorial/00-environment/summary.md`;
-16. sección de Unidad 01 en `.work/detail.md`;
+16. sección de Unidad 01 en `project/coverage-map.md`;
 17. `tutorial/01-kubernetes/README.md`;
 18. `tutorial/01-kubernetes/student-notes.md`;
 19. `tutorial/01-kubernetes/student-reference.md`;
@@ -345,7 +345,7 @@ No se ejecutan validaciones funcionales nuevas durante el saneamiento.
 - no crear un segundo namespace funcional;
 - conservar `platform-api` y `platform-training`;
 - conservar `kubectl` como herramienta operativa de Unidad 01;
-- tratar `.work/detail.md` como cobertura y checklist, no como estructura.
+- tratar `project/coverage-map.md` como cobertura y checklist, no como estructura.
 
 ---
 
@@ -681,7 +681,7 @@ Comprobar que:
 - `labs/01-kubernetes/solution/` sigue sin cambios;
 - `student-reference.md` declara y cubre `GAP-004`;
 - toda exclusión relevante de `student-notes.md` queda cubierta, anclada o declarada fuera del itinerario;
-- `.work/detail.md` queda cruzado punto por punto en el cierre;
+- `project/coverage-map.md` queda cruzado punto por punto en el cierre;
 - Unidad 02 puede seguir reutilizando `platform-api`, `platform-training` y `labs/01-kubernetes/solution/`.
 
 ## Validaciones no ejecutables en el entorno de generación
@@ -787,7 +787,7 @@ La IA no debe:
 - sustituir `platform-api`;
 - crear namespaces funcionales alternativos;
 - registrar validaciones no ejecutadas como superadas;
-- usar `.work/detail.md` como contrato o estructura.
+- usar `project/coverage-map.md` como contrato o estructura.
 
 La IA sí puede:
 
@@ -795,7 +795,7 @@ La IA sí puede:
 - regenerar `tutorial/01-kubernetes/student-reference.md`;
 - ajustar `tutorial/01-kubernetes/README.md`, `student-notes.md`, `summary.md` y `project/project-state.md`;
 - ajustar `project/content-gap-register.md` solo si cambia el tratamiento de `GAP-004`;
-- reportar cobertura punto por punto contra `.work/detail.md`.
+- reportar cobertura punto por punto contra `project/coverage-map.md`.
 
 ---
 
@@ -803,7 +803,7 @@ La IA sí puede:
 
 La unidad saneada se considerará lista cuando:
 
-- [ ] `playbooks/units/01-kubernetes.md` declare frontera, laguna, tipos de cobertura, simplificaciones, exclusiones y uso de `.work/detail.md`;
+- [ ] `playbooks/units/01-kubernetes.md` declare frontera, laguna, tipos de cobertura, simplificaciones, exclusiones y uso de `project/coverage-map.md`;
 - [ ] `tutorial/01-kubernetes/student-reference.md` siga la estructura canónica de `playbooks/student-reference-template.md`;
 - [ ] `student-reference.md` declare `GAP-004` y cubra el mapa de workloads sin crear práctica nueva;
 - [ ] `student-notes.md` conserve diagnóstico operativo del laboratorio y remita errores conceptuales a la referencia;
@@ -813,7 +813,7 @@ La unidad saneada se considerará lista cuando:
 - [ ] `project/content-gap-register.md` quede coherente con `GAP-004`;
 - [ ] `labs/01-kubernetes/` no tenga cambios;
 - [ ] no se hayan ejecutado validaciones funcionales nuevas;
-- [ ] la cobertura de `.work/detail.md` se reporte punto por punto.
+- [ ] la cobertura de `project/coverage-map.md` se reporte punto por punto.
 
 ---
 
@@ -914,7 +914,7 @@ La Unidad 08 permanece congelada hasta cerrar las fases 4 y 5 del saneamiento.
 
 | Riesgo | Probabilidad | Impacto | Mitigación |
 |---|---|---|---|
-| Confundir `.work/detail.md` con contrato | Media | Alto | Declarar su uso solo como checklist y reportar cobertura |
+| Confundir `project/coverage-map.md` con contrato | Media | Alto | Declarar su uso solo como checklist y reportar cobertura |
 | Reabrir alcance técnico de labs | Media | Alto | Mantener `labs/` sin cambios y no ejecutar validaciones funcionales |
 | Cerrar `GAP-004` como si la práctica estuviera implementada | Media | Alto | Registrar cierre documental de Unidad 01 y mantener `TD-023` en Unidad 04 |
 | Duplicar diagnóstico entre notas y referencia | Media | Medio | Notas para fallos de laboratorio; referencia para errores conceptuales |
@@ -942,7 +942,7 @@ Antes de cerrar el saneamiento:
 - [x] los tipos de cobertura están declarados;
 - [x] las simplificaciones que obligan a práctica profesional están declaradas;
 - [x] las exclusiones tienen destino o quedan fuera del itinerario;
-- [x] `.work/detail.md` se usa solo como cobertura y checklist;
+- [x] `project/coverage-map.md` se usa solo como cobertura y checklist;
 - [x] el saneamiento no autoriza cambios de laboratorio;
 - [x] no contradice arquitectura, estado, roadmap ni playbook maestro.
 

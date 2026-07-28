@@ -217,9 +217,9 @@ No debe duplicarse contenido. Si ambos documentos necesitan un tema, uno lo desa
 | Sin build de imagen | No valida Dockerfile, registry ni supply chain | Build reproducible, tags inmutables, firma, SBOM, escaneo y registry autenticado |
 | ServiceAccount de laboratorio | Puede quedar demasiado amplia o demasiado local | RBAC minimo por namespace, identidad federada, rotacion y auditoria |
 
-## Uso de `.work/detail.md`
+## Uso de `project/coverage-map.md`
 
-La seccion `08 | Integracion continua con Tekton` de `.work/detail.md` se usa como checklist auxiliar y entrada explicita del usuario, no como fuente de verdad. Sus puntos se reparten asi:
+La seccion `08 | Integracion continua con Tekton` de `project/coverage-map.md` se usa como mapa versionado de cobertura candidata y checklist de reparto. No prevalece sobre `project/roadmap.md`, `project/project-state.md` ni este playbook. Sus puntos se reparten asi:
 
 | Punto de `detail` | Clasificacion | Tratamiento en Unidad 08 |
 |---|---|---|
@@ -256,7 +256,7 @@ Antes de generar o modificar esta unidad, leer:
 15. `playbooks/units/07-local-terraform-automation.md`;
 16. `tutorial/07-local-terraform-automation/summary.md`;
 17. este playbook;
-18. `.work/detail.md`, solo seccion de Unidad 08 y solo como checklist de cobertura;
+18. `project/coverage-map.md`, solo seccion de Unidad 08 y solo como checklist de cobertura;
 19. `labs/06-helm-packaging/chart/platform-api/`;
 20. `labs/06-helm-packaging/validation/validate.sh`;
 21. `labs/07-local-terraform-automation/terraform/`;
@@ -278,7 +278,7 @@ Ninguna. La Unidad 07 existe y deja `tutorial/07-local-terraform-automation/summ
 - summary de la Unidad 07;
 - registro de lagunas para mantener cerrado `GAP-004` y respetar `GAP-010`;
 - registro de laboratorios avanzados para anotar candidatos detectados durante el reparto;
-- seccion de Unidad 08 de `.work/detail.md` como checklist auxiliar declarado por el usuario.
+- seccion de Unidad 08 de `project/coverage-map.md` como mapa versionado de cobertura candidata.
 
 ## Dependencias tecnicas
 
@@ -623,7 +623,7 @@ Solo se ejecutan cuando el playbook este aprobado y se genere la unidad:
 
 - comprobar que `README.md`, `student-notes.md`, `student-reference.md`, `instructor-notes.md`, `summary.md` y README del laboratorio se enlazan entre si;
 - comprobar que `student-reference.md` sigue `playbooks/student-reference-template.md`;
-- comprobar que el reparto de `.work/detail.md` queda declarado como practica, criterio, diferido o candidato avanzado;
+- comprobar que el reparto de `project/coverage-map.md` queda declarado como practica, criterio, diferido o candidato avanzado;
 - comprobar que `platform/tools/README.md` registra version, metodo, namespace, persistencia y limpieza de Tekton;
 - comprobar que `project/project-state.md` distingue contenido generado, validacion funcional y aprobacion del usuario.
 

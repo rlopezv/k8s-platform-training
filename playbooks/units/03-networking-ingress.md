@@ -194,11 +194,11 @@ La unidad cierra documentalmente `GAP-003` mediante `tutorial/03-networking-ingr
 | No se usan anotaciones avanzadas | Copiar anotaciones de NGINX/Traefik como si fueran estándar | Tratar CORS, rewrite, rate limit y body size como capacidades específicas del controlador |
 | No se crea Gateway API | Presentar Gateway API como reemplazo automático | Explicar separación de roles, madurez del controlador y criterio de adopción |
 
-## Uso de `.work/detail.md`
+## Uso de `project/coverage-map.md`
 
-La sección de Unidad 03 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
+La sección de Unidad 03 de `project/coverage-map.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
 
-| Punto de `.work/detail.md` | Clasificación | Tratamiento |
+| Punto de `project/coverage-map.md` | Clasificación | Tratamiento |
 |---|---|---|
 | Modelo de red K8s y CNI | Criterio conceptual | Cubierto en referencia como red IP-per-Pod, CNI y límite de administración en MicroK8s |
 | Exposición y enrutamiento base con Ingress Controller e `Ingress` | Práctica existente del laboratorio | Cubierto por `labs/03-networking-ingress/solution/ingress.yaml` y diagnóstico en notas |
@@ -226,7 +226,7 @@ Antes de generar o modificar esta unidad, leer:
 12. `playbooks/summary-template.md`;
 13. `playbooks/project-state-template.md`;
 14. `playbooks/units/03-networking-ingress.md`;
-15. sección de Unidad 03 en `.work/detail.md`;
+15. sección de Unidad 03 en `project/coverage-map.md`;
 16. `tutorial/02-configuration-lifecycle/summary.md`;
 17. `tutorial/03-networking-ingress/README.md`;
 18. `tutorial/03-networking-ingress/student-notes.md`;
@@ -250,7 +250,7 @@ Ninguna. La Unidad 02 está cerrada y existe `tutorial/02-configuration-lifecycl
 - `tutorial/02-configuration-lifecycle/summary.md`;
 - artefactos actuales de la Unidad 03;
 - registro de lagunas `project/content-gap-register.md`;
-- `.work/detail.md` como checklist, no como estructura.
+- `project/coverage-map.md` como checklist, no como estructura.
 
 ## Dependencias técnicas
 

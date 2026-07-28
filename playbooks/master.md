@@ -196,9 +196,10 @@ La lista de cobertura de entrada solo puede construirse a partir de:
 - la continuidad declarada en el `summary.md` de la unidad anterior;
 - `project/content-gap-register.md`, cuando asigne una laguna o continuidad a la unidad;
 - `project/advanced-labs-register.md`, cuando exista un candidato relacionado;
+- `project/coverage-map.md`, como mapa versionado de cobertura candidata y checklist de reparto;
 - instrucciones explícitas del usuario para la sesión, siempre que queden incorporadas al playbook o al estado si condicionan el resultado.
 
-Los documentos privados o auxiliares, como `.work/detail.md`, pueden usarse como checklist de trabajo, pero no son fuente de verdad. Si un punto de un documento auxiliar condiciona la unidad, deberá trazarse hacia una de las fuentes anteriores o declararse como entrada explícita del usuario antes de entrar en el playbook.
+`project/coverage-map.md` aporta granularidad y profundidad posible, pero no prevalece sobre el roadmap, el estado consolidado, los registros de lagunas o el playbook específico. Si un punto del mapa condiciona la unidad, deberá repartirse explícitamente como práctica, criterio, diferido, candidato a laboratorio avanzado o fuera del itinerario antes de generar contenido.
 
 Cada punto se clasifica como:
 

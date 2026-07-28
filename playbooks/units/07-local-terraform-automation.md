@@ -191,9 +191,9 @@ No debe duplicarse contenido. Si ambos documentos necesitan un tema, uno lo desa
 | `terraform destroy` disponible | Puede desinstalar el release y afectar recursos persistentes | Runbooks de destrucción, `prevent_destroy` donde aplique, backups y aprobación explícita |
 | Terraform gestiona el release antes de GitOps | Dos reconciliadores podrían reclamar el mismo recurso | Transferencia o reparto explícito de ownership antes de introducir Argo CD |
 
-## Uso de `.work/detail.md`
+## Uso de `project/coverage-map.md`
 
-La sección de Unidad 07 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
+La sección de Unidad 07 de `project/coverage-map.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
 
 - diseño base de Terraform y providers;
 - despliegue con `helm_release` e idempotencia;
@@ -223,7 +223,7 @@ Antes de generar o modificar esta unidad, leer:
 14. `playbooks/units/06-helm-packaging.md`;
 15. `tutorial/06-helm-packaging/summary.md`;
 16. este playbook;
-17. `.work/detail.md`, solo sección de Unidad 07 y solo como checklist de cobertura;
+17. `project/coverage-map.md`, solo sección de Unidad 07 y solo como checklist de cobertura;
 18. `tutorial/07-local-terraform-automation/README.md`;
 19. `tutorial/07-local-terraform-automation/student-notes.md`;
 20. `tutorial/07-local-terraform-automation/student-reference.md`;
@@ -586,7 +586,7 @@ Debe registrar:
 - comprobar que los fallos operativos permanecen en `student-notes.md` o `labs/README.md`;
 - comprobar que las exclusiones de `student-notes.md` aparecen cubiertas, ancladas o declaradas fuera del itinerario;
 - comprobar que las simplificaciones productivas aparecen razonadas en la referencia;
-- comprobar que `.work/detail.md` queda cubierto sin copiar su estructura;
+- comprobar que `project/coverage-map.md` queda cubierto sin copiar su estructura;
 - revisar ortografía de la prosa modificada.
 
 ## Validaciones técnicas

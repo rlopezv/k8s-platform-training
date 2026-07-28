@@ -40,11 +40,11 @@ La lista de cobertura entra al principio, no al final. Antes de regenerar el pla
 
 El contrato manda sobre el reparto. La lista fija qué se cubre; el contrato fija en qué documento. Cuando un punto de la lista pertenezca a las notas, al README o a la fuente primaria en lugar de a la referencia —código de un CSI cloud, un catálogo, diagnóstico de laboratorio—, se señala al usuario y se coloca donde corresponde, o se eleva como motivo para revisar la plantilla. La lista no reubica contenido por sí sola.
 
-## Uso de `.work/detail.md`
+## Uso de `project/coverage-map.md`
 
-Durante la fase 4, `.work/detail.md` se usa como entrada de cobertura y como checklist de verificación, no como contrato documental ni como estructura de los documentos.
+Durante la fase 4, `project/coverage-map.md` se usa como entrada de cobertura y como checklist de verificación, no como contrato documental ni como estructura de los documentos.
 
-Antes de regenerar el playbook de una unidad, se lee únicamente la sección correspondiente de `.work/detail.md`. Sus puntos se clasifican en el playbook como:
+Antes de regenerar el playbook de una unidad, se lee únicamente la sección correspondiente de `project/coverage-map.md`. Sus puntos se clasifican en el playbook como:
 
 - práctica existente del laboratorio;
 - criterio conceptual para `student-reference.md`;
@@ -56,7 +56,7 @@ Antes de regenerar el playbook de una unidad, se lee únicamente la sección cor
 El contrato documental vigente sigue gobernando el reparto:
 `student-notes.md` explica y diagnostica lo que ocurre dentro del laboratorio; `student-reference.md` explica lo que existe fuera y corrige modelos mentales.
 
-`.work/detail.md` no puede por sí solo:
+`project/coverage-map.md` no puede por sí solo:
 
 - crear alcance ejecutable nuevo;
 - obligar a modificar laboratorios;
@@ -64,7 +64,7 @@ El contrato documental vigente sigue gobernando el reparto:
 - sustituir `playbooks/student-reference-template.md`;
 - adelantar unidades futuras.
 
-Al cierre de la unidad, la misma sección de `.work/detail.md` se cruza contra el playbook, la referencia y el README del laboratorio para verificar que ningún punto de cobertura se perdió.
+Al cierre de la unidad, la misma sección de `project/coverage-map.md` se cruza contra el playbook, la referencia y el README del laboratorio para verificar que ningún punto de cobertura se perdió.
 
 ---
 

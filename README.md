@@ -99,6 +99,7 @@ El procedimiento operativo se define en `project/how-to.md`.
 │       └── 00-environment.md
 ├── project/
 │   ├── architecture.md
+│   ├── coverage-map.md
 │   ├── how-to.md
 │   ├── project-planning.md
 │   ├── project-state.md
@@ -130,6 +131,7 @@ Contiene los documentos de gobierno, arquitectura, planificación, operación y 
 - `how-to.md`: mecanismo operativo para trabajar con el repositorio y asistentes de IA.
 - `project-state.md`: estado actual y verificable del laboratorio y del contenido generado.
 - `roadmap.md`: secuencia prevista de unidades, capacidades y dependencias.
+- `coverage-map.md`: mapa versionado de cobertura candidata; aporta granularidad para repartir puntos como práctica, criterio, diferido o candidato avanzado sin sustituir al roadmap.
 - `content-gap-register.md`: registro ligero de lagunas de contenido detectadas.
 - `advanced-labs-register.md`: registro de candidatos a laboratorios avanzados cuando una cobertura queda fuera de la práctica principal.
 

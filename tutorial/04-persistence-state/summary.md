@@ -21,7 +21,7 @@ La validación funcional se ejecutó correctamente en MicroK8s. El addon `hostpa
 
 El 2026-07-22 se añadió `tutorial/04-persistence-state/student-reference.md` como backfill documental del nuevo contrato global de unidades. La referencia profundiza en almacenamiento Kubernetes, PV, PVC, StorageClass, access modes, CSI, StatefulSet, headless Service, snapshots, backup, restore, límites de `hostpath-storage` y continuidad hacia cloud y fiabilidad. No modifica manifiestos, scripts, laboratorios ni estado técnico del clúster.
 
-El 2026-07-27 se aplicó y aprobó el saneamiento documental de fase 4 sobre la Unidad 04 antes de ejecutar `TD-022`. Se regeneró `playbooks/units/04-persistence-state.md` contra el contrato documental cerrado y se ajustaron `README.md`, `student-notes.md` y `student-reference.md` desde ese playbook. `.work/detail.md` se usó solo como checklist de cobertura. No se modificaron laboratorios, manifiestos Kubernetes, scripts ni estado técnico del clúster, y no se ejecutaron validaciones funcionales nuevas.
+El 2026-07-27 se aplicó y aprobó el saneamiento documental de fase 4 sobre la Unidad 04 antes de ejecutar `TD-022`. Se regeneró `playbooks/units/04-persistence-state.md` contra el contrato documental cerrado y se ajustaron `README.md`, `student-notes.md` y `student-reference.md` desde ese playbook. `project/coverage-map.md` se usó solo como checklist de cobertura. No se modificaron laboratorios, manifiestos Kubernetes, scripts ni estado técnico del clúster, y no se ejecutaron validaciones funcionales nuevas.
 
 El 2026-07-27 se implementó, validó y aprobó `TD-023`. Se añadió `labs/04-persistence-state/statefulset-demo/` como práctica independiente de `StatefulSet`, headless Service y `volumeClaimTemplates` sobre el workload auxiliar desechable `scratch-stateful`. La práctica usa la misma imagen y tag que `platform-api`, crea dos réplicas con ordinales estables, genera un PVC por réplica y no migra ni modifica `platform-api`. Tras reiniciar MicroK8s fuera del asistente y corregir el comando del contenedor para no sobrescribir `index.html`, la validación independiente se ejecutó con 0 fallos y 0 avisos. La validación borra solo `statefulset/scratch-stateful` y comprueba después que los PVCs `scratch-data-scratch-stateful-0` y `scratch-data-scratch-stateful-1` siguen existiendo y quedan `Bound`; la limpieza posterior borra solo `service/scratch-stateful` y esos dos PVCs por nombre exacto. `platform-api-data` quedó `Bound` y la validación principal de Unidad 04 volvió a finalizar con 0 fallos y 0 avisos. `GAP-004` queda cerrado funcionalmente para el tramo 00-07.
 
@@ -119,7 +119,7 @@ El 2026-07-27 se implementó, validó y aprobó `TD-023`. Se añadió `labs/04-p
 
 | Componente | Ruta | Cambio realizado |
 |---|---|---|
-| Playbook Unidad 04 | `playbooks/units/04-persistence-state.md` | Regenerado contra el contrato documental cerrado; declara `GAP-004`, `TD-023`, frontera notas/referencia y cobertura de `.work/detail.md` |
+| Playbook Unidad 04 | `playbooks/units/04-persistence-state.md` | Regenerado contra el contrato documental cerrado; declara `GAP-004`, `TD-023`, frontera notas/referencia y cobertura de `project/coverage-map.md` |
 | Estado del proyecto | `project/project-state.md` | Registra Unidad 04 completada, aprobada pedagógicamente, validada funcionalmente y saneada documentalmente |
 | Saneamiento documental de fase 4 | `tutorial/04-persistence-state/README.md`, `tutorial/04-persistence-state/student-notes.md`, `tutorial/04-persistence-state/student-reference.md`, `tutorial/04-persistence-state/summary.md` | Ajuste documental contra el contrato cerrado; sin cambios funcionales |
 
@@ -291,7 +291,7 @@ La práctica de `StatefulSet`, headless Service y `volumeClaimTemplates` se mant
 
 `TD-023` se implementa fuera de `solution/` para no propagar el workload auxiliar a Unidades 05, 06 y 07. `platform-api` sigue como Deployment porque no necesita identidad estable por réplica. La demo usa `scratch-stateful`, headless Service y `volumeClaimTemplates` solo para observar el patrón stateful con dos ordinales y un PVC por réplica. El manifiesto no define `podManagementPolicy`, por lo que conserva el comportamiento por defecto `OrderedReady`, coherente con la referencia profesional de la unidad. La limpieza se hace por nombres exactos y no toca `platform-api-data`.
 
-## Cobertura de `.work/detail.md`
+## Cobertura de `project/coverage-map.md`
 
 | Punto de cobertura | Estado | Evidencia |
 |---|---|---|

@@ -186,11 +186,11 @@ No debe duplicarse contenido. Si ambos documentos necesitan un tema, uno lo desa
 | Sin build ni registry local | No cubre ciclo código -> imagen -> publicación -> despliegue | Tekton, registry y seguridad de supply chain en unidades posteriores |
 | Sin credenciales de registry | No demuestra autenticación ni rotación | `imagePullSecrets`, ServiceAccounts e identidad gestionada cuando corresponda |
 
-## Uso de `.work/detail.md`
+## Uso de `project/coverage-map.md`
 
-La sección de Unidad 00 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se clasifican así:
+La sección de Unidad 00 de `project/coverage-map.md` se usa únicamente como checklist de cobertura. Sus puntos se clasifican así:
 
-| Punto de `.work/detail.md` | Clasificación | Tratamiento |
+| Punto de `project/coverage-map.md` | Clasificación | Tratamiento |
 |---|---|---|
 | WSL2 con Ubuntu 22.04+ y comandos de administración | Práctica existente del laboratorio | Cubierto por README, notas y scripts Windows/Ubuntu; baseline real Ubuntu 24.04 LTS |
 | `.wslconfig`, límites de CPU/RAM, swap y compactación VHD | Criterio conceptual / exclusión parcial | Se menciona como ajuste de host fuera de práctica obligatoria; no se convierte en procedimiento |
@@ -219,7 +219,7 @@ Antes de generar o modificar esta unidad, leer:
 12. `playbooks/summary-template.md`;
 13. `playbooks/project-state-template.md`;
 14. este playbook;
-15. sección de Unidad 00 en `.work/detail.md`, solo como checklist de cobertura;
+15. sección de Unidad 00 en `project/coverage-map.md`, solo como checklist de cobertura;
 16. `tutorial/00-environment/README.md`;
 17. `tutorial/00-environment/student-notes.md`;
 18. `tutorial/00-environment/student-reference.md`;
@@ -846,7 +846,7 @@ La IA no debe:
 - modificar el API Server local, feature gates o rangos de puertos;
 - introducir Minikube, kind o Docker Desktop Kubernetes como plataforma paralela;
 - almacenar credenciales reales;
-- usar `.work/detail.md` como contrato o estructura.
+- usar `project/coverage-map.md` como contrato o estructura.
 
 La IA sí puede:
 
@@ -863,7 +863,7 @@ La IA sí puede:
 
 La unidad se considera conforme tras el saneamiento cuando:
 
-- [ ] `playbooks/units/00-environment.md` declara frontera, laguna, tipos de cobertura, simplificaciones y uso limitado de `.work/detail.md`;
+- [ ] `playbooks/units/00-environment.md` declara frontera, laguna, tipos de cobertura, simplificaciones y uso limitado de `project/coverage-map.md`;
 - [ ] `tutorial/00-environment/student-reference.md` sigue las nueve secciones canónicas de `playbooks/student-reference-template.md`;
 - [ ] `student-reference.md` declara `GAP-001` en su propósito y lo cierra sin práctica nueva;
 - [ ] cada exclusión relevante de `student-notes.md` queda cubierta, anclada o declarada fuera del itinerario;
@@ -876,7 +876,7 @@ La unidad se considera conforme tras el saneamiento cuando:
 - [ ] no hay cambios en labs de Unidades 01-07;
 - [ ] no se han creado workloads, manifiestos, charts, módulos ni unidades nuevas;
 - [ ] la prosa del material del alumno tiene ortografía completa;
-- [ ] el reporte final incluye cobertura punto por punto contra `.work/detail.md`.
+- [ ] el reporte final incluye cobertura punto por punto contra `project/coverage-map.md`.
 
 ---
 
@@ -1001,7 +1001,7 @@ Al cerrar el saneamiento documental de Unidad 00, actualizar como mínimo:
 | Riesgo | Probabilidad | Impacto | Mitigación |
 |---|---|---|---|
 | Confundir saneamiento documental con revalidación técnica | Media | Alto | Registrar explícitamente que no se ejecutan validaciones funcionales nuevas |
-| Sobrecargar Unidad 00 con tuning de WSL o API Server | Media | Medio | Tratar esos puntos de `.work/detail.md` como criterio o exclusión anclada |
+| Sobrecargar Unidad 00 con tuning de WSL o API Server | Media | Medio | Tratar esos puntos de `project/coverage-map.md` como criterio o exclusión anclada |
 | Duplicar contenedores e imágenes en notas y referencia | Media | Medio | Dejar el diagnóstico local en notas y el modelo profesional en referencia |
 | Convertir `GAP-001` en práctica de build | Media | Alto | Mantener laboratorio de solo lectura y anclar build a CI/CD |
 | Presentar MicroK8s como equivalente a cloud | Media | Alto | Separar Kubernetes estándar, MicroK8s y cloud en referencia y notas |

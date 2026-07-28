@@ -201,9 +201,9 @@ No debe duplicarse contenido. Si ambos documentos necesitan un tema, uno lo desa
 | Rollback Helm local | No equivale a promoción, rollback GitOps ni recuperación de datos | Estrategia de releases, backups, health checks, observabilidad y runbooks |
 | Sin subcharts, hooks ni `helm test` ejecutables | No cubre dependencias ni comprobaciones posdespliegue reales | Pruebas y dependencias diseñadas cuando existan workloads auxiliares y CI/CD |
 
-## Uso de `.work/detail.md`
+## Uso de `project/coverage-map.md`
 
-La sección de Unidad 06 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
+La sección de Unidad 06 de `project/coverage-map.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
 
 - fundamentos de empaquetado con `templates/`, `values.yaml` y `Chart.yaml`;
 - ciclo de vida con `helm lint`, `helm template`, `helm install` y `helm upgrade`;
@@ -233,7 +233,7 @@ Antes de generar o modificar esta unidad, leer:
 13. `playbooks/project-state-template.md`;
 14. `tutorial/05-scheduling-resilience-maintenance/summary.md`;
 15. este playbook;
-16. `.work/detail.md`, solo sección de Unidad 06 y solo como checklist de cobertura;
+16. `project/coverage-map.md`, solo sección de Unidad 06 y solo como checklist de cobertura;
 17. `tutorial/06-helm-packaging/README.md`;
 18. `tutorial/06-helm-packaging/student-notes.md`;
 19. `tutorial/06-helm-packaging/student-reference.md`;
@@ -817,7 +817,7 @@ La unidad se considerará saneada documentalmente cuando:
 - [ ] ningún contenido esté duplicado entre `student-notes.md` y `student-reference.md`;
 - [ ] el diagnóstico de fallos del laboratorio esté solo en `student-notes.md` y los errores de concepto solo en `student-reference.md`;
 - [ ] la referencia nombre las simplificaciones de laboratorio y la alternativa profesional;
-- [ ] `.work/detail.md` haya sido usado solo como checklist de cobertura;
+- [ ] `project/coverage-map.md` haya sido usado solo como checklist de cobertura;
 - [ ] `summary.md` registre el saneamiento sin declarar validaciones funcionales nuevas;
 - [ ] `project/project-state.md` refleje el estado real y mantenga Unidad 08 congelada;
 - [ ] no se hayan modificado labs, chart Helm ni validaciones;

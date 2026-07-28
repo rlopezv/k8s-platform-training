@@ -196,11 +196,11 @@ La unidad no recibe una laguna nueva durante esta fase. Debe respetar, sin reabr
 | Sin `ResourceQuota`, `LimitRange` ni autoscaling | No enseña control de consumo por namespace ni escalado automático | Políticas de plataforma y autoscaling cuando existan métricas y objetivos |
 | Solo `terminationGracePeriodSeconds`, sin `preStop` ni SIGTERM real de aplicación | Creer que Kubernetes puede garantizar cierre graceful sin cooperación del proceso | Aplicaciones que atienden SIGTERM, hooks, drenaje, PDB y pruebas de terminación |
 
-## Uso de `.work/detail.md`
+## Uso de `project/coverage-map.md`
 
-La sección de Unidad 02 de `.work/detail.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
+La sección de Unidad 02 de `project/coverage-map.md` se usa únicamente como checklist de cobertura. Sus puntos se absorben en el contrato documental de esta unidad sin copiar su estructura:
 
-| Punto de `.work/detail.md` | Clasificación | Tratamiento |
+| Punto de `project/coverage-map.md` | Clasificación | Tratamiento |
 |---|---|---|
 | Inyección de entorno base: ConfigMaps as env and files | Práctica existente del laboratorio | Cubierto por `configMapKeyRef` y volumen `platform-api-content` en la solución |
 | Datos sensibles locales vs producción | Práctica y criterio | Secret ficticio practicado; límites de Base64, cifrado en reposo y gestores externos explicados en referencia |
@@ -230,7 +230,7 @@ Antes de generar o modificar esta unidad, leer:
 13. `playbooks/project-state-template.md`;
 14. `playbooks/units/02-configuration-lifecycle.md`;
 15. `tutorial/01-kubernetes/summary.md`;
-16. sección de Unidad 02 en `.work/detail.md`;
+16. sección de Unidad 02 en `project/coverage-map.md`;
 17. `tutorial/02-configuration-lifecycle/README.md`;
 18. `tutorial/02-configuration-lifecycle/student-notes.md`;
 19. `tutorial/02-configuration-lifecycle/student-reference.md`;
@@ -253,7 +253,7 @@ Ninguna. La Unidad 01 está cerrada y existe `tutorial/01-kubernetes/summary.md`
 - `tutorial/01-kubernetes/summary.md`;
 - artefactos actuales de la Unidad 02;
 - registro de lagunas `project/content-gap-register.md`;
-- `.work/detail.md` como checklist, no como estructura.
+- `project/coverage-map.md` como checklist, no como estructura.
 
 ## Dependencias técnicas
 

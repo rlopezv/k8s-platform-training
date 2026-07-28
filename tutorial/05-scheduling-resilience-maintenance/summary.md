@@ -21,7 +21,7 @@ La validación funcional se ejecutó correctamente en MicroK8s. El Deployment qu
 
 El 2026-07-22 se añadió `tutorial/05-scheduling-resilience-maintenance/student-reference.md` como backfill documental del nuevo contrato global de unidades. La referencia profundiza en scheduler, node labels, `nodeSelector`, affinity, anti-affinity, taints, tolerations, requests, PVC y topología, `RollingUpdate`, rollback, PDB, mantenimiento, alta disponibilidad real, cloud y límites de MicroK8s local. No modifica manifiestos, scripts, laboratorios ni estado técnico del clúster.
 
-El 2026-07-27 se aplicó el saneamiento documental de fase 4 sobre la Unidad 05. Se regeneró `playbooks/units/05-scheduling-resilience-maintenance.md` contra el contrato documental cerrado, se ajustaron `tutorial/05-scheduling-resilience-maintenance/README.md`, `student-notes.md` y `student-reference.md` desde ese playbook, y se confirmó la cobertura de scheduler, filtrado, puntuación, affinity, anti-affinity, taints, tolerations, PDB, `drain`, `cordon`, `uncordon`, alta disponibilidad real y límites de MicroK8s local. `.work/detail.md` se usó solo como checklist de cobertura. No se modificaron laboratorios, manifiestos Kubernetes, scripts ni estado técnico del clúster, no se crearon workloads y no se ejecutaron validaciones funcionales nuevas.
+El 2026-07-27 se aplicó el saneamiento documental de fase 4 sobre la Unidad 05. Se regeneró `playbooks/units/05-scheduling-resilience-maintenance.md` contra el contrato documental cerrado, se ajustaron `tutorial/05-scheduling-resilience-maintenance/README.md`, `student-notes.md` y `student-reference.md` desde ese playbook, y se confirmó la cobertura de scheduler, filtrado, puntuación, affinity, anti-affinity, taints, tolerations, PDB, `drain`, `cordon`, `uncordon`, alta disponibilidad real y límites de MicroK8s local. `project/coverage-map.md` se usó solo como checklist de cobertura. No se modificaron laboratorios, manifiestos Kubernetes, scripts ni estado técnico del clúster, no se crearon workloads y no se ejecutaron validaciones funcionales nuevas.
 
 ## Objetivos alcanzados
 
@@ -315,7 +315,7 @@ La validación automática elimina un Pod gestionado por Deployment, pero no eje
 - No se ejecuta `kubectl drain` como validación automática.
 - El saneamiento documental de fase 4 no modificó `labs/05-scheduling-resilience-maintenance/`, no creó workloads nuevos y no cambió manifiestos Kubernetes.
 
-## Cobertura contra `.work/detail.md`
+## Cobertura contra `project/coverage-map.md`
 
 | Punto de cobertura | Estado | Dónde queda cubierto | Reparto documental |
 |---|---|---|---|
