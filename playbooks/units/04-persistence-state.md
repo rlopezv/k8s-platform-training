@@ -221,7 +221,7 @@ La sección de Unidad 04 de `project/coverage-map.md` se usa únicamente como ch
 
 Antes de generar o modificar esta unidad, leer:
 
-1. `project/documentation-cleanup-plan.md`;
+1. `project/project-state.md`;
 2. `README.md`;
 3. `project/architecture.md`;
 4. `project/project-state.md`;
@@ -255,7 +255,7 @@ Ninguna. La Unidad 03 está cerrada y existe `tutorial/03-networking-ingress/sum
 ## Dependencias documentales
 
 - contrato documental cerrado en `playbooks/student-reference-template.md`;
-- plan de saneamiento vigente en `project/documentation-cleanup-plan.md`;
+- historial del saneamiento consolidado en `project/project-state.md`;
 - `tutorial/03-networking-ingress/summary.md`;
 - artefactos actuales de la Unidad 04;
 - registro de lagunas `project/content-gap-register.md`;

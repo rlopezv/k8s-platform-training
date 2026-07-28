@@ -207,7 +207,7 @@ La sección de Unidad 07 de `project/coverage-map.md` se usa únicamente como ch
 
 Antes de generar o modificar esta unidad, leer:
 
-1. `project/documentation-cleanup-plan.md`;
+1. `project/project-state.md`;
 2. `README.md`;
 3. `project/architecture.md`;
 4. `project/project-state.md`;
@@ -244,7 +244,7 @@ Ninguna. La Unidad 06 existe y deja `tutorial/06-helm-packaging/summary.md` y `l
 ## Dependencias documentales
 
 - contrato documental cerrado en `playbooks/student-reference-template.md`;
-- plan de saneamiento vigente en `project/documentation-cleanup-plan.md`;
+- historial del saneamiento consolidado en `project/project-state.md`;
 - summary de la Unidad 06;
 - artefactos actuales de la Unidad 07.
 
@@ -613,7 +613,7 @@ La fase 4 de saneamiento para la Unidad 07 se considera lista para revisión cua
 
 # Continuidad esperada
 
-La siguiente sesión del saneamiento debe continuar con la Unidad 06, según el orden fijado en `project/documentation-cleanup-plan.md`:
+El saneamiento continuó con la Unidad 06, según el orden histórico consolidado en `project/project-state.md`:
 
 ```text
 07 (piloto) -> 06 -> 01 -> 00 -> 02 -> 03 -> 05 -> 04 documental -> TD-022 -> 04 funcional (TD-023)

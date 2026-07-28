@@ -53,7 +53,7 @@ No se han ejecutado validaciones funcionales nuevas durante este saneamiento. No
 
 | Artefacto | Ruta | Uso |
 |---|---|---|
-| Plan de saneamiento | `project/documentation-cleanup-plan.md` | Gobernar fase 4 |
+| Historial del saneamiento | `project/project-state.md` | Rastro consolidado de la fase 4 |
 | Contrato de referencia | `playbooks/student-reference-template.md` | Regenerar `student-reference.md` |
 | Registro de lagunas | `project/content-gap-register.md` | Confirmar `GAP-001` |
 | Checklist de cobertura | `project/coverage-map.md` | Verificación de Unidad 00; no contrato ni estructura |

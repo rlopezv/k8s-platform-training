@@ -205,7 +205,7 @@ La sección de Unidad 00 de `project/coverage-map.md` se usa únicamente como ch
 
 Antes de generar o modificar esta unidad, leer:
 
-1. `project/documentation-cleanup-plan.md`;
+1. `project/project-state.md`;
 2. `README.md`;
 3. `project/architecture.md`;
 4. `project/project-state.md`;
@@ -238,7 +238,7 @@ No existe `summary.md` de una unidad anterior porque la Unidad 00 es la primera 
 ## Dependencias documentales
 
 - contrato documental cerrado en `playbooks/student-reference-template.md`;
-- plan de saneamiento vigente en `project/documentation-cleanup-plan.md`;
+- historial del saneamiento consolidado en `project/project-state.md`;
 - registro de lagunas con `GAP-001`;
 - artefactos actuales de la Unidad 00;
 - documentación operativa de `platform/environment/`.

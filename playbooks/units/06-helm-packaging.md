@@ -218,7 +218,7 @@ La sección de Unidad 06 de `project/coverage-map.md` se usa únicamente como ch
 
 Antes de generar o modificar esta unidad, leer:
 
-1. `project/documentation-cleanup-plan.md`;
+1. `project/project-state.md`;
 2. `README.md`;
 3. `project/architecture.md`;
 4. `project/project-state.md`;
@@ -252,7 +252,7 @@ Ninguna. La Unidad 05 existe y deja `tutorial/05-scheduling-resilience-maintenan
 ## Dependencias documentales
 
 - contrato documental cerrado en `playbooks/student-reference-template.md`;
-- plan de saneamiento vigente en `project/documentation-cleanup-plan.md`;
+- historial del saneamiento consolidado en `project/project-state.md`;
 - summary de la Unidad 05;
 - artefactos actuales de la Unidad 06;
 - registro de lagunas para comprobar que la unidad no tiene laguna propia asignada.
@@ -873,4 +873,4 @@ El `summary.md` deberá destacar:
 - que README y notas fueron ajustados para respetar la frontera entre notas y referencia;
 - que no se modificaron laboratorios, chart Helm ni validaciones;
 - que no se ejecutaron validaciones funcionales nuevas;
-- que Unidad 07 sigue reutilizando el chart y Unidad 08 permanece congelada por el plan de saneamiento.
+- que Unidad 07 sigue reutilizando el chart y que la congelación histórica de Unidad 08 quedó cerrada antes de generar su playbook.

@@ -217,7 +217,7 @@ La sección de Unidad 05 de `project/coverage-map.md` se usa únicamente como ch
 
 Antes de generar o modificar esta unidad, leer:
 
-1. `project/documentation-cleanup-plan.md`;
+1. `project/project-state.md`;
 2. `README.md`;
 3. `project/architecture.md`;
 4. `project/project-state.md`;
@@ -251,7 +251,7 @@ Ninguna. La Unidad 04 está cerrada, existe `tutorial/04-persistence-state/summa
 ## Dependencias documentales
 
 - contrato documental cerrado en `playbooks/student-reference-template.md`;
-- plan de saneamiento vigente en `project/documentation-cleanup-plan.md`;
+- historial del saneamiento consolidado en `project/project-state.md`;
 - `tutorial/04-persistence-state/summary.md`;
 - artefactos actuales de la Unidad 05;
 - registro de lagunas `project/content-gap-register.md`;
@@ -377,7 +377,7 @@ Al cerrar el saneamiento de la Unidad 05:
 - `project/project-state.md` registra el incremento;
 - `project/content-gap-register.md` queda sin cambios salvo que se detecte una laguna que deba ajustarse;
 - Unidad 08 sigue congelada;
-- el siguiente paso permitido es la auditoría de autosuficiencia `TD-022` y, después, el cierre funcional de Unidad 04 `TD-023` según `project/documentation-cleanup-plan.md`.
+- el siguiente paso permitido es la auditoría de autosuficiencia `TD-022` y, después, el cierre funcional de Unidad 04 `TD-023` según `project/project-state.md`.
 
 ---
 
