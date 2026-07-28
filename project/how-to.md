@@ -655,6 +655,17 @@ Comienza revisando la consistencia del paquete de contexto.
 
 ---
 
+### 11.1bis. Generar un playbook de unidad
+
+1. Revisar `project/project-state.md`, `project/roadmap.md`, `project/coverage-map.md`, registros de lagunas, candidatos avanzados y continuidad de la unidad anterior.
+2. Preparar una propuesta breve de reparto de cobertura: práctica, criterio, diferido, candidato avanzado o fuera del itinerario.
+3. Presentar la propuesta al usuario antes de redactar o cerrar el playbook.
+4. Incorporar la decisión del usuario al playbook y, si cambia alcance o siguiente trabajo permitido, a `project/project-state.md`.
+5. Mantener el playbook en `Borrador` o `En revisión` mientras esa interacción no exista.
+6. Marcar el playbook como `Aprobado` solo cuando la aprobación del usuario quede registrada.
+
+---
+
 ### 11.2. Corregir un laboratorio
 
 1. Proporcionar el error y el comando ejecutado.

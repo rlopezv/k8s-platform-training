@@ -211,6 +211,20 @@ La regla de reparto la fija el alcance declarado de la unidad. Una unidad introd
 
 Un punto redactado como práctica que el laboratorio no puede sostener, porque exige un entorno que la unidad no tiene o contradice una restricción activa, no se convierte en artefacto. Se reclasifica como criterio o diferido y se declara por qué. La IA no debe ampliar el alcance para acomodar la lista; es la lista la que se reparte contra el alcance.
 
+### Interacción obligatoria antes de cerrar un playbook
+
+Durante la generación de un playbook específico de unidad, la IA no deberá saltar directamente desde la lectura de fuentes a la redacción final del playbook.
+
+Antes de escribir o cerrar el playbook, deberá presentar al usuario una propuesta estructurada de reparto que indique:
+
+- qué puntos de `project/roadmap.md`, `project/coverage-map.md`, `project/content-gap-register.md`, `project/advanced-labs-register.md` y continuidad de la unidad anterior se incorporan;
+- qué puntos se practican en el laboratorio troncal y por qué;
+- qué puntos quedan como criterio en `student-reference.md` y por qué;
+- qué puntos se difieren o quedan como candidatos avanzados, con destino previsto cuando exista;
+- qué exclusiones podrían ser discutibles o necesitan decisión del usuario.
+
+La respuesta del usuario deberá incorporarse al playbook o a `project/project-state.md` si condiciona alcance, restricciones, decisiones o siguiente trabajo permitido. Si el usuario delega explícitamente la decisión, el playbook deberá declarar la clasificación elegida y su justificación.
+
 El resultado de esta clasificación se declara en el playbook de la unidad, en las declaraciones obligatorias de la referencia.
 
 ## Paso 5 — Generar los entregables

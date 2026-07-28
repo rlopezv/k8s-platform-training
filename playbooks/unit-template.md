@@ -154,6 +154,18 @@ Evitar verbos vagos como “conocer” o “entender” cuando no estén acompa�
 
 Esta sección evita anticipar contenido fuera de secuencia.
 
+## Interacción previa de cobertura
+
+Antes de cerrar este playbook, registrar la interacción de revisión de cobertura con el usuario:
+
+- fecha de la interacción;
+- puntos principales propuestos desde `project/roadmap.md`, `project/coverage-map.md`, registros de lagunas, candidatos avanzados y continuidad anterior;
+- decisiones del usuario sobre qué se practica, qué queda como criterio y qué se difiere;
+- ambigüedades resueltas;
+- ambigüedades delegadas en la IA, si las hubo.
+
+Si el usuario aprobó el reparto sin cambios, declararlo explícitamente. Si todavía no existe aprobación, el estado del playbook no puede ser `Aprobado`.
+
 ---
 
 # Fuentes obligatorias
