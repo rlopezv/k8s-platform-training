@@ -70,7 +70,7 @@ Dentro del clúster:
 
 ```text
 Task prepare-source
-  lee el ConfigMap
+  recibe el ConfigMap como Workspace de solo lectura
   descomprime el bundle
   escribe en el Workspace
 
@@ -152,7 +152,7 @@ Idea clave: los CRDs de Tekton deben existir antes de aplicar recursos Tekton.
 
 ### 2. La fuente local no existe dentro del pipeline
 
-Síntoma: `source bundle not found`.
+Síntoma: `source bundle not mounted from ConfigMap`.
 
 Comprueba:
 

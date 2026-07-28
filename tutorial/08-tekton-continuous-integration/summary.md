@@ -7,9 +7,10 @@
 | Unidad | 08 - Integración continua con Tekton |
 | Identificador | `08-tekton-continuous-integration` |
 | Fase del roadmap | Fase 4 - Entrega continua y GitOps |
-| Estado | Generada y validada funcionalmente; aprobación pedagógica pendiente |
+| Estado | Generada, validada funcionalmente y aprobada pedagógicamente |
 | Fecha de cierre o actualización | 2026-07-28 |
-| Revisión pedagógica del usuario | Pendiente |
+| Revisión pedagógica asistida | Completada el 2026-07-28; sin hallazgos bloqueantes |
+| Aprobación pedagógica responsable | Aprobada por el usuario el 2026-07-28 |
 
 ## Resumen ejecutivo
 
@@ -18,6 +19,10 @@ La Unidad 08 incorpora Tekton Pipelines como componente de clúster y crea una p
 La versión fijada es Tekton Pipelines `v1.12.2`, verificada el 2026-07-28 contra fuentes oficiales como línea LTS soportada hasta mayo de 2027. La release general más reciente publicada al verificar era `v1.14.1`, no LTS.
 
 La unidad deja preparada la Unidad 09 para introducir Argo CD y resolver la frontera GitOps. No instala Argo CD, no crea Triggers, no construye imágenes, no usa registry y no introduce credenciales reales.
+
+La revisión pedagógica asistida confirmó que la progresión conceptual, la frontera CI/GitOps, la comparación con `Job`/`CronJob` y la separación entre notas, referencia y laboratorio son coherentes con el playbook. Se ajustaron las explicaciones para reflejar la implementación validada: la fuente local se monta desde un `ConfigMap` como Workspace de solo lectura y Terraform usa un kubeconfig efímero de runtime basado en el ServiceAccount del `TaskRun`.
+
+El usuario dio por aprobada pedagógicamente la Unidad 08 el 2026-07-28.
 
 ## Objetivos alcanzados
 
@@ -148,6 +153,8 @@ labs/08-tekton-continuous-integration/
 | Helm heredado | `helm lint labs/06-helm-packaging/chart/platform-api` | 1 chart linted, 0 failed; aviso informativo de icon recomendado |
 | Terraform heredado | `terraform -chdir=labs/07-local-terraform-automation/terraform validate` | `Success! The configuration is valid.` |
 | Gobierno documental | `bash project/validation/validate-governance.sh` | 0 fallos, 0 avisos |
+| Revisión pedagógica asistida | Lectura cruzada de playbook, README, student notes, student reference, instructor notes, laboratorio y summary | Sin hallazgos bloqueantes; ajustes menores aplicados |
+| Aprobación pedagógica responsable | Confirmación del usuario en la sesión de trabajo | Aprobada el 2026-07-28 |
 
 ## Validaciones funcionales verificadas
 

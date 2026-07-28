@@ -128,7 +128,7 @@ Tekton Results, como componente del ecosistema, resuelve retención y consulta h
 
 ### Fuente local sin credenciales
 
-La unidad empaqueta los artefactos en un `ConfigMap`. Es una adaptación local para evitar repos remotos, tokens y webhooks. En un CI real, el pipeline normalmente obtiene fuente desde Git mediante un mecanismo autenticado, auditable y versionado.
+La unidad empaqueta los artefactos en un `ConfigMap` y lo monta como Workspace de solo lectura en el `PipelineRun`. Es una adaptación local para evitar repos remotos, tokens y webhooks. En un CI real, el pipeline normalmente obtiene fuente desde Git mediante un mecanismo autenticado, auditable y versionado.
 
 Esta simplificación importa porque un pipeline sin fuente versionada no puede sostener trazabilidad productiva. Aquí la trazabilidad es pedagógica: el bundle procede de rutas exactas del repositorio local y excluye state, planes y `tfvars` locales.
 
@@ -174,7 +174,7 @@ El curso todavía consume una imagen externa conocida para `platform-api`. Crear
 
 ### Qué permisos dar al pipeline
 
-La ServiceAccount del laboratorio puede leer el `ConfigMap` de fuente y observar algunos recursos de `platform-training`. No necesita `cluster-admin`, no necesita crear Deployments, no necesita borrar PVCs y no necesita secretos reales.
+La ServiceAccount del laboratorio se usa como identidad de los `TaskRuns`: consume la fuente montada desde el `ConfigMap`, observa recursos acotados de `platform-training` y permite que Terraform use un kubeconfig efímero basado en el token montado por Kubernetes. No necesita `cluster-admin`, no necesita crear Deployments, no necesita borrar PVCs y no necesita secretos reales en manifests.
 
 En producción, el criterio es separar identidad de lectura, validación, publicación de artefactos y despliegue. Cuanto más mutante sea una tarea, más fuerte debe ser su aislamiento, revisión y auditoría.
 

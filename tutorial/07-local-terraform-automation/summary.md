@@ -18,7 +18,7 @@ La Unidad 07 incorpora Terraform como capa declarativa local para gestionar el r
 
 Terraform declara `helm_release.platform_api`, variables tipadas, un values file renderizado con `templatefile()`, `set_sensitive` con secreto ficticio, outputs no sensibles y validación automatizada. El backend sigue siendo local y el state queda como artefacto no versionado.
 
-La unidad deja preparada la Unidad 08 para ejecutar validación, plan y apply desde CI/CD con Tekton, manteniendo la frontera entre Kubernetes, Helm y Terraform.
+La unidad deja preparada la Unidad 08 para ejecutar validación y plan desde CI/CD con Tekton, manteniendo la frontera entre Kubernetes, Helm y Terraform. El `apply` desde automatización compartida queda diferido a la Unidad 09 o posterior, cuando se resuelva la frontera con GitOps.
 
 El 2026-07-26 se regeneraron `playbooks/units/07-local-terraform-automation.md` y `tutorial/07-local-terraform-automation/student-reference.md` contra el contrato documental cerrado en `playbooks/student-reference-template.md`. El ajuste no modifica laboratorios, validaciones ni artefactos Terraform, no ejecuta nuevas validaciones técnicas y cierra documentalmente `GAP-010` declarando la frontera de propiedad entre Terraform y GitOps.
 
@@ -295,4 +295,4 @@ labs/06-helm-packaging/chart/platform-api/
 tutorial/07-local-terraform-automation/summary.md
 ```
 
-La siguiente unidad puede introducir Tekton para ejecutar validación, plan y apply controlado. No debe sustituir Helm ni Terraform por una pipeline imperativa.
+La siguiente unidad puede introducir Tekton para ejecutar validación y plan controlado. No debe sustituir Helm ni Terraform por una pipeline imperativa; el `apply` queda diferido a la Unidad 09 o posterior.
