@@ -139,6 +139,8 @@ Contiene los documentos de gobierno, arquitectura, planificación, operación y 
 
 Contiene la documentación dirigida al alumno.
 
+El índice navegable de las unidades está disponible en [`tutorial/README.md`](tutorial/README.md).
+
 Cada unidad dispondrá de su propio directorio y deberá explicar:
 
 - objetivos;
@@ -371,7 +373,7 @@ La fase de **Bootstrap** está completada y el **Framework V1** está cerrado.
 
 El repositorio dispone de documentos de gobierno, playbooks versionados, contenido formativo, laboratorios acumulativos, catálogo de componentes de clúster, validaciones técnicas y procedimiento de generación de handoffs.
 
-El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es generar la **Unidad 08 — Integración continua con Tekton** respetando su playbook aprobado.
+El siguiente incremento recomendado se registra siempre en `project/project-state.md`. En el estado actual, el siguiente paso es generar el **playbook de la Unidad 09 — GitOps con Argo CD**.
 
 El Framework V1 ya ha validado:
 
